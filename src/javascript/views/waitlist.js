@@ -18,7 +18,7 @@ export default class WaitList extends React.Component {
       onTheList: []
     };
     const userId = sessionStorage.getItem('userId');
-    const endpoint = 'api/users';
+    const endpoint = 'api/users/' + userId;
     fetch(endpoint)
     .then((res) => res.json())
     .then((data) => {
