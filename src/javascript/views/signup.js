@@ -33,6 +33,8 @@ export default class Signup extends React.Component {
 
   saveAndContinue() {
     console.log("Create user with: " + JSON.stringify(this.state));
+    sessionStorage.setItem('userId', '123');
+
     const body = this.state;
     const endpoint = 'http://localhost:8000/signup';
     fetch(endpoint, {

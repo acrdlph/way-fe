@@ -36,6 +36,10 @@ export default class WaitList extends React.Component {
 
   openChat(chatPartnerId) {
     console.log('open chat with: ' + chatPartnerId);
+    this.props.history.push({
+      pathname: '/chat',
+      state: {chatPartnerId}
+    });
   }
 
   render() {
