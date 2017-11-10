@@ -4,6 +4,7 @@ import DropDownMenu from 'material-ui/DropDownMenu';
 import MenuItem from 'material-ui/MenuItem';
 import RaisedButton from 'material-ui/RaisedButton';
 import {NavLink} from 'react-router-dom'
+import fetch from 'isomorphic-fetch'
 
 export default class Signup extends React.Component {
 
@@ -32,7 +33,18 @@ export default class Signup extends React.Component {
 
   saveAndContinue() {
     console.log("Create user with: " + JSON.stringify(this.state));
-    this.props.history.push("/waitlist");
+    const body = this.state;
+    const endpoint = 'http://localhost:8000/signup';
+    fetch(endpoint, {
+      method: 'post',
+      body,
+      headers: new Headers({
+        'content-type': 'application/json'
+      }),
+    })
+    .then(() => {
+      this.props.history.push("/waitlist");
+    });
   }
 
   render() {
