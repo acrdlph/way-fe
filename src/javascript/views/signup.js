@@ -33,10 +33,8 @@ export default class Signup extends React.Component {
 
   saveAndContinue() {
     console.log("Create user with: " + JSON.stringify(this.state));
-    sessionStorage.setItem('userId', '123');
-
     const body = this.state;
-    const endpoint = 'http://localhost:8000/signup';
+    const endpoint = 'api/users';
     fetch(endpoint, {
       method: 'post',
       body,
@@ -44,7 +42,9 @@ export default class Signup extends React.Component {
         'content-type': 'application/json'
       }),
     })
-    .then(() => {
+    .then((res) => res.json())
+    .then((json) => {
+      sessionStorage.setItem('userId', json.id);
       this.props.history.push("/waitlist");
     });
   }

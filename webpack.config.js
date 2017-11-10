@@ -18,7 +18,17 @@ module.exports = {
     port: 3000,
     contentBase: path.join(__dirname, './src/static'),
     hot: true,
-    open: true
+    open: true,
+    proxy: {
+      '/api': {
+        target: {
+          host: 'localhost',
+          port: 3001
+        },
+        pathRewrite: {'^/api' : ''},
+        secure: false
+      }
+    }
   },
   module: {
     rules: [
