@@ -11,7 +11,6 @@ export default class Chat extends React.Component {
     const chatPartnerId = this.props.location.state.chatPartnerId;
     const userId = sessionStorage.getItem('userId');
     console.log('show chat between ' + userId + ' and ' + chatPartnerId);
-
     this.state = {
       chatPartnerId,
       userId,

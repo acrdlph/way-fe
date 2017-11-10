@@ -6,6 +6,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 import {List} from 'material-ui/List';
 import Avatar from 'material-ui/Avatar';
 import _ from 'lodash';
+import fetch from 'isomorphic-fetch'
 import Profile from '../components/profile';
 import WaitListItem from '../components/waitlist-item';
 
@@ -31,6 +32,28 @@ export default class WaitList extends React.Component {
         }
       ]
     };
+
+    const endpoint = 'api/users';
+    fetch(endpoint)
+    .then((res) => res.json())
+    .then((data) => {
+      console.log(data)
+      const onTheList = [];
+      _.each(data, entry => {
+        onTheList.push({
+          id: entry.id,
+          name: entry.name || '',
+          interests: entry.interests || '',
+          timeLeft: entry.time_left,
+          hasChat: false
+        });
+      });
+      console.log(onTheList)
+      this.setState({
+        onTheList
+      });
+    });
+
     this.openChat = this.openChat.bind(this);
   }
 

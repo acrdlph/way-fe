@@ -1,6 +1,7 @@
 import React from 'react';
 import {Button} from 'react-bootstrap'
 import TextField from 'material-ui/TextField';
+import fetch from 'isomorphic-fetch'
 import WaitListItem from '../components/waitlist-item';
 
 export default class Profile extends React.Component {
@@ -32,7 +33,23 @@ export default class Profile extends React.Component {
 
   saveProfile() {
     console.log('Save profile: ' + JSON.stringify(this.state));
-    this.setState({hidden: true});
+    const {interest, name} = this.state;
+    const userId = sessionStorage.getItem('userId');
+    const endpoint = 'api/users/'+userId;
+    fetch(endpoint, {
+      method: 'put',
+      body: {
+        interest,
+        name
+      },
+      headers: new Headers({
+        'content-type': 'application/json'
+      }),
+    })
+    .then((res) => res.json())
+    .then((json) => {
+      this.setState({hidden: true});
+    });
   }
 
   render() {
