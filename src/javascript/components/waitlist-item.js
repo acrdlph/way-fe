@@ -6,14 +6,15 @@ import CommunicationChatBubble from 'material-ui/svg-icons/communication/chat-bu
 
 export default class WaitListItem extends React.Component {
   render() {
-    let {interests} = this.props;
+    let {interests, hasChat, onClick} = this.props;
     if(interests.trim() === '') {
       interests = 'No information available';
     }
     return (
       <ListItem
         primaryText={interests}
-        rightIcon={<CommunicationChatBubble />}
+        rightIcon={hasChat ? <CommunicationChatBubble/> : null}
+        onClick={onClick}
       />
     );
   }

@@ -16,25 +16,39 @@ export default class WaitList extends React.Component {
     this.state = {
       onTheList: [
         {
+          id: 1,
           name: "Brendan Lim",
           interests: "I am just waiting here...",
-          timeLeft: 50
+          timeLeft: 50,
+          hasChat: true
         },
         {
+          id: 2,
           name: "Eric Hoffman",
           interests: "Anyone wants to drink a coffee with me?",
-          timeLeft: 80
+          timeLeft: 80,
+          hasChat: false
         }
       ]
     };
+    this.openChat = this.openChat.bind(this);
+  }
+
+  openChat(chatPartnerId) {
+    console.log('open chat with: ' + chatPartnerId);
   }
 
   render() {
     const onTheList = this.state.onTheList;
     const list = [];
-    _.each(onTheList, entry => {
+    _.each(onTheList, (entry, key) => {
       list.push(
-        <WaitListItem interests={entry.interests}/>
+        <WaitListItem
+          key={key}
+          interests={entry.interests}
+          hasChat={entry.hasChat}
+          onClick={() => this.openChat(entry.id)}
+        />
       );
     });
 
