@@ -33,7 +33,10 @@ export default class Signup extends React.Component {
 
   saveAndContinue() {
     console.log("Create user with: " + JSON.stringify(this.state));
-    const body = this.state;
+    const body = JSON.stringify({
+      'location': this.state.airport,
+      'waiting_time': this.state.waitingTime
+    });
     const endpoint = 'api/users';
     fetch(endpoint, {
       method: 'post',

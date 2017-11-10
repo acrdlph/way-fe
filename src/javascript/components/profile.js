@@ -33,15 +33,16 @@ export default class Profile extends React.Component {
 
   saveProfile() {
     console.log('Save profile: ' + JSON.stringify(this.state));
-    const {interest, name} = this.state;
+    const {interests, name} = this.state;
     const userId = sessionStorage.getItem('userId');
     const endpoint = 'api/users/'+userId;
+    const body = JSON.stringify({
+      interests,
+      name
+    });
     fetch(endpoint, {
       method: 'put',
-      body: {
-        interest,
-        name
-      },
+      body,
       headers: new Headers({
         'content-type': 'application/json'
       }),
