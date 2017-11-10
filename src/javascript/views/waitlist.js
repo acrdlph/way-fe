@@ -15,24 +15,9 @@ export default class WaitList extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      onTheList: [
-        {
-          id: 1,
-          name: "Brendan Lim",
-          interests: "I am just waiting here...",
-          timeLeft: 50,
-          hasChat: true
-        },
-        {
-          id: 2,
-          name: "Eric Hoffman",
-          interests: "Anyone wants to drink a coffee with me?",
-          timeLeft: 80,
-          hasChat: false
-        }
-      ]
+      onTheList: []
     };
-
+    const userId = sessionStorage.getItem('userId');
     const endpoint = 'api/users';
     fetch(endpoint)
     .then((res) => res.json())
@@ -48,9 +33,9 @@ export default class WaitList extends React.Component {
           hasChat: false
         });
       });
-      console.log(onTheList)
+      const onTheListSorted = _.reverse(_.sortBy(onTheList, 'timeLeft'));
       this.setState({
-        onTheList
+        onTheList: onTheListSorted
       });
     });
 
@@ -73,6 +58,8 @@ export default class WaitList extends React.Component {
         <WaitListItem
           key={key}
           interests={entry.interests}
+          name={entry.name}
+          timeLeft={entry.timeLeft}
           hasChat={entry.hasChat}
           onClick={() => this.openChat(entry.id)}
         />
