@@ -6,34 +6,47 @@ import RaisedButton from 'material-ui/RaisedButton';
 import {List, ListItem} from 'material-ui/List';
 import Avatar from 'material-ui/Avatar';
 import CommunicationChatBubble from 'material-ui/svg-icons/communication/chat-bubble';
-import TextField from 'material-ui/TextField';
+import _ from 'lodash';
+import Profile from '../components/profile';
 
 export default class WaitList extends React.Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      onTheList: [
+        {
+          name: "Brendan Lim",
+          interests: "I am just waiting here...",
+          timeLeft: 50
+        },
+        {
+          name: "Eric Hoffman",
+          interests: "Anyone wants to drink a coffee with me?",
+          timeLeft: 80
+        }
+      ]
+    };
+  }
+
   render() {
+    const onTheList = this.state.onTheList;
+    const list = [];
+    _.each(onTheList, entry => {
+      list.push(
+        <ListItem
+          primaryText={entry.interests}
+          rightIcon={<CommunicationChatBubble />}
+        />
+      );
+    });
+
     return (
       <div style={{width: '400px'}}>
-
-      <TextField hintText="Interests"/>
-      <TextField hintText="Name"/>
-
-      <List>
-            <ListItem
-              primaryText="Brendan Lim"
-              leftAvatar={<Avatar src="images/ok-128.jpg" />}
-              rightIcon={<CommunicationChatBubble />}
-            />
-            <ListItem
-              primaryText="Eric Hoffman"
-              leftAvatar={<Avatar src="images/kolage-128.jpg" />}
-              rightIcon={<CommunicationChatBubble />}
-            />
-            <ListItem
-              primaryText="Grace Ng"
-              leftAvatar={<Avatar src="images/uxceo-128.jpg" />}
-              rightIcon={<CommunicationChatBubble />}
-            />
+        <Profile/>
+        <List>
+          {list}
         </List>
-
       </div>
     );
   }

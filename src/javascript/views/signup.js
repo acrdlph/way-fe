@@ -51,6 +51,7 @@ export default class Signup extends React.Component {
     const {waitingTime} = this.state;
     return (
       <div style={{width: '400px'}}>
+        Select your airport:
         <DropDownMenu value={"MUC"} onChange={this.changeAirport}>
           <MenuItem value={"MUC"} primaryText="Munich" />
           <MenuItem value={"GVA"} primaryText="Geneva" />
