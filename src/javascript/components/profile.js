@@ -64,7 +64,7 @@ export default class Profile extends React.Component {
       </div>
     ) : (
       <div>
-        <WaitListItem interests={interests}/>
+        <WaitListItem interests={interests} name={name}/>
         <Button onClick={this.changeProfile}>Change Profile</Button>
       </div>
     );

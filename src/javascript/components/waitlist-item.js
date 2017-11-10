@@ -10,10 +10,17 @@ export default class WaitListItem extends React.Component {
     if(interests.trim() === '') {
       interests = 'No information available';
     }
+    if(name.trim() === '') {
+      name = 'No name specified'
+    }
+    let secondaryText = name;
+    if(timeLeft !== undefined) {
+      secondaryText = `${name} (${timeLeft} min)`;
+    }
     return (
       <ListItem
         primaryText={interests}
-        secondaryText={`${name} (${timeLeft} min)`}
+        secondaryText={secondaryText}
         rightIcon={hasChat ? <CommunicationChatBubble/> : null}
         onClick={onClick}
       />

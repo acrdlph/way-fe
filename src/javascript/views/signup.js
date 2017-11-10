@@ -17,6 +17,11 @@ export default class Signup extends React.Component {
     this.changeAirport = this.changeAirport.bind(this);
     this.changeWaitingTime = this.changeWaitingTime.bind(this);
     this.saveAndContinue = this.saveAndContinue.bind(this);
+
+    const userId = sessionStorage.getItem('userId');
+    if(userId !== undefined) {
+      this.props.history.push("/waitlist"); // user is onboarded already
+    }
   }
 
   changeAirport(event, key, value) {
