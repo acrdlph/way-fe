@@ -3,5 +3,18 @@ import ReactDOM from 'react-dom';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import Onboarding from './views/onboarding';
 import Signup from './views/signup';
+import {
+  HashRouter as Router,
+  Route,
+  Link
+} from 'react-router-dom'
 
-ReactDOM.render(<MuiThemeProvider><Signup/></MuiThemeProvider>, document.getElementById('root'));
+ReactDOM.render((
+  <Router>
+    <MuiThemeProvider>
+      <Route exact path="/" component={Onboarding}/>
+      <Route path="/onboarding" component={Onboarding}/>
+      <Route path="/signup" component={Signup}/>
+    </MuiThemeProvider>
+  </Router>
+), document.getElementById('root'));
