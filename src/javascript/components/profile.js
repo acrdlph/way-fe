@@ -1,6 +1,7 @@
 import React from 'react';
 import {Button} from 'react-bootstrap'
 import TextField from 'material-ui/TextField';
+import WaitListItem from '../components/waitlist-item';
 
 export default class Profile extends React.Component {
 
@@ -13,6 +14,7 @@ export default class Profile extends React.Component {
     };
     this.changeInterests = this.changeInterests.bind(this);
     this.changeName = this.changeName.bind(this);
+    this.changeProfile = this.changeProfile.bind(this);
     this.saveProfile = this.saveProfile.bind(this);
   }
 
@@ -24,18 +26,28 @@ export default class Profile extends React.Component {
     this.setState({name});
   }
 
+  changeProfile() {
+    this.setState({hidden: false});
+  }
+
   saveProfile() {
     console.log('Save profile: ' + JSON.stringify(this.state));
     this.setState({hidden: true});
   }
 
   render() {
-    return this.state.hidden ? null : (
+    const {interests, name, hidden} = this.state;
+    return !hidden ? (
       <div>
         Tell us a little bit more about you:
-        <TextField hintText="Interests" onChange={this.changeInterests}/>
-        <TextField hintText="Name" onChange={this.changeName}/>
+        <TextField defaultValue={interests} hintText="Interests" onChange={this.changeInterests}/>
+        <TextField defaultValue={name} hintText="Name" onChange={this.changeName}/>
         <Button onClick={this.saveProfile}>OK</Button>
+      </div>
+    ) : (
+      <div>
+        <WaitListItem interests={interests}/>
+        <Button onClick={this.changeProfile}>Change Profile</Button>
       </div>
     );
   }

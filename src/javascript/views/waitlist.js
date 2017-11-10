@@ -3,11 +3,11 @@ import Slider from 'material-ui/Slider';
 import DropDownMenu from 'material-ui/DropDownMenu';
 import MenuItem from 'material-ui/MenuItem';
 import RaisedButton from 'material-ui/RaisedButton';
-import {List, ListItem} from 'material-ui/List';
+import {List} from 'material-ui/List';
 import Avatar from 'material-ui/Avatar';
-import CommunicationChatBubble from 'material-ui/svg-icons/communication/chat-bubble';
 import _ from 'lodash';
 import Profile from '../components/profile';
+import WaitListItem from '../components/waitlist-item';
 
 export default class WaitList extends React.Component {
 
@@ -34,10 +34,7 @@ export default class WaitList extends React.Component {
     const list = [];
     _.each(onTheList, entry => {
       list.push(
-        <ListItem
-          primaryText={entry.interests}
-          rightIcon={<CommunicationChatBubble />}
-        />
+        <WaitListItem interests={entry.interests}/>
       );
     });
 
