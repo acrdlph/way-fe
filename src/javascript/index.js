@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import Onboarding from './views/onboarding';
 import Signup from './views/signup';
+import WaitList from './views/waitlist';
 import {
   HashRouter as Router,
   Route,
@@ -15,6 +16,7 @@ ReactDOM.render((
       <Route exact path="/" component={Onboarding}/>
       <Route path="/onboarding" component={Onboarding}/>
       <Route path="/signup" component={Signup}/>
+      <Route path="/waitlist" component={WaitList}/>
     </MuiThemeProvider>
   </Router>
 ), document.getElementById('root'));

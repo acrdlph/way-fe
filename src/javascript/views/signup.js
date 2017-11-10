@@ -3,6 +3,7 @@ import Slider from 'material-ui/Slider';
 import DropDownMenu from 'material-ui/DropDownMenu';
 import MenuItem from 'material-ui/MenuItem';
 import RaisedButton from 'material-ui/RaisedButton';
+import {NavLink} from 'react-router-dom'
 
 export default class Signup extends React.Component {
   render() {
@@ -14,7 +15,7 @@ export default class Signup extends React.Component {
           <MenuItem value={3} primaryText="Copenhagen" />
         </DropDownMenu>
         <Slider defaultValue={0.5} />
-        <RaisedButton label='See who is waiting'/>
+        <NavLink to="/waitlist"><RaisedButton label='See who is waiting'/></NavLink>
       </div>
     );
   }
