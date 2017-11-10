@@ -19,7 +19,7 @@ export default class Signup extends React.Component {
     this.saveAndContinue = this.saveAndContinue.bind(this);
 
     const userId = sessionStorage.getItem('userId');
-    if(userId !== undefined) {
+    if(userId) {
       this.props.history.push("/waitlist"); // user is onboarded already
     }
   }
