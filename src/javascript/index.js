@@ -9,7 +9,7 @@ import {
   HashRouter as Router,
   Route,
   Link
-} from 'react-router-dom'
+} from 'react-router-dom';
 
 ReactDOM.render((
   <Router>

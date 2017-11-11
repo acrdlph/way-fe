@@ -1,7 +1,7 @@
 import React from 'react';
-import {Button} from 'react-bootstrap'
+import {Button} from 'react-bootstrap';
 import TextField from 'material-ui/TextField';
-import fetch from 'isomorphic-fetch'
+import fetch from 'isomorphic-fetch';
 import WaitListItem from '../components/waitlist-item';
 
 export default class Profile extends React.Component {

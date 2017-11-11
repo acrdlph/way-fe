@@ -3,13 +3,13 @@ import Slider from 'material-ui/Slider';
 import DropDownMenu from 'material-ui/DropDownMenu';
 import MenuItem from 'material-ui/MenuItem';
 import RaisedButton from 'material-ui/RaisedButton';
-import {NavLink} from 'react-router-dom'
-import fetch from 'isomorphic-fetch'
+import {NavLink} from 'react-router-dom';
+import fetch from 'isomorphic-fetch';
 
 export default class Signup extends React.Component {
 
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
       airport: 'MUC',
       waitingTime: 30

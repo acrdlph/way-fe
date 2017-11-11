@@ -1,6 +1,6 @@
 import React from 'react';
-import {Button} from 'react-bootstrap'
-import {NavLink} from 'react-router-dom'
+import {Button} from 'react-bootstrap';
+import {NavLink} from 'react-router-dom';
 import _ from 'lodash';
 import ChatItem from '../components/chat-item';
 

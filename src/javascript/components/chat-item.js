@@ -1,6 +1,6 @@
 import React from 'react';
-import {Button} from 'react-bootstrap'
-import {NavLink} from 'react-router-dom'
+import {Button} from 'react-bootstrap';
+import {NavLink} from 'react-router-dom';
 import {ListItem} from 'material-ui/List';
 
 export default class ChatItem extends React.Component {
