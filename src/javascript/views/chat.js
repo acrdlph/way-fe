@@ -3,6 +3,7 @@ import {Button} from 'react-bootstrap';
 import {NavLink} from 'react-router-dom';
 import _ from 'lodash';
 import ChatItem from '../components/chat-item';
+import ChatInput from '../components/chat-input';
 
 export default class Chat extends React.Component {
 
@@ -44,6 +45,7 @@ export default class Chat extends React.Component {
     return (
       <div style={{width: '400px'}}>
         {chatItems}
+        <ChatInput onSend={(message) => {console.log(message);}}/>
       </div>
     );
   }
