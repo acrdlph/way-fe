@@ -30,6 +30,17 @@ export default class Chat extends React.Component {
         }
       ]
     };
+    this.sendMessage = this.sendMessage.bind(this);
+  }
+
+  componentDidMount() {
+    console.log("create WebSocket connection");
+    this.connection = new WebSocket('ws://localhost:3001');
+  }
+
+  sendMessage(message) {
+    console.log("send message: " + message);
+    this.connection.send(message);
   }
 
   render() {
@@ -42,10 +53,11 @@ export default class Chat extends React.Component {
       );
     });
 
+    const connection = this.connection;
     return (
       <div style={{width: '400px'}}>
         {chatItems}
-        <ChatInput onSend={(message) => {console.log(message);}}/>
+        <ChatInput onSend={this.sendMessage}/>
       </div>
     );
   }
