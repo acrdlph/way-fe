@@ -39,6 +39,13 @@ class Chat extends React.Component {
     const payloadString = JSON.stringify(payload);
     console.log("send message: " + payloadString);
     this.connection.send(payloadString);
+    /*
+    // this only works if server and client time are the same...
+    this.props.addMessagesToChat([{
+      ...payload,
+      created_at: new Date()
+    }]);
+    */
   }
 
   render() {
