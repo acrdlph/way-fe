@@ -3,7 +3,7 @@ import _ from 'lodash';
 const addUserToDirectory = (userDetails) => {
   const users = {};
   let name = userDetails.name;
-  if(name.trim() === '') {
+  if(name && name.trim() === '') {
     name = 'Anonymous';
   }
   users[userDetails.id] = name;
