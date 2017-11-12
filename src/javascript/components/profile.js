@@ -62,6 +62,9 @@ class Profile extends React.Component {
     const name = user.data.name || '';
     const isDataDefined = name.trim() !== '' && interests.trim() !== '';
 
+    if(user.loading) {
+      return (<div>loading...</div>);
+    }
     return !isDataDefined || this.state.isEditable ? (
       <div>
         Tell us a little bit more about you:
