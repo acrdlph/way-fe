@@ -4,7 +4,7 @@ import {NavLink} from 'react-router-dom';
 import _ from 'lodash';
 import ChatItem from '../components/chat-item';
 import ChatInput from '../components/chat-input';
-import {loadMessages} from '../stores/chatStore';
+import {loadMessages, addMessagesToChat} from '../stores/chatStore';
 
 class Chat extends React.Component {
 
@@ -21,6 +21,11 @@ class Chat extends React.Component {
     console.log("create WebSocket connection");
     const userId = sessionStorage.getItem('userId');
     this.connection = new WebSocket('ws://localhost:3001/messages/'+userId);
+    const addMessages = this.props.addMessagesToChat;
+    this.connection.onmessage = function (event) {
+      console.log("receive websocket message: " + JSON.stringify(event.data));
+      addMessages([JSON.parse(event.data)]);
+    };
   }
 
   sendMessage(message) {
@@ -64,7 +69,8 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  loadMessages: (userId, chatPartnerId) => dispatch(loadMessages(userId, chatPartnerId))
+  loadMessages: (userId, chatPartnerId) => dispatch(loadMessages(userId, chatPartnerId)),
+  addMessagesToChat: (messages) => dispatch(addMessagesToChat(messages))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Chat);

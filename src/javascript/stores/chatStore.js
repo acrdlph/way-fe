@@ -2,7 +2,28 @@ import _ from 'lodash';
 
 const types = {
   LOADING: 'CHAT_LOADING',
-  LOADED: 'CHAT_LOADED'
+  LOADED: 'CHAT_LOADED',
+  ADDMESSAGE: 'CHAT_ADD_MESSAGE',
+};
+
+const transformMessages = (messages) => {
+  const transformedMessages = [];
+  _.each(messages, entry => {
+    console.log("transform: ");
+    console.log(entry);
+    transformedMessages.push({
+      //id: entry.id,
+      sender: entry.sender_id,
+      receiver: entry.receiver_id,
+      message: entry.message,
+      createdAt: entry.created_at
+    });
+  });
+  return transformedMessages;
+};
+
+const sortMessages = (messages) => {
+  return _.sortBy(messages, 'createdAt');
 };
 
 export const loadMessages = (userId, chatPartnerId) => (dispatch) => {
@@ -15,24 +36,23 @@ export const loadMessages = (userId, chatPartnerId) => (dispatch) => {
   .then((res) => res.json())
   .then((data) => {
     console.log("receive chat messages: " + JSON.stringify(data));
-    const messages = [];
-    _.each(data, entry => {
-      messages.push({
-        id: entry.id,
-        sender: entry.sender_id,
-        receiver: entry.receiver_id,
-        message: entry.message,
-        createdAt: entry.created_at
-      });
-    });
-    const messagesSorted = _.sortBy(messages, 'createdAt');
+    const messages = transformMessages(data);
     dispatch({
       type: types.LOADED,
-      data: messagesSorted
+      data: messages
     });
   });
 };
 
+export const addMessagesToChat = (messages) => {
+  console.log("addMessagesToChat: " + JSON.stringify(messages));
+  const transformedMessages = transformMessages(messages);
+  console.log("transformedMessages: " + JSON.stringify(transformedMessages));
+  return {
+    type: types.ADDMESSAGE,
+    data: transformedMessages
+  };
+};
 
 const initialState = {
   loading: false,
@@ -52,7 +72,16 @@ const reducer = (state = initialState, action) => {
         return {
           loading: false,
           loaded: true,
-          data: action.data
+          data: sortMessages(action.data)
+        };
+      case types.ADDMESSAGE:
+        const newMessages = action.data;
+        const allMessages = sortMessages(newMessages.concat(state.data));
+        console.log("all msgs:");
+        console.log(allMessages);
+        return {
+          ...state,
+          data: allMessages
         };
     default:
       return state;
