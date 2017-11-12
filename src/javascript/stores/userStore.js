@@ -22,6 +22,7 @@ export const loadUserData = (userId) => (dispatch) => {
   .then((res) => res.json())
   .then((data) => {
     const user = {
+      id: userId,
       location: data.location,
       waitingTime: data.waiting_time,
       name: data.name,

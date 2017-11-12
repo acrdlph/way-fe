@@ -4,7 +4,7 @@ import {NavLink} from 'react-router-dom';
 import _ from 'lodash';
 import ChatItem from '../components/chat-item';
 import ChatInput from '../components/chat-input';
-import {loadMessages} from '../stores/chatStore';
+import {loadMessages, addMessagesToChat} from '../stores/chatStore';
 
 class Chat extends React.Component {
 
@@ -21,6 +21,11 @@ class Chat extends React.Component {
     console.log("create WebSocket connection");
     const userId = sessionStorage.getItem('userId');
     this.connection = new WebSocket('ws://localhost:3001/messages/'+userId);
+    const addMessages = this.props.addMessagesToChat;
+    this.connection.onmessage = function (event) {
+      console.log("receive websocket message: " + JSON.stringify(event.data));
+      addMessages([JSON.parse(event.data)]);
+    };
   }
 
   sendMessage(message) {
@@ -34,6 +39,13 @@ class Chat extends React.Component {
     const payloadString = JSON.stringify(payload);
     console.log("send message: " + payloadString);
     this.connection.send(payloadString);
+    /*
+    // this only works if server and client time are the same...
+    this.props.addMessagesToChat([{
+      ...payload,
+      created_at: new Date()
+    }]);
+    */
   }
 
   render() {
@@ -44,7 +56,7 @@ class Chat extends React.Component {
     _.each(messages, message => {
       const isLeft = message.sender == userId;
       chatItems.push(
-        <ChatItem name={usernames[message.sender]} text={message.message} left={isLeft}/>
+        <ChatItem key={message.id} name={usernames[message.sender]} text={message.message} left={isLeft}/>
       );
     });
 
@@ -64,7 +76,8 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  loadMessages: (userId, chatPartnerId) => dispatch(loadMessages(userId, chatPartnerId))
+  loadMessages: (userId, chatPartnerId) => dispatch(loadMessages(userId, chatPartnerId)),
+  addMessagesToChat: (messages) => dispatch(addMessagesToChat(messages))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Chat);

@@ -1,14 +1,37 @@
 import React from 'react';
 import {NavLink} from 'react-router-dom';
 import RaisedButton from 'material-ui/RaisedButton';
+import Slider from 'react-slick';
+import './onboarding.less';
+
+// check https://github.com/akiran/react-slick for all styling options
+const imageCarouselSettings = {
+  dots: true,
+  infinite: true,
+  speed: 500,
+  slidesToShow: 1,
+  slidesToScroll: 1
+};
 
 export default class Onboarding extends React.Component {
   render() {
     return (
       <div style={{width: '400px'}}>
-        <NavLink to="/signup">
-          <RaisedButton label="Enter WaitList"/>
-        </NavLink>
+        <img className='logo' src="assets/waitlistlogo.png"/>
+
+        <div className='imageCarousel'>
+          <Slider {...imageCarouselSettings}>
+            <img src="assets/onboarding-1.png"/>
+            <img src="assets/onboarding-2.png"/>
+            <img src="assets/onboarding-3.png"/>
+          </Slider>
+        </div>
+
+        <div>
+          <NavLink to="/signup">
+            <RaisedButton label="Enter WaitList"/>
+          </NavLink>
+        </div>
       </div>
     );
   }
