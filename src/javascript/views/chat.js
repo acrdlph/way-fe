@@ -44,7 +44,7 @@ class Chat extends React.Component {
     _.each(messages, message => {
       const isLeft = message.sender == userId;
       chatItems.push(
-        <ChatItem name={usernames[message.sender]} text={message.message} left={isLeft}/>
+        <ChatItem key={message.id} name={usernames[message.sender]} text={message.message} left={isLeft}/>
       );
     });
 
