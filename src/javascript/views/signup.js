@@ -62,7 +62,7 @@ export default class Signup extends React.Component {
     return (
       <div style={{width: '400px'}}>
         Select your airport:
-        <DropDownMenu value={"MUC"} onChange={this.changeAirport}>
+        <DropDownMenu value={this.state.airport} onChange={this.changeAirport}>
           <MenuItem value={"MUC"} primaryText="Munich" />
           <MenuItem value={"GVA"} primaryText="Geneva" />
           <MenuItem value={"CPH"} primaryText="Copenhagen" />
