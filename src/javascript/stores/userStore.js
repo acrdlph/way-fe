@@ -1,31 +1,26 @@
 import _ from 'lodash';
 
 const types = {
-  LOADING: 'WAITLIST_LOADING',
-  LOADED: 'WAITLIST_LOADED'
+  LOADING: 'USER_LOADING',
+  LOADED: 'USER_LOADED'
 };
 
-export const loadWaitlist = (userId) => (dispatch) => {
+export const loadUserData = (userId) => (dispatch) => {
   dispatch({type: types.LOADING});
 
-  const endpoint = 'api/users/' + userId;
+  const endpoint = 'api/users/' + userId + '/details';
   fetch(endpoint)
   .then((res) => res.json())
   .then((data) => {
-    const onTheList = [];
-    _.each(data, entry => {
-      onTheList.push({
-        id: entry.id,
-        name: entry.name || '',
-        interests: entry.interests || '',
-        timeLeft: entry.time_left,
-        hasChat: false
-      });
-    });
-    const onTheListSorted = _.reverse(_.sortBy(onTheList, 'timeLeft'));
+    const user = {
+      location: data.location,
+      waitingTime: data.waiting_time,
+      name: data.name,
+      interests: data.interests
+    };
     dispatch({
       type: types.LOADED,
-      data: onTheListSorted
+      data: user
     });
   });
 };

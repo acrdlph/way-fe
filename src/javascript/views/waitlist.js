@@ -11,6 +11,7 @@ import fetch from 'isomorphic-fetch';
 import Profile from '../components/profile';
 import WaitListItem from '../components/waitlist-item';
 import {loadWaitlist} from '../stores/waitlistStore';
+import {loadUserData} from '../stores/userStore';
 
 class WaitList extends React.Component {
 
@@ -18,6 +19,7 @@ class WaitList extends React.Component {
     super(props);
 
     const userId = sessionStorage.getItem('userId');
+    this.props.loadUserData(userId);
     this.props.loadWaitlist(userId);
 
     this.openChat = this.openChat.bind(this);
@@ -45,7 +47,6 @@ class WaitList extends React.Component {
         />
       );
     });
-
     return (
       <div style={{width: '400px'}}>
         <Profile/>
@@ -62,7 +63,8 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  loadWaitlist: (userId) => dispatch(loadWaitlist(userId))
+  loadWaitlist: (userId) => dispatch(loadWaitlist(userId)),
+  loadUserData: (userId) => dispatch(loadUserData(userId))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(WaitList);

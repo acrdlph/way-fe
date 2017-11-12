@@ -1,21 +1,23 @@
 import React from 'react';
 import {Button} from 'react-bootstrap';
-import TextField from 'material-ui/TextField';
+import {connect} from 'react-redux';
 import fetch from 'isomorphic-fetch';
+import TextField from 'material-ui/TextField';
 import WaitListItem from '../components/waitlist-item';
+import {loadUserData} from '../stores/userStore';
 
-export default class Profile extends React.Component {
+class Profile extends React.Component {
 
   constructor(props) {
     super(props);
     this.state = {
       name: '',
       interests: '',
-      hidden: false
+      isEditable: false
     };
     this.changeInterests = this.changeInterests.bind(this);
     this.changeName = this.changeName.bind(this);
-    this.changeProfile = this.changeProfile.bind(this);
+    this.setEditable = this.setEditable.bind(this);
     this.saveProfile = this.saveProfile.bind(this);
   }
 
@@ -27,8 +29,8 @@ export default class Profile extends React.Component {
     this.setState({name});
   }
 
-  changeProfile() {
-    this.setState({hidden: false});
+  setEditable(editable) {
+    this.setState({isEditable: editable});
   }
 
   saveProfile() {
@@ -49,13 +51,18 @@ export default class Profile extends React.Component {
     })
     .then((res) => res.json())
     .then((json) => {
-      this.setState({hidden: true});
+      this.setState({isEditable: false});
+      this.props.loadUserData(userId);
     });
   }
 
   render() {
-    const {interests, name, hidden} = this.state;
-    return !hidden ? (
+    const user = this.props.user;
+    const interests = user.data.interests || '';
+    const name = user.data.name || '';
+    const isDataDefined = name.trim() !== '' && interests.trim() !== '';
+
+    return !isDataDefined || this.state.isEditable ? (
       <div>
         Tell us a little bit more about you:
         <TextField defaultValue={interests} hintText="Interests" onChange={this.changeInterests}/>
@@ -65,8 +72,19 @@ export default class Profile extends React.Component {
     ) : (
       <div>
         <WaitListItem interests={interests} name={name}/>
-        <Button onClick={this.changeProfile}>Change Profile</Button>
+        <Button onClick={() => this.setEditable(true)}>Change Profile</Button>
       </div>
     );
   }
 }
+
+
+const mapStateToProps = (state) => ({
+  user: state.user
+});
+
+const mapDispatchToProps = dispatch => ({
+  loadUserData: (userId) => dispatch(loadUserData(userId))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Profile);
