@@ -1,12 +1,15 @@
-# Hot Module Replacement Demo
+# Waitlist
 
-When saving changed code, Hot Module Replacement (HMR) updates the app in the browser automatically.
+This is the Waitlist web app.
 
-To try this demo run
+## How to run?
+
+Install dependencies
+
+    npm install
+
+and then run
 
     npm run server
 
-and a webpack-dev-server will be started on port 3000.
-When you change the `index.js`, the app in the browser will update automatically.
-
-To see changes on the `index.html`, you need to reload the page manually!
+to start the Webpack dev-server on port 3000.
