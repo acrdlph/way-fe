@@ -1,11 +1,12 @@
 import React from 'react';
-import {Button} from 'react-bootstrap';
+import {connect} from 'react-redux';
 import {NavLink} from 'react-router-dom';
 import _ from 'lodash';
 import ChatItem from '../components/chat-item';
 import ChatInput from '../components/chat-input';
+import {loadMessages} from '../stores/chatStore';
 
-export default class Chat extends React.Component {
+class Chat extends React.Component {
 
   constructor(props) {
     super(props);
@@ -31,6 +32,7 @@ export default class Chat extends React.Component {
       ]
     };
     this.sendMessage = this.sendMessage.bind(this);
+    this.props.loadMessages(userId, chatPartnerId);
   }
 
   componentDidMount() {
@@ -62,3 +64,13 @@ export default class Chat extends React.Component {
     );
   }
 }
+
+const mapStateToProps = (state) => ({
+  chat: state.chat
+});
+
+const mapDispatchToProps = dispatch => ({
+  loadMessages: (userId, chatPartnerId) => dispatch(loadMessages(userId, chatPartnerId))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Chat);
