@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import Slider from 'material-ui/Slider';
 import DropDownMenu from 'material-ui/DropDownMenu';
 import MenuItem from 'material-ui/MenuItem';
@@ -10,7 +11,7 @@ import fetch from 'isomorphic-fetch';
 import Profile from '../components/profile';
 import WaitListItem from '../components/waitlist-item';
 
-export default class WaitList extends React.Component {
+class WaitList extends React.Component {
 
   constructor(props) {
     super(props);
@@ -76,3 +77,9 @@ export default class WaitList extends React.Component {
     );
   }
 }
+
+const mapStateToProps = (state) => ({
+  waitlist: state.waitlist
+});
+
+export default connect(mapStateToProps)(WaitList);
