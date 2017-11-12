@@ -1,5 +1,5 @@
 import React from 'react';
-import {Button} from 'react-bootstrap';
+import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 
 export default class ChatInput extends React.Component {
@@ -26,7 +26,7 @@ export default class ChatInput extends React.Component {
     return (
       <div>
         <TextField hintText="Message" value={this.state.message} onChange={this.changeMessage}/>
-        <Button onClick={this.sendMessage}>Send</Button>
+        <RaisedButton label="Send" onClick={this.sendMessage}/>
       </div>
     );
   }

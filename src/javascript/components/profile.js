@@ -1,7 +1,7 @@
 import React from 'react';
-import {Button} from 'react-bootstrap';
 import {connect} from 'react-redux';
 import fetch from 'isomorphic-fetch';
+import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 import WaitListItem from '../components/waitlist-item';
 import {loadUserData, updateUserData, editUserData} from '../stores/userStore';
@@ -57,12 +57,12 @@ class Profile extends React.Component {
         Tell us a little bit more about you:
         <TextField defaultValue={interests} hintText="Interests" onChange={this.changeInterests}/>
         <TextField defaultValue={name} hintText="Name" onChange={this.changeName}/>
-        <Button onClick={this.saveProfile}>OK</Button>
+        <RaisedButton label="OK" onClick={this.saveProfile}/>
       </div>
     ) : (
       <div>
         <WaitListItem interests={interests} name={name}/>
-        <Button onClick={this.setEditable}>Change Profile</Button>
+        <RaisedButton label="Change Profile" onClick={this.setEditable}/>
       </div>
     );
   }
