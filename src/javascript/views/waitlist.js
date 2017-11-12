@@ -10,35 +10,15 @@ import _ from 'lodash';
 import fetch from 'isomorphic-fetch';
 import Profile from '../components/profile';
 import WaitListItem from '../components/waitlist-item';
+import {loadWaitlist} from '../stores/waitlistStore';
 
 class WaitList extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = {
-      onTheList: []
-    };
+
     const userId = sessionStorage.getItem('userId');
-    const endpoint = 'api/users/' + userId;
-    fetch(endpoint)
-    .then((res) => res.json())
-    .then((data) => {
-      console.log(data);
-      const onTheList = [];
-      _.each(data, entry => {
-        onTheList.push({
-          id: entry.id,
-          name: entry.name || '',
-          interests: entry.interests || '',
-          timeLeft: entry.time_left,
-          hasChat: false
-        });
-      });
-      const onTheListSorted = _.reverse(_.sortBy(onTheList, 'timeLeft'));
-      this.setState({
-        onTheList: onTheListSorted
-      });
-    });
+    this.props.loadWaitlist(userId);
 
     this.openChat = this.openChat.bind(this);
   }
@@ -52,9 +32,8 @@ class WaitList extends React.Component {
   }
 
   render() {
-    const onTheList = this.state.onTheList;
     const list = [];
-    _.each(onTheList, (entry, key) => {
+    _.each(this.props.waitlist.data, (entry, key) => {
       list.push(
         <WaitListItem
           key={key}
@@ -82,4 +61,8 @@ const mapStateToProps = (state) => ({
   waitlist: state.waitlist
 });
 
-export default connect(mapStateToProps)(WaitList);
+const mapDispatchToProps = dispatch => ({
+  loadWaitlist: (userId) => dispatch(loadWaitlist(userId))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(WaitList);
