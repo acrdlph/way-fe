@@ -32,11 +32,11 @@ class Chat extends React.Component {
     const chatItems = [];
     const userId = sessionStorage.getItem('userId');
     const messages = this.props.chat.data;
-    console.log("messages: " + JSON.stringify(messages));
+    const usernames = this.props.usernames;
     _.each(messages, message => {
       const isLeft = message.sender == userId;
       chatItems.push(
-        <ChatItem text={message.message} left={isLeft}/>
+        <ChatItem name={usernames[message.sender]} text={message.message} left={isLeft}/>
       );
     });
 
@@ -51,7 +51,8 @@ class Chat extends React.Component {
 }
 
 const mapStateToProps = (state) => ({
-  chat: state.chat
+  chat: state.chat,
+  usernames: state.userDirectory
 });
 
 const mapDispatchToProps = dispatch => ({
