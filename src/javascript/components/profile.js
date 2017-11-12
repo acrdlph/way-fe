@@ -4,7 +4,7 @@ import {connect} from 'react-redux';
 import fetch from 'isomorphic-fetch';
 import TextField from 'material-ui/TextField';
 import WaitListItem from '../components/waitlist-item';
-import {loadUserData} from '../stores/userStore';
+import {loadUserData, updateUserData, editUserData} from '../stores/userStore';
 
 class Profile extends React.Component {
 
@@ -12,8 +12,7 @@ class Profile extends React.Component {
     super(props);
     this.state = {
       name: '',
-      interests: '',
-      isEditable: false
+      interests: ''
     };
     this.changeInterests = this.changeInterests.bind(this);
     this.changeName = this.changeName.bind(this);
@@ -29,31 +28,19 @@ class Profile extends React.Component {
     this.setState({name});
   }
 
-  setEditable(editable) {
-    this.setState({isEditable: editable});
+  setEditable() {
+    console.log("edit user data..");
+    this.props.editUserData();
   }
 
   saveProfile() {
-    console.log('Save profile: ' + JSON.stringify(this.state));
-    const {interests, name} = this.state;
     const userId = sessionStorage.getItem('userId');
-    const endpoint = 'api/users/'+userId;
-    const body = JSON.stringify({
-      interests,
-      name
-    });
-    fetch(endpoint, {
-      method: 'put',
-      body,
-      headers: new Headers({
-        'content-type': 'application/json'
-      }),
-    })
-    .then((res) => res.json())
-    .then((json) => {
-      this.setState({isEditable: false});
-      this.props.loadUserData(userId);
-    });
+    const data = {
+      name: this.state.name,
+      interests: this.state.interests
+    };
+    console.log('Save profile: ' + JSON.stringify(data));
+    this.props.updateUserData(userId, data);
   }
 
   render() {
@@ -61,11 +48,11 @@ class Profile extends React.Component {
     const interests = user.data.interests || '';
     const name = user.data.name || '';
     const isDataDefined = name.trim() !== '' && interests.trim() !== '';
-
+    console.log("usererer: " + JSON.stringify(user));
     if(user.loading) {
       return (<div>loading...</div>);
     }
-    return !isDataDefined || this.state.isEditable ? (
+    return !isDataDefined || this.props.user.isEditable ? (
       <div>
         Tell us a little bit more about you:
         <TextField defaultValue={interests} hintText="Interests" onChange={this.changeInterests}/>
@@ -75,7 +62,7 @@ class Profile extends React.Component {
     ) : (
       <div>
         <WaitListItem interests={interests} name={name}/>
-        <Button onClick={() => this.setEditable(true)}>Change Profile</Button>
+        <Button onClick={this.setEditable}>Change Profile</Button>
       </div>
     );
   }
@@ -87,7 +74,9 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  loadUserData: (userId) => dispatch(loadUserData(userId))
+  editUserData: () => dispatch(editUserData()),
+  loadUserData: (userId) => dispatch(loadUserData(userId)),
+  updateUserData: (userId, data) => dispatch(updateUserData(userId, data))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Profile);

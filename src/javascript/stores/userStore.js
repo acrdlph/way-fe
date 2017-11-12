@@ -1,8 +1,17 @@
 import _ from 'lodash';
 
 const types = {
+  EDITING: 'USER_EDIT',
   LOADING: 'USER_LOADING',
-  LOADED: 'USER_LOADED'
+  LOADED: 'USER_LOADED',
+  UPDATED: 'USER_UPDATED'
+};
+
+export const editUserData = () => {
+  console.log("make user editable..");
+  return {
+    type: types.EDITING
+  };
 };
 
 export const loadUserData = (userId) => (dispatch) => {
@@ -25,10 +34,30 @@ export const loadUserData = (userId) => (dispatch) => {
   });
 };
 
+export const updateUserData = (userId, data) => (dispatch) => {
+  const endpoint = 'api/users/'+userId;
+  const body = JSON.stringify(data);
+  fetch(endpoint, {
+    method: 'put',
+    body,
+    headers: new Headers({
+      'content-type': 'application/json'
+    }),
+  })
+  .then((res) => res.json())
+  .then((json) => {
+    dispatch({
+      type: types.UPDATED
+    });
+    dispatch(loadUserData(userId));
+  });
+};
+
 
 const initialState = {
   loading: false,
   loaded: false,
+  isEditable: false,
   data: []
 };
 
@@ -36,15 +65,25 @@ const reducer = (state = initialState, action) => {
   switch (action.type) {
     case types.LOADING:
       return {
-        loading: true,
-        loaded: false,
-        data: []
+        ...state,
+        loading: true
       };
       case types.LOADED:
         return {
+          ...state,
           loading: false,
           loaded: true,
           data: action.data
+        };
+      case types.EDITING:
+        return {
+          ...state,
+          isEditable: true
+        };
+      case types.UPDATED:
+        return {
+          ...state,
+          isEditable: false
         };
     default:
       return state;
