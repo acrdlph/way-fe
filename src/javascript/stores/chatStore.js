@@ -15,9 +15,19 @@ export const loadMessages = (userId, chatPartnerId) => (dispatch) => {
   .then((res) => res.json())
   .then((data) => {
     console.log("receive chat messages: " + JSON.stringify(data));
+    const messages = [];
+    _.each(data, entry => {
+      messages.push({
+        id: entry.id,
+        sender: entry.sender_id,
+        receiver: entry.receiver_id,
+        message: entry.message,
+        createdAt: entry.created_at
+      });
+    });
     dispatch({
       type: types.LOADED,
-      data: []
+      data: messages
     });
   });
 };

@@ -13,45 +13,30 @@ class Chat extends React.Component {
     const chatPartnerId = this.props.location.state.chatPartnerId;
     const userId = sessionStorage.getItem('userId');
     console.log('show chat between ' + userId + ' and ' + chatPartnerId);
-    this.state = {
-      chatPartnerId,
-      userId,
-      messages: [
-        {
-          author: 2,
-          text: 'Hi!'
-        },
-        {
-          author: 123,
-          text: 'Hello! How are you?'
-        },
-        {
-          author: 2,
-          text: 'Fine and you?'
-        }
-      ]
-    };
     this.sendMessage = this.sendMessage.bind(this);
     this.props.loadMessages(userId, chatPartnerId);
   }
 
   componentDidMount() {
-    console.log("create WebSocket connection");
-    this.connection = new WebSocket('ws://localhost:3001');
+    //console.log("create WebSocket connection");
+    //const userId = sessionStorage.getItem('userId');
+    //this.connection = new WebSocket('ws://localhost:3001/messages/'+userId);
   }
 
   sendMessage(message) {
-    console.log("send message: " + message);
-    this.connection.send(message);
+    //console.log("send message: " + message);
+    //this.connection.send(message);
   }
 
   render() {
     const chatItems = [];
-    const {messages, userId} = this.state;
+    const userId = sessionStorage.getItem('userId');
+    const messages = this.props.chat.data;
+    console.log("messages: " + JSON.stringify(messages));
     _.each(messages, message => {
-      const isLeft = message.author == userId;
+      const isLeft = message.sender == userId;
       chatItems.push(
-        <ChatItem text={message.text} left={isLeft}/>
+        <ChatItem text={message.message} left={isLeft}/>
       );
     });
 
