@@ -18,14 +18,22 @@ class Chat extends React.Component {
   }
 
   componentDidMount() {
-    //console.log("create WebSocket connection");
-    //const userId = sessionStorage.getItem('userId');
-    //this.connection = new WebSocket('ws://localhost:3001/messages/'+userId);
+    console.log("create WebSocket connection");
+    const userId = sessionStorage.getItem('userId');
+    this.connection = new WebSocket('ws://localhost:3001/messages/'+userId);
   }
 
   sendMessage(message) {
-    //console.log("send message: " + message);
-    //this.connection.send(message);
+    const chatPartnerId = this.props.location.state.chatPartnerId;
+    const userId = sessionStorage.getItem('userId');
+    const payload = {
+      message,
+      sender_id: userId,
+      receiver_id: chatPartnerId
+    };
+    const payloadString = JSON.stringify(payload);
+    console.log("send message: " + payloadString);
+    this.connection.send(payloadString);
   }
 
   render() {

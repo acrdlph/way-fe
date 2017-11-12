@@ -25,9 +25,10 @@ export const loadMessages = (userId, chatPartnerId) => (dispatch) => {
         createdAt: entry.created_at
       });
     });
+    const messagesSorted = _.sortBy(messages, 'createdAt');
     dispatch({
       type: types.LOADED,
-      data: messages
+      data: messagesSorted
     });
   });
 };
