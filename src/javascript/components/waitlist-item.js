@@ -1,6 +1,7 @@
 import React from 'react';
 import {NavLink} from 'react-router-dom';
 import {ListItem} from 'material-ui/List';
+import Avatar from 'material-ui/Avatar';
 import CommunicationChatBubble from 'material-ui/svg-icons/communication/chat-bubble';
 
 export default class WaitListItem extends React.Component {
@@ -20,6 +21,7 @@ export default class WaitListItem extends React.Component {
       <ListItem
         primaryText={interests}
         secondaryText={secondaryText}
+        leftAvatar={<Avatar src='assets/avatar-placeholder.png' />}
         rightIcon={hasChat ? <CommunicationChatBubble/> : null}
         onClick={onClick}
       />

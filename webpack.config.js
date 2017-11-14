@@ -14,22 +14,6 @@ module.exports = {
     new CopyWebpackPlugin([{ from: 'src/static/index.html' }]),
     new ExtractTextPlugin('style.css')
   ],
-  devServer: {
-    port: 3000,
-    contentBase: path.join(__dirname, './src/static'),
-    hot: true,
-    open: true,
-    proxy: {
-      '/api': {
-        target: {
-          host: 'localhost',
-          port: 3001
-        },
-        pathRewrite: {'^/api' : ''},
-        secure: false
-      }
-    }
-  },
   module: {
     rules: [
       {

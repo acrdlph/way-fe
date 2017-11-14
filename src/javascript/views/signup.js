@@ -5,6 +5,8 @@ import MenuItem from 'material-ui/MenuItem';
 import RaisedButton from 'material-ui/RaisedButton';
 import {NavLink} from 'react-router-dom';
 import fetch from 'isomorphic-fetch';
+import {Row, Col} from 'react-bootstrap';
+import './signup.less';
 
 export default class Signup extends React.Component {
 
@@ -60,21 +62,45 @@ export default class Signup extends React.Component {
   render() {
     const {waitingTime} = this.state;
     return (
-      <div style={{width: '400px'}}>
-        Select your airport:
-        <DropDownMenu value={"MUC"} onChange={this.changeAirport}>
-          <MenuItem value={"MUC"} primaryText="Munich" />
-          <MenuItem value={"GVA"} primaryText="Geneva" />
-          <MenuItem value={"CPH"} primaryText="Copenhagen" />
-        </DropDownMenu>
+      <div style={{width: '600px'}}>
+
+        <img src='assets/join-the-waitlist.png' className='signupHeader'/>
+
+
+  <Row>
+    <Col xs={2} md={2}>
+      <img src='assets/airport-selection-icon.png' className='selectionIcon'/>
+    </Col>
+    <Col xs={10} md={10}>
+      <DropDownMenu value={this.state.airport} onChange={this.changeAirport}>
+        <MenuItem value={"MUC"} primaryText="Munich" />
+        <MenuItem value={"GVA"} primaryText="Geneva" />
+        <MenuItem value={"CPH"} primaryText="Copenhagen" />
+      </DropDownMenu>
+    </Col>
+
+    <Col xs={12} md={12} className="spacerSmall"/>
+
+    <Col xs={2} md={2}>
+      <img src='assets/waiting-time-selection-icon.png' className='selectionIcon'/>
+    </Col>
+    <Col xs={10} md={10}>
+      I need to wait {waitingTime} minutes.
+      <div style={{width: '200px'}}>
         <Slider
-          min={15}
+          min={20}
           max={300}
+          step={10}
           defaultValue={30}
           onChange={this.changeWaitingTime}
         />
-        <div>Waiting time: {waitingTime} minutes.</div>
-        <RaisedButton label='See who is waiting' onClick={this.saveAndContinue}/>
+      </div>
+
+    </Col>
+  </Row>
+
+
+        <RaisedButton label='See who else is waiting' onClick={this.saveAndContinue}/>
       </div>
     );
   }

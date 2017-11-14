@@ -1,6 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import {NavLink} from 'react-router-dom';
+import RaisedButton from 'material-ui/RaisedButton';
 import _ from 'lodash';
 import ChatItem from '../components/chat-item';
 import ChatInput from '../components/chat-input';
@@ -63,6 +64,9 @@ class Chat extends React.Component {
     const connection = this.connection;
     return (
       <div style={{width: '400px'}}>
+        <NavLink to="/waitlist">
+          <RaisedButton label="<<<"/>
+        </NavLink>
         {chatItems}
         <ChatInput onSend={this.sendMessage}/>
       </div>

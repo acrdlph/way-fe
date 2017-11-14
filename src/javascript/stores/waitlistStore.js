@@ -19,7 +19,7 @@ export const loadWaitlist = (userId) => (dispatch) => {
         name: entry.name || '',
         interests: entry.interests || '',
         timeLeft: entry.time_left,
-        hasChat: false
+        hasChat: entry.count > 0
       });
     });
     const onTheListSorted = _.reverse(_.sortBy(onTheList, 'timeLeft'));

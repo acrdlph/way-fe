@@ -2,7 +2,9 @@
   "name": "waitlist-webapp",
   "scripts": {
     "build": "rm -rf build && webpack",
-    "server": "webpack-dev-server",
+    "server": "gulp start-local",
+    "local": "gulp start-local",
+    "remote": "gulp start-remote",
     "test": "jest --colors",
     "eslint": "eslint src/**/*.js"
   },
@@ -19,6 +21,7 @@
     "enzyme-adapter-react-16": "1.0.1",
     "eslint": "4.8.0",
     "extract-text-webpack-plugin": "3.0.0",
+    "gulp": "^3.9.1",
     "identity-obj-proxy": "3.0.0",
     "jest": "21.2.1",
     "less": "2.7.2",
@@ -35,6 +38,7 @@
     "lodash": "^4.17.4",
     "material-ui": "^0.19.4",
     "react": "16.0.0",
+    "react-bootstrap": "^0.31.5",
     "react-dom": "16.0.0",
     "react-redux": "^5.0.6",
     "react-router": "^4.2.0",
