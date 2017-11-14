@@ -21,7 +21,7 @@ class Chat extends React.Component {
   componentDidMount() {
     console.log("create WebSocket connection");
     const userId = sessionStorage.getItem('userId');
-    this.connection = new WebSocket('ws://localhost:3001/messages/'+userId);
+    this.connection = new WebSocket(WEBSOCKET_BASE_URL+userId);
     const addMessages = this.props.addMessagesToChat;
     this.connection.onmessage = function (event) {
       console.log("receive websocket message: " + JSON.stringify(event.data));

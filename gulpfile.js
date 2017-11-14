@@ -20,7 +20,9 @@ const createDevServerConfig = function(proxy) {
 };
 
 gulp.task('start-local', function () {
-  const compiler = webpack(webpackConfig);
+  const compiler = webpack(webpackConfig({
+    websocketUrl: 'ws://localhost:3001/messages/'
+  }));
   const config = createDevServerConfig({
     host: 'localhost',
     port: 3001
@@ -29,7 +31,9 @@ gulp.task('start-local', function () {
 });
 
 gulp.task('start-remote', function () {
-  const compiler = webpack(webpackConfig);
+  const compiler = webpack(webpackConfig({
+    websocketUrl: 'ws://ecs-eu-dev-1571006243.eu-central-1.elb.amazonaws.com:8080/messages/'
+  }));
   const config = createDevServerConfig({
     host: 'ecs-eu-dev-1571006243.eu-central-1.elb.amazonaws.com',
     port: 8080
