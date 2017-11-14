@@ -10,11 +10,19 @@ export default class ChatInput extends React.Component {
       message: '',
     };
     this.changeMessage = this.changeMessage.bind(this);
+    this.onKeyPressInTextField = this.onKeyPressInTextField.bind(this);
     this.sendMessage = this.sendMessage.bind(this);
   }
 
   changeMessage(event, message) {
     this.setState({message});
+  }
+
+  onKeyPressInTextField(event) {
+    if (event.key === 'Enter') {
+      this.sendMessage();
+      event.preventDefault();
+    }
   }
 
   sendMessage() {
@@ -25,7 +33,12 @@ export default class ChatInput extends React.Component {
   render() {
     return (
       <div>
-        <TextField hintText="Message" value={this.state.message} onChange={this.changeMessage}/>
+        <TextField
+          hintText="Message"
+          value={this.state.message}
+          onChange={this.changeMessage}
+          onKeyPress={this.onKeyPressInTextField}
+        />
         <RaisedButton label="Send" onClick={this.sendMessage}/>
       </div>
     );
