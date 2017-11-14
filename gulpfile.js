@@ -2,7 +2,7 @@ const gulp = require('gulp');
 const webpack = require('webpack');
 const WebpackDevServer = require('webpack-dev-server');
 const path = require('path');
-const webpackConfig = require('./webpack.config');
+const webpackConfig = require('./webpack.config.dev');
 
 const startDevServer = function(proxy) {
   const compiler = webpack(webpackConfig({
