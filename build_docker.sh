@@ -6,7 +6,7 @@ $DOCKER_LOGIN
 
 echo "Building static content"
 
-npm run build
+gulp build --hostname ecs-eu-dev-1571006243.eu-central-1.elb.amazonaws.com --port 8080
 
 cp -R src/static/assets build/assets
 
