@@ -30,3 +30,12 @@ Run
     npm run remote
 
 if you want to use the backend which is deployed on AWS.
+
+## Build
+
+To build the project run
+
+    gulp build --hostname localhost --port 3001
+
+where `--localhost` and `--port` allows you to specify the backend.
+This will run webpack and set up all the configuration for the backend connection.

@@ -1,14 +1,20 @@
 const gulp = require('gulp');
+const util = require('gulp-util');
 const filter = require('gulp-filter');
 const rev = require('gulp-rev');
 const revReplace = require('gulp-rev-replace');
-const webpack = require('webpack');
-const WebpackDevServer = require('webpack-dev-server');
+const gulpSequence = require('gulp-sequence');
+const rimraf = require('gulp-rimraf');
 const path = require('path');
-const webpackConfig = require('./webpack.config.dev');
+const fs = require('fs');
+const webpack = require('webpack');
+const webpackStream = require('webpack-stream');
+const WebpackDevServer = require('webpack-dev-server');
+const webpackConfig = require('./webpack.config');
+const webpackConfigDev = require('./webpack.config.dev');
 
 const startDevServer = function(proxy) {
-  const compiler = webpack(webpackConfig({
+  const compiler = webpack(webpackConfigDev({
     websocketUrl: 'ws://' + proxy.host + ':' + proxy.port + '/messages/'
   }));
   const config = {
@@ -40,11 +46,29 @@ gulp.task('start-remote', function () {
   });
 });
 
+gulp.task('build', ['webpack'], function(cb) {
+  const hostname = util.env.hostname;
+  const port = util.env.port;
+  if(!hostname || !port) {
+    throw new Error("Please provide --hostname and --port as argument!");
+  }
+  const websocketUrl = 'ws://' + hostname + ':' + port + '/messages/';
+  fs.writeFileSync('temp/globals.js', 'WEBSOCKET_BASE_URL=\'' + websocketUrl + '\'');
+  gulpSequence('revision', cb);
+});
+
+gulp.task('webpack', ['clean'], function() {
+  webpack(webpackConfig);
+  return webpackStream(webpackConfig).pipe(gulp.dest('temp'));
+});
+
+gulp.task('clean', () => {
+  return gulp.src(['temp', 'build'], {read: false}).pipe(rimraf());
+});
 
 gulp.task('revision', ['append-revision'], function () {
   const outputDir = 'build';
   return gulp.src([outputDir + '/*.html'])
-    //.pipe(htmlmin({collapseWhitespace: true}))
     .pipe(revReplace({manifest: gulp.src(outputDir + '/rev-manifest.json')}))
     .pipe(gulp.dest(outputDir));
 });
