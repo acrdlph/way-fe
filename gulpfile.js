@@ -4,8 +4,11 @@ const WebpackDevServer = require('webpack-dev-server');
 const path = require('path');
 const webpackConfig = require('./webpack.config');
 
-const createDevServerConfig = function(proxy) {
-  return {
+const startDevServer = function(proxy) {
+  const compiler = webpack(webpackConfig({
+    websocketUrl: 'ws://' + proxy.host + ':' + proxy.port + '/messages/'
+  }));
+  const config = {
     hot: true,
     open: true,
     contentBase: path.join(__dirname, './src/static'),
@@ -17,26 +20,19 @@ const createDevServerConfig = function(proxy) {
       }
     }
   };
+  new WebpackDevServer(compiler, config).listen(3000, '0.0.0.0');
 };
 
 gulp.task('start-local', function () {
-  const compiler = webpack(webpackConfig({
-    websocketUrl: 'ws://localhost:3001/messages/'
-  }));
-  const config = createDevServerConfig({
+  startDevServer({
     host: 'localhost',
     port: 3001
   });
-  new WebpackDevServer(compiler, config).listen(3000, '0.0.0.0');
 });
 
 gulp.task('start-remote', function () {
-  const compiler = webpack(webpackConfig({
-    websocketUrl: 'ws://ecs-eu-dev-1571006243.eu-central-1.elb.amazonaws.com:8080/messages/'
-  }));
-  const config = createDevServerConfig({
+  startDevServer({
     host: 'ecs-eu-dev-1571006243.eu-central-1.elb.amazonaws.com',
     port: 8080
   });
-  new WebpackDevServer(compiler, config).listen(3000, '0.0.0.0');
 });
