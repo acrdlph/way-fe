@@ -8,6 +8,7 @@ import {List} from 'material-ui/List';
 import Avatar from 'material-ui/Avatar';
 import _ from 'lodash';
 import fetch from 'isomorphic-fetch';
+import Header from '../components/header';
 import Profile from '../components/profile';
 import WaitListItem from '../components/waitlist-item';
 import {loadWaitlist} from '../stores/waitlistStore';
@@ -54,6 +55,7 @@ class WaitList extends React.Component {
     });
     return (
       <div>
+        <Header/>
         <Profile/>
         <div className='waitlist-profile-divider'/>
         <List>
@@ -65,7 +67,8 @@ class WaitList extends React.Component {
 }
 
 const mapStateToProps = (state) => ({
-  waitlist: state.waitlist
+  waitlist: state.waitlist,
+  user: state.user
 });
 
 const mapDispatchToProps = dispatch => ({

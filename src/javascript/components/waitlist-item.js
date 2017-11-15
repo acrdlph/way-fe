@@ -15,7 +15,7 @@ export default class WaitListItem extends React.Component {
     if(name.trim() === '') {
       name = 'No name specified';
     }
-    let timeLeftText = '500 min';
+    let timeLeftText = '';
     if(timeLeft !== undefined) {
       timeLeftText = `${timeLeft} min`;
     }
