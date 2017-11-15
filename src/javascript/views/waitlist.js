@@ -12,6 +12,7 @@ import Profile from '../components/profile';
 import WaitListItem from '../components/waitlist-item';
 import {loadWaitlist} from '../stores/waitlistStore';
 import {loadUserData} from '../stores/userStore';
+import './waitlist.less';
 
 class WaitList extends React.Component {
 
@@ -52,8 +53,9 @@ class WaitList extends React.Component {
       );
     });
     return (
-      <div style={{width: '400px'}}>
+      <div>
         <Profile/>
+        <div className='waitlist-profile-divider'/>
         <List>
           {list}
         </List>
