@@ -6,6 +6,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 import {NavLink} from 'react-router-dom';
 import fetch from 'isomorphic-fetch';
 import {Row, Col} from 'react-bootstrap';
+import Header from '../components/header';
 import './signup.less';
 
 export default class Signup extends React.Component {
@@ -62,8 +63,8 @@ export default class Signup extends React.Component {
   render() {
     const {waitingTime} = this.state;
     return (
-      <div style={{width: '600px'}}>
-
+      <div>
+        <Header/>
         <img src='assets/join-the-waitlist.png' className='signupHeader'/>
 
 
