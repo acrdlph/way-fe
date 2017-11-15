@@ -29,7 +29,6 @@ class Profile extends React.Component {
   }
 
   setEditable() {
-    console.log("edit user data..");
     this.props.editUserData();
   }
 
@@ -48,7 +47,6 @@ class Profile extends React.Component {
     const interests = user.data.interests || '';
     const name = user.data.name || '';
     const isDataDefined = name.trim() !== '' && interests.trim() !== '';
-    console.log("usererer: " + JSON.stringify(user));
     if(user.loading) {
       return (<div>loading...</div>);
     }

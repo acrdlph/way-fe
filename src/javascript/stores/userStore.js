@@ -8,7 +8,6 @@ const types = {
 };
 
 export const editUserData = () => {
-  console.log("make user editable..");
   return {
     type: types.EDITING
   };
