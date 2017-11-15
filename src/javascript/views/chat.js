@@ -11,11 +11,17 @@ class Chat extends React.Component {
 
   constructor(props) {
     super(props);
-    const chatPartnerId = this.props.location.state.chatPartnerId;
+
     const userId = sessionStorage.getItem('userId');
-    console.log('show chat between ' + userId + ' and ' + chatPartnerId);
+    const chatPartnerId = _.get(this.props.location, 'state.chatPartnerId');
+    if(userId && chatPartnerId) {
+      console.log('show chat between ' + userId + ' and ' + chatPartnerId);
+      this.props.loadMessages(userId, chatPartnerId);
+    } else {
+      this.props.history.push("/signup");
+    }
+
     this.sendMessage = this.sendMessage.bind(this);
-    this.props.loadMessages(userId, chatPartnerId);
   }
 
   componentDidMount() {

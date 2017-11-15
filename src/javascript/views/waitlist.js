@@ -19,8 +19,12 @@ class WaitList extends React.Component {
     super(props);
 
     const userId = sessionStorage.getItem('userId');
-    this.props.loadUserData(userId);
-    this.props.loadWaitlist(userId);
+    if(userId) {
+      this.props.loadUserData(userId);
+      this.props.loadWaitlist(userId);
+    } else {
+      this.props.history.push("/signup");
+    }
 
     this.openChat = this.openChat.bind(this);
   }
