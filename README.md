@@ -35,7 +35,7 @@ if you want to use the backend which is deployed on AWS.
 
 To build the project run
 
-    gulp build --hostname localhost --port 3001
+    ./node_modules/.bin/gulp build --hostname localhost --port 3001
 
 where `--localhost` and `--port` allows you to specify the backend.
 This will run webpack and set up all the configuration for the backend connection.

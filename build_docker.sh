@@ -6,9 +6,7 @@ $DOCKER_LOGIN
 
 echo "Building static content"
 
-gulp build --hostname ecs-eu-dev-1571006243.eu-central-1.elb.amazonaws.com --port 8080
-
-cp -R src/static/assets build/assets
+./node_modules/.bin/gulp build --hostname ecs-eu-dev-1571006243.eu-central-1.elb.amazonaws.com --port 8080
 
 echo "Building docker image"
 
@@ -27,4 +25,3 @@ docker push 614992511822.dkr.ecr.eu-central-1.amazonaws.com/waitlist-fe:$CURRENT
 echo "Deploying to eu-dev"
 
 ./ecs-deploy-0ab06b -r eu-central-1 -c eu-dev -n wailist-fe-dev -i 614992511822.dkr.ecr.eu-central-1.amazonaws.com/waitlist-fe:$CURRENT_HASH
-
