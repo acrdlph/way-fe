@@ -1,6 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import fetch from 'isomorphic-fetch';
+import {Row, Col} from 'react-bootstrap';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 import WaitListItem from '../components/waitlist-item';
@@ -29,7 +30,6 @@ class Profile extends React.Component {
   }
 
   setEditable() {
-    console.log("edit user data..");
     this.props.editUserData();
   }
 
@@ -48,21 +48,27 @@ class Profile extends React.Component {
     const interests = user.data.interests || '';
     const name = user.data.name || '';
     const isDataDefined = name.trim() !== '' && interests.trim() !== '';
-    console.log("usererer: " + JSON.stringify(user));
     if(user.loading) {
       return (<div>loading...</div>);
     }
     return !isDataDefined || this.props.user.isEditable ? (
       <div>
         Tell us a little bit more about you:
-        <TextField defaultValue={interests} hintText="Interests" onChange={this.changeInterests}/>
-        <TextField defaultValue={name} hintText="Name" onChange={this.changeName}/>
-        <RaisedButton label="OK" onClick={this.saveProfile}/>
+        <Row>
+          <Col className='col-xs-12 col-lg-5'>
+            <TextField defaultValue={interests} hintText="Interests" onChange={this.changeInterests}/>
+          </Col>
+          <Col className='col-xs-12 col-lg-5'>
+            <TextField defaultValue={name} hintText="Name" onChange={this.changeName}/>
+          </Col>
+          <Col className='col-xs-12 col-lg-2'>
+            <RaisedButton label="OK" onClick={this.saveProfile}/>
+          </Col>
+        </Row>
       </div>
     ) : (
       <div>
-        <WaitListItem interests={interests} name={name}/>
-        <RaisedButton label="Change Profile" onClick={this.setEditable}/>
+        <WaitListItem interests={interests} name={name} changeProfile={this.setEditable}/>
       </div>
     );
   }

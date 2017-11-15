@@ -45,9 +45,7 @@ export const loadMessages = (userId, chatPartnerId) => (dispatch) => {
 };
 
 export const addMessagesToChat = (messages) => {
-  console.log("addMessagesToChat: " + JSON.stringify(messages));
   const transformedMessages = transformMessages(messages);
-  console.log("transformedMessages: " + JSON.stringify(transformedMessages));
   return {
     type: types.ADDMESSAGE,
     data: transformedMessages
