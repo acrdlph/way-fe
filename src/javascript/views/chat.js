@@ -4,8 +4,8 @@ import {NavLink} from 'react-router-dom';
 import RaisedButton from 'material-ui/RaisedButton';
 import _ from 'lodash';
 import Header from '../components/header';
-import ChatItem from '../components/chat-item';
 import ChatInput from '../components/chat-input';
+import Conversation from '../components/conversation';
 import {loadMessages, addMessagesToChat} from '../stores/chatStore';
 
 class Chat extends React.Component {
@@ -59,14 +59,8 @@ class Chat extends React.Component {
   render() {
     const chatItems = [];
     const userId = sessionStorage.getItem('userId');
-    const messages = this.props.chat.data;
     const usernames = this.props.usernames;
-    _.each(messages, message => {
-      const isLeft = message.sender == userId;
-      chatItems.push(
-        <ChatItem key={message.id} name={usernames[message.sender]} text={message.message} left={isLeft}/>
-      );
-    });
+    const messages = this.props.chat.data;
 
     const connection = this.connection;
     return (
@@ -75,7 +69,7 @@ class Chat extends React.Component {
         <NavLink to="/waitlist">
           <RaisedButton label="<<<"/>
         </NavLink>
-        {chatItems}
+        <Conversation user={userId} users={usernames} messages={messages}/>
         <ChatInput onSend={this.sendMessage}/>
       </div>
     );
