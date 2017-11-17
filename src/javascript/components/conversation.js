@@ -19,7 +19,7 @@ export default class Conversation extends React.Component {
       };
       return (
         <div key={msg.id} className='chat-item-wrapper'>
-          <div className={'chat-item ' + cssClass}>
+          <div className={`chat-item chat-item-${cssClass}`}>
             <div className={`avatar avatar-${cssClass}`}>
               <Avatar
                 size={50}
