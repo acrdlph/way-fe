@@ -9,10 +9,8 @@ const types = {
 const transformMessages = (messages) => {
   const transformedMessages = [];
   _.each(messages, entry => {
-    console.log("transform: ");
-    console.log(entry);
     transformedMessages.push({
-      //id: entry.id,
+      id: entry.id,
       sender: entry.sender_id,
       receiver: entry.receiver_id,
       message: entry.message,
