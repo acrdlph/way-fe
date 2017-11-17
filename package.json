@@ -2,9 +2,9 @@
   "name": "waitlist-webapp",
   "scripts": {
     "build": "echo Deprecated: Use 'gulp build' instead!",
-    "server": "gulp start-local",
-    "local": "gulp start-local",
-    "remote": "gulp start-remote",
+    "server": "webpack-dev-server --config dev/webpack.config.local.js",
+    "local": "webpack-dev-server --config dev/webpack.config.local.js",
+    "remote": "webpack-dev-server --config dev/webpack.config.remote.js",
     "test": "jest --colors",
     "eslint": "eslint src/**/*.js"
   },
