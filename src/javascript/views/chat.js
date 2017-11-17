@@ -4,7 +4,6 @@ import {NavLink} from 'react-router-dom';
 import RaisedButton from 'material-ui/RaisedButton';
 import _ from 'lodash';
 import Header from '../components/header';
-import ChatItem from '../components/chat-item';
 import ChatInput from '../components/chat-input';
 import Conversation from '../components/conversation';
 import {loadMessages, addMessagesToChat} from '../stores/chatStore';
