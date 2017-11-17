@@ -56,10 +56,10 @@ class Profile extends React.Component {
         Tell us a little bit more about you:
         <Row>
           <Col className='col-xs-12 col-lg-5'>
-            <TextField defaultValue={interests} hintText="Interests" onChange={this.changeInterests}/>
+            <TextField defaultValue={name} hintText="Name" onChange={this.changeName}/>
           </Col>
           <Col className='col-xs-12 col-lg-5'>
-            <TextField defaultValue={name} hintText="Name" onChange={this.changeName}/>
+            <TextField defaultValue={interests} hintText="Interests" onChange={this.changeInterests}/>
           </Col>
           <Col className='col-xs-12 col-lg-2'>
             <RaisedButton label="OK" onClick={this.saveProfile}/>
