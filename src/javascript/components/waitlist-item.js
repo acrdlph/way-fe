@@ -8,7 +8,15 @@ import './waitlist-item.less';
 
 export default class WaitListItem extends React.Component {
   render() {
-    let {interests, name, timeLeft, hasChat, onClick} = this.props;
+    let {
+      interests, 
+      name, 
+      timeLeft, 
+      hasChat, 
+      nonDeliveredChatCount, 
+      lastContact, 
+      onClick
+    } = this.props;
     if(interests.trim() === '') {
       interests = 'No information available';
     }
@@ -18,6 +26,10 @@ export default class WaitListItem extends React.Component {
     let timeLeftText = '';
     if(timeLeft !== undefined) {
       timeLeftText = `${timeLeft} min`;
+    }
+    let alreadyContactedClass = '';
+    if (lastContact > 0) {
+      alreadyContactedClass = 'waitlist-item-already-contacted';
     }
     let changeProfileButton = null;
     if(this.props.changeProfile) {
@@ -30,7 +42,7 @@ export default class WaitListItem extends React.Component {
     }
 
     return (
-      <div className='waitlist-item' onClick={this.props.onClick}>
+      <div className={'waitlist-item ' + alreadyContactedClass} onClick={this.props.onClick}>
         <div>
           <div className='waitlist-item-avatar'>
             <Avatar
