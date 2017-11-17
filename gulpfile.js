@@ -9,42 +9,7 @@ const path = require('path');
 const fs = require('fs');
 const webpack = require('webpack');
 const webpackStream = require('webpack-stream');
-const WebpackDevServer = require('webpack-dev-server');
 const webpackConfig = require('./webpack.config');
-const webpackConfigDev = require('./webpack.config.dev');
-
-const startDevServer = function(proxy) {
-  const compiler = webpack(webpackConfigDev({
-    websocketUrl: 'ws://' + proxy.host + ':' + proxy.port + '/messages/'
-  }));
-  const config = {
-    hot: true,
-    open: true,
-    contentBase: path.join(__dirname, './src/static'),
-    proxy: {
-      '/api': {
-        target: proxy,
-        pathRewrite: {'^/api' : ''},
-        secure: false
-      }
-    }
-  };
-  new WebpackDevServer(compiler, config).listen(3000, '0.0.0.0');
-};
-
-gulp.task('start-local', function () {
-  startDevServer({
-    host: 'localhost',
-    port: 3001
-  });
-});
-
-gulp.task('start-remote', function () {
-  startDevServer({
-    host: 'ecs-eu-dev-1571006243.eu-central-1.elb.amazonaws.com',
-    port: 8080
-  });
-});
 
 gulp.task('build', ['webpack'], function(cb) {
   const hostname = util.env.hostname;
