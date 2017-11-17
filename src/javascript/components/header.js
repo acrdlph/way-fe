@@ -15,7 +15,7 @@ class Header extends React.Component {
       <div className="header">
         <img
           className='logo'
-          src="assets/waitlistlogo.png"
+          src="assets/waitlistlogo.svg"
         />
         <div className='airport-name'>
           {airport}
