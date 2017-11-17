@@ -1,5 +1,5 @@
 import React from 'react';
-import {NavLink} from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import RaisedButton from 'material-ui/RaisedButton';
 import Slider from 'react-slick';
 import Header from '../components/header';
@@ -17,19 +17,18 @@ const imageCarouselSettings = {
 export default class Onboarding extends React.Component {
   render() {
     return (
-      <div style={{width: '400px'}}>
-        <Header/>
+      <div>
+        <Header />
         <div className='onboarding-image-carousel'>
           <Slider {...imageCarouselSettings}>
-            <img src="assets/onboarding-1.png"/>
-            <img src="assets/onboarding-2.png"/>
-            <img src="assets/onboarding-3.png"/>
+            <img src="assets/onboarding-1.png" />
+            <img src="assets/onboarding-2.png" />
+            <img src="assets/onboarding-3.png" />
           </Slider>
         </div>
-
-        <div>
+        <div className='enter-waitlist-button'>
           <NavLink to="/signup">
-            <RaisedButton label="Enter WaitList"/>
+            <RaisedButton label="Enter WaitList" />
           </NavLink>
         </div>
       </div>
