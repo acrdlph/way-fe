@@ -5,7 +5,7 @@ import {Row, Col} from 'react-bootstrap';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 import WaitListItem from '../components/waitlist-item';
-import {loadUserData, updateUserData, editUserData} from '../stores/userStore';
+import {loadUserData, updateUserData, editUserData, isOnboarded} from '../stores/userStore';
 
 class Profile extends React.Component {
 
@@ -44,14 +44,13 @@ class Profile extends React.Component {
   }
 
   render() {
-    const user = this.props.user;
-    const interests = user.data.interests || '';
-    const name = user.data.name || '';
-    const isDataDefined = name.trim() !== '' && interests.trim() !== '';
+    const {user, isUserOnboarded} = this.props;
     if(user.loading) {
       return (<div>loading...</div>);
     }
-    return !isDataDefined || this.props.user.isEditable ? (
+    const name = _.get(user, 'data.name', '');
+    const interests = _.get(user, 'data.interests', '');
+    return !isUserOnboarded || this.props.user.isEditable ? (
       <div>
         Tell us a little bit more about you:
         <Row>
@@ -68,7 +67,7 @@ class Profile extends React.Component {
       </div>
     ) : (
       <div>
-        <WaitListItem interests={interests} name={name} changeProfile={this.setEditable}/>
+        <WaitListItem interests={interests} name={name} onClick={this.setEditable}/>
       </div>
     );
   }
@@ -76,7 +75,8 @@ class Profile extends React.Component {
 
 
 const mapStateToProps = (state) => ({
-  user: state.user
+  user: state.user,
+  isUserOnboarded: isOnboarded(state.user)
 });
 
 const mapDispatchToProps = dispatch => ({

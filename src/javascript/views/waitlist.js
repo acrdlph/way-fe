@@ -8,11 +8,10 @@ import {List} from 'material-ui/List';
 import Avatar from 'material-ui/Avatar';
 import _ from 'lodash';
 import fetch from 'isomorphic-fetch';
-import Header from '../components/header';
 import Profile from '../components/profile';
 import WaitListItem from '../components/waitlist-item';
 import {loadWaitlist} from '../stores/waitlistStore';
-import {loadUserData} from '../stores/userStore';
+import {loadUserData, isOnboarded} from '../stores/userStore';
 import './waitlist.less';
 
 class WaitList extends React.Component {
@@ -41,7 +40,9 @@ class WaitList extends React.Component {
 
   render() {
     const list = [];
+    const {isUserOnboarded} = this.props;
     _.each(this.props.waitlist.data, (entry, key) => {
+      const onClick = isUserOnboarded ? () => this.openChat(entry.id) : _.noop();
       list.push(
         <WaitListItem
           key={key}
@@ -49,15 +50,14 @@ class WaitList extends React.Component {
           name={entry.name}
           timeLeft={entry.timeLeft}
           hasChat={entry.hasChat}
-          nonDeliveredChatCount={entry.nonDeliveredChatCount} 
-          lastContact={entry.lastContact} 
-          onClick={() => this.openChat(entry.id)}
+          nonDeliveredChatCount={entry.nonDeliveredChatCount}
+          lastContact={entry.lastContact}
+          onClick={onClick}
         />
       );
     });
     return (
       <div>
-        <Header/>
         <Profile/>
         <div className='waitlist-profile-divider'/>
         <List>
@@ -70,7 +70,7 @@ class WaitList extends React.Component {
 
 const mapStateToProps = (state) => ({
   waitlist: state.waitlist,
-  user: state.user
+  isUserOnboarded: isOnboarded(state.user)
 });
 
 const mapDispatchToProps = dispatch => ({

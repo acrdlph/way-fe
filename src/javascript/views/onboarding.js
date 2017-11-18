@@ -2,7 +2,6 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import RaisedButton from 'material-ui/RaisedButton';
 import Slider from 'react-slick';
-import Header from '../components/header';
 import './onboarding.less';
 
 // check https://github.com/akiran/react-slick for all styling options
@@ -18,7 +17,6 @@ export default class Onboarding extends React.Component {
   render() {
     return (
       <div>
-        <Header />
         <div className='onboarding-image-carousel'>
           <Slider {...imageCarouselSettings}>
             <img src="assets/onboarding-1.png" />

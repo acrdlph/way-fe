@@ -73,8 +73,6 @@ const reducer = (state = initialState, action) => {
       case types.ADDMESSAGE:
         const newMessages = action.data;
         const allMessages = sortMessages(newMessages.concat(state.data));
-        console.log("all msgs:");
-        console.log(allMessages);
         return {
           ...state,
           data: allMessages

@@ -7,6 +7,12 @@ const types = {
   UPDATED: 'USER_UPDATED'
 };
 
+export const isOnboarded = (user) => {
+  const name = _.get(user, 'data.name', '');
+  const interests = _.get(user, 'data.interests', '');
+  return name.trim() !== '' && interests.trim() !== '';
+};
+
 export const editUserData = () => {
   return {
     type: types.EDITING
