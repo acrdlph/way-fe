@@ -9,6 +9,13 @@ const types = {
 let refresher = false;
 let alreadyLoadedData = [];
 
+
+const onUserJoined = (user) => {
+  console.log("new user joined: " + JSON.stringify(user));
+  notify(`${user.name} has joined the WaitList!`);
+};
+
+
 export const loadWaitlist = (userId) => (dispatch) => {
   // this might not be optimal
   // updating individual waitlist items and reordering seems the best solution
@@ -45,11 +52,22 @@ const backgroundFetcher = (dispatch, userId) => {
   .then((res) => res.json())
   .then((data) => {
     const onTheListSorted = mapWaitListData(data);
-    if (isDifferent(onTheListSorted, alreadyLoadedData)) {
+    console.log("backgroundFetcher: ...");
+    console.log(onTheListSorted);
+    console.log(alreadyLoadedData);
+
+    const existingUserIds = alreadyLoadedData.map((user) => user.id);
+    const currentUserIds = onTheListSorted.map((user) => user.id);
+    if (isDifferent(existingUserIds, currentUserIds)) {
       dispatch({type: types.LOADING});
       alreadyLoadedData = onTheListSorted;
-      notify('A new user has joined the WaitList!');
+      const newUserIds = extractNewUsers(existingUserIds, currentUserIds);
+      _.each(newUserIds, (id) => {
+        const newUser = _.find(onTheListSorted, (user) => user.id === id);
+        onUserJoined(newUser);
+      });
     }
+
     dispatch({
       type: types.LOADED,
       data: onTheListSorted
@@ -57,11 +75,25 @@ const backgroundFetcher = (dispatch, userId) => {
   });
 };
 
-const isDifferent = (data1, data2) => {
-  const diffs = data1.map((element, index) => {
-    return _.isMatch(element, data2[index]) ? "yes" : "no";
+const isDifferent = (existingUserIds, currentUserIds) => {
+  const union = _.intersection(existingUserIds, currentUserIds);
+  return !(existingUserIds.length === currentUserIds.length && existingUserIds.length === union.length);
+};
+
+const extractNewUsers = (existingUserIds, currentUserIds) => {
+  const newUsers = [];
+  _.each(currentUserIds, id => {
+    if(!_.includes(existingUserIds, id)) {
+      newUsers.push(id);
+    }
   });
-  return _.includes(diffs, "no");
+  return newUsers;
+};
+
+const isOnboarded = (user) => {
+  const name = user.name || '';
+  const interests = user.interests || '';
+  return name.trim() !== '' && interests.trim() !== '';
 };
 
 const mapWaitListData = (data) => {
@@ -77,7 +109,8 @@ const mapWaitListData = (data) => {
       lastContact: entry.last_contact ? new Date(entry.last_contact).getTime() : 0
     });
   });
-  return _.reverse(_.sortBy(_.reverse(_.sortBy(onTheList, 'timeLeft')), 'lastContact'));
+  const onboardedOnly = _.filter(onTheList, (user) => isOnboarded(user));
+  return _.reverse(_.sortBy(_.reverse(_.sortBy(onboardedOnly, 'timeLeft')), 'lastContact'));
 };
 
 const reducer = (state = initialState, action) => {
