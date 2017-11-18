@@ -13,6 +13,7 @@ import WaitListItem from '../components/waitlist-item';
 import Infobox from '../components/infobox';
 import {loadWaitlist} from '../stores/waitlistStore';
 import {loadUserData, isOnboarded} from '../stores/userStore';
+import {requestPermissionForNotifications} from '../util/notification';
 import './waitlist.less';
 
 class WaitList extends React.Component {
@@ -32,6 +33,10 @@ class WaitList extends React.Component {
       showIncompleteProfileHint: false
     };
     this.openChat = this.openChat.bind(this);
+
+    if(FEATURE_NOTIFICATIONS) {
+      requestPermissionForNotifications();
+    }
   }
 
   openChat(chatPartnerId) {

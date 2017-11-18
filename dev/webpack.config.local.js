@@ -19,7 +19,8 @@ module.exports = {
     new CopyWebpackPlugin([{ from: './src/static/' }]),
     new ExtractTextPlugin('style.css'),
     new webpack.DefinePlugin({
-      WEBSOCKET_BASE_URL: JSON.stringify('ws://'+backend.host+':'+backend.port+'/messages/')
+      WEBSOCKET_BASE_URL: JSON.stringify('ws://'+backend.host+':'+backend.port+'/messages/'),
+      FEATURE_NOTIFICATIONS: true
     }),
   ],
   module: {

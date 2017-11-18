@@ -39,3 +39,6 @@ To build the project run
 
 where `--localhost` and `--port` allows you to specify the backend.
 This will run webpack and set up all the configuration for the backend connection.
+If you want to enable the notification feature, run the build with this optional flag:
+
+    --enableNotifications true

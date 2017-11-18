@@ -10,7 +10,7 @@ if [ "$BRANCH" = "master" ]; then
 
     npm install
 
-    ./node_modules/.bin/gulp build --hostname ecs-eu-dev-1571006243.eu-central-1.elb.amazonaws.com --port 8080
+    ./node_modules/.bin/gulp build --hostname ecs-eu-dev-1571006243.eu-central-1.elb.amazonaws.com --port 8080 --enableNotifications true
 
     echo "Building docker image"
 
