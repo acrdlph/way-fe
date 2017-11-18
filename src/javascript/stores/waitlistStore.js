@@ -5,9 +5,26 @@ const types = {
   LOADED: 'WAITLIST_LOADED'
 };
 
-export const loadWaitlist = (userId) => (dispatch) => {
-  dispatch({type: types.LOADING});
+let refresher = false;
+let alreadyLoadedData = [];
 
+export const loadWaitlist = (userId) => (dispatch) => {
+  // this might not be optimal
+  // updating individual waitlist items and reordering seems the best solution
+  fetcher(dispatch, userId);
+  if (!refresher) {
+    refresher = setInterval(() => {backgroundFetcher(dispatch, userId)}, 5000);
+  }
+};
+
+const initialState = {
+  loading: false,
+  loaded: false,
+  data: []
+};
+
+const fetcher = (dispatch, userId) => {
+  dispatch({type: types.LOADING});
   const endpoint = 'api/users/' + userId;
   fetch(endpoint)
   .then((res) => res.json())
@@ -24,20 +41,52 @@ export const loadWaitlist = (userId) => (dispatch) => {
         lastContact: entry.last_contact ? new Date(entry.last_contact).getTime() : 0
       });
     });
-    const onTheListSorted = _.reverse(_.sortBy(_.reverse(_.sortBy(onTheList, 'timeLeft')), 'lastContact'));
+    const onTheListSorted = 
+        _.reverse(_.sortBy(_.reverse(_.sortBy(onTheList, 'timeLeft')), 'lastContact'));
+    alreadyLoadedData = onTheListSorted;
     dispatch({
       type: types.LOADED,
       data: onTheListSorted
     });
   });
-};
+}
 
+const backgroundFetcher = (dispatch, userId) => {
+  const endpoint = 'api/users/' + userId;
+  fetch(endpoint)
+  .then((res) => res.json())
+  .then((data) => {
+    const onTheList = [];
+    _.each(data, entry => {
+      onTheList.push({
+        id: entry.id,
+        name: entry.name || '',
+        interests: entry.interests || '',
+        timeLeft: entry.time_left,
+        hasChat: entry.count > 0,
+        nonDeliveredChatCount: entry.non_delivered_count,
+        lastContact: entry.last_contact ? new Date(entry.last_contact).getTime() : 0
+      });
+    });
+    const onTheListSorted = 
+        _.reverse(_.sortBy(_.reverse(_.sortBy(onTheList, 'timeLeft')), 'lastContact'));
+    if (isDifferet(onTheListSorted, alreadyLoadedData)) {
+      dispatch({type: types.LOADING});
+      alreadyLoadedData = onTheListSorted;
+    }
+    dispatch({
+      type: types.LOADED,
+      data: onTheListSorted
+    });
+  });
+}
 
-const initialState = {
-  loading: false,
-  loaded: false,
-  data: []
-};
+const isDifferet = (data1, data2) => {
+  const diffs = data1.map((element, index) => {
+    return _.isMatch(element, data2[index]) ? "yes" : "no";
+  });
+  return _.includes(diffs, "no");
+}
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {

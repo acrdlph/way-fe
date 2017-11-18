@@ -2,8 +2,8 @@ import React from 'react';
 import {NavLink} from 'react-router-dom';
 import {Row, Col} from 'react-bootstrap';
 import RaisedButton from 'material-ui/RaisedButton';
-import Avatar from 'material-ui/Avatar';
 import CommunicationChatBubble from 'material-ui/svg-icons/communication/chat-bubble';
+import Avatar from 'material-ui/Avatar';
 import './waitlist-item.less';
 
 export default class WaitListItem extends React.Component {
@@ -32,6 +32,13 @@ export default class WaitListItem extends React.Component {
       alreadyContactedClass = 'waitlist-item-already-contacted';
     }
 
+    let hasUnreadMessagesClass = '';
+    if (nonDeliveredChatCount > 0) {
+      hasUnreadMessagesClass = 'waitlist-item-data-chat-bubble';
+    } else {
+      hasUnreadMessagesClass = 'waitlist-item-data-chat-bubble-none';
+    }
+
     return (
       <div className={'waitlist-item ' + alreadyContactedClass} onClick={this.props.onClick}>
         <div>
@@ -45,6 +52,9 @@ export default class WaitListItem extends React.Component {
             <div className='waitlist-item-data-1'>
               <div className='waitlist-item-data-name'>
                 {name}
+              </div>
+              <div className={hasUnreadMessagesClass}>
+                <CommunicationChatBubble />
               </div>
               <div className='waitlist-item-data-timeleft'>
                 {timeLeftText}
