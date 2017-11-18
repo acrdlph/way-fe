@@ -1,9 +1,18 @@
 import _ from 'lodash';
+import {notify} from '../util/notification';
 
 const types = {
   LOADING: 'CHAT_LOADING',
   LOADED: 'CHAT_LOADED',
   ADDMESSAGE: 'CHAT_ADD_MESSAGE',
+};
+
+const onNewMessage = (message) => {
+  const currentPath = window.location.hash;
+  const userId = sessionStorage.getItem('userId');
+  if(message.sender != userId && !currentPath.includes(message.sender)) {
+    notify(`New message: ${message.message}`);
+  }
 };
 
 const transformMessages = (messages) => {
@@ -44,6 +53,9 @@ export const loadMessages = (userId, chatPartnerId) => (dispatch) => {
 
 export const addMessagesToChat = (messages) => {
   const transformedMessages = transformMessages(messages);
+  _.each(transformedMessages, (message) => {
+    onNewMessage(message);
+  });
   return {
     type: types.ADDMESSAGE,
     data: transformedMessages
