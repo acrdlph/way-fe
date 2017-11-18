@@ -44,18 +44,29 @@ const fetcher = (dispatch, userId) => {
   });
 };
 
+const createHash = (user) => {
+  const {id, nonDeliveredChatCount} = user;
+  const hash = `${id}-${nonDeliveredChatCount}`;
+  return hash;
+};
+
 const backgroundFetcher = (dispatch, userId) => {
   const endpoint = 'api/users/' + userId;
   fetch(endpoint)
   .then((res) => res.json())
   .then((data) => {
     const onTheListSorted = mapWaitListData(data);
+    const existingUserHashes = alreadyLoadedData.map((user) => user.hash);
+    const currentUserHashes = onTheListSorted.map((user) => user.hash);
     const existingUserIds = alreadyLoadedData.map((user) => user.id);
     const currentUserIds = onTheListSorted.map((user) => user.id);
-    if (isDifferent(existingUserIds, currentUserIds)) {
+
+    if (isDifferent(existingUserHashes, currentUserHashes)) {
       dispatch({type: types.LOADING});
       alreadyLoadedData = onTheListSorted;
       const newUserIds = extractNewUsers(existingUserIds, currentUserIds);
+      console.log("newUserIds: ");
+      console.log(newUserIds);
       _.each(newUserIds, (id) => {
         const newUser = _.find(onTheListSorted, (user) => user.id === id);
         onUserJoined(newUser);
@@ -69,9 +80,9 @@ const backgroundFetcher = (dispatch, userId) => {
   });
 };
 
-const isDifferent = (existingUserIds, currentUserIds) => {
-  const union = _.intersection(existingUserIds, currentUserIds);
-  return !(existingUserIds.length === currentUserIds.length && existingUserIds.length === union.length);
+const isDifferent = (existingUserHashes, currentUserHashes) => {
+  const union = _.intersection(existingUserHashes, currentUserHashes);
+  return !(existingUserHashes.length === currentUserHashes.length && existingUserHashes.length === union.length);
 };
 
 const extractNewUsers = (existingUserIds, currentUserIds) => {
@@ -104,7 +115,11 @@ const mapWaitListData = (data) => {
     });
   });
   const onboardedOnly = _.filter(onTheList, (user) => isOnboarded(user));
-  return _.reverse(_.sortBy(_.reverse(_.sortBy(onboardedOnly, 'timeLeft')), 'lastContact'));
+  const onboardedOnlyWithHash = onboardedOnly.map((user) => ({
+    ...user,
+    hash: createHash(user)
+  }));
+  return _.reverse(_.sortBy(_.reverse(_.sortBy(onboardedOnlyWithHash, 'timeLeft')), 'lastContact'));
 };
 
 const reducer = (state = initialState, action) => {
