@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import {Route} from 'react-router-dom';
 import Header from './components/header';
+import Footer from './components/footer';
 import Onboarding from './views/onboarding';
 import Signup from './views/signup';
 import WaitList from './views/waitlist';
@@ -19,6 +20,7 @@ export default class App extends React.Component {
           <Route path="/waitlist" component={WaitList}/>
           <Route path="/chat" component={Chat}/>
         </div>
+        <Footer/>
       </div>
     );
   }
