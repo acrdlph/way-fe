@@ -8,7 +8,6 @@ import {List} from 'material-ui/List';
 import Avatar from 'material-ui/Avatar';
 import _ from 'lodash';
 import fetch from 'isomorphic-fetch';
-import Header from '../components/header';
 import Profile from '../components/profile';
 import WaitListItem from '../components/waitlist-item';
 import {loadWaitlist} from '../stores/waitlistStore';
@@ -49,15 +48,14 @@ class WaitList extends React.Component {
           name={entry.name}
           timeLeft={entry.timeLeft}
           hasChat={entry.hasChat}
-          nonDeliveredChatCount={entry.nonDeliveredChatCount} 
-          lastContact={entry.lastContact} 
+          nonDeliveredChatCount={entry.nonDeliveredChatCount}
+          lastContact={entry.lastContact}
           onClick={() => this.openChat(entry.id)}
         />
       );
     });
     return (
       <div>
-        <Header/>
         <Profile/>
         <div className='waitlist-profile-divider'/>
         <List>
