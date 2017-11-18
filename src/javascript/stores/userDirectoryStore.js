@@ -19,7 +19,17 @@ const createUserDirectory = (data) => {
     }
     users[user.id] = name;
   });
+  updateSessionStorage(users);
   return users;
+};
+
+const updateSessionStorage = (usernames) => {
+  const usernamesFromStorage = JSON.parse(sessionStorage.getItem('usernames'));
+  const newUsernames = {
+    ...usernamesFromStorage,
+    ...usernames
+  };
+  sessionStorage.setItem('usernames', JSON.stringify(newUsernames));
 };
 
 const reducer = (state = {}, action) => {

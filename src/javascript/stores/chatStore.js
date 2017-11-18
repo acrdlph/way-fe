@@ -7,11 +7,18 @@ const types = {
   ADDMESSAGE: 'CHAT_ADD_MESSAGE',
 };
 
+const getUsername = (userId) => {
+  // TODO: This is highly inefficient and has to be refactored!
+  const usernames = JSON.parse(sessionStorage.getItem('usernames'));
+  return usernames[userId];
+};
+
 const onNewMessage = (message) => {
   const currentPath = window.location.hash;
   const userId = sessionStorage.getItem('userId');
   if(message.sender != userId && !currentPath.includes(message.sender)) {
-    notify(`New message: ${message.message}`);
+    const senderName = getUsername(message.sender);
+    notify(`New message from ${senderName}: "${message.message}"`);
   }
 };
 
