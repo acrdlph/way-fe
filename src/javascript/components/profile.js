@@ -68,7 +68,7 @@ class Profile extends React.Component {
       </div>
     ) : (
       <div>
-        <WaitListItem interests={interests} name={name} changeProfile={this.setEditable}/>
+        <WaitListItem interests={interests} name={name} onClick={this.setEditable}/>
       </div>
     );
   }
