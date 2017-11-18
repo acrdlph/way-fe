@@ -29,20 +29,7 @@ const fetcher = (dispatch, userId) => {
   fetch(endpoint)
   .then((res) => res.json())
   .then((data) => {
-    const onTheList = [];
-    _.each(data, entry => {
-      onTheList.push({
-        id: entry.id,
-        name: entry.name || '',
-        interests: entry.interests || '',
-        timeLeft: entry.time_left,
-        hasChat: entry.count > 0,
-        nonDeliveredChatCount: entry.non_delivered_count,
-        lastContact: entry.last_contact ? new Date(entry.last_contact).getTime() : 0
-      });
-    });
-    const onTheListSorted = 
-        _.reverse(_.sortBy(_.reverse(_.sortBy(onTheList, 'timeLeft')), 'lastContact'));
+    const onTheListSorted = mapWaitListData(data);
     alreadyLoadedData = onTheListSorted;
     dispatch({
       type: types.LOADED,
@@ -56,20 +43,7 @@ const backgroundFetcher = (dispatch, userId) => {
   fetch(endpoint)
   .then((res) => res.json())
   .then((data) => {
-    const onTheList = [];
-    _.each(data, entry => {
-      onTheList.push({
-        id: entry.id,
-        name: entry.name || '',
-        interests: entry.interests || '',
-        timeLeft: entry.time_left,
-        hasChat: entry.count > 0,
-        nonDeliveredChatCount: entry.non_delivered_count,
-        lastContact: entry.last_contact ? new Date(entry.last_contact).getTime() : 0
-      });
-    });
-    const onTheListSorted = 
-        _.reverse(_.sortBy(_.reverse(_.sortBy(onTheList, 'timeLeft')), 'lastContact'));
+    const onTheListSorted = mapWaitListData(data);
     if (isDifferet(onTheListSorted, alreadyLoadedData)) {
       dispatch({type: types.LOADING});
       alreadyLoadedData = onTheListSorted;
@@ -86,6 +60,22 @@ const isDifferet = (data1, data2) => {
     return _.isMatch(element, data2[index]) ? "yes" : "no";
   });
   return _.includes(diffs, "no");
+}
+
+const mapWaitListData = (data) => {
+  const onTheList = [];
+  _.each(data, entry => {
+    onTheList.push({
+      id: entry.id,
+      name: entry.name || '',
+      interests: entry.interests || '',
+      timeLeft: entry.time_left,
+      hasChat: entry.count > 0,
+      nonDeliveredChatCount: entry.non_delivered_count,
+      lastContact: entry.last_contact ? new Date(entry.last_contact).getTime() : 0
+    });
+  });
+  return _.reverse(_.sortBy(_.reverse(_.sortBy(onTheList, 'timeLeft')), 'lastContact'));
 }
 
 const reducer = (state = initialState, action) => {
