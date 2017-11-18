@@ -1,4 +1,5 @@
 import _ from 'lodash';
+import {notify} from '../util/notification';
 
 const types = {
   LOADING: 'WAITLIST_LOADING',
@@ -47,6 +48,7 @@ const backgroundFetcher = (dispatch, userId) => {
     if (isDifferent(onTheListSorted, alreadyLoadedData)) {
       dispatch({type: types.LOADING});
       alreadyLoadedData = onTheListSorted;
+      notify('A new user has joined the WaitList!');
     }
     dispatch({
       type: types.LOADED,
