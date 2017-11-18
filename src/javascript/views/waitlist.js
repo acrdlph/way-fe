@@ -10,6 +10,7 @@ import _ from 'lodash';
 import fetch from 'isomorphic-fetch';
 import Profile from '../components/profile';
 import WaitListItem from '../components/waitlist-item';
+import Infobox from '../components/infobox';
 import {loadWaitlist} from '../stores/waitlistStore';
 import {loadUserData, isOnboarded} from '../stores/userStore';
 import './waitlist.less';
@@ -27,6 +28,9 @@ class WaitList extends React.Component {
       this.props.history.push("/signup");
     }
 
+    this.state = {
+      showIncompleteProfileHint: false
+    };
     this.openChat = this.openChat.bind(this);
   }
 
@@ -42,7 +46,9 @@ class WaitList extends React.Component {
     const list = [];
     const {isUserOnboarded} = this.props;
     _.each(this.props.waitlist.data, (entry, key) => {
-      const onClick = isUserOnboarded ? () => this.openChat(entry.id) : _.noop();
+      const onClick = isUserOnboarded
+        ? () => this.openChat(entry.id)
+        : () => this.setState({showIncompleteProfileHint: true});
       list.push(
         <WaitListItem
           key={key}
@@ -56,9 +62,14 @@ class WaitList extends React.Component {
         />
       );
     });
+
     return (
       <div>
         <Profile/>
+        <Infobox
+          visible={!isUserOnboarded && this.state.showIncompleteProfileHint}
+          text={'Enter your name and interests to start communicating with other passengers'}
+        />
         <div className='waitlist-profile-divider'/>
         <List>
           {list}
