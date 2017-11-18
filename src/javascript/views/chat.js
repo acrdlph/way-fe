@@ -13,7 +13,7 @@ class Chat extends React.Component {
     super(props);
 
     const userId = sessionStorage.getItem('userId');
-    const chatPartnerId = _.get(this.props.location, 'state.chatPartnerId');
+    const chatPartnerId = _.get(this.props.match, 'params.chatPartnerId');
     if(userId && chatPartnerId) {
       console.log('show chat between ' + userId + ' and ' + chatPartnerId);
       this.props.loadMessages(userId, chatPartnerId);
@@ -36,7 +36,7 @@ class Chat extends React.Component {
   }
 
   sendMessage(message) {
-    const chatPartnerId = this.props.location.state.chatPartnerId;
+    const chatPartnerId = _.get(this.props.match, 'params.chatPartnerId');
     const userId = sessionStorage.getItem('userId');
     const payload = {
       message,

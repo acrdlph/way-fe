@@ -18,7 +18,7 @@ export default class App extends React.Component {
           <Route path="/onboarding" component={Onboarding}/>
           <Route path="/signup" component={Signup}/>
           <Route path="/waitlist" component={WaitList}/>
-          <Route path="/chat" component={Chat}/>
+          <Route path="/chat/:chatPartnerId" component={Chat}/>
         </div>
         <Footer/>
       </div>
