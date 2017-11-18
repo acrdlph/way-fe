@@ -19,10 +19,12 @@ export const loadWaitlist = (userId) => (dispatch) => {
         name: entry.name || '',
         interests: entry.interests || '',
         timeLeft: entry.time_left,
-        hasChat: entry.count > 0
+        hasChat: entry.count > 0,
+        nonDeliveredChatCount: entry.non_delivered_count,
+        lastContact: entry.last_contact ? new Date(entry.last_contact).getTime() : 0
       });
     });
-    const onTheListSorted = _.reverse(_.sortBy(onTheList, 'timeLeft'));
+    const onTheListSorted = _.reverse(_.sortBy(_.reverse(_.sortBy(onTheList, 'timeLeft')), 'lastContact'));
     dispatch({
       type: types.LOADED,
       data: onTheListSorted

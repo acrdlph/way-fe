@@ -49,6 +49,8 @@ class WaitList extends React.Component {
           name={entry.name}
           timeLeft={entry.timeLeft}
           hasChat={entry.hasChat}
+          nonDeliveredChatCount={entry.nonDeliveredChatCount} 
+          lastContact={entry.lastContact} 
           onClick={() => this.openChat(entry.id)}
         />
       );
