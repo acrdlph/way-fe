@@ -13,7 +13,7 @@ export const loadWaitlist = (userId) => (dispatch) => {
   // updating individual waitlist items and reordering seems the best solution
   fetcher(dispatch, userId);
   if (!refresher) {
-    refresher = setInterval(() => {backgroundFetcher(dispatch, userId)}, 5000);
+    refresher = setInterval(() => {backgroundFetcher(dispatch, userId);}, 5000);
   }
 };
 
@@ -36,7 +36,7 @@ const fetcher = (dispatch, userId) => {
       data: onTheListSorted
     });
   });
-}
+};
 
 const backgroundFetcher = (dispatch, userId) => {
   const endpoint = 'api/users/' + userId;
@@ -53,14 +53,14 @@ const backgroundFetcher = (dispatch, userId) => {
       data: onTheListSorted
     });
   });
-}
+};
 
 const isDifferet = (data1, data2) => {
   const diffs = data1.map((element, index) => {
     return _.isMatch(element, data2[index]) ? "yes" : "no";
   });
   return _.includes(diffs, "no");
-}
+};
 
 const mapWaitListData = (data) => {
   const onTheList = [];
@@ -76,7 +76,7 @@ const mapWaitListData = (data) => {
     });
   });
   return _.reverse(_.sortBy(_.reverse(_.sortBy(onTheList, 'timeLeft')), 'lastContact'));
-}
+};
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
