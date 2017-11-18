@@ -9,12 +9,10 @@ const types = {
 let refresher = false;
 let alreadyLoadedData = [];
 
-
 const onUserJoined = (user) => {
   console.log("new user joined: " + JSON.stringify(user));
   notify(`${user.name} has joined the WaitList!`);
 };
-
 
 export const loadWaitlist = (userId) => (dispatch) => {
   // this might not be optimal
@@ -52,10 +50,6 @@ const backgroundFetcher = (dispatch, userId) => {
   .then((res) => res.json())
   .then((data) => {
     const onTheListSorted = mapWaitListData(data);
-    console.log("backgroundFetcher: ...");
-    console.log(onTheListSorted);
-    console.log(alreadyLoadedData);
-
     const existingUserIds = alreadyLoadedData.map((user) => user.id);
     const currentUserIds = onTheListSorted.map((user) => user.id);
     if (isDifferent(existingUserIds, currentUserIds)) {
