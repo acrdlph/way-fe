@@ -14,11 +14,16 @@ const webpackConfig = require('./webpack.config');
 gulp.task('build', ['webpack'], function(cb) {
   const hostname = util.env.hostname;
   const port = util.env.port;
+  const isNotificationFeatureEnabled = util.env.enableNotifications || false;
   if(!hostname || !port) {
     throw new Error("Please provide --hostname and --port as argument!");
   }
   const websocketUrl = 'ws://' + hostname + ':' + port + '/messages/';
-  fs.writeFileSync('temp/globals.js', 'WEBSOCKET_BASE_URL=\'' + websocketUrl + '\'');
+  const globals = `
+    WEBSOCKET_BASE_URL='${websocketUrl}'
+    FEATURE_NOTIFICATIONS=${isNotificationFeatureEnabled}
+  `;
+  fs.writeFileSync('temp/globals.js', globals);
   gulpSequence('revision', cb);
 });
 
