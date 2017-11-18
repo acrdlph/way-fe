@@ -44,7 +44,7 @@ const backgroundFetcher = (dispatch, userId) => {
   .then((res) => res.json())
   .then((data) => {
     const onTheListSorted = mapWaitListData(data);
-    if (isDifferet(onTheListSorted, alreadyLoadedData)) {
+    if (isDifferent(onTheListSorted, alreadyLoadedData)) {
       dispatch({type: types.LOADING});
       alreadyLoadedData = onTheListSorted;
     }
@@ -55,7 +55,7 @@ const backgroundFetcher = (dispatch, userId) => {
   });
 };
 
-const isDifferet = (data1, data2) => {
+const isDifferent = (data1, data2) => {
   const diffs = data1.map((element, index) => {
     return _.isMatch(element, data2[index]) ? "yes" : "no";
   });
