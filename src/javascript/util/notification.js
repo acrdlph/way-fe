@@ -10,6 +10,8 @@ export const requestPermissionForNotifications = () => {
 
 export const notify = (message) => {
   if(FEATURE_NOTIFICATIONS) {
-    new Notification(message, notificationOptions);
+    if (Notification.permission === "granted") {
+      new Notification(message, notificationOptions);
+    }
   }
 };
