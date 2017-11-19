@@ -17,6 +17,7 @@ export default class App extends React.Component {
           <Route exact path="/" component={Onboarding}/>
           <Route exact path="/onboarding" component={Onboarding}/>
           <Route exact path="/signup" component={Signup}/>
+          <Route exact path="/signup/:locationId" component={Signup}/>
           <Route exact path="/waitlist/" component={WaitList}/>
           <Route exact path="/waitlist/:locationId" component={WaitList}/>
           <Route exact path="/waitlist/:locationId/chat/:chatPartnerId" component={Chat}/>

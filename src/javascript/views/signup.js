@@ -6,14 +6,19 @@ import RaisedButton from 'material-ui/RaisedButton';
 import {NavLink} from 'react-router-dom';
 import fetch from 'isomorphic-fetch';
 import {Row, Col} from 'react-bootstrap';
+import _ from 'lodash';
 import './signup.less';
+
+const supportedLocations = ['muc', 'gva', 'cph'];
 
 export default class Signup extends React.Component {
 
   constructor(props) {
     super(props);
+    const locationIdFromPath = _.get(this.props.match, 'params.locationId');
+    const isValidLocation = locationIdFromPath && _.includes(supportedLocations, locationIdFromPath);
     this.state = {
-      airport: 'MUC',
+      airport: isValidLocation ? locationIdFromPath : 'muc',
       waitingTime: 30
     };
     this.changeAirport = this.changeAirport.bind(this);
@@ -75,9 +80,9 @@ export default class Signup extends React.Component {
     </Col>
     <Col xs={10} md={10}>
       <DropDownMenu value={this.state.airport} onChange={this.changeAirport}>
-        <MenuItem value={"MUC"} primaryText="Munich" />
-        <MenuItem value={"GVA"} primaryText="Geneva" />
-        <MenuItem value={"CPH"} primaryText="Copenhagen" />
+        <MenuItem value={"muc"} primaryText="Munich" />
+        <MenuItem value={"gva"} primaryText="Geneva" />
+        <MenuItem value={"cph"} primaryText="Copenhagen" />
       </DropDownMenu>
     </Col>
 

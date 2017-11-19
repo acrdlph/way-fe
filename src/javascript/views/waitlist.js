@@ -22,11 +22,11 @@ class WaitList extends React.Component {
     super(props);
 
     const userId = sessionStorage.getItem('userId');
+    const locationIdFromPath = _.get(this.props.match, 'params.locationId');
     if(userId) {
 
       // redirect to waitlist where the user is signed in
       const locationId = sessionStorage.getItem('locationId');
-      const locationIdFromPath = _.get(this.props.match, 'params.locationId');
       if(!locationIdFromPath || locationIdFromPath != locationId) {
         console.log(`redirect to /waitlist/${locationId}`);
         this.props.history.push(`/waitlist/${locationId}`);
@@ -35,7 +35,11 @@ class WaitList extends React.Component {
       this.props.loadUserData(userId);
       this.props.loadWaitlist(userId);
     } else {
-      this.props.history.push("/signup");
+      if(locationIdFromPath) {
+        this.props.history.push(`/signup/${locationIdFromPath}`);
+      } else {
+        this.props.history.push('/signup');
+      }
     }
 
     this.state = {
