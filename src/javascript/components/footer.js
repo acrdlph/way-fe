@@ -13,6 +13,7 @@ class Header extends React.Component {
 
     return (
       <div className="footer">
+        <div className='divider'/>
         <div className='footer-airport-name'>
           {airport}
         </div>

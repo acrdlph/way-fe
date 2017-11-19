@@ -88,7 +88,7 @@ class WaitList extends React.Component {
           visible={!isUserOnboarded && this.state.showIncompleteProfileHint}
           text={'Enter your name and interests to start communicating with other passengers'}
         />
-        <div className='waitlist-profile-divider'/>
+        <div className='divider'/>
         <List>
           {list}
         </List>
