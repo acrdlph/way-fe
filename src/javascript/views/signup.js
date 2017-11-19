@@ -77,6 +77,9 @@ export default class Signup extends React.Component {
     if (!this.state.geolocationAvailable) {
       return (
         <div>
+          <div>
+            <img src='assets/airport-selection-icon.png' className='signup-selection-icon'/>
+          </div>
           <div>I am here</div>
           <DropDownMenu value={this.state.airport} onChange={this.changeAirport}>
             <MenuItem value={"ams"} primaryText="Amsterdam" />
@@ -120,9 +123,6 @@ export default class Signup extends React.Component {
     return (
       <div className='signup'>
 
-        <div>
-          <img src='assets/airport-selection-icon.png' className='signup-selection-icon'/>
-        </div>
         {this.renderLocationDropdown()}
         <div>
           <img src='assets/waiting-time-selection-icon.png' className='signup-selection-icon'/>

@@ -28,7 +28,7 @@ export const loadUserData = (userId) => (dispatch) => {
   .then((data) => {
     const user = {
       id: userId,
-      location: data.location,
+      location: data.location.toLowerCase(),
       waitingTime: data.waiting_time,
       name: data.name,
       interests: data.interests
