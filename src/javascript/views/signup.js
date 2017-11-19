@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import Slider from 'material-ui/Slider';
 import DropDownMenu from 'material-ui/DropDownMenu';
 import MenuItem from 'material-ui/MenuItem';
@@ -8,20 +9,16 @@ import fetch from 'isomorphic-fetch';
 import {Row, Col} from 'react-bootstrap';
 import _ from 'lodash';
 import {supportedLocations} from '../util/constants';
+import {loadPartnerData} from '../stores/partnerStore';
 import './signup.less';
 
-export default class Signup extends React.Component {
+class Signup extends React.Component {
 
   constructor(props) {
     super(props);
     const locationIdFromPath = _.get(this.props.match, 'params.locationId');
     const isValidLocation = locationIdFromPath && _.includes(supportedLocations, locationIdFromPath);
-    this.state = {
-      geolocationAvailable: false,
-      geolocation: null,
-      airport: isValidLocation ? locationIdFromPath : 'muc',
-      waitingTime: 30
-    };
+    
     this.changeAirport = this.changeAirport.bind(this);
     this.changeWaitingTime = this.changeWaitingTime.bind(this);
     this.saveAndContinue = this.saveAndContinue.bind(this);
@@ -34,6 +31,13 @@ export default class Signup extends React.Component {
     if(userId) {
       this.props.history.push(`/waitlist/${locationId}`); // user is onboarded already
     }
+    this.props.loadPartnerData();
+    this.state = {
+      geolocationAvailable: false,
+      geolocation: null,
+      airport: isValidLocation ? locationIdFromPath : 'MUC',
+      waitingTime: 30
+    };
   }
 
   changeAirport(event, key, value) {
@@ -75,14 +79,17 @@ export default class Signup extends React.Component {
   renderLocationDropdown() {
     this.buildLocation();
     if (!this.state.geolocationAvailable) {
+      const list = [];
+      _.each(this.props.partners.data, (entry, key) => {
+        list.push(
+          <MenuItem value={entry.uniqueKey} primaryText={entry.name} />
+        );
+      });
       return (
         <div>
           <div>I am here</div>
           <DropDownMenu value={this.state.airport} onChange={this.changeAirport}>
-            <MenuItem value={"ams"} primaryText="Amsterdam" />
-            <MenuItem value={"muc"} primaryText="Munich" />
-            <MenuItem value={"gva"} primaryText="Geneva" />
-            <MenuItem value={"cph"} primaryText="Copenhagen" />
+            {list}
           </DropDownMenu>
         </div>
       );
@@ -119,7 +126,6 @@ export default class Signup extends React.Component {
     const {waitingTime} = this.state;
     return (
       <div className='signup'>
-
         <div>
           <img src='assets/airport-selection-icon.png' className='signup-selection-icon'/>
         </div>
@@ -146,3 +152,15 @@ export default class Signup extends React.Component {
     );
   }
 }
+
+const mapStateToProps = (state) => {
+  return {
+    partners: state.partners
+  }
+};
+
+const mapDispatchToProps = dispatch => ({
+  loadPartnerData: () => dispatch(loadPartnerData())
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Signup);
