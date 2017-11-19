@@ -7,9 +7,8 @@ import {NavLink} from 'react-router-dom';
 import fetch from 'isomorphic-fetch';
 import {Row, Col} from 'react-bootstrap';
 import _ from 'lodash';
+import {supportedLocations} from '../util/constants';
 import './signup.less';
-
-const supportedLocations = ['muc', 'gva', 'cph'];
 
 export default class Signup extends React.Component {
 
@@ -80,6 +79,7 @@ export default class Signup extends React.Component {
           <div>I am here</div>
           <DropDownMenu value={this.state.airport} onChange={this.changeAirport}>
             <MenuItem value={"muc"} primaryText="Munich" />
+            <MenuItem value={"ams"} primaryText="Amsterdam" />
             <MenuItem value={"gva"} primaryText="Geneva" />
             <MenuItem value={"cph"} primaryText="Copenhagen" />
           </DropDownMenu>

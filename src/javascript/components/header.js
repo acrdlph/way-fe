@@ -7,7 +7,7 @@ export default class Header extends React.Component {
       <div className="header">
         <img
           className='logo'
-          src="assets/waitlistlogo.svg"
+          src='assets/waitlistlogo.svg'
         />
       </div>
     );
