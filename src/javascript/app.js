@@ -15,10 +15,11 @@ export default class App extends React.Component {
         <Header/>
         <div>
           <Route exact path="/" component={Onboarding}/>
-          <Route path="/onboarding" component={Onboarding}/>
-          <Route path="/signup" component={Signup}/>
-          <Route path="/waitlist" component={WaitList}/>
-          <Route path="/chat/:chatPartnerId" component={Chat}/>
+          <Route exact path="/onboarding" component={Onboarding}/>
+          <Route exact path="/signup" component={Signup}/>
+          <Route exact path="/waitlist/" component={WaitList}/>
+          <Route exact path="/waitlist/:locationId" component={WaitList}/>
+          <Route exact path="/waitlist/:locationId/chat/:chatPartnerId" component={Chat}/>
         </div>
         <Footer/>
       </div>

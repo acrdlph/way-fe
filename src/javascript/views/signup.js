@@ -21,8 +21,9 @@ export default class Signup extends React.Component {
     this.saveAndContinue = this.saveAndContinue.bind(this);
 
     const userId = sessionStorage.getItem('userId');
+    const locationId = sessionStorage.getItem('locationId');
     if(userId) {
-      this.props.history.push("/waitlist"); // user is onboarded already
+      this.props.history.push(`/waitlist/${locationId}`); // user is onboarded already
     }
   }
 
@@ -55,7 +56,9 @@ export default class Signup extends React.Component {
     .then((res) => res.json())
     .then((json) => {
       sessionStorage.setItem('userId', json.id);
-      this.props.history.push("/waitlist");
+      const locationId = json.location.toLowerCase();
+      sessionStorage.setItem('locationId', locationId);
+      this.props.history.push(`/waitlist/${locationId}`);
     });
   }
 
