@@ -18,7 +18,7 @@ export default class WaitListItem extends React.Component {
       onClick
     } = this.props;
     if(interests.trim() === '') {
-      interests = 'No information available';
+      interests = "I'm waiting, Chat me up";
     }
     if(name.trim() === '') {
       name = 'No name specified';
