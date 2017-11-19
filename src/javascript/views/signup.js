@@ -18,12 +18,17 @@ export default class Signup extends React.Component {
     const locationIdFromPath = _.get(this.props.match, 'params.locationId');
     const isValidLocation = locationIdFromPath && _.includes(supportedLocations, locationIdFromPath);
     this.state = {
+      geolocationAvailable: false,
+      geolocation: null,
       airport: isValidLocation ? locationIdFromPath : 'muc',
       waitingTime: 30
     };
     this.changeAirport = this.changeAirport.bind(this);
     this.changeWaitingTime = this.changeWaitingTime.bind(this);
     this.saveAndContinue = this.saveAndContinue.bind(this);
+    this.getGeolocation = this.getGeolocation.bind(this);
+    this.buildLocation = this.buildLocation.bind(this);
+    this.renderLocationDropdown = this.renderLocationDropdown.bind(this);
 
     const userId = sessionStorage.getItem('userId');
     const locationId = sessionStorage.getItem('locationId');
@@ -44,11 +49,54 @@ export default class Signup extends React.Component {
     });
   }
 
+  getGeolocation() {
+    return new Promise(function (resolve, reject) {
+      navigator.geolocation.getCurrentPosition(resolve, reject, {});
+    });
+  }
+
+  async buildLocation() {
+    if (navigator.geolocation) {
+      try {
+        const location = await this.getGeolocation();
+        console.log(location);
+        this.setState({
+          geolocationAvailable: true,
+          geolocation: {
+            longitude: location.coords.longitude,
+            latitude: location.coords.latitude
+          }
+        });
+      } catch(error) {
+        console.log(error);
+      }
+    }
+  }
+
+  renderLocationDropdown() {
+    this.buildLocation();
+    if (!this.state.geolocationAvailable) {
+      return (
+        <div>
+          <div>I am here</div>
+          <DropDownMenu value={this.state.airport} onChange={this.changeAirport}>
+            <MenuItem value={"muc"} primaryText="Munich" />
+            <MenuItem value={"gva"} primaryText="Geneva" />
+            <MenuItem value={"cph"} primaryText="Copenhagen" />
+          </DropDownMenu>
+        </div>
+      );
+    } else {
+      return null;
+    }
+  }
+
   saveAndContinue() {
     console.log("Create user with: " + JSON.stringify(this.state));
     const body = JSON.stringify({
       'location': this.state.airport,
-      'waiting_time': this.state.waitingTime
+      'waiting_time': this.state.waitingTime,
+      'geolocation': this.state.geolocation
     });
     const endpoint = 'api/users';
     fetch(endpoint, {
@@ -75,16 +123,7 @@ export default class Signup extends React.Component {
         <div>
           <img src='assets/airport-selection-icon.png' className='signup-selection-icon'/>
         </div>
-
-        <div>
-          <div>I am here</div>
-          <DropDownMenu value={this.state.airport} onChange={this.changeAirport}>
-            <MenuItem value={"muc"} primaryText="Munich" />
-            <MenuItem value={"gva"} primaryText="Geneva" />
-            <MenuItem value={"cph"} primaryText="Copenhagen" />
-          </DropDownMenu>
-        </div>
-
+        {this.renderLocationDropdown()}
         <div>
           <img src='assets/waiting-time-selection-icon.png' className='signup-selection-icon'/>
         </div>
