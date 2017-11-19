@@ -114,8 +114,9 @@ const mapWaitListData = (data) => {
       lastContact: entry.last_contact ? new Date(entry.last_contact).getTime() : 0
     });
   });
-  const onboardedOnly = _.filter(onTheList, (user) => isOnboarded(user));
-  const onboardedOnlyWithHash = onboardedOnly.map((user) => ({
+  // TODO: activate this filter as soon as we have more users
+  // const onboardedOnly = _.filter(onTheList, (user) => isOnboarded(user));
+  const onboardedOnlyWithHash = onTheList.map((user) => ({
     ...user,
     hash: createHash(user)
   }));
