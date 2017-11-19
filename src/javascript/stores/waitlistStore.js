@@ -107,7 +107,7 @@ const mapWaitListData = (data) => {
   _.each(data, entry => {
     onTheList.push({
       id: entry.id,
-      name: entry.name || '',
+      name: entry.name || entry.default_name || '',
       interests: entry.interests || '',
       timeLeft: entry.time_left,
       hasChat: entry.count > 0,
@@ -115,6 +115,7 @@ const mapWaitListData = (data) => {
       lastContact: entry.last_contact ? new Date(entry.last_contact).getTime() : 0
     });
   });
+  console.log(data, onTheList);
   // TODO: activate this filter as soon as we have more users
   // const onboardedOnly = _.filter(onTheList, (user) => isOnboarded(user));
   const onboardedOnlyWithHash = onTheList.map((user) => ({

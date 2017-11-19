@@ -9,6 +9,7 @@ const backend = {
 };
 
 module.exports = {
+  devtool: 'eval-source-map',
   entry: './src/javascript/index',
   output: {
     filename: 'bundle.js',
