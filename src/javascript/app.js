@@ -7,13 +7,14 @@ import Onboarding from './views/onboarding';
 import Signup from './views/signup';
 import WaitList from './views/waitlist';
 import Chat from './views/chat';
+import './app.less';
 
 export default class App extends React.Component {
   render() {
     return (
-      <div>
+      <div className='app-container'>
         <Header/>
-        <div>
+        <div className='app-content'>
           <Route exact path="/" component={Onboarding}/>
           <Route exact path="/onboarding" component={Onboarding}/>
           <Route exact path="/signup" component={Signup}/>
