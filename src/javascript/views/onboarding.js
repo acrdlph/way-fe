@@ -16,19 +16,39 @@ const imageCarouselSettings = {
 export default class Onboarding extends React.Component {
   render() {
     return (
-      <div>
-        <div className='onboarding-image-carousel'>
-          <Slider {...imageCarouselSettings}>
-            <img src="assets/onboarding-1.png" />
-            <img src="assets/onboarding-2.png" />
-            <img src="assets/onboarding-3.png" />
+      <div className='onboarding'>
+
+        <div className='onboarding-carousel'>
+          <Slider ref='slider' {...imageCarouselSettings}>
+
+            <div className='onboarding-carousel-item'>
+              <img src='assets/onboarding-1.png' className='onboarding-carousel-item-image'/>
+              <div className='onboarding-carousel-item-text'>
+                Bored?
+              </div>
+            </div>
+            <div className='onboarding-carousel-item'>
+              <img src='assets/onboarding-2.png' className='onboarding-carousel-item-image'/>
+              <div className='onboarding-carousel-item-text'>
+                Tell people what you are interested in.
+              </div>
+            </div>
+            <div className='onboarding-carousel-item'>
+              <img src='assets/onboarding-3.png' className='onboarding-carousel-item-image'/>
+              <div className='onboarding-carousel-item-text'>
+                And find out if there is someone you should meet!
+              </div>
+            </div>
+
           </Slider>
         </div>
-        <div className='enter-waitlist-button'>
+
+        <div className='onboarding-enter-button'>
           <NavLink to="/signup">
             <RaisedButton label="Join the WaitList" />
           </NavLink>
         </div>
+
       </div>
     );
   }
