@@ -70,44 +70,39 @@ export default class Signup extends React.Component {
   render() {
     const {waitingTime} = this.state;
     return (
-      <div>
-        <img src='assets/join-the-waitlist.png' className='signupHeader'/>
+      <div className='signup'>
 
+        <div>
+          <img src='assets/airport-selection-icon.png' className='signup-selection-icon'/>
+        </div>
 
-  <Row>
-    <Col xs={2} md={2}>
-      <img src='assets/airport-selection-icon.png' className='selectionIcon'/>
-    </Col>
-    <Col xs={10} md={10}>
-      <DropDownMenu value={this.state.airport} onChange={this.changeAirport}>
-        <MenuItem value={"muc"} primaryText="Munich" />
-        <MenuItem value={"gva"} primaryText="Geneva" />
-        <MenuItem value={"cph"} primaryText="Copenhagen" />
-      </DropDownMenu>
-    </Col>
+        <div>
+          <div>I am here</div>
+          <DropDownMenu value={this.state.airport} onChange={this.changeAirport}>
+            <MenuItem value={"muc"} primaryText="Munich" />
+            <MenuItem value={"gva"} primaryText="Geneva" />
+            <MenuItem value={"cph"} primaryText="Copenhagen" />
+          </DropDownMenu>
+        </div>
 
-    <Col xs={12} md={12} className="spacerSmall"/>
+        <div>
+          <img src='assets/waiting-time-selection-icon.png' className='signup-selection-icon'/>
+        </div>
 
-    <Col xs={2} md={2}>
-      <img src='assets/waiting-time-selection-icon.png' className='selectionIcon'/>
-    </Col>
-    <Col xs={10} md={10}>
-      I need to wait {waitingTime} minutes.
-      <div style={{width: '200px'}}>
-        <Slider
-          min={20}
-          max={300}
-          step={10}
-          defaultValue={30}
-          onChange={this.changeWaitingTime}
-        />
-      </div>
+        <div>
+          <div>I need to wait {waitingTime} minutes.</div>
+          <div className='signup-slider'>
+            <Slider
+              min={20}
+              max={300}
+              step={10}
+              defaultValue={30}
+              onChange={this.changeWaitingTime}
+            />
+          </div>
+        </div>
 
-    </Col>
-  </Row>
-
-
-        <RaisedButton label='See who else is waiting' onClick={this.saveAndContinue}/>
+        <RaisedButton label='Sign In' onClick={this.saveAndContinue}/>
       </div>
     );
   }
