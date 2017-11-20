@@ -6,6 +6,7 @@ import _ from 'lodash';
 import ChatInput from '../components/chat-input';
 import Conversation from '../components/conversation';
 import {loadMessages, addMessagesToChat} from '../stores/chatStore';
+import './chat.less';
 
 class Chat extends React.Component {
 
@@ -63,12 +64,16 @@ class Chat extends React.Component {
 
     const connection = this.connection;
     return (
-      <div>
-        <NavLink to="/waitlist">
-          <RaisedButton label="<<<"/>
-        </NavLink>
-        <Conversation user={userId} users={usernames} messages={messages}/>
-        <ChatInput onSend={this.sendMessage}/>
+      <div className='chat'>
+        <div className='chat-content'>
+          <NavLink to="/waitlist">
+            <RaisedButton label="<<<"/>
+          </NavLink>
+          <Conversation user={userId} users={usernames} messages={messages}/>
+        </div>
+        <div className='chat-chat-input'>
+          <ChatInput onSend={this.sendMessage}/>
+        </div>
       </div>
     );
   }
