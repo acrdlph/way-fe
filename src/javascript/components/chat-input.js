@@ -37,14 +37,15 @@ export default class ChatInput extends React.Component {
         <div className='chat-input-text'>
           <TextField
             hintText="Message"
+            fullWidth="true"
             value={this.state.message}
             onChange={this.changeMessage}
             onKeyPress={this.onKeyPressInTextField}
           />
         </div>
-
-          <RaisedButton className='chat-input-button' label="Send" onClick={this.sendMessage}/>
-
+        <div className='chat-input-button'>
+          <RaisedButton label="Send" onClick={this.sendMessage}/>
+        </div>
       </div>
     );
   }
