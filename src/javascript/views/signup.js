@@ -1,8 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import Slider from 'material-ui/Slider';
-import DropDownMenu from 'material-ui/DropDownMenu';
-import MenuItem from 'material-ui/MenuItem';
+import AutoComplete from 'material-ui/AutoComplete';
 import RaisedButton from 'material-ui/RaisedButton';
 import {NavLink} from 'react-router-dom';
 import fetch from 'isomorphic-fetch';
@@ -24,7 +23,7 @@ class Signup extends React.Component {
     this.saveAndContinue = this.saveAndContinue.bind(this);
     this.getGeolocation = this.getGeolocation.bind(this);
     this.buildLocation = this.buildLocation.bind(this);
-    this.renderLocationDropdown = this.renderLocationDropdown.bind(this);
+    this.renderLocationInput = this.renderLocationInput.bind(this);
 
     const userId = sessionStorage.getItem('userId');
     const locationId = sessionStorage.getItem('locationId');
@@ -40,9 +39,9 @@ class Signup extends React.Component {
     };
   }
 
-  changeAirport(event, key, value) {
+  changeAirport(event, selectedIndex) {
     this.setState({
-      airport: value
+      airport: event.value
     });
   }
 
@@ -76,13 +75,16 @@ class Signup extends React.Component {
     }
   }
 
-  renderLocationDropdown() {
+  renderLocationInput() {
     this.buildLocation();
     if (!this.state.geolocationAvailable) {
-      const list = [];
+      const locationList = [];
       _.each(this.props.partners.data, (entry, key) => {
-        list.push(
-          <MenuItem value={entry.uniqueKey} primaryText={entry.name} />
+        locationList.push(
+          {
+            value: entry.uniqueKey, 
+            text: entry.name
+          }
         );
       });
       return (
@@ -90,10 +92,15 @@ class Signup extends React.Component {
           <div>
             <img src='assets/airport-selection-icon.png' className='signup-selection-icon'/>
           </div>
-          <div>I am here</div>
-          <DropDownMenu value={this.state.airport} onChange={this.changeAirport}>
-            {list}
-          </DropDownMenu>
+          <AutoComplete
+            floatingLabelText="I'm waiting @"
+            openOnFocus={true}
+            hintText="Enter your current location"
+            filter={AutoComplete.caseInsensitiveFilter}
+            onNewRequest={this.changeAirport}
+            textFieldStyle={{textAlign: 'center'}}
+            dataSource={locationList}
+          />
         </div>
       );
     } else {
@@ -129,7 +136,7 @@ class Signup extends React.Component {
     const {waitingTime} = this.state;
     return (
       <div className='signup'>
-        {this.renderLocationDropdown()}
+        {this.renderLocationInput()}
         <div>
           <img src='assets/waiting-time-selection-icon.png' className='signup-selection-icon'/>
         </div>
