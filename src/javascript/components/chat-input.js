@@ -35,7 +35,7 @@ export default class ChatInput extends React.Component {
 
   render() {
     return (
-      <div className='chat-input'>
+      <div className='chat-input container'>
         <div className='chat-input-text'>
           <TextField
             hintText="Message"
