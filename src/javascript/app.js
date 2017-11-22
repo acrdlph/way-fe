@@ -13,7 +13,7 @@ export default class App extends React.Component {
   render() {
     return (
       <div className='app-container'>
-        <Header/>
+        <Route component={Header}/>
         <div className='app-content'>
           <Route exact path="/" component={Onboarding}/>
           <Route exact path="/onboarding" component={Onboarding}/>

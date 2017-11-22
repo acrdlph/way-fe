@@ -1,5 +1,17 @@
+@import '../variables';
+
 .chat-input {
+  background-color: @background-color;
   display: flex;
+  position: fixed;
+  bottom: @footer-height;
+  padding-top: 10px;
+}
+
+@media (max-width: 768px) {
+  .chat-input {
+    width: 100%;
+  }
 }
 
 .chat-input-text {
