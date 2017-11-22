@@ -18,7 +18,7 @@ gulp.task('build', ['webpack'], function(cb) {
   if(!hostname || !port) {
     throw new Error("Please provide --hostname and --port as argument!");
   }
-  const websocketUrl = 'ws://' + hostname + ':' + port + '/messages/';
+  const websocketUrl = 'wss://' + hostname + ':' + port + '/messages/';
   const globals = `
     WEBSOCKET_BASE_URL='${websocketUrl}'
     FEATURE_NOTIFICATIONS=${isNotificationFeatureEnabled}
