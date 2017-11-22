@@ -6,7 +6,7 @@ import './footer.less';
 
 class Header extends React.Component {
   render() {
-    let airport = '';
+    let airport = null;
     const {airportName} = this.props;
     if(airportName) {
       if(_.includes(supportedLocations, airportName)) {
@@ -16,13 +16,18 @@ class Header extends React.Component {
       }
     }
 
-    return (
-      <div className="footer">
-        <div className='footer-airport-name'>
-          {airport}
+    if(airport) {
+      return (
+        <div className="footer">
+          <div className='footer-airport-name'>
+            {airport}
+          </div>
         </div>
-      </div>
-    );
+      );
+    } else {
+      return null;
+    }
+
   }
 }
 
