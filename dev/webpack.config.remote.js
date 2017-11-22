@@ -4,8 +4,8 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 const backend = {
-  host: 'ecs-eu-dev-1571006243.eu-central-1.elb.amazonaws.com',
-  port: 8080
+  host: 'api.waitlist.cc',
+  port: 80
 };
 
 module.exports = {
