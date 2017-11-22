@@ -33,6 +33,7 @@ class Chat extends React.Component {
     this.connection.onmessage = function (event) {
       console.log("receive websocket message: " + JSON.stringify(event.data));
       addMessages([JSON.parse(event.data)]);
+      window.scrollTo(0, document.body.scrollHeight);
     };
   }
 
