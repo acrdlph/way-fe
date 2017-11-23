@@ -4,8 +4,11 @@ import fetch from 'isomorphic-fetch';
 import {Row, Col} from 'react-bootstrap';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
+import Avatar from 'material-ui/Avatar';
 import WaitListItem from '../components/waitlist-item';
 import {loadUserData, updateUserData, editUserData, isOnboarded} from '../stores/userStore';
+import {showModal} from '../stores/profileImageStore';
+import ImageSelection from './image-selection-modal';
 
 class Profile extends React.Component {
 
@@ -19,6 +22,7 @@ class Profile extends React.Component {
     this.changeName = this.changeName.bind(this);
     this.setEditable = this.setEditable.bind(this);
     this.saveProfile = this.saveProfile.bind(this);
+    this.selectImage = this.selectImage.bind(this);
   }
 
   changeInterests(event, interests) {
@@ -31,6 +35,10 @@ class Profile extends React.Component {
 
   setEditable() {
     this.props.editUserData();
+  }
+
+  selectImage() {
+    this.props.openModal();
   }
 
   saveProfile() {
@@ -48,16 +56,25 @@ class Profile extends React.Component {
     if(user.loading) {
       return (<div>loading...</div>);
     }
+    const imageSelectionModal = this.props.showModal ? <ImageSelection/> : null;
     const name = _.get(user, 'data.name', '');
     const interests = _.get(user, 'data.interests', '');
     return !isUserOnboarded || this.props.user.isEditable ? (
       <div>
         Tell us a little bit more about you:
         <Row>
-          <Col className='col-xs-12 col-lg-5'>
+          <Col className='col-xs-12 col-lg-2'>
+            <Avatar
+              onClick={this.selectImage}
+              size={50}
+              src='assets/avatar-placeholder.png'
+            />
+            {imageSelectionModal}
+          </Col>
+          <Col className='col-xs-12 col-lg-4'>
             <TextField defaultValue={name} hintText="Name" onChange={this.changeName}/>
           </Col>
-          <Col className='col-xs-12 col-lg-5'>
+          <Col className='col-xs-12 col-lg-4'>
             <TextField defaultValue={interests} hintText="Interests" onChange={this.changeInterests}/>
           </Col>
           <Col className='col-xs-12 col-lg-2'>
@@ -76,13 +93,15 @@ class Profile extends React.Component {
 
 const mapStateToProps = (state) => ({
   user: state.user,
-  isUserOnboarded: isOnboarded(state.user)
+  isUserOnboarded: isOnboarded(state.user),
+  showModal: state.profileImage.showModal
 });
 
 const mapDispatchToProps = dispatch => ({
   editUserData: () => dispatch(editUserData()),
   loadUserData: (userId) => dispatch(loadUserData(userId)),
-  updateUserData: (userId, data) => dispatch(updateUserData(userId, data))
+  updateUserData: (userId, data) => dispatch(updateUserData(userId, data)),
+  openModal: () => dispatch(showModal(true))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Profile);
