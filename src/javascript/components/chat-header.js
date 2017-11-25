@@ -5,16 +5,25 @@ import './chat-header.less';
 export default class ChatHeader extends React.Component {
 
   render() {
+    const chatParnerName = this.props.chatParnerName;
+    let chatLabel = '';
+    if(chatParnerName) {
+      chatLabel = `Chat with ${chatParnerName}`;
+    }
     return (
       <div className='chat-header container'>
-        <ol class="chat-header-breadcrumb breadcrumb">
-          <li class="breadcrumb-item"><NavLink to="/waitlist">WaitList</NavLink></li>
-          <li class="breadcrumb-item active">Chat</li>
-          <img
-            className='chat-header-logo'
-            src='assets/waitlistlogo.svg'
-          />
-        </ol>
+        <div class='chat-header-back-button'>
+          <NavLink to="/waitlist">
+            <span class="glyphicon glyphicon-chevron-left"/>
+            <span class="glyphicon glyphicon-chevron-left"/>
+            <span class="glyphicon glyphicon-chevron-left"/>
+          </NavLink>
+        </div>
+        {chatLabel}
+        <img
+          className='chat-header-logo'
+          src='assets/waitlistlogo.svg'
+        />
       </div>
     );
   }

@@ -65,12 +65,14 @@ class Chat extends React.Component {
   render() {
     const chatItems = [];
     const userId = sessionStorage.getItem('userId');
+    const chatPartnerId = _.get(this.props.match, 'params.chatPartnerId');
     const usernames = this.props.usernames;
     const messages = this.props.chat.data;
     const connection = this.connection;
+    const chatParnerName = usernames[chatPartnerId];
     return (
       <div className='chat'>
-        <ChatHeader/>
+        <ChatHeader chatParnerName={chatParnerName}/>
         <div className='chat-content'>
           <Conversation user={userId} users={usernames} messages={messages}/>
         </div>
