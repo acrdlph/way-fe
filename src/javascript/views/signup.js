@@ -1,9 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import Slider from 'material-ui/Slider';
-import AutoComplete from 'material-ui/AutoComplete';
 import RaisedButton from 'material-ui/RaisedButton';
 import {NavLink} from 'react-router-dom';
+import Select from 'react-select';
 import fetch from 'isomorphic-fetch';
 import {Row, Col} from 'react-bootstrap';
 import _ from 'lodash';
@@ -11,15 +11,20 @@ import {supportedLocations} from '../util/constants';
 import {loadPartnerData} from '../stores/partnerStore';
 import './signup.less';
 
+let geolocationAvailable = false;
+
 class Signup extends React.Component {
 
   constructor(props) {
     super(props);
     const locationIdFromPath = _.get(this.props.match, 'params.locationId');
+    // TODO make this validation using partner api
     const isValidLocation = locationIdFromPath && _.includes(supportedLocations, locationIdFromPath);
     
     this.changeAirport = this.changeAirport.bind(this);
     this.changeWaitingTime = this.changeWaitingTime.bind(this);
+    this.save = this.save.bind(this);
+    this.update = this.update.bind(this);
     this.saveAndContinue = this.saveAndContinue.bind(this);
     this.getGeolocation = this.getGeolocation.bind(this);
     this.buildLocation = this.buildLocation.bind(this);
@@ -32,16 +37,19 @@ class Signup extends React.Component {
     }
     this.props.loadPartnerData();
     this.state = {
-      geolocationAvailable: false,
       geolocation: null,
-      airport: isValidLocation ? locationIdFromPath : 'MUC',
+      airport: isValidLocation ? locationIdFromPath : null,
       waitingTime: 30
     };
   }
 
-  changeAirport(event, selectedIndex) {
+  componentDidMount() {
+    this.buildLocation();
+  }
+
+  changeAirport(event) {
     this.setState({
-      airport: event.value
+      airport: event ? event.value : null
     });
   }
 
@@ -58,78 +66,99 @@ class Signup extends React.Component {
   }
 
   async buildLocation() {
-    if (navigator.geolocation) {
+    if (navigator.geolocation && !geolocationAvailable) {
       try {
         const location = await this.getGeolocation();
         console.log(location);
-        this.setState({
-          geolocationAvailable: true,
+        geolocationAvailable = true;
+        const body = JSON.stringify({
           geolocation: {
             longitude: location.coords.longitude,
             latitude: location.coords.latitude
           }
         });
+        this.save(body);
       } catch(error) {
         console.log(error);
       }
     }
   }
 
-  renderLocationInput() {
-    this.buildLocation();
-    if (!this.state.geolocationAvailable) {
-      const locationList = [];
-      _.each(this.props.partners.data, (entry, key) => {
-        locationList.push(
-          {
-            value: entry.uniqueKey, 
-            text: entry.name
-          }
-        );
-      });
-      return (
-        <div>
-          <div>
-            <img src='assets/airport-selection-icon.png' className='signup-selection-icon'/>
-          </div>
-          <AutoComplete
-            floatingLabelText="I'm waiting @"
-            openOnFocus={true}
-            hintText="Enter your current location"
-            filter={AutoComplete.caseInsensitiveFilter}
-            onNewRequest={this.changeAirport}
-            textFieldStyle={{textAlign: 'center'}}
-            dataSource={locationList}
-          />
-        </div>
-      );
-    } else {
-      return null;
-    }
-  }
-
-  saveAndContinue() {
+  async save(body) {
     console.log("Create user with: " + JSON.stringify(this.state));
-    const body = JSON.stringify({
-      'location': this.state.airport,
-      'waiting_time': this.state.waitingTime,
-      'geolocation': this.state.geolocation
-    });
     const endpoint = 'api/users';
-    fetch(endpoint, {
+    const res = await fetch(endpoint, {
       method: 'post',
       body,
       headers: new Headers({
         'content-type': 'application/json'
       }),
-    })
-    .then((res) => res.json())
-    .then((json) => {
-      sessionStorage.setItem('userId', json.id);
-      const locationId = json.location.toLowerCase();
-      sessionStorage.setItem('locationId', locationId);
-      this.props.history.push(`/waitlist/${locationId}`);
     });
+    const resJson = await res.json();
+    this.setState({
+      airport: resJson.location
+    });
+    sessionStorage.setItem('userId', resJson.id);
+    return resJson;
+  }
+
+  async update(body) {
+    console.log("Update user with: " + JSON.stringify(this.state));
+    const userId = sessionStorage.getItem('userId');
+    const endpoint = 'api/users/' + userId;
+    const res = await fetch(endpoint, {
+      method: 'put',
+      body,
+      headers: new Headers({
+        'content-type': 'application/json'
+      }),
+    });
+    const resJson = await res.json();
+    return resJson;
+  }
+
+  async saveAndContinue() {
+    const body = JSON.stringify({
+      'location': this.state.airport,
+      'waiting_time': this.state.waitingTime
+    });
+    // if geolocationAvailable then we have already saved the user then update
+    let json = {};
+    if (!geolocationAvailable) {
+      json = await this.save(body);
+    } else {
+      json = await this.update(body);
+    }
+    const locationId = json.location.toLowerCase();
+    sessionStorage.setItem('locationId', locationId);
+    this.props.history.push(`/waitlist/${locationId}`);
+  }
+
+  renderLocationInput() {
+    // TODO move this to a component
+    const locationList = [];
+    _.each(this.props.partners.data, (entry, key) => {
+      locationList.push(
+        {
+          value: entry.uniqueKey, 
+          label: entry.name
+        }
+      );
+    });
+    return (
+      <div>
+        <div>
+          <img src='assets/airport-selection-icon.png' className='signup-selection-icon'/>
+        </div>
+        <p>I'm waiting @</p>
+        <Select
+          name="waiting-location"
+          value={this.state.airport}
+          onChange={this.changeAirport}
+          options={locationList}
+        />
+      </div>
+    );
   }
 
   render() {
