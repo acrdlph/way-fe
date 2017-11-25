@@ -66,8 +66,6 @@ const backgroundFetcher = (dispatch, userId) => {
       dispatch({type: types.LOADING});
       alreadyLoadedData = onTheListSorted;
       const newUserIds = extractNewUsers(existingUserIds, currentUserIds);
-      console.log("newUserIds: ");
-      console.log(newUserIds);
       _.each(newUserIds, (id) => {
         const newUser = _.find(onTheListSorted, (user) => user.id === id);
         onUserJoined(newUser);
@@ -115,7 +113,6 @@ const mapWaitListData = (data) => {
       lastContact: entry.last_contact ? new Date(entry.last_contact).getTime() : 0
     });
   });
-  console.log(data, onTheList);
   // TODO: activate this filter as soon as we have more users
   // const onboardedOnly = _.filter(onTheList, (user) => isOnboarded(user));
   const onboardedOnlyWithHash = onTheList.map((user) => ({

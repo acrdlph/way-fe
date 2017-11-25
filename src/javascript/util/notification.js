@@ -24,7 +24,6 @@ export const requestPermissionForNotifications = () => {
 };
 
 export const notify = (message, type, body) => {
-  console.log("notify: " + type);
   if(FEATURE_NOTIFICATIONS) {
     if (Push.Permission.has()) {
       const options = {
@@ -32,7 +31,6 @@ export const notify = (message, type, body) => {
         tag: getType(type),
         body
       };
-      console.log(options);
       Push.create(message, options);
     }
   }
