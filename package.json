@@ -40,11 +40,12 @@
     "webpack-stream": "4.0.0"
   },
   "dependencies": {
-    "dateformat": "^3.0.2",
+    "dateformat": "3.0.2",
     "isomorphic-fetch": "2.2.1",
     "jquery": "3.2.1",
     "lodash": "4.17.4",
     "material-ui": "0.19.4",
+    "push.js": "1.0.5",
     "react": "16.0.0",
     "react-bootstrap": "0.31.5",
     "react-dom": "16.0.0",

@@ -1,17 +1,19 @@
+import Push from 'push.js';
+
 const notificationOptions = {
   icon: 'assets/waitlistlogo.svg'
 };
 
 export const requestPermissionForNotifications = () => {
   if(FEATURE_NOTIFICATIONS) {
-    Notification.requestPermission();
+    Push.Permission.request();
   }
 };
 
 export const notify = (message) => {
   if(FEATURE_NOTIFICATIONS) {
-    if (Notification.permission === "granted") {
-      new Notification(message, notificationOptions);
+    if (Push.Permission.has()) {
+      Push.create(message, notificationOptions);
     }
   }
 };
