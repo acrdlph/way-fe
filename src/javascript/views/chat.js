@@ -29,11 +29,12 @@ class Chat extends React.Component {
   componentDidMount() {
     console.log("create WebSocket connection");
     const userId = sessionStorage.getItem('userId');
+    const chatPartnerId = _.get(this.props.match, 'params.chatPartnerId');
     this.connection = new WebSocket(WEBSOCKET_BASE_URL+userId);
     const addMessages = this.props.addMessagesToChat;
     this.connection.onmessage = function (event) {
       console.log("receive websocket message: " + JSON.stringify(event.data));
-      addMessages([JSON.parse(event.data)]);
+      addMessages([JSON.parse(event.data)], chatPartnerId);
       const path = sessionStorage.getItem('path');
       if(path.includes('chat')) {
         window.scrollTo(0, document.body.scrollHeight);
@@ -66,7 +67,6 @@ class Chat extends React.Component {
     const userId = sessionStorage.getItem('userId');
     const usernames = this.props.usernames;
     const messages = this.props.chat.data;
-
     const connection = this.connection;
     return (
       <div className='chat'>
@@ -89,7 +89,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = dispatch => ({
   loadMessages: (userId, chatPartnerId) => dispatch(loadMessages(userId, chatPartnerId)),
-  addMessagesToChat: (messages) => dispatch(addMessagesToChat(messages))
+  addMessagesToChat: (messages, chatPartnerId) => dispatch(addMessagesToChat(messages, chatPartnerId))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Chat);

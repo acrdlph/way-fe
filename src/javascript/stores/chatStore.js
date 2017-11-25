@@ -58,14 +58,17 @@ export const loadMessages = (userId, chatPartnerId) => (dispatch) => {
   });
 };
 
-export const addMessagesToChat = (messages) => {
+export const addMessagesToChat = (messages, chatPartnerId) => {
   const transformedMessages = transformMessages(messages);
   _.each(transformedMessages, (message) => {
     onNewMessage(message);
   });
+  const messagesFromOpenChatOnly = _.filter(transformedMessages, (msg) => {
+    return msg.sender === chatPartnerId || msg.receiver === chatPartnerId;
+  });
   return {
     type: types.ADDMESSAGE,
-    data: transformedMessages
+    data: messagesFromOpenChatOnly
   };
 };
 
