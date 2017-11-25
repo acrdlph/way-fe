@@ -1,47 +1,42 @@
-
-
 .waitlist-item {
-  overflow: hidden;
+  display: flex;
 }
-
-.waitlist-item-avatar {
-  float: left;
-  margin: 5px;
-};
-
-.waitlist-item-data {
-
-};
-
-.waitlist-item-data-1 {
-  float: none;
-};
-
-.waitlist-item-data-2 {
-  font-size: 1.5em;
-};
-
-.waitlist-item-data-name {
-  font-size: 1.0em;
-  float: none;
-};
-
-.waitlist-item-data-timeleft {
-  font-size: 0.8em;
-  float: right;
-  position: relative;
-};
 
 .waitlist-item-already-contacted {
   background-color: #c7d7eb;
 }
 
-.waitlist-item-data-chat-bubble {
-  float: right;
-  margin-bottom: 1px;
-  position: relative;
+.waitlist-item-invisible {
+  display: none;
 }
 
-.waitlist-item-data-chat-bubble-none {
-  display: none;
+.waitlist-item-avatar {
+  flex: 0 0 50px;
+  padding: 5px;
+};
+
+
+.waitlist-item-data {
+  flex: 1;
+};
+.waitlist-item-data-interests {
+  font-size: 1.5em;
+};
+.waitlist-item-data-name {
+  font-size: 1.0em;
+};
+
+
+.waitlist-item-meta {
+  flex: 0 0 50px;
+};
+.waitlist-item-meta-timeleft {
+  font-size: 0.8em;
+  height: 20px;
+};
+.waitlist-item-meta-arrow {
+  float: right;
+  padding-right: 5px;
+}
+.waitlist-item-meta-chat-bubble {
 }

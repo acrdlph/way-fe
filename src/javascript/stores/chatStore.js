@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import {notify} from '../util/notification';
+import {notify, types as notificationTypes} from '../util/notification';
 
 const types = {
   LOADING: 'CHAT_LOADING',
@@ -18,7 +18,7 @@ const onNewMessage = (message) => {
   const userId = sessionStorage.getItem('userId');
   if(message.sender != userId && !currentPath.includes(message.sender)) {
     const senderName = getUsername(message.sender);
-    notify(`New message from ${senderName}: "${message.message}"`);
+    notify(`New message from ${senderName}`, notificationTypes.NEW_MESSAGE_RECEIVED, message.message);
   }
 };
 
@@ -58,14 +58,17 @@ export const loadMessages = (userId, chatPartnerId) => (dispatch) => {
   });
 };
 
-export const addMessagesToChat = (messages) => {
+export const addMessagesToChat = (messages, chatPartnerId) => {
   const transformedMessages = transformMessages(messages);
   _.each(transformedMessages, (message) => {
     onNewMessage(message);
   });
+  const messagesFromOpenChatOnly = _.filter(transformedMessages, (msg) => {
+    return msg.sender === chatPartnerId || msg.receiver === chatPartnerId;
+  });
   return {
     type: types.ADDMESSAGE,
-    data: transformedMessages
+    data: messagesFromOpenChatOnly
   };
 };
 

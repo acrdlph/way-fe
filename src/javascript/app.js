@@ -11,6 +11,7 @@ import './app.less';
 
 export default class App extends React.Component {
   render() {
+    sessionStorage.setItem('path', this.props.location.pathname);
     return (
       <div className='app-container'>
         <Route component={Header}/>

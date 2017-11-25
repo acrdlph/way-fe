@@ -29,7 +29,7 @@ const awaitFetch = async function awaitFetch(dispatch) {
     console.log(e);
   }
   
-}
+};
 
 export const loadPartnerData = () => (dispatch) => {
   dispatch({type: types.LOADING});

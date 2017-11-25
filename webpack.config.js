@@ -4,7 +4,7 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 module.exports = {
-  entry: './src/javascript/index',
+  entry: ['babel-polyfill', './src/javascript/index'],
   output: {
     filename: 'bundle.js',
     path: path.resolve(__dirname, 'temp')

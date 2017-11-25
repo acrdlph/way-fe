@@ -23,48 +23,53 @@ export default class WaitListItem extends React.Component {
     if(name.trim() === '') {
       name = 'No name specified';
     }
+
+    // "timeLeft === undefined" means: this is the profile card
     let timeLeftText = '';
+    let arrowClass = 'waitlist-item-invisible';
     if(timeLeft !== undefined) {
-      timeLeftText = `${timeLeft} min`;
+      if(timeLeft > 0) {
+        timeLeftText = `${timeLeft} min`;
+      }
+      arrowClass = '';
     }
     let alreadyContactedClass = '';
     if (lastContact > 0) {
       alreadyContactedClass = 'waitlist-item-already-contacted';
     }
-
-    let hasUnreadMessagesClass = '';
-    if (nonDeliveredChatCount > 0) {
-      hasUnreadMessagesClass = 'waitlist-item-data-chat-bubble';
-    } else {
-      hasUnreadMessagesClass = 'waitlist-item-data-chat-bubble-none';
-    }
+    const hasUnreadMessagesClass = nonDeliveredChatCount > 0 ? '' : 'waitlist-item-invisible';
 
     return (
       <div className={'waitlist-item ' + alreadyContactedClass} onClick={this.props.onClick}>
-        <div>
-          <div className='waitlist-item-avatar'>
-            <Avatar
-              size={50}
-              src='assets/avatar-placeholder.png'
-            />
+
+        <div className='waitlist-item-avatar'>
+          <Avatar
+            size={50}
+            src='assets/avatar-placeholder.png'
+          />
+        </div>
+
+        <div className='waitlist-item-data'>
+          <div className='waitlist-item-data-name'>
+            {name}
           </div>
-          <div className='waitlist-item-data'>
-            <div className='waitlist-item-data-1'>
-              <div className='waitlist-item-data-name'>
-                {name}
-              </div>
-              <div className={hasUnreadMessagesClass}>
-                <CommunicationChatBubble />
-              </div>
-              <div className='waitlist-item-data-timeleft'>
-                {timeLeftText}
-              </div>
-            </div>
-            <div className='waitlist-item-data-2'>
-              {interests}
-            </div>
+          <div className='waitlist-item-data-interests'>
+            {interests}
           </div>
         </div>
+
+        <div className='waitlist-item-meta'>
+          <div className='waitlist-item-meta-timeleft'>
+            {timeLeftText}
+          </div>
+          <div className={'waitlist-item-meta-arrow ' + arrowClass}>
+            <span className="glyphicon glyphicon-chevron-right"/>
+          </div>
+          <div className={'waitlist-item-meta-chat-bubble ' + hasUnreadMessagesClass}>
+            <CommunicationChatBubble />
+          </div>
+        </div>
+
       </div>
     );
   }
