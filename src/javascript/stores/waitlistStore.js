@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import {notify} from '../util/notification';
+import {notify, types as notificationTypes} from '../util/notification';
 
 const types = {
   LOADING: 'WAITLIST_LOADING',
@@ -12,7 +12,7 @@ let alreadyLoadedData = [];
 const onUserJoined = (user) => {
   console.log("new user joined: " + JSON.stringify(user));
   const name = user.name || 'An anonymous bird';
-  notify(`${name} has joined the WaitList!`);
+  notify(`${name} has joined the WaitList!`, notificationTypes.USER_JOINED_WAITLIST);
 };
 
 export const loadWaitlist = (userId) => (dispatch) => {
