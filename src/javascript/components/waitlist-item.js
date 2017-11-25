@@ -23,17 +23,20 @@ export default class WaitListItem extends React.Component {
     if(name.trim() === '') {
       name = 'No name specified';
     }
+
+    // "timeLeft === undefined" means: this is the profile card
     let timeLeftText = '';
     let arrowClass = 'waitlist-item-invisible';
     if(timeLeft !== undefined) {
-      timeLeftText = `${timeLeft} min`;
+      if(timeLeft > 0) {
+        timeLeftText = `${timeLeft} min`;
+      }
       arrowClass = '';
     }
     let alreadyContactedClass = '';
     if (lastContact > 0) {
       alreadyContactedClass = 'waitlist-item-already-contacted';
     }
-
     const hasUnreadMessagesClass = nonDeliveredChatCount > 0 ? '' : 'waitlist-item-invisible';
 
     return (
