@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import {notify} from '../util/notification';
+import {notify, types as notificationTypes} from '../util/notification';
 
 const types = {
   LOADING: 'WAITLIST_LOADING',
@@ -12,7 +12,7 @@ let alreadyLoadedData = [];
 const onUserJoined = (user) => {
   console.log("new user joined: " + JSON.stringify(user));
   const name = user.name || 'An anonymous bird';
-  notify(`${name} has joined the WaitList!`);
+  notify(`${name} has joined the WaitList!`, notificationTypes.USER_JOINED_WAITLIST);
 };
 
 export const loadWaitlist = (userId) => (dispatch) => {
@@ -66,8 +66,6 @@ const backgroundFetcher = (dispatch, userId) => {
       dispatch({type: types.LOADING});
       alreadyLoadedData = onTheListSorted;
       const newUserIds = extractNewUsers(existingUserIds, currentUserIds);
-      console.log("newUserIds: ");
-      console.log(newUserIds);
       _.each(newUserIds, (id) => {
         const newUser = _.find(onTheListSorted, (user) => user.id === id);
         onUserJoined(newUser);
@@ -115,7 +113,6 @@ const mapWaitListData = (data) => {
       lastContact: entry.last_contact ? new Date(entry.last_contact).getTime() : 0
     });
   });
-  console.log(data, onTheList);
   // TODO: activate this filter as soon as we have more users
   // const onboardedOnly = _.filter(onTheList, (user) => isOnboarded(user));
   const onboardedOnlyWithHash = onTheList.map((user) => ({
