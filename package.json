@@ -6,7 +6,8 @@
     "local": "webpack-dev-server --config dev/webpack.config.local.js",
     "remote": "webpack-dev-server --config dev/webpack.config.remote.js",
     "test": "jest --colors",
-    "eslint": "eslint src/**/*.js"
+    "eslint": "eslint src/**/*.js",
+    "eslintfix": "eslint src/**/*.js --fix"
   },
   "devDependencies": {
     "babel-core": "6.26.0",

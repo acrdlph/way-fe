@@ -192,7 +192,7 @@ class Signup extends React.Component {
 const mapStateToProps = (state) => {
   return {
     partners: state.partners
-  }
+  };
 };
 
 const mapDispatchToProps = dispatch => ({
