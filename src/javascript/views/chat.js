@@ -34,7 +34,10 @@ class Chat extends React.Component {
     this.connection.onmessage = function (event) {
       console.log("receive websocket message: " + JSON.stringify(event.data));
       addMessages([JSON.parse(event.data)]);
-      window.scrollTo(0, document.body.scrollHeight);
+      const path = sessionStorage.getItem('path');
+      if(path.includes('chat')) {
+        window.scrollTo(0, document.body.scrollHeight);
+      }
     };
   }
 
@@ -67,7 +70,7 @@ class Chat extends React.Component {
     const connection = this.connection;
     return (
       <div className='chat'>
-        <ChatHeader/> 
+        <ChatHeader/>
         <div className='chat-content'>
           <Conversation user={userId} users={usernames} messages={messages}/>
         </div>
