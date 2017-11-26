@@ -200,6 +200,12 @@ class Signup extends React.Component {
           backgroundColor='#ffd801'
           onClick={this.saveAndContinue}
         />
+
+        <p className='signup-legal-texts'>
+          By proceeding, you agree to our{' '}
+          <a href='https://s3.eu-central-1.amazonaws.com/waitlist-assets/Terms_of_Use.pdf'>Terms of Use</a>{' '}&{' '}
+          <a href='https://s3.eu-central-1.amazonaws.com/waitlist-assets/Privacy_Policy.pdf'>Privacy Policy</a>
+        </p>
       </div>
     );
   }
