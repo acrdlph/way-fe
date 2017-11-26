@@ -12,7 +12,9 @@ import WaitListItem from '../components/waitlist-item';
 import Infobox from '../components/infobox';
 import {loadWaitlist} from '../stores/waitlistStore';
 import {loadUserData, isOnboarded} from '../stores/userStore';
+import {loadPartnerData} from '../stores/partnerStore';
 import {requestPermissionForNotifications} from '../util/notification';
+import {supportedLocations} from '../util/constants';
 import './waitlist.less';
 
 class WaitList extends React.Component {
@@ -33,6 +35,9 @@ class WaitList extends React.Component {
 
       this.props.loadUserData(userId);
       this.props.loadWaitlist(userId);
+      if(!this.props.partners.loaded) {
+        this.props.loadPartnerData();
+      }
     } else {
       if(locationIdFromPath) {
         this.props.history.push(`/signup/${locationIdFromPath}`);
@@ -59,8 +64,41 @@ class WaitList extends React.Component {
     });
   }
 
+  createAirportCard() {
+    const airportCode = _.get(this.props.user, 'data.location');
+    if(!airportCode) {
+      return null;
+    }
+
+    const {data: partners} = this.props.partners;
+    const airportNames = _.filter(partners, p => {
+      return p.uniqueKey.toLowerCase() === airportCode.toLowerCase();
+    });
+    let airportName = null;
+    if(airportNames.length === 1) {
+      airportName = airportNames[0].name;
+    }
+
+    airportName = airportName || airportCode;
+    if(_.includes(supportedLocations, airportCode)) {
+      const logoPath = `assets/airport-logo-${airportCode}.png`;
+      return (
+        <WaitListItem
+          key={'partnerCard'}
+          interests={`Welcome to ${airportName}!`}
+          photo={logoPath}
+          name={airportName}
+        />
+      );
+    }
+    return null;
+  }
+
   render() {
     const list = [];
+    const waitlistItemOfAirport = this.createAirportCard();
+    list.push(waitlistItemOfAirport);
+
     const {isUserOnboarded} = this.props;
     _.each(this.props.waitlist.data, (entry, key) => {
       const onClick = isUserOnboarded
@@ -99,12 +137,15 @@ class WaitList extends React.Component {
 
 const mapStateToProps = (state) => ({
   waitlist: state.waitlist,
-  isUserOnboarded: isOnboarded(state.user)
+  user: state.user,
+  isUserOnboarded: isOnboarded(state.user),
+  partners: state.partners
 });
 
 const mapDispatchToProps = dispatch => ({
   loadWaitlist: (userId) => dispatch(loadWaitlist(userId)),
-  loadUserData: (userId) => dispatch(loadUserData(userId))
+  loadUserData: (userId) => dispatch(loadUserData(userId)),
+  loadPartnerData: () => dispatch(loadPartnerData())
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(WaitList);
