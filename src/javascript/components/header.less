@@ -1,7 +1,20 @@
+@import '../variables';
+
 .header {
   text-align: center;
+  position: fixed;
+  width: 100%;
+  top: 0;
+  height: @header-height;
+}
+
+.header-back-button {
+  float: left;
+  font-size: 1.5em;
+  margin: 7px;
 }
 
 .header img {
   max-width: 80%;
+  max-height: @header-height;
 }
