@@ -41,6 +41,31 @@ class ImageSelection extends React.Component {
       const filereader = new FileReader();
       filereader.onload = function (event) {
         previewImage.src = event.target.result;
+
+        const canvas = document.getElementById('img-preview-canvas');
+        const ctx = canvas.getContext("2d");
+        canvas.width = 100;
+        canvas.height = 100;
+        //ctx.drawImage(previewImage,10,10);
+        console.log("previewImage.width ", previewImage.width);
+        console.log("previewImage.height ", previewImage.height);
+        console.log("canvas.width ", canvas.width);
+        console.log("canvas.height ", canvas.height);
+
+        let sx, sy, sw, sh;
+        const smallerSideLength = Math.min(previewImage.width, previewImage.height);
+        if(previewImage.width === smallerSideLength) {
+          sx = 0;
+          sw = previewImage.width;
+          sy = 0.5 * (previewImage.height - previewImage.width);
+          sh = previewImage.width;
+        } else {
+          sx = 0.5 * (previewImage.width - previewImage.height);
+          sw = previewImage.height;
+          sy = 0;
+          sh = previewImage.height;
+        }
+        ctx.drawImage(previewImage, sx, sy, sw, sh, 0, 0, 100, 100);
         that.props.setImage({fileName, data});
       };
       filereader.readAsDataURL(data);
@@ -85,6 +110,7 @@ class ImageSelection extends React.Component {
             </div>
             <div className='image-selection-preview'>
               <img id='img-preview'/>
+              <canvas width='100' height='100' id='img-preview-canvas' className='image-selection-canvas'/>
             </div>
             {errorMessage}
             {this.props.isImageSelected ? okButton : null}
