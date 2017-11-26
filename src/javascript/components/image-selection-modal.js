@@ -1,6 +1,7 @@
 import React from 'react';
 import Modal from 'react-modal';
 import { connect } from 'react-redux';
+import RaisedButton from 'material-ui/RaisedButton';
 import './image-selection-modal.less';
 import {showModal, setImage, uploadImage} from '../stores/profileImageStore';
 
@@ -51,30 +52,49 @@ class ImageSelection extends React.Component {
   render() {
     const {invalidFile} = this.state;
     const okButton = (
-      <button onClick={this.uploadImage}>OK</button>
+      <div className='image-selection-button'>
+        <RaisedButton
+          onClick={this.uploadImage}
+          backgroundColor='#ffd801'
+          label='OK'
+        />
+      </div>
     );
     const errorMessage = invalidFile ? 'Please select an image file!' : null;
     return (
-      <div>
+      <div className='image-selection'>
         <Modal
           isOpen={true}
           contentLabel="Modal"
         >
           <div>
-            <p>Upload your profile photo</p>
+            <h4>Upload your profile photo</h4>
             <input
               type='file'
               ref={(input) => this.fileInput=input}
               style={{display: 'none'}}
               onChange={this.onChangeFile}
             />
-            <button onClick={this.selectFile}>Select file</button>
+            <div className='image-selection-button'>
+              <RaisedButton
+                onClick={this.selectFile}
+                backgroundColor='#ffd801'
+                label='Select file'
+                style={{overflow: 'hidden'}}
+              />
+            </div>
             <div className='image-selection-preview'>
               <img id='img-preview'/>
             </div>
             {errorMessage}
             {this.props.isImageSelected ? okButton : null}
-            <button onClick={this.props.close}>Cancel</button>
+            <div className='image-selection-button image-selection-button-cancel'>
+              <RaisedButton
+                onClick={this.props.close}
+                backgroundColor='#ffd801'
+                label='Cancel'
+              />
+            </div>
           </div>
         </Modal>
       </div>
