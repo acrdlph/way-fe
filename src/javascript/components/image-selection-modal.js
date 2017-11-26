@@ -9,6 +9,17 @@ const isValidFileName = filename => {
   return filename.endsWith('.jpg') || filename.endsWith('.png');
 };
 
+// src: https://stackoverflow.com/questions/19032406/convert-html5-canvas-into-file-to-be-uploaded
+const canvas2Blob = canvas => {
+  const canvasData = canvas.toDataURL();
+  var blobBin = atob(canvasData.split(',')[1]);
+  var array = [];
+  for(var i = 0; i < blobBin.length; i++) {
+      array.push(blobBin.charCodeAt(i));
+  }
+  return new Blob([new Uint8Array(array)], {type: 'image/png'});
+};
+
 class ImageSelection extends React.Component {
 
   constructor(props) {
@@ -17,7 +28,8 @@ class ImageSelection extends React.Component {
     this.uploadImage = this.uploadImage.bind(this);
     this.onChangeFile = this.onChangeFile.bind(this);
     this.state = {
-      invalidFile: false
+      invalidFile: false,
+      hasSelectedFile: false
     };
   }
 
@@ -29,19 +41,44 @@ class ImageSelection extends React.Component {
     this.props.uploadImage({fileName: this.props.isImageSelected, data: this.props.data});
     this.props.onUpload ? this.props.onUpload() : null;
     this.props.close();
+    this.setState({
+      invalidFile: false,
+      hasSelectedFile: false
+    });
   }
 
   onChangeFile() {
-    const fileName = this.fileInput.value;
-    if(isValidFileName(fileName)) {
+
+    if(isValidFileName(this.fileInput.value)) {
       this.setState({invalidFile:false});
       const that = this;
-      const data = this.fileInput.files[0];
+      let data = this.fileInput.files[0];
+      const fileName = data.name;
       const previewImage = document.getElementById('img-preview');
       const filereader = new FileReader();
       filereader.onload = function (event) {
+        previewImage.onload = function (event) {
+          const canvas = document.getElementById('img-preview-canvas');
+          const ctx = canvas.getContext("2d");
+          let sx, sy, sw, sh;
+          const smallerSideLength = Math.min(previewImage.width, previewImage.height);
+          if(previewImage.width === smallerSideLength) {
+            sx = 0;
+            sw = previewImage.width;
+            sy = 0.5 * (previewImage.height - previewImage.width);
+            sh = previewImage.width;
+          } else {
+            sx = 0.5 * (previewImage.width - previewImage.height);
+            sw = previewImage.height;
+            sy = 0;
+            sh = previewImage.height;
+          }
+          ctx.drawImage(previewImage, sx, sy, sw, sh, 0, 0, 100, 100);
+          const file = canvas2Blob(canvas);
+          that.props.setImage({fileName: 'profile-image', data: file});
+          that.setState({hasSelectedFile: true});
+        };
         previewImage.src = event.target.result;
-        that.props.setImage({fileName, data});
       };
       filereader.readAsDataURL(data);
     } else {
@@ -52,7 +89,7 @@ class ImageSelection extends React.Component {
   render() {
     const {invalidFile} = this.state;
     const okButton = (
-      <div className='image-selection-button'>
+      <div className='image-selection-button image-selection-button-ok'>
         <RaisedButton
           onClick={this.uploadImage}
           backgroundColor='#ffd801'
@@ -61,11 +98,25 @@ class ImageSelection extends React.Component {
       </div>
     );
     const errorMessage = invalidFile ? 'Please select an image file!' : null;
+    const style = {
+      content: {
+        marginLeft: '-125px',
+        width: '250px',
+        height: '300px',
+        textAlign: 'center',
+        left: '50%'
+      }
+    };
+
+    const previewVisibleClass = this.state.hasSelectedFile ? '' : 'image-selection-pic-invisible';
+    const oldPicVisibleClass = (this.state.hasSelectedFile || !this.props.user.data.photo)? 'image-selection-pic-invisible' : '';
+
     return (
       <div className='image-selection'>
         <Modal
           isOpen={true}
           contentLabel="Modal"
+          style={style}
         >
           <div>
             <h4>Upload your profile photo</h4>
@@ -83,11 +134,17 @@ class ImageSelection extends React.Component {
                 style={{overflow: 'hidden'}}
               />
             </div>
-            <div className='image-selection-preview'>
+
+            <div className={'image-selection-preview ' + previewVisibleClass}>
               <img id='img-preview'/>
+              <canvas width='100' height='100' id='img-preview-canvas' className='image-selection-canvas'/>
             </div>
+            <div className={'image-selection-old-pic ' + oldPicVisibleClass}>
+              <img id='img-old' src={this.props.user.data.photo}/>
+            </div>
+
             {errorMessage}
-            {this.props.isImageSelected ? okButton : null}
+            {this.state.hasSelectedFile ? okButton : null}
             <div className='image-selection-button image-selection-button-cancel'>
               <RaisedButton
                 onClick={this.props.close}
@@ -105,6 +162,7 @@ class ImageSelection extends React.Component {
 const mapStateToProps = (state) => ({
   isImageSelected: state.profileImage.fileName,
   data: state.profileImage.data,
+  user: state.user
 });
 
 const mapDispatchToProps = dispatch => ({

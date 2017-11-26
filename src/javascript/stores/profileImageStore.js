@@ -1,4 +1,5 @@
 import _ from 'lodash';
+import {reloadProfileImage} from './userStore';
 
 const types = {
   SHOW_MODAL: 'PROFILE_IMAGE_SHOW_MODAL',
@@ -26,13 +27,14 @@ const awaitFetch = async function awaitFetch(fileName, data, dispatch) {
   const endpoint = `api/users/${userId}/photo`;
   try {
     const formData  = new FormData();
-    formData.append('photo', data);    
+    formData.append('photo', data);
     const result = await fetch(endpoint, {
       method: 'post',
       body: formData
     });
     const resJson = await result.json();
     dispatch({type: types.UPLOADED_IMAGE});
+    dispatch(reloadProfileImage(userId));
   } catch(e) {
     console.log(e);
   }

@@ -4,7 +4,8 @@ const types = {
   EDITING: 'USER_EDIT',
   LOADING: 'USER_LOADING',
   LOADED: 'USER_LOADED',
-  UPDATED: 'USER_UPDATED'
+  UPDATED: 'USER_UPDATED',
+  PHOTO_RELOADED: 'USER_PHOTO_RELOADED'
 };
 
 export const isOnboarded = (user) => {
@@ -17,6 +18,19 @@ export const editUserData = () => {
   return {
     type: types.EDITING
   };
+};
+
+export const reloadProfileImage = (userId) => (dispatch) => {
+  const endpoint = 'api/users/' + userId + '/details';
+  fetch(endpoint)
+  .then((res) => res.json())
+  .then((data) => {
+    const photo = data.photo;
+    dispatch({
+      type: types.PHOTO_RELOADED,
+      photo
+    });
+  });
 };
 
 export const loadUserData = (userId) => (dispatch) => {
@@ -92,6 +106,15 @@ const reducer = (state = initialState, action) => {
           ...state,
           isEditable: false
         };
+      case types.PHOTO_RELOADED:
+        return {
+          ...state,
+          data: {
+            ...state.data,
+            photo: action.photo
+          }
+        };
+
     default:
       return state;
   };
