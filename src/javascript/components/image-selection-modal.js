@@ -41,17 +41,8 @@ class ImageSelection extends React.Component {
       const filereader = new FileReader();
       filereader.onload = function (event) {
         previewImage.src = event.target.result;
-
         const canvas = document.getElementById('img-preview-canvas');
         const ctx = canvas.getContext("2d");
-        canvas.width = 100;
-        canvas.height = 100;
-        //ctx.drawImage(previewImage,10,10);
-        console.log("previewImage.width ", previewImage.width);
-        console.log("previewImage.height ", previewImage.height);
-        console.log("canvas.width ", canvas.width);
-        console.log("canvas.height ", canvas.height);
-
         let sx, sy, sw, sh;
         const smallerSideLength = Math.min(previewImage.width, previewImage.height);
         if(previewImage.width === smallerSideLength) {
