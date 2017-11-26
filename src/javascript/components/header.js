@@ -10,7 +10,7 @@ export default class Header extends React.Component {
     const backButton = isInChat ? (
       <div className='header-back-button'>
         <NavLink to="/waitlist">
-          <span className="glyphicon glyphicon glyphicon-arrow-left"/>
+          <span className="glyphicon glyphicon glyphicon-chevron-left"/>
         </NavLink>
       </div>
     ) : null;
