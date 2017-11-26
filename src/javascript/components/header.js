@@ -1,4 +1,5 @@
 import React from 'react';
+import {Card} from 'material-ui/Card';
 import './header.less';
 
 export default class Header extends React.Component {
@@ -8,12 +9,12 @@ export default class Header extends React.Component {
       return null;
     } else {
       return (
-        <div className="header">
+        <Card className='header'>
           <img
             className='logo'
             src='assets/waitlistlogo.svg'
           />
-        </div>
+        </Card>
       );
     }
   }
