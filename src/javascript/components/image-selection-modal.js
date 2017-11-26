@@ -109,7 +109,7 @@ class ImageSelection extends React.Component {
     };
 
     const previewVisibleClass = this.state.hasSelectedFile ? '' : 'image-selection-pic-invisible';
-    const oldPicVisibleClass = this.state.hasSelectedFile ? 'image-selection-pic-invisible' : '';
+    const oldPicVisibleClass = (this.state.hasSelectedFile || !this.props.user.data.photo)? 'image-selection-pic-invisible' : '';
 
     return (
       <div className='image-selection'>
