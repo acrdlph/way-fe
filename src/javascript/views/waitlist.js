@@ -81,7 +81,7 @@ class WaitList extends React.Component {
 
     airportName = airportName || airportCode;
     if(_.includes(supportedLocations, airportCode)) {
-      const logoPath = `assets/airport-logo-${airportCode}.png`;
+      const logoPath = `assets/airport-logo-${airportCode}-small.jpg`;
       return (
         <WaitListItem
           key={'partnerCard'}

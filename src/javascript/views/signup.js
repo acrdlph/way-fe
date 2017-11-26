@@ -124,7 +124,7 @@ class Signup extends React.Component {
       this.setState({
         showLocationRequiredHint: true
       });
-      return
+      return;
     }
     const body = JSON.stringify({
       'location': this.state.airport,
