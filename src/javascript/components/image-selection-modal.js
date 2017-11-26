@@ -144,7 +144,7 @@ class ImageSelection extends React.Component {
             </div>
 
             {errorMessage}
-            {this.props.isImageSelected ? okButton : null}
+            {this.state.hasSelectedFile ? okButton : null}
             <div className='image-selection-button image-selection-button-cancel'>
               <RaisedButton
                 onClick={this.props.close}
