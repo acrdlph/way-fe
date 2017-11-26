@@ -83,7 +83,7 @@ class ImageSelection extends React.Component {
   render() {
     const {invalidFile} = this.state;
     const okButton = (
-      <div className='image-selection-button'>
+      <div className='image-selection-button image-selection-button-ok'>
         <RaisedButton
           onClick={this.uploadImage}
           backgroundColor='#ffd801'
@@ -92,11 +92,21 @@ class ImageSelection extends React.Component {
       </div>
     );
     const errorMessage = invalidFile ? 'Please select an image file!' : null;
+    const style = {
+      content: {
+        marginLeft: '-125px',
+        width: '250px',
+        height: '300px',
+        textAlign: 'center',
+        left: '50%'
+      }
+    };
     return (
       <div className='image-selection'>
         <Modal
           isOpen={true}
           contentLabel="Modal"
+          style={style}
         >
           <div>
             <h4>Upload your profile photo</h4>
