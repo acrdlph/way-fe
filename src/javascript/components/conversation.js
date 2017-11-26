@@ -17,13 +17,18 @@ export default class Conversation extends React.Component {
       const style = {
         backgroundColor: msg.sender === user ? CHAT_BUBBLE_COLOR_LEFT : CHAT_BUBBLE_COLOR_RIGHT
       };
+      let photo = 'assets/avatar-placeholder.png';
+      if(msg.sender === user && this.props.userPhoto) {
+        photo = this.props.userPhoto;
+      }
+
       return (
         <div key={msg.id} className='chat-item-wrapper'>
           <div className={`chat-item chat-item-${cssClass}`}>
             <div className={`avatar avatar-${cssClass}`}>
               <Avatar
                 size={50}
-                src='assets/avatar-placeholder.png'
+                src={photo}
               />
             </div>
             <div className={`content content-${cssClass}`}>

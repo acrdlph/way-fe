@@ -71,7 +71,7 @@ class Chat extends React.Component {
     return (
       <div className='chat'>
         <div className='chat-content'>
-          <Conversation user={userId} users={usernames} messages={messages}/>
+          <Conversation user={userId} userPhoto={this.props.userPhoto} users={usernames} messages={messages}/>
         </div>
         <div className='chat-chat-input'>
           <ChatInput onSend={this.sendMessage}/>
@@ -83,6 +83,7 @@ class Chat extends React.Component {
 
 const mapStateToProps = (state) => ({
   chat: state.chat,
+  userPhoto: state.user.data.photo,
   usernames: state.userDirectory
 });
 
