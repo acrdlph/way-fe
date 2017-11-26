@@ -28,7 +28,8 @@ class ImageSelection extends React.Component {
     this.uploadImage = this.uploadImage.bind(this);
     this.onChangeFile = this.onChangeFile.bind(this);
     this.state = {
-      invalidFile: false
+      invalidFile: false,
+      hasSelectedFile: false
     };
   }
 
@@ -40,6 +41,10 @@ class ImageSelection extends React.Component {
     this.props.uploadImage({fileName: this.props.isImageSelected, data: this.props.data});
     this.props.onUpload ? this.props.onUpload() : null;
     this.props.close();
+    this.setState({
+      invalidFile: false,
+      hasSelectedFile: false
+    });
   }
 
   onChangeFile() {
@@ -71,6 +76,7 @@ class ImageSelection extends React.Component {
           ctx.drawImage(previewImage, sx, sy, sw, sh, 0, 0, 100, 100);
           const file = canvas2Blob(canvas);
           that.props.setImage({fileName: 'profile-image', data: file});
+          that.setState({hasSelectedFile: true});
         };
         previewImage.src = event.target.result;
       };
@@ -101,6 +107,10 @@ class ImageSelection extends React.Component {
         left: '50%'
       }
     };
+
+    const previewVisibleClass = this.state.hasSelectedFile ? '' : 'image-selection-pic-invisible';
+    const oldPicVisibleClass = this.state.hasSelectedFile ? 'image-selection-pic-invisible' : '';
+
     return (
       <div className='image-selection'>
         <Modal
@@ -124,10 +134,15 @@ class ImageSelection extends React.Component {
                 style={{overflow: 'hidden'}}
               />
             </div>
-            <div className='image-selection-preview'>
+
+            <div className={'image-selection-preview ' + previewVisibleClass}>
               <img id='img-preview'/>
               <canvas width='100' height='100' id='img-preview-canvas' className='image-selection-canvas'/>
             </div>
+            <div className={'image-selection-old-pic ' + oldPicVisibleClass}>
+              <img id='img-old' src={this.props.user.data.photo}/>
+            </div>
+
             {errorMessage}
             {this.props.isImageSelected ? okButton : null}
             <div className='image-selection-button image-selection-button-cancel'>
@@ -147,6 +162,7 @@ class ImageSelection extends React.Component {
 const mapStateToProps = (state) => ({
   isImageSelected: state.profileImage.fileName,
   data: state.profileImage.data,
+  user: state.user
 });
 
 const mapDispatchToProps = dispatch => ({
