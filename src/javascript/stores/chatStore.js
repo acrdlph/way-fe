@@ -17,7 +17,7 @@ const onNewMessage = (message) => {
   const currentPath = window.location.hash;
   const userId = sessionStorage.getItem('userId');
   if(message.sender != userId && !currentPath.includes(message.sender)) {
-    const senderName = getUsername(message.sender);
+    const senderName = getUsername(message.sender).name;
     notify(`New message from ${senderName}`, notificationTypes.NEW_MESSAGE_RECEIVED, message.message);
   }
 };

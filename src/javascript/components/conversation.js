@@ -13,13 +13,20 @@ export default class Conversation extends React.Component {
     const bubbles = messages.map(msg => {
       const cssClass = msg.sender === user ? 'right' : 'left';
       const time = dateFormat(msg.createdAt, 'hh:MM');
-      const name = users[msg.sender];
+      const name = users[msg.sender].name;
+      const otherPhoto = users[msg.sender].photo;
       const style = {
         backgroundColor: msg.sender === user ? CHAT_BUBBLE_COLOR_LEFT : CHAT_BUBBLE_COLOR_RIGHT
       };
       let photo = 'assets/avatar-placeholder.png';
-      if(msg.sender === user && this.props.userPhoto) {
-        photo = this.props.userPhoto;
+      if(msg.sender === user) {
+        if(this.props.userPhoto) {
+          photo = this.props.userPhoto;
+        }
+      } else {
+        if(otherPhoto) {
+          photo = otherPhoto;
+        }
       }
 
       return (
