@@ -70,7 +70,7 @@ class ImageSelection extends React.Component {
           }
           ctx.drawImage(previewImage, sx, sy, sw, sh, 0, 0, 100, 100);
           const file = canvas2Blob(canvas);
-          that.props.setImage({fileName, data: file});
+          that.props.setImage({fileName: 'profile-image', data: file});
         };
         previewImage.src = event.target.result;
       };
