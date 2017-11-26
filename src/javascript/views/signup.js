@@ -154,7 +154,7 @@ class Signup extends React.Component {
       );
     });
     return (
-      <div>
+      <div style={{paddingBottom: '15px'}}>
         <div>
           <img src='assets/airport-selection-icon.png' className='signup-selection-icon'/>
         </div>
