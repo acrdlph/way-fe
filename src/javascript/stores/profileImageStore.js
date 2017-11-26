@@ -2,7 +2,8 @@ import _ from 'lodash';
 
 const types = {
   SHOW_MODAL: 'PROFILE_IMAGE_SHOW_MODAL',
-  SET_IMAGE: 'PROFILE_IMAGE_SET_IMAGE'
+  SET_IMAGE: 'PROFILE_IMAGE_SET_IMAGE',
+  UPLOADED_IMAGE: 'PROFILE_IMAGE_UPLOADED_IMAGE'
 };
 
 export const showModal = (isVisible) => ({
@@ -10,11 +11,32 @@ export const showModal = (isVisible) => ({
   isVisible
 });
 
-export const setImage = (fileName, data) => ({
+export const setImage = ({fileName, data}) => ({
   type: types.SET_IMAGE,
   fileName,
   data
 });
+
+export const uploadImage = ({fileName, data}) => dispatch => {
+  awaitFetch(fileName, data, dispatch);
+};
+
+const awaitFetch = async function awaitFetch(fileName, data, dispatch) {
+  const userId = sessionStorage.getItem('userId');
+  const endpoint = `api/users/${userId}/photo`;
+  try {
+    const formData  = new FormData();
+    formData.append('photo', data);    
+    const result = await fetch(endpoint, {
+      method: 'post',
+      body: formData
+    });
+    const resJson = await result.json();
+    dispatch({type: types.UPLOADED_IMAGE});
+  } catch(e) {
+    console.log(e);
+  }
+};
 
 
 const initialState = {
@@ -36,6 +58,8 @@ const reducer = (state = initialState, action) => {
         fileName: action.fileName,
         data: action.data
       };
+    case types.UPLOADED_IMAGE:
+      return state;
     default:
       return state;
   };

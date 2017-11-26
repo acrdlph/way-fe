@@ -28,7 +28,6 @@ const awaitFetch = async function awaitFetch(dispatch) {
   } catch(e) {
     console.log(e);
   }
-  
 };
 
 export const loadPartnerData = () => (dispatch) => {

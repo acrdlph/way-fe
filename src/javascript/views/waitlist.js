@@ -71,6 +71,7 @@ class WaitList extends React.Component {
         <WaitListItem
           key={key}
           interests={entry.interests}
+          photo={entry.photo}
           name={entry.name}
           timeLeft={entry.timeLeft}
           hasChat={entry.hasChat}

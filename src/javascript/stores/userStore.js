@@ -30,6 +30,7 @@ export const loadUserData = (userId) => (dispatch) => {
       id: userId,
       location: data.location.toLowerCase(),
       waitingTime: data.waiting_time,
+      photo:  data.photo,
       name: data.name,
       interests: data.interests
     };
@@ -48,7 +49,7 @@ export const updateUserData = (userId, data) => (dispatch) => {
     body,
     headers: new Headers({
       'content-type': 'application/json'
-    }),
+    })
   })
   .then((res) => res.json())
   .then((json) => {

@@ -2,7 +2,7 @@ import React from 'react';
 import Modal from 'react-modal';
 import { connect } from 'react-redux';
 import './image-selection-modal.less';
-import {showModal, setImage} from '../stores/profileImageStore';
+import {showModal, setImage, uploadImage} from '../stores/profileImageStore';
 
 const isValidFileName = filename => {
   return filename.endsWith('.jpg') || filename.endsWith('.png');
@@ -13,6 +13,7 @@ class ImageSelection extends React.Component {
   constructor(props) {
     super(props);
     this.selectFile = this.selectFile.bind(this);
+    this.uploadImage = this.uploadImage.bind(this);
     this.onChangeFile = this.onChangeFile.bind(this);
     this.state = {
       invalidFile: false
@@ -23,20 +24,25 @@ class ImageSelection extends React.Component {
     this.fileInput.click();
   }
 
+  uploadImage() {
+    this.props.uploadImage({fileName: this.props.isImageSelected, data: this.props.data});
+    this.props.onUpload ? this.props.onUpload() : null;
+    this.props.close();
+  }
+
   onChangeFile() {
     const fileName = this.fileInput.value;
     if(isValidFileName(fileName)) {
       this.setState({invalidFile:false});
       const that = this;
-      const file = this.fileInput.files[0];
+      const data = this.fileInput.files[0];
       const previewImage = document.getElementById('img-preview');
       const filereader = new FileReader();
       filereader.onload = function (event) {
-        const data = event.target.result;
-        previewImage.src = data;
+        previewImage.src = event.target.result;
         that.props.setImage({fileName, data});
       };
-      filereader.readAsDataURL(file);
+      filereader.readAsDataURL(data);
     } else {
       this.setState({invalidFile: true});
     }
@@ -67,7 +73,7 @@ class ImageSelection extends React.Component {
               <img id='img-preview'/>
             </div>
             {errorMessage}
-            {this.props.isImageSeleced ? okButton : null}
+            {this.props.isImageSelected ? okButton : null}
             <button onClick={this.props.close}>Cancel</button>
           </div>
         </Modal>
@@ -77,7 +83,7 @@ class ImageSelection extends React.Component {
 }
 
 const mapStateToProps = (state) => ({
-  isImageSeleced: state.profileImage.fileName,
+  isImageSelected: state.profileImage.fileName,
   data: state.profileImage.data,
 });
 
@@ -86,7 +92,8 @@ const mapDispatchToProps = dispatch => ({
     dispatch(showModal(false));
     dispatch(setImage(null, null)); // unset image
   },
-  setImage: (fileName, data) => dispatch(setImage(fileName, data))
+  setImage: (fileName, data) => dispatch(setImage(fileName, data)),
+  uploadImage: (fileName, data) => dispatch(uploadImage(fileName, data))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ImageSelection);

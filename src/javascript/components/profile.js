@@ -22,6 +22,7 @@ class Profile extends React.Component {
     this.changeName = this.changeName.bind(this);
     this.setEditable = this.setEditable.bind(this);
     this.saveProfile = this.saveProfile.bind(this);
+    this.refreshProfile = this.refreshProfile.bind(this);
     this.selectImage = this.selectImage.bind(this);
   }
 
@@ -51,14 +52,21 @@ class Profile extends React.Component {
     this.props.updateUserData(userId, data);
   }
 
+  refreshProfile() {
+    const userId = sessionStorage.getItem('userId');
+    this.props.loadUserData(userId);
+  }
+
   render() {
     const {user, isUserOnboarded} = this.props;
     if(user.loading) {
       return (<div>loading...</div>);
     }
-    const imageSelectionModal = this.props.showModal ? <ImageSelection/> : null;
+    const imageSelectionModal = this.props.showModal ? 
+      <ImageSelection onUpload={this.refreshProfile} /> : null;
     const name = _.get(user, 'data.name', '');
     const interests = _.get(user, 'data.interests', '');
+    const photo = _.get(user, 'data.photo', 'assets/avatar-placeholder.png');
     return !isUserOnboarded || this.props.user.isEditable ? (
       <div>
         Tell us a little bit more about you:
@@ -67,7 +75,7 @@ class Profile extends React.Component {
             <Avatar
               onClick={this.selectImage}
               size={50}
-              src='assets/avatar-placeholder.png'
+              src={photo}
             />
             {imageSelectionModal}
           </Col>

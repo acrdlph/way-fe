@@ -11,6 +11,7 @@ export default class WaitListItem extends React.Component {
     let {
       interests,
       name,
+      photo,
       timeLeft,
       hasChat,
       nonDeliveredChatCount,
@@ -22,6 +23,9 @@ export default class WaitListItem extends React.Component {
     }
     if(name.trim() === '') {
       name = 'No name specified';
+    }
+    if (!photo) {
+      photo = 'assets/avatar-placeholder.png';
     }
 
     // "timeLeft === undefined" means: this is the profile card
@@ -45,7 +49,7 @@ export default class WaitListItem extends React.Component {
         <div className='waitlist-item-avatar'>
           <Avatar
             size={50}
-            src='assets/avatar-placeholder.png'
+            src={photo}
           />
         </div>
 

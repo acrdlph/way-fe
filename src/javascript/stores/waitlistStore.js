@@ -107,6 +107,7 @@ const mapWaitListData = (data) => {
       id: entry.id,
       name: entry.name || entry.default_name || '',
       interests: entry.interests || '',
+      photo: entry.photo,
       timeLeft: entry.time_left,
       hasChat: entry.count > 0,
       nonDeliveredChatCount: entry.non_delivered_count,
