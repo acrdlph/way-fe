@@ -43,33 +43,36 @@ class ImageSelection extends React.Component {
   }
 
   onChangeFile() {
-    const fileName = this.fileInput.value;
-    if(isValidFileName(fileName)) {
+
+    if(isValidFileName(this.fileInput.value)) {
       this.setState({invalidFile:false});
       const that = this;
       let data = this.fileInput.files[0];
+      const fileName = data.name;
       const previewImage = document.getElementById('img-preview');
       const filereader = new FileReader();
       filereader.onload = function (event) {
+        previewImage.onload = function (event) {
+          const canvas = document.getElementById('img-preview-canvas');
+          const ctx = canvas.getContext("2d");
+          let sx, sy, sw, sh;
+          const smallerSideLength = Math.min(previewImage.width, previewImage.height);
+          if(previewImage.width === smallerSideLength) {
+            sx = 0;
+            sw = previewImage.width;
+            sy = 0.5 * (previewImage.height - previewImage.width);
+            sh = previewImage.width;
+          } else {
+            sx = 0.5 * (previewImage.width - previewImage.height);
+            sw = previewImage.height;
+            sy = 0;
+            sh = previewImage.height;
+          }
+          ctx.drawImage(previewImage, sx, sy, sw, sh, 0, 0, 100, 100);
+          const file = canvas2Blob(canvas);
+          that.props.setImage({fileName, data: file});
+        };
         previewImage.src = event.target.result;
-        const canvas = document.getElementById('img-preview-canvas');
-        const ctx = canvas.getContext("2d");
-        let sx, sy, sw, sh;
-        const smallerSideLength = Math.min(previewImage.width, previewImage.height);
-        if(previewImage.width === smallerSideLength) {
-          sx = 0;
-          sw = previewImage.width;
-          sy = 0.5 * (previewImage.height - previewImage.width);
-          sh = previewImage.width;
-        } else {
-          sx = 0.5 * (previewImage.width - previewImage.height);
-          sw = previewImage.height;
-          sy = 0;
-          sh = previewImage.height;
-        }
-        ctx.drawImage(previewImage, sx, sy, sw, sh, 0, 0, 100, 100);
-        const file = canvas2Blob(canvas);
-        that.props.setImage({fileName, data: file});
       };
       filereader.readAsDataURL(data);
     } else {
