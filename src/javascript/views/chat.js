@@ -3,7 +3,6 @@ import {connect} from 'react-redux';
 import {NavLink} from 'react-router-dom';
 import RaisedButton from 'material-ui/RaisedButton';
 import _ from 'lodash';
-import ChatHeader from '../components/chat-header';
 import ChatInput from '../components/chat-input';
 import Conversation from '../components/conversation';
 import {loadMessages, addMessagesToChat} from '../stores/chatStore';
@@ -72,7 +71,6 @@ class Chat extends React.Component {
     const chatParnerName = usernames[chatPartnerId];
     return (
       <div className='chat'>
-        <ChatHeader chatParnerName={chatParnerName}/>
         <div className='chat-content'>
           <Conversation user={userId} users={usernames} messages={messages}/>
         </div>
