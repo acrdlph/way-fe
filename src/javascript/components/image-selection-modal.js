@@ -9,6 +9,17 @@ const isValidFileName = filename => {
   return filename.endsWith('.jpg') || filename.endsWith('.png');
 };
 
+// src: https://stackoverflow.com/questions/19032406/convert-html5-canvas-into-file-to-be-uploaded
+const canvas2Blob = canvas => {
+  const canvasData = canvas.toDataURL();
+  var blobBin = atob(canvasData.split(',')[1]);
+  var array = [];
+  for(var i = 0; i < blobBin.length; i++) {
+      array.push(blobBin.charCodeAt(i));
+  }
+  return new Blob([new Uint8Array(array)], {type: 'image/png'});
+};
+
 class ImageSelection extends React.Component {
 
   constructor(props) {
@@ -36,7 +47,7 @@ class ImageSelection extends React.Component {
     if(isValidFileName(fileName)) {
       this.setState({invalidFile:false});
       const that = this;
-      const data = this.fileInput.files[0];
+      let data = this.fileInput.files[0];
       const previewImage = document.getElementById('img-preview');
       const filereader = new FileReader();
       filereader.onload = function (event) {
@@ -57,7 +68,8 @@ class ImageSelection extends React.Component {
           sh = previewImage.height;
         }
         ctx.drawImage(previewImage, sx, sy, sw, sh, 0, 0, 100, 100);
-        that.props.setImage({fileName, data});
+        const file = canvas2Blob(canvas);
+        that.props.setImage({fileName, data: file});
       };
       filereader.readAsDataURL(data);
     } else {
