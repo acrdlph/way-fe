@@ -64,14 +64,14 @@ class Chat extends React.Component {
     const chatItems = [];
     const userId = sessionStorage.getItem('userId');
     const chatPartnerId = _.get(this.props.match, 'params.chatPartnerId');
-    const usernames = this.props.usernames;
+    const userlist = this.props.userlist;
     const messages = this.props.chat.data;
     const connection = this.connection;
-    const chatParnerName = usernames[chatPartnerId];
+    const chatParnerName = userlist[chatPartnerId].name;
     return (
       <div className='chat'>
         <div className='chat-content'>
-          <Conversation user={userId} users={usernames} messages={messages}/>
+          <Conversation user={userId} userPhoto={this.props.userPhoto} users={userlist} messages={messages}/>
         </div>
         <div className='chat-chat-input'>
           <ChatInput onSend={this.sendMessage}/>
@@ -83,7 +83,8 @@ class Chat extends React.Component {
 
 const mapStateToProps = (state) => ({
   chat: state.chat,
-  usernames: state.userDirectory
+  userPhoto: state.user.data.photo,
+  userlist: state.userDirectory
 });
 
 const mapDispatchToProps = dispatch => ({

@@ -6,7 +6,10 @@ const addUserToDirectory = (userDetails) => {
   if(name && name.trim() === '') {
     name = 'Anonymous';
   }
-  users[userDetails.id] = name;
+  users[userDetails.id] = {
+    name,
+    photo: userDetails.photo
+  };
   return users;
 };
 
@@ -17,7 +20,10 @@ const createUserDirectory = (data) => {
     if(name.trim() === '') {
       name = 'Anonymous';
     }
-    users[user.id] = name;
+    users[user.id] = {
+      name,
+      photo: user.photo
+    };
   });
   updateSessionStorage(users);
   return users;
