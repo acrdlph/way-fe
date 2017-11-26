@@ -8,6 +8,7 @@ import fetch from 'isomorphic-fetch';
 import {Row, Col} from 'react-bootstrap';
 import _ from 'lodash';
 import {supportedLocations} from '../util/constants';
+import Infobox from '../components/infobox';
 import {loadPartnerData} from '../stores/partnerStore';
 import './signup.less';
 
@@ -37,6 +38,7 @@ class Signup extends React.Component {
     }
     this.props.loadPartnerData();
     this.state = {
+      showLocationRequiredHint: false,
       geolocation: null,
       airport: isValidLocation ? locationIdFromPath : null,
       waitingTime: 30
@@ -118,6 +120,12 @@ class Signup extends React.Component {
   }
 
   async saveAndContinue() {
+    if (!this.state.airport) {
+      this.setState({
+        showLocationRequiredHint: true
+      });
+      return
+    }
     const body = JSON.stringify({
       'location': this.state.airport,
       'waiting_time': this.state.waitingTime
@@ -151,6 +159,10 @@ class Signup extends React.Component {
           <img src='assets/airport-selection-icon.png' className='signup-selection-icon'/>
         </div>
         <p>I'm waiting @</p>
+        <Infobox
+          visible={this.state.showLocationRequiredHint}
+          text={'Please enter your location first to join the waitlist'}
+        />
         <Select
           name="waiting-location"
           value={this.state.airport}
