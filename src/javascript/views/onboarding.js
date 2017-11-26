@@ -45,7 +45,10 @@ export default class Onboarding extends React.Component {
 
         <div className='onboarding-enter-button'>
           <NavLink to="/signup">
-            <RaisedButton label="Join the WaitList" />
+            <RaisedButton
+              label="Join the WaitList"
+              backgroundColor='#ffd801'
+            />
           </NavLink>
         </div>
 

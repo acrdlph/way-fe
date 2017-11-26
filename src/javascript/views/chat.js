@@ -1,7 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import {NavLink} from 'react-router-dom';
-import RaisedButton from 'material-ui/RaisedButton';
 import _ from 'lodash';
 import ChatInput from '../components/chat-input';
 import Conversation from '../components/conversation';

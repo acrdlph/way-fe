@@ -1,7 +1,6 @@
 import React from 'react';
 import {NavLink} from 'react-router-dom';
 import {Row, Col} from 'react-bootstrap';
-import RaisedButton from 'material-ui/RaisedButton';
 import CommunicationChatBubble from 'material-ui/svg-icons/communication/chat-bubble';
 import Avatar from 'material-ui/Avatar';
 import './waitlist-item.less';

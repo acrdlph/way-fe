@@ -20,7 +20,7 @@ class Signup extends React.Component {
     const locationIdFromPath = _.get(this.props.match, 'params.locationId');
     // TODO make this validation using partner api
     const isValidLocation = locationIdFromPath && _.includes(supportedLocations, locationIdFromPath);
-    
+
     this.changeAirport = this.changeAirport.bind(this);
     this.changeWaitingTime = this.changeWaitingTime.bind(this);
     this.save = this.save.bind(this);
@@ -140,7 +140,7 @@ class Signup extends React.Component {
     _.each(this.props.partners.data, (entry, key) => {
       locationList.push(
         {
-          value: entry.uniqueKey, 
+          value: entry.uniqueKey,
           label: entry.name
         }
       );
@@ -183,7 +183,11 @@ class Signup extends React.Component {
           </div>
         </div>
 
-        <RaisedButton label='Sign In' onClick={this.saveAndContinue}/>
+        <RaisedButton
+          label='Sign In'
+          backgroundColor='#ffd801'
+          onClick={this.saveAndContinue}
+        />
       </div>
     );
   }

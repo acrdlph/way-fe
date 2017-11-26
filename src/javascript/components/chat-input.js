@@ -46,7 +46,12 @@ export default class ChatInput extends React.Component {
           />
         </div>
         <div className='chat-input-button'>
-          <RaisedButton label="Send" onClick={this.sendMessage}/>
+          <RaisedButton
+            label="Send"
+            backgroundColor='#ffd801'
+            onClick={this.saveAndContinue}
+            onClick={this.sendMessage}
+          />
         </div>
       </div>
     );

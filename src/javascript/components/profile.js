@@ -62,7 +62,7 @@ class Profile extends React.Component {
     if(user.loading) {
       return (<div>loading...</div>);
     }
-    const imageSelectionModal = this.props.showModal ? 
+    const imageSelectionModal = this.props.showModal ?
       <ImageSelection onUpload={this.refreshProfile} /> : null;
     const name = _.get(user, 'data.name', '');
     const interests = _.get(user, 'data.interests', '');
@@ -86,7 +86,12 @@ class Profile extends React.Component {
             <TextField defaultValue={interests} hintText="Interests" onChange={this.changeInterests}/>
           </Col>
           <Col className='col-xs-12 col-lg-2'>
-            <RaisedButton label="OK" onClick={this.saveProfile}/>
+            <RaisedButton
+              label="OK"
+              backgroundColor='#ffd801'
+              onClick={this.saveAndContinue}
+              onClick={this.saveProfile}
+            />
           </Col>
         </Row>
       </div>

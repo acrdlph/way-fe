@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import Slider from 'material-ui/Slider';
 import DropDownMenu from 'material-ui/DropDownMenu';
 import MenuItem from 'material-ui/MenuItem';
-import RaisedButton from 'material-ui/RaisedButton';
 import {List} from 'material-ui/List';
 import Avatar from 'material-ui/Avatar';
 import _ from 'lodash';
