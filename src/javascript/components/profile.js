@@ -71,7 +71,7 @@ class Profile extends React.Component {
     return !isUserOnboarded || this.props.user.isEditable ? (
       <div className='profile'>
         <Row>
-          <Col className='col-xs-12 col-lg-2'>
+          <Col className='col-xs-12 col-lg-4'>
             <Avatar
               onClick={this.selectImage}
               size={100}
@@ -79,7 +79,7 @@ class Profile extends React.Component {
             />
             {imageSelectionModal}
           </Col>
-          <Col className='col-xs-12 col-lg-4'>
+          <Col className='col-xs-12 col-lg-8'>
             <TextField
               defaultValue={name}
               hintText="Name"
@@ -87,7 +87,7 @@ class Profile extends React.Component {
               fullWidth='true'
             />
           </Col>
-          <Col className='col-xs-12 col-lg-4'>
+          <Col className='col-xs-12 col-lg-8'>
             <TextField
               defaultValue={interests}
               hintText="Interests"
@@ -95,7 +95,7 @@ class Profile extends React.Component {
               fullWidth='true'
             />
           </Col>
-          <Col className='col-xs-12 col-lg-2'>
+          <Col className='col-xs-12 col-lg-8'>
             <RaisedButton
               label="OK"
               backgroundColor='#ffd801'
