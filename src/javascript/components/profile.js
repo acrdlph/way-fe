@@ -84,7 +84,7 @@ class Profile extends React.Component {
               defaultValue={name}
               hintText="Name"
               onChange={this.changeName}
-              fullWidth='true'
+              fullWidth={true}
             />
           </Col>
           <Col className='col-xs-12 col-lg-8'>
@@ -92,7 +92,7 @@ class Profile extends React.Component {
               defaultValue={interests}
               hintText="Interests"
               onChange={this.changeInterests}
-              fullWidth='true'
+              fullWidth={true}
             />
           </Col>
           <Col className='col-xs-12 col-lg-8'>
@@ -101,7 +101,7 @@ class Profile extends React.Component {
               backgroundColor='#ffd801'
               onClick={this.saveAndContinue}
               onClick={this.saveProfile}
-              fullWidth='true'
+              fullWidth={true}
             />
           </Col>
         </Row>
