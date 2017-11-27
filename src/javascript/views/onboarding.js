@@ -18,19 +18,26 @@ export default class Onboarding extends React.Component {
     return (
       <div className='onboarding'>
 
+        <div className='onboarding-logo'>
+          <img
+            className='logo'
+            src='assets/waitlistlogo.svg'
+          />
+        </div>
+
         <div className='onboarding-carousel'>
           <Slider ref='slider' {...imageCarouselSettings}>
 
             <div className='onboarding-carousel-item'>
               <img src='assets/onboarding-1.png' className='onboarding-carousel-item-image'/>
               <div className='onboarding-carousel-item-text'>
-                Bored?
+                Traveling alone?
               </div>
             </div>
             <div className='onboarding-carousel-item'>
               <img src='assets/onboarding-2.png' className='onboarding-carousel-item-image'/>
               <div className='onboarding-carousel-item-text'>
-                Tell people what you are interested in.
+                Tell other passengers what you are interested in.
               </div>
             </div>
             <div className='onboarding-carousel-item'>
@@ -51,6 +58,11 @@ export default class Onboarding extends React.Component {
             />
           </NavLink>
         </div>
+
+        <p className='onboarding-legal-texts'>
+          We will ask for your phone's GPS to connect you with the people around you.
+          If you don't like that you can also type in your waiting location manually.
+        </p>
 
       </div>
     );
