@@ -200,7 +200,7 @@ class Signup extends React.Component {
         </div>
 
         <RaisedButton
-          label='Sign In'
+          label="See who's here"
           backgroundColor='#ffd801'
           onClick={this.saveAndContinue}
         />
