@@ -165,6 +165,7 @@ class Signup extends React.Component {
         />
         <Select
           className='signup-location-select'
+          placeholder='Enter location'
           style={{width: '300px'}}
           name="waiting-location"
           value={this.state.airport}
@@ -189,7 +190,7 @@ class Signup extends React.Component {
           <div className="signup-wait-for-minutes">{waitingTime} Minutes</div>
           <div className='signup-slider'>
             <Slider
-              sliderStyle={{height: '4px', 'margin-top': '10px'}}
+              sliderStyle={{height: '4px'}}
               min={10}
               max={300}
               step={10}
