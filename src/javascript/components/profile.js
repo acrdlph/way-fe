@@ -9,6 +9,7 @@ import WaitListItem from '../components/waitlist-item';
 import {loadUserData, updateUserData, editUserData, isOnboarded} from '../stores/userStore';
 import {showModal} from '../stores/profileImageStore';
 import ImageSelection from './image-selection-modal';
+import './profile.less';
 
 class Profile extends React.Component {
 
@@ -68,22 +69,31 @@ class Profile extends React.Component {
     const interests = _.get(user, 'data.interests', '');
     const photo = _.get(user, 'data.photo', 'assets/avatar-placeholder.png');
     return !isUserOnboarded || this.props.user.isEditable ? (
-      <div>
-        Tell us a little bit more about you:
+      <div className='profile'>
         <Row>
           <Col className='col-xs-12 col-lg-2'>
             <Avatar
               onClick={this.selectImage}
-              size={50}
+              size={100}
               src={photo}
             />
             {imageSelectionModal}
           </Col>
           <Col className='col-xs-12 col-lg-4'>
-            <TextField defaultValue={name} hintText="Name" onChange={this.changeName}/>
+            <TextField
+              defaultValue={name}
+              hintText="Name"
+              onChange={this.changeName}
+              fullWidth='true'
+            />
           </Col>
           <Col className='col-xs-12 col-lg-4'>
-            <TextField defaultValue={interests} hintText="Interests" onChange={this.changeInterests}/>
+            <TextField
+              defaultValue={interests}
+              hintText="Interests"
+              onChange={this.changeInterests}
+              fullWidth='true'
+            />
           </Col>
           <Col className='col-xs-12 col-lg-2'>
             <RaisedButton
@@ -91,6 +101,7 @@ class Profile extends React.Component {
               backgroundColor='#ffd801'
               onClick={this.saveAndContinue}
               onClick={this.saveProfile}
+              fullWidth='true'
             />
           </Col>
         </Row>
