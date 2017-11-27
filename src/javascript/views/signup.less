@@ -18,6 +18,21 @@
   font-size: 0.8em;
 }
 
+.signup-im-here {
+  font-size: 10px;
+}
+
+.signup-wait-for {
+  font-size: 10px;
+  padding-top: 2px;
+}
+
+.signup-wait-for-minutes {
+  font-size: 25px;
+  padding-top: 3px;
+  font-weight: 500;
+}
+
 /**
  * React Select
  * ============
@@ -27,7 +42,10 @@
 */
 .Select {
   position: relative;
-  width: 200px;
+  width: 300px;
+  height: 49px;
+  font-size: 25px;
+  font-weight: 500;
   margin: 0 auto;
 }
 .Select input::-webkit-contacts-auto-fill-button,
@@ -129,11 +147,11 @@
   display: table;
   border-spacing: 0;
   border-collapse: separate;
-  height: 36px;
+  height: 49px;
   outline: none;
   overflow: hidden;
   position: relative;
-  width: 200px;
+  width: 300px;
   margin: 0 auto;
 }
 .Select-control:hover {
@@ -148,7 +166,7 @@
   bottom: 0;
   color: #aaa;
   left: 0;
-  line-height: 34px;
+  line-height: 45px;
   padding-left: 10px;
   padding-right: 10px;
   position: absolute;
@@ -160,13 +178,16 @@
   white-space: nowrap;
 }
 .Select-input {
-  height: 34px;
+  height: 49px;
   padding-left: 10px;
   padding-right: 10px;
   vertical-align: middle;
 }
 .Select-input > input {
-  width: 100%;
+  width: 100% !important;
+  vertical-align: middle;
+  text-align: center;
+  vertical-align: middle;
   background: none transparent;
   border: 0 none;
   box-shadow: none;
@@ -176,9 +197,9 @@
   font-size: inherit;
   margin: 0;
   outline: none;
-  line-height: 17px;
+  line-height: 45px;
   /* For IE 8 compatibility */
-  padding: 8px 0 12px;
+  padding: 1px 0 12px;
   /* For IE 8 compatibility */
   -webkit-appearance: none;
 }

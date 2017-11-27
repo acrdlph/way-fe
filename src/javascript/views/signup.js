@@ -158,12 +158,14 @@ class Signup extends React.Component {
         <div>
           <img src='assets/airport-selection-icon.png' className='signup-selection-icon'/>
         </div>
-        <p>I'm waiting @</p>
+        <p className='signup-im-here'>I'm here</p>
         <Infobox
           visible={this.state.showLocationRequiredHint}
           text={'Please enter your location first to join the waitlist'}
         />
         <Select
+          className='signup-location-select'
+          style={{width: '300px'}}
           name="waiting-location"
           value={this.state.airport}
           onChange={this.changeAirport}
@@ -183,10 +185,12 @@ class Signup extends React.Component {
         </div>
 
         <div>
-          <div>I need to wait {waitingTime} minutes.</div>
+          <div className="signup-wait-for">Waiting for</div>
+          <div className="signup-wait-for-minutes">{waitingTime} Minutes</div>
           <div className='signup-slider'>
             <Slider
-              min={20}
+              sliderStyle={{height: '4px', 'margin-top': '10px'}}
+              min={10}
               max={300}
               step={10}
               defaultValue={30}
