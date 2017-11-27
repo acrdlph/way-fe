@@ -59,6 +59,11 @@ export default class Onboarding extends React.Component {
           </NavLink>
         </div>
 
+        <p className='onboarding-legal-texts'>
+          We will ask for your phone's GPS to connect you with the people around you.<br/>
+          If you don't like that you can also type in your waiting location manually.
+        </p>
+
       </div>
     );
   }
