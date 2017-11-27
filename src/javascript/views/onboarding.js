@@ -18,6 +18,13 @@ export default class Onboarding extends React.Component {
     return (
       <div className='onboarding'>
 
+        <div className='onboarding-logo'>
+          <img
+            className='logo'
+            src='assets/waitlistlogo.svg'
+          />
+        </div>
+
         <div className='onboarding-carousel'>
           <Slider ref='slider' {...imageCarouselSettings}>
 
