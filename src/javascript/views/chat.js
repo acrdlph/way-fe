@@ -2,6 +2,7 @@ import React from 'react';
 import {connect} from 'react-redux';
 import {NavLink} from 'react-router-dom';
 import _ from 'lodash';
+import {trackPageView} from '../util/google-analytics';
 import ChatInput from '../components/chat-input';
 import Conversation from '../components/conversation';
 import {loadMessages, addMessagesToChat} from '../stores/chatStore';
@@ -11,6 +12,9 @@ class Chat extends React.Component {
 
   constructor(props) {
     super(props);
+
+    const path = this.props.location.pathname;
+    trackPageView(path);
 
     const userId = sessionStorage.getItem('userId');
     const chatPartnerId = _.get(this.props.match, 'params.chatPartnerId');

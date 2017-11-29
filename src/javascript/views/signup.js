@@ -7,6 +7,7 @@ import Select from 'react-select';
 import fetch from 'isomorphic-fetch';
 import {Row, Col} from 'react-bootstrap';
 import _ from 'lodash';
+import {trackPageView} from '../util/google-analytics';
 import {supportedLocations} from '../util/constants';
 import Infobox from '../components/infobox';
 import {loadPartnerData} from '../stores/partnerStore';
@@ -18,6 +19,10 @@ class Signup extends React.Component {
 
   constructor(props) {
     super(props);
+
+    const path = this.props.location.pathname;
+    trackPageView(path);
+
     const locationIdFromPath = _.get(this.props.match, 'params.locationId');
     // TODO make this validation using partner api
     const isValidLocation = locationIdFromPath && _.includes(supportedLocations, locationIdFromPath);

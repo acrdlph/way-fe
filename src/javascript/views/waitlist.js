@@ -7,6 +7,7 @@ import {List} from 'material-ui/List';
 import Avatar from 'material-ui/Avatar';
 import _ from 'lodash';
 import fetch from 'isomorphic-fetch';
+import {trackPageView} from '../util/google-analytics';
 import Profile from '../components/profile';
 import WaitListItem from '../components/waitlist-item';
 import Infobox from '../components/infobox';
@@ -21,6 +22,9 @@ class WaitList extends React.Component {
 
   constructor(props) {
     super(props);
+
+    const path = this.props.location.pathname;
+    trackPageView(path);
 
     const userId = sessionStorage.getItem('userId');
     const locationIdFromPath = _.get(this.props.match, 'params.locationId');
