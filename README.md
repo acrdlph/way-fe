@@ -42,3 +42,9 @@ This will run webpack and set up all the configuration for the backend connectio
 If you want to enable the notification feature, run the build with this optional flag:
 
     --enableNotifications true
+
+You can provide a Google Analytics ID with
+
+    --googleAnalyticsId some-id-123
+
+(If you do not provide an ID, GA is turned off)
