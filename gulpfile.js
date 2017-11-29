@@ -15,13 +15,16 @@ gulp.task('build', ['webpack'], function(cb) {
   const hostname = util.env.hostname;
   const port = util.env.port;
   const isNotificationFeatureEnabled = util.env.enableNotifications || false;
+  const googleAnalyticsId = util.env.googleAnalyticsId || '';
   if(!hostname || !port) {
     throw new Error("Please provide --hostname and --port as argument!");
   }
   const websocketUrl = 'wss://' + hostname + ':' + port + '/messages/';
   const globals = `
+    DEVELOPMENT_MODE=false
     WEBSOCKET_BASE_URL='${websocketUrl}'
     FEATURE_NOTIFICATIONS=${isNotificationFeatureEnabled}
+    GOOGLE_ANALYTICS_ID='${googleAnalyticsId}'
   `;
   fs.writeFileSync('temp/globals.js', globals);
   gulpSequence('revision', cb);

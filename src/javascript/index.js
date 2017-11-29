@@ -5,9 +5,12 @@ import {Provider} from 'react-redux';
 import {createStore, applyMiddleware} from 'redux';
 import thunk from 'redux-thunk';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import {initializeGoogleAnalytics} from './util/google-analytics';
 import rootReducer from './stores';
 import App from './app';
 import './index.less';
+
+initializeGoogleAnalytics();
 
 const store = createStore(
   rootReducer,

@@ -20,8 +20,10 @@ module.exports = {
     new CopyWebpackPlugin([{ from: './src/static/' }]),
     new ExtractTextPlugin('style.css'),
     new webpack.DefinePlugin({
+      DEVELOPMENT_MODE: true,
       WEBSOCKET_BASE_URL: JSON.stringify('ws://'+backend.host+':'+backend.port+'/messages/'),
-      FEATURE_NOTIFICATIONS: true
+      FEATURE_NOTIFICATIONS: true,
+      GOOGLE_ANALYTICS_ID: ''
     }),
   ],
   module: {
