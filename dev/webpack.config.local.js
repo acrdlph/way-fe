@@ -23,7 +23,7 @@ module.exports = {
       DEVELOPMENT_MODE: true,
       WEBSOCKET_BASE_URL: JSON.stringify('ws://'+backend.host+':'+backend.port+'/messages/'),
       FEATURE_NOTIFICATIONS: true,
-      GOOGLE_ANALYTICS_ID: ''
+      GOOGLE_ANALYTICS_ID: JSON.stringify('')
     }),
   ],
   module: {
