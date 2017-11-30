@@ -11,6 +11,7 @@ import {trackPageView} from '../util/google-analytics';
 import Profile from '../components/profile';
 import WaitListItem from '../components/waitlist-item';
 import Infobox from '../components/infobox';
+import EmptyLocationMessage from '../components/empty-location-message';
 import {loadWaitlist} from '../stores/waitlistStore';
 import {loadUserData, isOnboarded} from '../stores/userStore';
 import {loadPartnerData} from '../stores/partnerStore';
@@ -101,7 +102,9 @@ class WaitList extends React.Component {
   render() {
     const list = [];
     const waitlistItemOfAirport = this.createAirportCard();
-    list.push(waitlistItemOfAirport);
+    if(waitlistItemOfAirport) {
+      list.push(waitlistItemOfAirport);
+    }
 
     const {isUserOnboarded} = this.props;
     _.each(this.props.waitlist.data, (entry, key) => {
@@ -122,6 +125,12 @@ class WaitList extends React.Component {
         />
       );
     });
+
+    if(list.length == 0) {
+      list.push(
+        <EmptyLocationMessage/>
+      );
+    }
 
     return (
       <div>
