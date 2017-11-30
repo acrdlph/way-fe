@@ -14,7 +14,8 @@ class Chat extends React.Component {
     super(props);
 
     const path = this.props.location.pathname;
-    trackPageView(path);
+    const chatPathWithoutPartnerId = path.substring(0, path.indexOf("/chat")+5);
+    trackPageView(chatPathWithoutPartnerId);
 
     const userId = sessionStorage.getItem('userId');
     const chatPartnerId = _.get(this.props.match, 'params.chatPartnerId');
