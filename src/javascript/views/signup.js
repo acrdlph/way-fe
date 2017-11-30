@@ -55,8 +55,7 @@ class Signup extends React.Component {
   }
 
   componentDidMount() {
-    // No need because of places api
-    // this.buildLocation();
+    this.buildLocation();
   }
 
   changeAirport(event) {
@@ -96,15 +95,17 @@ class Signup extends React.Component {
     if (navigator.geolocation && !geolocationAvailable) {
       try {
         const location = await this.getGeolocation();
-        console.log(location);
-        geolocationAvailable = true;
-        const body = JSON.stringify({
-          geolocation: {
-            longitude: location.coords.longitude,
-            latitude: location.coords.latitude
-          }
+        const geolocation = {
+          lat: location.coords.latitude,
+          lng: location.coords.longitude
+        };
+        const circle = new google.maps.Circle({
+          center: geolocation,
+          radius: location.coords.accuracy
         });
-        this.save(body);
+        if (autocompleteApi) {
+          autocompleteApi.setBounds(circle.getBounds());
+        } 
       } catch(error) {
         console.log(error);
       }
