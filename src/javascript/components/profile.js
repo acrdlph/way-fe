@@ -92,7 +92,7 @@ class Profile extends React.Component {
           <Col className='col-xs-12 col-lg-8'>
             <TextField
               defaultValue={interests}
-              hintText="Interests"
+              hintText="What are you looking for?"
               onChange={this.changeInterests}
               fullWidth={true}
             />
