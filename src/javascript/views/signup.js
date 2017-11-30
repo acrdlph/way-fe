@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import Slider from 'material-ui/Slider';
 import RaisedButton from 'material-ui/RaisedButton';
 import {NavLink} from 'react-router-dom';
-import Select from 'react-select';
 import fetch from 'isomorphic-fetch';
 import {Row, Col} from 'react-bootstrap';
 import _ from 'lodash';
@@ -13,7 +12,10 @@ import Infobox from '../components/infobox';
 import {loadPartnerData} from '../stores/partnerStore';
 import './signup.less';
 
+const locationInput = 'signup-location-input';
+
 let geolocationAvailable = false;
+let autocompleteApi = false;
 
 class Signup extends React.Component {
 
@@ -34,6 +36,8 @@ class Signup extends React.Component {
     this.saveAndContinue = this.saveAndContinue.bind(this);
     this.getGeolocation = this.getGeolocation.bind(this);
     this.buildLocation = this.buildLocation.bind(this);
+    this.initAutoComplete = this.initAutoComplete.bind(this);
+    this.changeGeolocation = this.changeGeolocation.bind(this);
     this.renderLocationInput = this.renderLocationInput.bind(this);
 
     const userId = sessionStorage.getItem('userId');
@@ -51,12 +55,25 @@ class Signup extends React.Component {
   }
 
   componentDidMount() {
-    this.buildLocation();
+    // No need because of places api
+    // this.buildLocation();
   }
 
   changeAirport(event) {
     this.setState({
       airport: event ? event.value : null
+    });
+  }
+
+  changeGeolocation() {
+    const place = autocompleteApi.getPlace();
+    console.log(place);
+    this.setState({
+      airport: place.place_id,
+      geolocation: {
+        longitude: place.geometry.location.lng(),
+        latitude: place.geometry.location.lat()
+      }
     });
   }
 
@@ -133,6 +150,7 @@ class Signup extends React.Component {
     }
     const body = JSON.stringify({
       'location': this.state.airport,
+      'geolocation': this.state.geolocation,
       'waiting_time': this.state.waitingTime
     });
     // if geolocationAvailable then we have already saved the user then update
@@ -145,6 +163,11 @@ class Signup extends React.Component {
     const locationId = json.location.toLowerCase();
     sessionStorage.setItem('locationId', locationId);
     this.props.history.push(`/waitlist/${locationId}`);
+  }
+
+  initAutoComplete() {
+    autocompleteApi = new google.maps.places.Autocomplete(document.getElementById(locationInput));
+    autocompleteApi.addListener('place_changed', this.changeGeolocation);
   }
 
   renderLocationInput() {
@@ -168,15 +191,9 @@ class Signup extends React.Component {
           visible={this.state.showLocationRequiredHint}
           text={'Please enter your location first to join the waitlist'}
         />
-        <Select
-          className='signup-location-select'
-          placeholder='Enter location'
-          style={{width: '300px'}}
-          name="waiting-location"
-          value={this.state.airport}
-          onChange={this.changeAirport}
-          options={locationList}
-        />
+        <input className="signup-location-input-style" id={locationInput} type="text"
+            placeholder="Enter location"/>
+        {this.initAutoComplete()}
       </div>
     );
   }
