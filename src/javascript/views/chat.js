@@ -2,7 +2,7 @@ import React from 'react';
 import {connect} from 'react-redux';
 import {NavLink} from 'react-router-dom';
 import _ from 'lodash';
-import {trackPageView} from '../util/google-analytics';
+import {trackPageView, trackEvent, events} from '../util/google-analytics';
 import ChatInput from '../components/chat-input';
 import Conversation from '../components/conversation';
 import {loadMessages, addMessagesToChat} from '../stores/chatStore';
@@ -37,10 +37,14 @@ class Chat extends React.Component {
     const addMessages = this.props.addMessagesToChat;
     this.connection.onmessage = function (event) {
       console.log("receive websocket message: " + JSON.stringify(event.data));
-      addMessages([JSON.parse(event.data)], chatPartnerId);
+      const message = JSON.parse(event.data);
+      addMessages([message], chatPartnerId);
       const path = sessionStorage.getItem('path');
       if(path.includes('chat')) {
         window.scrollTo(0, document.body.scrollHeight);
+      }
+      if(message.sender_id !== userId) {
+        trackEvent(events.USER_RECEIVED_MESSAGE);
       }
     };
   }
@@ -56,6 +60,7 @@ class Chat extends React.Component {
     const payloadString = JSON.stringify(payload);
     console.log("send message: " + payloadString);
     this.connection.send(payloadString);
+    trackEvent(events.USER_SEND_MESSAGE);
     /*
     // this only works if server and client time are the same...
     this.props.addMessagesToChat([{
