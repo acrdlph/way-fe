@@ -2,6 +2,7 @@ import React from 'react';
 import Modal from 'react-modal';
 import { connect } from 'react-redux';
 import RaisedButton from 'material-ui/RaisedButton';
+import {trackEvent, events} from '../util/google-analytics';
 import './image-selection-modal.less';
 import {showModal, setImage, uploadImage} from '../stores/profileImageStore';
 
@@ -39,6 +40,7 @@ class ImageSelection extends React.Component {
 
   uploadImage() {
     this.props.uploadImage({fileName: this.props.isImageSelected, data: this.props.data});
+    trackEvent(events.USER_UPLOADED_PROFILE_PHOTO);
     this.props.onUpload ? this.props.onUpload() : null;
     this.props.close();
     this.setState({

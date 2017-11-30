@@ -2,6 +2,7 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import RaisedButton from 'material-ui/RaisedButton';
 import Slider from 'react-slick';
+import {trackPageView} from '../util/google-analytics';
 import './onboarding.less';
 
 // check https://github.com/akiran/react-slick for all styling options
@@ -14,6 +15,14 @@ const imageCarouselSettings = {
 };
 
 export default class Onboarding extends React.Component {
+
+  constructor(props) {
+    super(props);
+    const path = this.props.location.pathname;
+    trackPageView(path);
+
+  }
+
   render() {
     return (
       <div className='onboarding'>
