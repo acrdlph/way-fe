@@ -4,7 +4,7 @@ import _ from 'lodash';
 import {supportedLocations} from '../util/constants';
 import './footer.less';
 
-class Header extends React.Component {
+class Footer extends React.Component {
   render() {
     let airport = null;
     const {airportName} = this.props;
@@ -35,4 +35,4 @@ const mapStateToProps = (state) => ({
   airportName: _.get(state.user, 'data.location')
 });
 
-export default connect(mapStateToProps)(Header);
+export default connect(mapStateToProps)(Footer);
