@@ -1,6 +1,6 @@
 import ReactGA from 'react-ga';
 
-export const actions = {
+export const events = {
   USER_SELECTED_LOCATION: 'User selected a location',
   USER_CHANGED_WAITING_TIME: 'User changed waiting time',
   USER_UPLOADED_PROFILE_PHOTO: 'User uploaded profile photo',
@@ -22,11 +22,13 @@ export const trackPageView = (path) => {
   }
 };
 
-export const trackEvent = (action, value) => {
+export const trackEvent = (action, parameters) => {
   if(GOOGLE_ANALYTICS_ID.length > 0) {
+    const {label = null, value = null} = parameters;
     ReactGA.event({
       category: 'User',
       action,
+      label,
       value
     });
   }
