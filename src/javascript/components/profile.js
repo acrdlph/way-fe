@@ -6,6 +6,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 import Avatar from 'material-ui/Avatar';
 import WaitListItem from '../components/waitlist-item';
+import {trackEvent, events} from '../util/google-analytics';
 import {loadUserData, updateUserData, editUserData, isOnboarded} from '../stores/userStore';
 import {showModal} from '../stores/profileImageStore';
 import ImageSelection from './image-selection-modal';
@@ -51,6 +52,7 @@ class Profile extends React.Component {
     };
     console.log('Save profile: ' + JSON.stringify(data));
     this.props.updateUserData(userId, data);
+    trackEvent(events.USER_CHANGED_PROFILE_DATA);
   }
 
   refreshProfile() {
