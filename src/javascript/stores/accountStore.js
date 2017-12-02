@@ -74,6 +74,7 @@ export const login = (loginname, password) => (dispatch) => {
     loginname,
     password
   });
+  console.log("body", body);
   fetch(endpoint, {
     method: 'post',
     body,
@@ -85,6 +86,7 @@ export const login = (loginname, password) => (dispatch) => {
   .then((data) => {
     dispatch({
       type: types.ACCOUNT_LOGIN_PASSED,
+      userId: data.token
     });
   })
   .catch(error => {
@@ -159,6 +161,7 @@ const reducer = (state = initialState, action) => {
     case types.ACCOUNT_LOGIN_PASSED:
       return {
         ...state,
+        userId: action.userId,
         isLoginPending: false,
         wasLoginSuccessful: true
       };
