@@ -6,6 +6,7 @@ import userDirectoryStore from './userDirectoryStore';
 import partnerStore from './partnerStore';
 import profileImageStore from './profileImageStore';
 import accountStore from './accountStore';
+import challengeStore from './challengeStore';
 
 export default combineReducers({
   waitlist: waitlistStore.reducer,
@@ -14,5 +15,6 @@ export default combineReducers({
   userDirectory: userDirectoryStore.reducer,
   partners: partnerStore.reducer,
   profileImage: profileImageStore.reducer,
-  account: accountStore.reducer
+  account: accountStore.reducer,
+  challenge: challengeStore.reducer
 });
