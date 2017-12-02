@@ -55,6 +55,13 @@ class Onboarding extends React.Component {
     this.changeUsername = this.changeUsername.bind(this);
   }
 
+  componentWillReceiveProps(props) {
+    if(props.account.wasRegistrationSuccessful && !this.props.account.wasRegistrationSuccessful) {
+      sessionStorage.setItem('userId', props.account.userId);
+      this.props.history.push(`/signup`);
+    }
+  }
+
   changeEmail(event, email) {
     this.setState({email});
   }
@@ -102,9 +109,11 @@ class Onboarding extends React.Component {
 
   render() {
     const {errorText, username} = this.state;
-    const {isCheckingAvailability, isAvailable} = this.props.account;
+    const {isCheckingAvailability, isAvailable, isRegisteringAccount} = this.props.account;
     console.log("errorText", errorText);
     const isUsernameTaken = !!username && isAvailable==false;
+    const isRegistrationButtonDisabled = isRegisteringAccount;
+
     return (
       <div className='registration container'>
 
@@ -145,6 +154,7 @@ class Onboarding extends React.Component {
           backgroundColor='#ffd801'
           onClick={this.register}
           fullWidth={true}
+          disabled={isRegistrationButtonDisabled}
         />
 
         <InfoBox text={errorText} visible={!!errorText}/>

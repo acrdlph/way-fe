@@ -27,8 +27,10 @@ export const registerAccount = (data) => (dispatch) => {
   })
   .then((res) => res.json())
   .then((data) => {
+    console.log("registration passed", data);
     dispatch({
       type: types.ACCOUNT_REGISTER_PASSED,
+      data
     });
   })
   .catch(error => {
@@ -94,6 +96,8 @@ export const login = (loginname, password) => (dispatch) => {
 
 
 const initialState = {
+  userId: null,
+
   isCheckingAvailability: false,
   isAvailable: null,
 
@@ -132,8 +136,10 @@ const reducer = (state = initialState, action) => {
         wasRegistrationSuccessful: null
       };
     case types.ACCOUNT_REGISTER_PASSED:
+      console.log("ACCOUNT_REGISTER_PASSED", action);
       return {
         ...state,
+        userId: action.data.id,
         isRegisteringAccount: false,
         wasRegistrationSuccessful: true
       };
