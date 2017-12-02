@@ -52,7 +52,6 @@ class UserData extends React.Component {
       name: this.state.name,
       interests: this.state.interests
     };
-    console.log('Save profile: ' + JSON.stringify(data));
     this.props.updateUserData(userId, data);
     trackEvent(events.USER_CHANGED_PROFILE_DATA);
   }
@@ -117,7 +116,7 @@ class UserData extends React.Component {
     ) : (
       <div>
         <WaitListItem photo={photo} interests={interests} name={name} onClick={this.setEditable}/>
-        <InfoBox visible={this.props.isRegisteredUser} text={registerText}/>
+        <InfoBox visible={!this.props.isRegisteredUser} text={registerText}/>
       </div>
     );
   }
