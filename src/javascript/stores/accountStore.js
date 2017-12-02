@@ -6,7 +6,10 @@ const types = {
   ACCOUNT_AVAILABILITY_CHECK_FAILED: 'ACCOUNT_AVAILABILITY_CHECK_FAILED',
   ACCOUNT_REGISTER_PENDING: 'ACCOUNT_REGISTER_PENDING',
   ACCOUNT_REGISTER_PASSED: 'ACCOUNT_REGISTER_PASSED',
-  ACCOUNT_REGISTER_FAILED: 'ACCOUNT_REGISTER_FAILED'
+  ACCOUNT_REGISTER_FAILED: 'ACCOUNT_REGISTER_FAILED',
+  ACCOUNT_LOGIN_PENDING: 'ACCOUNT_LOGIN_PENDING',
+  ACCOUNT_LOGIN_PASSED: 'ACCOUNT_LOGIN_PASSED',
+  ACCOUNT_LOGIN_FAILED: 'ACCOUNT_LOGIN_FAILED'
 };
 
 export const registerAccount = (data) => (dispatch) => {
@@ -54,12 +57,45 @@ export const checkUsernameAvailability = (username) => (dispatch) => {
   });
 };
 
+export const login = (loginname, password) => (dispatch) => {
+  dispatch({
+    type: types.ACCOUNT_LOGIN_PENDING,
+  });
+  const endpoint = 'api/accounts/login';
+  const body = JSON.stringify({
+    loginname,
+    password
+  });
+  fetch(endpoint, {
+    method: 'post',
+    body,
+    headers: new Headers({
+      'content-type': 'application/json'
+    })
+  })
+  .then((res) => res.json())
+  .then((data) => {
+    dispatch({
+      type: types.ACCOUNT_LOGIN_PASSED,
+    });
+  })
+  .catch(error => {
+    dispatch({
+      type: types.ACCOUNT_LOGIN_FAILED
+    });
+  });
+};
+
+
 const initialState = {
   isCheckingAvailability: false,
   isAvailable: null,
 
   isRegisteringAccount: false,
-  wasRegistrationSuccessful: null
+  wasRegistrationSuccessful: null,
+
+  isLoginPending: false,
+  wasLoginSuccessful: null
 };
 
 const reducer = (state = initialState, action) => {
@@ -100,6 +136,25 @@ const reducer = (state = initialState, action) => {
         ...state,
         isRegisteringAccount: false,
         wasRegistrationSuccessful: false
+      };
+
+    case types.ACCOUNT_LOGIN_PENDING:
+      return {
+        ...state,
+        isLoginPending: true,
+        wasLoginSuccessful: null
+      };
+    case types.ACCOUNT_LOGIN_PASSED:
+      return {
+        ...state,
+        isLoginPending: false,
+        wasLoginSuccessful: true
+      };
+    case types.ACCOUNT_LOGIN_FAILED:
+      return {
+        ...state,
+        isLoginPending: false,
+        wasLoginSuccessful: false
       };
 
     default:
