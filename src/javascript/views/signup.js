@@ -43,7 +43,7 @@ class Signup extends React.Component {
 
     const userId = sessionStorage.getItem('userId');
     const locationId = sessionStorage.getItem('locationId');
-    if(userId) {
+    if(userId && !props.user) {
       this.props.history.push(`/waitlist/${locationId}`); // user is onboarded already
     }
     this.props.loadPartnerData();
@@ -241,7 +241,8 @@ class Signup extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-    partners: state.partners
+    partners: state.partners,
+    user: state.user
   };
 };
 
