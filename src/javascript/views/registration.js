@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
-import {checkUsernameAvailability} from '../stores/accountStore';
+import {checkUsernameAvailability, registerAccount} from '../stores/accountStore';
 import {trackPageView} from '../util/google-analytics';
 import TermsAndPolicy from '../components/terms-and-policy';
 import InfoBox from '../components/infobox';
@@ -90,9 +90,11 @@ class Onboarding extends React.Component {
         errorText: null
       });
       if(isAvailable) {
-        /*
-          TODO: send request to create account here...
-        */
+        this.props.registerAccount({
+          username,
+          email,
+          password
+        });
       }
     }
   }
@@ -156,7 +158,8 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  checkUsernameAvailability: (username) => dispatch(checkUsernameAvailability(username))
+  checkUsernameAvailability: (username) => dispatch(checkUsernameAvailability(username)),
+  registerAccount: (data) => dispatch(registerAccount(data))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Onboarding);
