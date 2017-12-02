@@ -6,11 +6,13 @@ import './header.less';
 export default class Header extends React.Component {
   render() {
 
-    const isInWaitlist = this.props.location.pathname.includes('waitlist');
-    const isInSignup = this.props.location.pathname.includes('signup');
-    const isInChat = this.props.location.pathname.includes('chat');
+    const {pathname} = this.props.location;
+    const isInWaitlist = pathname.includes('waitlist');
+    const isInSignup = pathname.includes('signup');
+    const isInRegistration = pathname.includes('register');
+    const isInChat = pathname.includes('chat');
 
-    if(!(isInWaitlist || isInSignup)) {
+    if(!(isInWaitlist || isInSignup || isInRegistration)) {
       return null;
     }
 
