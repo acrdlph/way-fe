@@ -5,6 +5,8 @@ import {Row, Col} from 'react-bootstrap';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 import Avatar from 'material-ui/Avatar';
+import {NavLink} from 'react-router-dom';
+import InfoBox from './infobox';
 import WaitListItem from '../components/waitlist-item';
 import {trackEvent, events} from '../util/google-analytics';
 import {loadUserData, updateUserData, editUserData, isOnboarded} from '../stores/userStore';
@@ -70,6 +72,10 @@ class Profile extends React.Component {
     const name = _.get(user, 'data.name', '');
     const interests = _.get(user, 'data.interests', '');
     const photo = _.get(user, 'data.photo', 'assets/avatar-placeholder.png');
+    const registerText = (
+      <span>You are using WaitList as a guest. <NavLink to='/register'>Register now</NavLink> to save your profile!</span>
+    );
+
     return !isUserOnboarded || this.props.user.isEditable ? (
       <div className='profile'>
         <Row>
@@ -111,6 +117,7 @@ class Profile extends React.Component {
     ) : (
       <div>
         <WaitListItem photo={photo} interests={interests} name={name} onClick={this.setEditable}/>
+        <InfoBox visible={true} text={registerText}/>
       </div>
     );
   }
