@@ -12,9 +12,9 @@ import {trackEvent, events} from '../util/google-analytics';
 import {loadUserData, updateUserData, editUserData, isOnboarded} from '../stores/userStore';
 import {showModal} from '../stores/profileImageStore';
 import ImageSelection from './image-selection-modal';
-import './profile.less';
+import './user-data.less';
 
-class Profile extends React.Component {
+class UserData extends React.Component {
 
   constructor(props) {
     super(props);
@@ -77,7 +77,7 @@ class Profile extends React.Component {
     );
 
     return !isUserOnboarded || this.props.user.isEditable ? (
-      <div className='profile'>
+      <div className='userdata'>
         <Row>
           <Col className='col-xs-12 col-lg-4'>
             <Avatar
@@ -137,4 +137,4 @@ const mapDispatchToProps = dispatch => ({
   openModal: () => dispatch(showModal(true))
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Profile);
+export default connect(mapStateToProps, mapDispatchToProps)(UserData);

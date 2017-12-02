@@ -8,7 +8,7 @@ import Avatar from 'material-ui/Avatar';
 import _ from 'lodash';
 import fetch from 'isomorphic-fetch';
 import {trackPageView} from '../util/google-analytics';
-import Profile from '../components/profile';
+import UserData from '../components/user-data';
 import WaitListItem from '../components/waitlist-item';
 import Infobox from '../components/infobox';
 import EmptyLocationMessage from '../components/empty-location-message';
@@ -134,7 +134,7 @@ class WaitList extends React.Component {
 
     return (
       <div>
-        <Profile/>
+        <UserData/>
         <Infobox
           visible={!isUserOnboarded && this.state.showIncompleteProfileHint}
           text={'Enter your name and interests to start communicating with other passengers'}
