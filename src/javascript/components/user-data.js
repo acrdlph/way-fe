@@ -52,7 +52,6 @@ class UserData extends React.Component {
       name: this.state.name,
       interests: this.state.interests
     };
-    console.log('Save profile: ' + JSON.stringify(data));
     this.props.updateUserData(userId, data);
     trackEvent(events.USER_CHANGED_PROFILE_DATA);
   }
@@ -76,7 +75,6 @@ class UserData extends React.Component {
       <span>You are using WaitList as a guest. <NavLink to='/register'>Register now</NavLink> to save your profile or just <NavLink to='/login'>log in</NavLink> if you have already an account.</span>
     );
 
-    console.log("isRegisteredUser", this.props.isRegisteredUser);
     return !isUserOnboarded || this.props.user.isEditable ? (
       <div className='userdata'>
         <Row>
@@ -125,14 +123,12 @@ class UserData extends React.Component {
 }
 
 
-const mapStateToProps = (state) => {
-console.log("state.user", state.user);
-  return {
+const mapStateToProps = (state) => ({
   user: state.user,
   isRegisteredUser: !!state.user.data.username,
   isUserOnboarded: isOnboarded(state.user),
   showModal: state.profileImage.showModal
-};};
+});
 
 const mapDispatchToProps = dispatch => ({
   editUserData: () => dispatch(editUserData()),
