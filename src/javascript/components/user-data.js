@@ -76,6 +76,7 @@ class UserData extends React.Component {
       <span>You are using WaitList as a guest. <NavLink to='/register'>Register now</NavLink> to save your profile or just <NavLink to='/login'>log in</NavLink> if you have already an account.</span>
     );
 
+    console.log("isRegisteredUser", this.props.isRegisteredUser);
     return !isUserOnboarded || this.props.user.isEditable ? (
       <div className='userdata'>
         <Row>
@@ -117,19 +118,21 @@ class UserData extends React.Component {
     ) : (
       <div>
         <WaitListItem photo={photo} interests={interests} name={name} onClick={this.setEditable}/>
-        <InfoBox visible={this.props.isRegisteredUser} text={registerText}/>
+        <InfoBox visible={!this.props.isRegisteredUser} text={registerText}/>
       </div>
     );
   }
 }
 
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state) => {
+console.log("state.user", state.user);
+  return {
   user: state.user,
   isRegisteredUser: !!state.user.data.username,
   isUserOnboarded: isOnboarded(state.user),
   showModal: state.profileImage.showModal
-});
+};};
 
 const mapDispatchToProps = dispatch => ({
   editUserData: () => dispatch(editUserData()),
