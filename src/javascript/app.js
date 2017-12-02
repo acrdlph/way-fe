@@ -4,6 +4,7 @@ import {Route} from 'react-router-dom';
 import Header from './components/header';
 import Footer from './components/footer';
 import Onboarding from './views/onboarding';
+import Registration from './views/registration';
 import Signup from './views/signup';
 import WaitList from './views/waitlist';
 import Chat from './views/chat';
@@ -17,6 +18,7 @@ export default class App extends React.Component {
         <Route component={Header}/>
         <div className='app-content'>
           <Route exact path="/" component={Onboarding}/>
+          <Route exact path="/register" component={Registration}/>
           <Route exact path="/onboarding" component={Onboarding}/>
           <Route exact path="/signup" component={Signup}/>
           <Route exact path="/signup/:locationId" component={Signup}/>
