@@ -1,13 +1,15 @@
 import React from 'react';
+import {connect} from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 import {trackPageView} from '../util/google-analytics';
 import TermsAndPolicy from '../components/terms-and-policy';
 import InfoBox from '../components/infobox';
+import {login} from '../stores/accountStore';
 import './login.less';
 
-export default class Onboarding extends React.Component {
+class Login extends React.Component {
 
   constructor(props) {
     super(props);
@@ -25,6 +27,13 @@ export default class Onboarding extends React.Component {
     this.changePassword = this.changePassword.bind(this);
   }
 
+  componentWillReceiveProps(props) {
+    if(props.account.wasLoginSuccessful && !this.props.account.wasLoginSuccessful) {
+      sessionStorage.setItem('userId', props.account.userId);
+      this.props.history.push(`/signup`);
+    }
+  }
+
   changeLoginName(event, loginName) {
     this.setState({loginName});
   }
@@ -34,9 +43,7 @@ export default class Onboarding extends React.Component {
 
   login() {
     const {loginName, password} = this.state;
-    /*
-      TODO: send request to login here...
-    */
+    this.props.login(loginName, password);
   }
 
   render() {
@@ -79,3 +86,12 @@ export default class Onboarding extends React.Component {
     );
   }
 }
+
+const mapStateToProps = (state) => ({
+  account: state.account
+});
+const mapDispatchToProps = dispatch => ({
+  login: (userLogin, password) => dispatch(login(userLogin, password)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login);
