@@ -4,6 +4,7 @@ import {Route} from 'react-router-dom';
 import Header from './components/header';
 import Footer from './components/footer';
 import Onboarding from './views/onboarding';
+import Profile from './views/profile';
 import Login from './views/login';
 import Registration from './views/registration';
 import Signup from './views/signup';
@@ -21,6 +22,7 @@ export default class App extends React.Component {
           <Route exact path="/" component={Onboarding}/>
           <Route exact path="/login" component={Login}/>
           <Route exact path="/register" component={Registration}/>
+          <Route exact path="/profile/:username" component={Profile}/>
           <Route exact path="/onboarding" component={Onboarding}/>
           <Route exact path="/signup" component={Signup}/>
           <Route exact path="/signup/:locationId" component={Signup}/>
