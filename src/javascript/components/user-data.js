@@ -73,7 +73,7 @@ class UserData extends React.Component {
     const interests = _.get(user, 'data.interests', '');
     const photo = _.get(user, 'data.photo', 'assets/avatar-placeholder.png');
     const registerText = (
-      <span>You are using WaitList as a guest. <NavLink to='/register'>Register now</NavLink> to save your profile!</span>
+      <span>You are using WaitList as a guest. <NavLink to='/register'>Register now</NavLink> to save your profile or just <NavLink to='/login'>log in</NavLink> if you have already an account.</span>
     );
 
     return !isUserOnboarded || this.props.user.isEditable ? (
