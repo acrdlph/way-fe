@@ -117,7 +117,7 @@ class UserData extends React.Component {
     ) : (
       <div>
         <WaitListItem photo={photo} interests={interests} name={name} onClick={this.setEditable}/>
-        <InfoBox visible={true} text={registerText}/>
+        <InfoBox visible={this.props.isRegisteredUser} text={registerText}/>
       </div>
     );
   }
@@ -126,6 +126,7 @@ class UserData extends React.Component {
 
 const mapStateToProps = (state) => ({
   user: state.user,
+  isRegisteredUser: !!state.user.data.username,
   isUserOnboarded: isOnboarded(state.user),
   showModal: state.profileImage.showModal
 });

@@ -160,7 +160,7 @@ class Signup extends React.Component {
     });
     // if geolocationAvailable then we have already saved the user then update
     let json = {};
-    if (!geolocationAvailable) {
+    if (!geolocationAvailable && !this.props.user) {
       json = await this.save(body);
     } else {
       json = await this.update(body);
