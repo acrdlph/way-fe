@@ -102,7 +102,7 @@ class Onboarding extends React.Component {
 
   render() {
     const {errorText, username} = this.state;
-    const {isCheckingAvailability, isAvailable} = this.props;
+    const {isCheckingAvailability, isAvailable} = this.props.account;
     console.log("errorText", errorText);
     const isUsernameTaken = !!username && isAvailable==false;
     return (

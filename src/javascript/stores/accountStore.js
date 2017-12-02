@@ -46,9 +46,15 @@ export const checkUsernameAvailability = (username) => (dispatch) => {
   fetch(endpoint)
   .then((res) => res.json())
   .then((data) => {
-    dispatch({
-      type: types.ACCOUNT_AVAILABILITY_CHECK_PASSED,
-    });
+    if(data.exists === true) {
+      dispatch({
+        type: types.ACCOUNT_AVAILABILITY_CHECK_FAILED,
+      });
+    } else {
+      dispatch({
+        type: types.ACCOUNT_AVAILABILITY_CHECK_PASSED,
+      });
+    }
   })
   .catch(error => {
     dispatch({
