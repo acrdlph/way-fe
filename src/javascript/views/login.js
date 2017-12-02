@@ -69,6 +69,10 @@ export default class Onboarding extends React.Component {
           fullWidth={true}
         />
 
+        <div className='login-register'>
+          You don't have an account yet? <NavLink to='/register'>Register here!</NavLink>
+        </div>
+
         <InfoBox text={errorText} visible={!!errorText}/>
         <TermsAndPolicy/>
       </div>
