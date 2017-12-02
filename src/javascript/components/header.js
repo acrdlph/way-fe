@@ -12,8 +12,9 @@ export default class Header extends React.Component {
     const isInLogin = pathname.includes('login');
     const isInRegistration = pathname.includes('register');
     const isInChat = pathname.includes('chat');
+    const isInProfile = pathname.includes('profile');
 
-    if(!(isInWaitlist || isInSignup || isInLogin || isInRegistration)) {
+    if(!(isInWaitlist || isInSignup || isInLogin || isInRegistration || isInProfile)) {
       return null;
     }
 
