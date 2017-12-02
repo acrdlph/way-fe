@@ -6,6 +6,7 @@ import {NavLink} from 'react-router-dom';
 import fetch from 'isomorphic-fetch';
 import {Row, Col} from 'react-bootstrap';
 import _ from 'lodash';
+import TermsAndPolicy from '../components/terms-and-policy';
 import {trackPageView, trackEvent, events} from '../util/google-analytics';
 import {supportedLocations} from '../util/constants';
 import Infobox from '../components/infobox';
@@ -105,7 +106,7 @@ class Signup extends React.Component {
         });
         if (autocompleteApi) {
           autocompleteApi.setBounds(circle.getBounds());
-        } 
+        }
       } catch(error) {
         console.log(error);
       }
@@ -232,11 +233,7 @@ class Signup extends React.Component {
           onClick={this.saveAndContinue}
         />
 
-        <p className='signup-legal-texts'>
-          By proceeding, you agree to our{' '}
-          <a href='https://s3.eu-central-1.amazonaws.com/waitlist-assets/Terms_of_Use.pdf'>Terms of Use</a>{' '}&{' '}
-          <a href='https://s3.eu-central-1.amazonaws.com/waitlist-assets/Privacy_Policy.pdf'>Privacy Policy</a>
-        </p>
+        <TermsAndPolicy/>
       </div>
     );
   }

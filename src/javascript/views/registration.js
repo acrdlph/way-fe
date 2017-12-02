@@ -3,6 +3,7 @@ import { NavLink } from 'react-router-dom';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 import {trackPageView} from '../util/google-analytics';
+import TermsAndPolicy from '../components/terms-and-policy';
 import './registration.less';
 
 export default class Onboarding extends React.Component {
@@ -73,6 +74,7 @@ export default class Onboarding extends React.Component {
           fullWidth={true}
         />
 
+        <TermsAndPolicy/>
       </div>
     );
   }
