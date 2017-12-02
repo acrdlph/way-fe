@@ -71,7 +71,7 @@ class Onboarding extends React.Component {
 
   register() {
     const {username, email, password, passwordConfirm} = this.state;
-    const {isAvailable} = this.props;
+    const {isAvailable} = this.props.account;
 
     if(!validateUsername(username)) {
       this.setState({
@@ -90,11 +90,12 @@ class Onboarding extends React.Component {
         errorText: null
       });
       if(isAvailable) {
-        this.props.registerAccount({
+        const data = {
           username,
           email,
           password
-        });
+        };
+        this.props.registerAccount(data);
       }
     }
   }

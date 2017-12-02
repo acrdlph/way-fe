@@ -14,5 +14,5 @@ export default combineReducers({
   userDirectory: userDirectoryStore.reducer,
   partners: partnerStore.reducer,
   profileImage: profileImageStore.reducer,
-  account: accountStore
+  account: accountStore.reducer
 });
