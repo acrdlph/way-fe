@@ -4,7 +4,24 @@ import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 import {trackPageView} from '../util/google-analytics';
 import TermsAndPolicy from '../components/terms-and-policy';
+import InfoBox from '../components/infobox';
 import './registration.less';
+
+const validateEmailAddress = (email) => {
+  if(email && email.trim().length > 4) {
+    // TODO: implement real validation
+    return true;
+  }
+  return false;
+};
+
+const validatePassword = (password) => {
+  if(password && password.trim().length > 3) {
+    // TODO: implement real validation
+    return true;
+  }
+  return false;
+};
 
 export default class Onboarding extends React.Component {
 
@@ -16,7 +33,8 @@ export default class Onboarding extends React.Component {
     this.state = {
       email: '',
       password: '',
-      passwordConfirm: ''
+      passwordConfirm: '',
+      errorText: null
     };
 
     this.register = this.register.bind(this);
@@ -35,11 +53,31 @@ export default class Onboarding extends React.Component {
     this.setState({passwordConfirm});
   }
   register() {
-    console.log("email", this.state.email);
-    console.log("password", this.state.password);
+    const {email, password, passwordConfirm} = this.state;
+    console.log("email", email);
+    console.log("password", password);
+
+    if(!validateEmailAddress(email)) {
+      this.setState({
+        errorText: 'Please enter a valid eMail address!'
+      });
+    } else if(!validatePassword(password) || (password !== passwordConfirm)) {
+      this.setState({
+        errorText: 'Please enter a valid password!'
+      });
+    } else {
+      this.setState({
+        errorText: null
+      });
+      /*
+        TODO: send request to create account here...
+      */
+    }
   }
 
   render() {
+    const {errorText} = this.state;
+    console.log("errorText", errorText);
     return (
       <div className='registration'>
 
@@ -74,6 +112,7 @@ export default class Onboarding extends React.Component {
           fullWidth={true}
         />
 
+        <InfoBox text={errorText} visible={!!errorText}/>
         <TermsAndPolicy/>
       </div>
     );
