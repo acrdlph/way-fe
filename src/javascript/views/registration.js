@@ -1,7 +1,9 @@
 import React from 'react';
+import {connect} from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
+import {checkUsernameAvailability} from '../stores/accountStore';
 import {trackPageView} from '../util/google-analytics';
 import TermsAndPolicy from '../components/terms-and-policy';
 import InfoBox from '../components/infobox';
@@ -31,7 +33,7 @@ const validatePassword = (password) => {
   return false;
 };
 
-export default class Onboarding extends React.Component {
+class Onboarding extends React.Component {
 
   constructor(props) {
     super(props);
@@ -64,10 +66,12 @@ export default class Onboarding extends React.Component {
   }
   changeUsername(event, username) {
     this.setState({username});
+    this.props.checkUsernameAvailability(username);
   }
 
   register() {
     const {username, email, password, passwordConfirm} = this.state;
+    const {isAvailable} = this.props;
 
     if(!validateUsername(username)) {
       this.setState({
@@ -85,15 +89,19 @@ export default class Onboarding extends React.Component {
       this.setState({
         errorText: null
       });
-      /*
-        TODO: send request to create account here...
-      */
+      if(isAvailable) {
+        /*
+          TODO: send request to create account here...
+        */
+      }
     }
   }
 
   render() {
-    const {errorText} = this.state;
+    const {errorText, username} = this.state;
+    const {isCheckingAvailability, isAvailable} = this.props;
     console.log("errorText", errorText);
+    const isUsernameTaken = !!username && isAvailable==false;
     return (
       <div className='registration container'>
 
@@ -106,6 +114,8 @@ export default class Onboarding extends React.Component {
           onChange={this.changeUsername}
           fullWidth={true}
         />
+
+        <InfoBox visible={isUsernameTaken} text='The selected username is already taken!'/>
 
         <TextField
           floatingLabelText="Email"
@@ -140,3 +150,13 @@ export default class Onboarding extends React.Component {
     );
   }
 }
+
+const mapStateToProps = (state) => ({
+  account: state.account
+});
+
+const mapDispatchToProps = dispatch => ({
+  checkUsernameAvailability: (username) => dispatch(checkUsernameAvailability(username))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Onboarding);
