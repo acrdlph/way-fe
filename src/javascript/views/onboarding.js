@@ -68,6 +68,10 @@ export default class Onboarding extends React.Component {
           </NavLink>
         </div>
 
+        <div className='onboarding-login'>
+          You already have an account? <NavLink to='/login'>Login here!</NavLink>
+        </div>
+
         <p className='onboarding-legal-texts'>
           We will ask for your phone's GPS to connect you with the people around you.
           If you don't like that you can also type in your waiting location manually.
