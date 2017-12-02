@@ -79,7 +79,7 @@ export default class Onboarding extends React.Component {
     const {errorText} = this.state;
     console.log("errorText", errorText);
     return (
-      <div className='registration'>
+      <div className='registration container'>
 
         <div className='registration-header'>
           Create a new account

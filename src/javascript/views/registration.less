@@ -1,9 +1,14 @@
 .registration {
   position: absolute;
-  left: 50%;
-  width: 350px;
-  margin-left: -150px;
+  max-width: 350px;
   text-align: center;
+}
+
+@media (min-width: 350px) {
+  .registration {
+    left: 50%;
+    margin-left: -175px;
+  }
 }
 
 .registration-header {
