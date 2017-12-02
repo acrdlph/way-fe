@@ -7,6 +7,14 @@ import TermsAndPolicy from '../components/terms-and-policy';
 import InfoBox from '../components/infobox';
 import './registration.less';
 
+const validateUsername = (username) => {
+  if(username && username.trim().length > 2) {
+    // TODO: implement real validation
+    return true;
+  }
+  return false;
+};
+
 const validateEmailAddress = (email) => {
   if(email && email.trim().length > 4) {
     // TODO: implement real validation
@@ -31,6 +39,7 @@ export default class Onboarding extends React.Component {
     trackPageView(path);
 
     this.state = {
+      username: '',
       email: '',
       password: '',
       passwordConfirm: '',
@@ -41,6 +50,7 @@ export default class Onboarding extends React.Component {
     this.changeEmail = this.changeEmail.bind(this);
     this.changePassword = this.changePassword.bind(this);
     this.changePasswordConfirm = this.changePasswordConfirm.bind(this);
+    this.changeUsername = this.changeUsername.bind(this);
   }
 
   changeEmail(event, email) {
@@ -52,12 +62,18 @@ export default class Onboarding extends React.Component {
   changePasswordConfirm(event, passwordConfirm) {
     this.setState({passwordConfirm});
   }
-  register() {
-    const {email, password, passwordConfirm} = this.state;
-    console.log("email", email);
-    console.log("password", password);
+  changeUsername(event, username) {
+    this.setState({username});
+  }
 
-    if(!validateEmailAddress(email)) {
+  register() {
+    const {username, email, password, passwordConfirm} = this.state;
+
+    if(!validateUsername(username)) {
+      this.setState({
+        errorText: 'Please enter a valid user name!'
+      });
+    } else if(!validateEmailAddress(email)) {
       this.setState({
         errorText: 'Please enter a valid eMail address!'
       });
@@ -84,6 +100,12 @@ export default class Onboarding extends React.Component {
         <div className='registration-header'>
           Create a new account
         </div>
+
+        <TextField
+          floatingLabelText="Username"
+          onChange={this.changeUsername}
+          fullWidth={true}
+        />
 
         <TextField
           floatingLabelText="Email"
