@@ -46,7 +46,8 @@ export const loadUserData = (userId) => (dispatch) => {
       waitingTime: data.waiting_time,
       photo:  data.photo,
       name: data.name,
-      interests: data.interests
+      interests: data.interests,
+      username: data.username
     };
     dispatch({
       type: types.LOADED,
