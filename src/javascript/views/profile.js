@@ -21,12 +21,15 @@ class Profile extends React.Component {
     const path = this.props.location.pathname;
     trackPageView(path);
     const userId = sessionStorage.getItem('userId');
+    console.log("user id",userId)
     this.props.loadUserData(userId);
 
     this.onSave = this.onSave.bind(this);
     this.onChanged = this.onChanged.bind(this);
     this.onImageClick = this.onImageClick.bind(this);
     this.refreshProfile = this.refreshProfile.bind(this);
+    this.onLogout = this.onLogout.bind(this);
+
     this.state = {
       name: this.props.name,
       email: this.props.email,
@@ -56,7 +59,8 @@ class Profile extends React.Component {
   }
 
   onLogout() {
-
+    sessionStorage.clear();
+    this.props.history.push(`/signup`);
   }
 
   onSave(e) {
@@ -75,13 +79,8 @@ class Profile extends React.Component {
   }
 
   render() {
-    const {user} = this.props;
-    const username = _.get(user, 'data.username', '');
-    const name = _.get(user, 'data.name', '');
-    const email = _.get(user, 'data.email', '');
-    const interests = _.get(user, 'data.interests', '');
-    const photo = _.get(user, 'data.photo', 'assets/avatar-placeholder.png');
-
+    const { username, name, interests, photo } = this.props;
+    console.log(username, name, interests, photo);
     const imageSelectionModal = this.props.showModal ?
     <ImageSelection onUpload={this.refreshProfile} /> : null;
 
@@ -100,7 +99,7 @@ class Profile extends React.Component {
         <Row>
           <Col sm={12}>
             <TextField
-              defaultValue={username}
+              value={this.props.username}
               name="username"
               floatingLabelText="Username"
               onChange={this.onChanged}
@@ -108,14 +107,14 @@ class Profile extends React.Component {
             />
             <TextField
               name="name"
-              defaultValue={name}
+              value={name}
               floatingLabelText="Name"
               onChange={this.onChanged}
               fullWidth={true}
             />
             <TextField
               name="interest"
-              defaultValue={interests}
+              value={interests}
               floatingLabelText="Interest"
               onChange={this.onChanged}
               fullWidth={true}
@@ -127,6 +126,7 @@ class Profile extends React.Component {
             <button className={this.props.isRegisteredUser ? 'save registered' : 'save not-registered'} onClick={this.onSave}>
               { this.props.isRegisteredUser ? 'Save' : 'Register' }
             </button>
+            { this.props.isRegisteredUser ? <button onClick={this.onLogout}>logout</button> : '' }
           </Col>
         </Row>
       </Grid>
@@ -135,8 +135,9 @@ class Profile extends React.Component {
 }
 
 const mapStateToProps = (state) => {
+  console.log(state.user.data);
   return {
-    user: state.user,
+    ...state.user.data,
     isRegisteredUser: !!state.user.data.username,
     isUserOnboarded: isOnboarded(state.user),
     showModal: state.profileImage.showModal
