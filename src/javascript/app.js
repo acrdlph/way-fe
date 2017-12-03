@@ -9,6 +9,7 @@ import Login from './views/login';
 import Registration from './views/registration';
 import Signup from './views/signup';
 import WaitList from './views/waitlist';
+import Challenge from './views/challenge';
 import Chat from './views/chat';
 import './app.less';
 
@@ -22,6 +23,7 @@ export default class App extends React.Component {
           <Route exact path="/" component={Onboarding}/>
           <Route exact path="/login" component={Login}/>
           <Route exact path="/register" component={Registration}/>
+          <Route exact path="/challenge" component={Challenge}/>
           <Route exact path="/profile/:username" component={Profile}/>
           <Route exact path="/onboarding" component={Onboarding}/>
           <Route exact path="/signup" component={Signup}/>
