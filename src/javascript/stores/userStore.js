@@ -11,7 +11,9 @@ const types = {
 export const isOnboarded = (user) => {
   const name = _.get(user, 'data.name', '');
   const interests = _.get(user, 'data.interests', '');
-  return name.trim() !== '' && interests.trim() !== '';
+  const isOnboarded = name.trim() !== '' && interests.trim() !== '';
+  console.log("isOnboarded: " + isOnboarded);
+  return isOnboarded;
 };
 
 export const editUserData = () => {
@@ -33,10 +35,19 @@ export const reloadProfileImage = (userId) => (dispatch) => {
   });
 };
 
-export const loadUserData = (userId) => (dispatch) => {
+export const loadUserDataWithBonusUrl = (userId) => {
+  const endpoint = 'api/users/' + userId + '/details?generate_url=true';
+  return loadUserDataGeneral(userId, endpoint);
+};
+
+export const loadUserData = (userId) => {
+  const endpoint = 'api/users/' + userId + '/details';
+  return loadUserDataGeneral(userId, endpoint);
+};
+
+export const loadUserDataGeneral = (userId, endpoint) => (dispatch) => {
   dispatch({type: types.LOADING});
 
-  const endpoint = 'api/users/' + userId + '/details';
   fetch(endpoint)
   .then((res) => res.json())
   .then((data) => {
@@ -47,7 +58,8 @@ export const loadUserData = (userId) => (dispatch) => {
       photo:  data.photo,
       name: data.name,
       interests: data.interests,
-      username: data.username
+      username: data.username,
+      interactionUrl: data.interation_url
     };
     dispatch({
       type: types.LOADED,

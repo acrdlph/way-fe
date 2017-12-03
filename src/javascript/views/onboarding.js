@@ -20,7 +20,6 @@ export default class Onboarding extends React.Component {
     super(props);
     const path = this.props.location.pathname;
     trackPageView(path);
-
   }
 
   render() {
@@ -30,7 +29,7 @@ export default class Onboarding extends React.Component {
         <div className='onboarding-logo'>
           <img
             className='logo'
-            src='assets/waitlistlogo.svg'
+            src='assets/wayt-new-logo.png'
           />
         </div>
 
