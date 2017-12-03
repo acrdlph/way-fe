@@ -3,6 +3,7 @@ import {connect} from 'react-redux';
 import QRCode from 'qrcode';
 import {trackPageView} from '../util/google-analytics';
 import {loadChallengeUrl} from '../stores/challengeStore';
+import {loadUserDataWithBonusUrl} from '../stores/userStore';
 import './challenge.less';
 
 class Challenge extends React.Component {
@@ -13,15 +14,33 @@ class Challenge extends React.Component {
     const path = this.props.location.pathname;
     trackPageView(path);
 
-    props.loadChallengeUrl();
+    const userId = sessionStorage.getItem('userId');
+    props.loadUserDataForChallenge(userId);
   }
 
-  componentWillReceiveProps(props) {
-    if(props.url && !this.props.url) {
-      QRCode.toCanvas(canvas, url, function (error) {
+  componentDidMount() {
+    console.log("componentDidMount...");
+    const url = this.props.url;
+    console.log("url", url);
+    if(url) {
+      QRCode.toCanvas(canvas, "http://"+url, function (error) {
         if (error) console.error(error);
         console.log('success!');
       });
+    }
+  }
+
+  componentWillReceiveProps(props) {
+    console.log("props", props);
+    if(props.url && !this.props.url) {
+      const url = props.url;
+      console.log("url", url);
+      if(url) {
+        QRCode.toCanvas(canvas, "http://"+url, function (error) {
+          if (error) console.error(error);
+          console.log('success!');
+        });
+      }
     }
   }
 
@@ -38,10 +57,11 @@ class Challenge extends React.Component {
 }
 
 const mapStateToProps = (state) => ({
-  url: state.challenge.url
+  user: state.user,
+  url: state.user.data.interactionUrl
 });
 const mapDispatchToProps = dispatch => ({
-  loadChallengeUrl: () => dispatch(loadChallengeUrl)
+  loadUserDataForChallenge: (id) => dispatch(loadUserDataWithBonusUrl(id))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Challenge);
