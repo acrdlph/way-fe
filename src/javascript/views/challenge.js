@@ -3,7 +3,6 @@ import {connect} from 'react-redux';
 import QRCode from 'qrcode';
 import RefreshIndicator from 'material-ui/RefreshIndicator';
 import {trackPageView} from '../util/google-analytics';
-import {loadChallengeUrl} from '../stores/challengeStore';
 import {loadUserDataWithBonusUrl} from '../stores/userStore';
 import './challenge.less';
 
