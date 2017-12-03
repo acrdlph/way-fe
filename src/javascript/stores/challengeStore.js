@@ -1,5 +1,9 @@
 import _ from 'lodash';
 
+export const loadChallengeUrl = () => {
+  // load url from backend here
+};
+
 const types = {
   LOADING: 'CHALLENGE_LOADING',
   LOADED: 'CHALLENGE_LOADED'
@@ -8,7 +12,7 @@ const types = {
 const initialState = {
   loading: false,
   loaded: false,
-  data: []
+  url: null
 };
 
 const reducer = (state = initialState, action) => {

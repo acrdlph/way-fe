@@ -20,7 +20,6 @@ export default class Onboarding extends React.Component {
     super(props);
     const path = this.props.location.pathname;
     trackPageView(path);
-
   }
 
   render() {
