@@ -17,7 +17,7 @@ export default class ChatInput extends React.Component {
         <div className='empty-message-wayt-symbol'>
           <img src='/assets/wayt-symbol.png' />
         </div>
-        <NavLink to='/accept-challenge'>
+        <NavLink to='/challenge'>
           <RaisedButton
             className='empty-location-message-button'
             label="Accept Challenge"
