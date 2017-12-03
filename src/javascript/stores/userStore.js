@@ -11,7 +11,9 @@ const types = {
 export const isOnboarded = (user) => {
   const name = _.get(user, 'data.name', '');
   const interests = _.get(user, 'data.interests', '');
-  return name.trim() !== '' && interests.trim() !== '';
+  const isOnboarded = name.trim() !== '' && interests.trim() !== '';
+  console.log("isOnboarded: " + isOnboarded);
+  return isOnboarded;
 };
 
 export const editUserData = () => {
@@ -40,7 +42,7 @@ export const loadUserDataWithBonusUrl = (userId) => {
 
 export const loadUserData = (userId) => {
   const endpoint = 'api/users/' + userId + '/details';
-  return loadUserDataGeneral(userId);
+  return loadUserDataGeneral(userId, endpoint);
 };
 
 export const loadUserDataGeneral = (userId, endpoint) => (dispatch) => {
