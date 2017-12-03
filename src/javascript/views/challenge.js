@@ -45,11 +45,36 @@ class Challenge extends React.Component {
   }
 
   render() {
+    let url = this.props.url;
+    let challengeUrl = null;
+    if(url) {
+      url = 'http://'+url;
+      challengeUrl = (
+        <div className='challenge-url'>
+          <a href={url}>{url}</a>
+        </div>
+      );
+    }
+
+
     const canvas = document.getElementById('canvas');
     return (
       <div className='challenge container'>
-        Challenge
+        <div className='challenge-header'>
+          Start an interaction with a stranger!
+        </div>
+
+        <div className='challenge-wayt-symbol'>
+          <img src='/assets/wayt-symbol.png' />
+        </div>
+
+        <div className='challenge-message'>
+          Receive your reward by getting the stranger to scan the QR code or opening the link
+        </div>
+
         <canvas id='canvas'/>
+
+        {challengeUrl}
       </div>
     );
   }
