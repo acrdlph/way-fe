@@ -1,52 +1,25 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import QRCode from 'qrcode';
 import RefreshIndicator from 'material-ui/RefreshIndicator';
 import {trackPageView} from '../util/google-analytics';
 import {loadUserDataWithBonusUrl} from '../stores/userStore';
+import QRCode from '../components/qr-code';
 import './challenge.less';
 
 class Challenge extends React.Component {
 
   constructor(props) {
     super(props);
-
-    const path = this.props.location.pathname;
-    trackPageView(path);
+    trackPageView(this.props.location.pathname);
 
     const userId = sessionStorage.getItem('userId');
     props.loadUserDataForChallenge(userId);
   }
 
-  componentDidMount() {
-    console.log("componentDidMount...");
-    const url = this.props.url;
-    console.log("url", url);
-    if(url) {
-      QRCode.toCanvas(canvas, "http://"+url, function (error) {
-        if (error) console.error(error);
-        console.log('success!');
-      });
-    }
-  }
-
-  componentWillReceiveProps(props) {
-    console.log("props", props);
-    if(props.url && !this.props.url) {
-      const url = props.url;
-      console.log("url", url);
-      if(url) {
-        QRCode.toCanvas(canvas, "http://"+url, function (error) {
-          if (error) console.error(error);
-          console.log('success!');
-        });
-      }
-    }
-  }
-
   render() {
     let url = this.props.url;
     let challengeUrl = null;
+    let qrcode = null;
     let loadingSpinner = null;
 
     if(url) {
@@ -56,6 +29,7 @@ class Challenge extends React.Component {
           <a href={url}>{url}</a>
         </div>
       );
+      qrcode = <QRCode text={url}/>;
     } else {
       loadingSpinner = (
         <div>
@@ -73,8 +47,6 @@ class Challenge extends React.Component {
       );
     }
 
-
-    const canvas = document.getElementById('canvas');
     return (
       <div className='challenge container'>
         <div className='challenge-header'>
@@ -90,7 +62,7 @@ class Challenge extends React.Component {
         </div>
 
         {loadingSpinner}
-        <canvas id='canvas'/>
+        {qrcode}
         {challengeUrl}
       </div>
     );
