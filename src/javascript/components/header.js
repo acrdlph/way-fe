@@ -3,22 +3,18 @@ import {NavLink} from 'react-router-dom';
 import {Card} from 'material-ui/Card';
 import './header.less';
 
+const PAGES_WITH_HEADER = ['waitlist', 'signup', 'login', 'challenge', 'register', 'chat', 'profile'];
+
 export default class Header extends React.Component {
   render() {
 
     const {pathname} = this.props.location;
-    const isInWaitlist = pathname.includes('waitlist');
-    const isInSignup = pathname.includes('signup');
-    const isInLogin = pathname.includes('login');
-    const isInChallenge = pathname.includes('challenge');
-    const isInRegistration = pathname.includes('register');
-    const isInChat = pathname.includes('chat');
-    const isInProfile = pathname.includes('profile');
-
-    if(!(isInWaitlist || isInSignup || isInLogin || isInRegistration || isInChallenge || isInProfile)) {
+    const isHeaderVisible = _.filter(PAGES_WITH_HEADER, page => pathname.includes(page)).length > 0;
+    if(!isHeaderVisible) {
       return null;
     }
 
+    const isInChat = pathname.includes('chat');
     const backButton = isInChat ? (
       <div className='header-back-button'>
         <NavLink to="/waitlist">
