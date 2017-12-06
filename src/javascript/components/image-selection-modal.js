@@ -103,6 +103,7 @@ class ImageSelection extends React.Component {
     const style = {
       content: {
         marginLeft: '-125px',
+        marginTop: '40px',
         width: '250px',
         height: '300px',
         textAlign: 'center',
