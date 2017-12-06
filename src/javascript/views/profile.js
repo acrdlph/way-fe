@@ -22,12 +22,13 @@ class Profile extends React.Component {
     trackPageView(path);
 
     const usernameFromPath = _.get(this.props.match, 'params.username');
+    const userId = sessionStorage.getItem('userId');
     console.log("usernameFromPath", usernameFromPath);
+    if(!usernameFromPath && (props.username || userId)) {
+      this.props.history.push(`/profile/${props.username || userId}`);
+    }
     this.props.loadUserData(usernameFromPath);
 
-    //const userId = sessionStorage.getItem('userId');
-    //console.log("user id",userId);
-    //this.props.loadUserData(userId);
 
     this.onSave = this.onSave.bind(this);
     this.onChanged = this.onChanged.bind(this);
@@ -41,6 +42,13 @@ class Profile extends React.Component {
       username: this.props.username,
       interests: this.props.interests
     };
+  }
+
+  componentWillReceiveProps(props) {
+    const usernameFromPath = _.get(this.props.match, 'params.username');
+    if(props.username && props.username != usernameFromPath) {
+      this.props.history.push(`/profile/${props.username}`);
+    }
   }
 
   refreshProfile() {

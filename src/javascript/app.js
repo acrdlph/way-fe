@@ -24,6 +24,7 @@ export default class App extends React.Component {
           <Route exact path="/login" component={Login}/>
           <Route exact path="/register" component={Registration}/>
           <Route exact path="/challenge" component={Challenge}/>
+          <Route exact path="/profile" component={Profile}/>
           <Route exact path="/profile/:username" component={Profile}/>
           <Route exact path="/onboarding" component={Onboarding}/>
           <Route exact path="/signup" component={Signup}/>
