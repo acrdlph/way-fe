@@ -60,12 +60,12 @@ class Profile extends React.Component {
 
 
   onChangeImage(e){
-    console.log(e)
+    console.log(e);
   }
 
   onLogout() {
     sessionStorage.clear();
-    this.props.history.push(`/signup`);
+    this.props.history.push(`/`);
   }
 
   onSave(e) {
@@ -88,6 +88,16 @@ class Profile extends React.Component {
     console.log(username, name, interests, photo);
     const imageSelectionModal = this.props.showModal ?
     <ImageSelection onUpload={this.refreshProfile} /> : null;
+
+    const logoutButton = this.props.isRegisteredUser ? (
+      <div className='profile-button profile-button-logout'>
+        <RaisedButton
+          onClick={this.onLogout}
+          backgroundColor='#ffd801'
+          label='logout'
+        />
+      </div>
+    ) : null;
 
     return (
       <Grid className="profile">
@@ -127,12 +137,17 @@ class Profile extends React.Component {
           </Col>
         </Row>
         <Row>
-          <Col sm={12}>
-            <button className={this.props.isRegisteredUser ? 'save registered' : 'save not-registered'} onClick={this.onSave}>
-              { this.props.isRegisteredUser ? 'Save' : 'Register' }
-            </button>
-            { this.props.isRegisteredUser ? <button onClick={this.onLogout}>logout</button> : '' }
-          </Col>
+
+        <div className='profile-button profile-button-save'>
+          <RaisedButton
+            onClick={this.onSave}
+            backgroundColor='#ffd801'
+            label={ this.props.isRegisteredUser ? 'Save' : 'Register' }
+          />
+        </div>
+
+        {logoutButton}
+
         </Row>
       </Grid>
     );

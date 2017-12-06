@@ -26,7 +26,7 @@ export default class ChatInput extends React.Component {
               label="Accept Challenge"
               backgroundColor='#ffd801'
             />
-            </NavLink>
+          </NavLink>
         </Paper>
       );
 
