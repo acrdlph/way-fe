@@ -20,9 +20,14 @@ class Profile extends React.Component {
     super(props);
     const path = this.props.location.pathname;
     trackPageView(path);
-    const userId = sessionStorage.getItem('userId');
-    console.log("user id",userId)
-    this.props.loadUserData(userId);
+
+    const usernameFromPath = _.get(this.props.match, 'params.username');
+    console.log("usernameFromPath", usernameFromPath);
+    this.props.loadUserData(usernameFromPath);
+
+    //const userId = sessionStorage.getItem('userId');
+    //console.log("user id",userId);
+    //this.props.loadUserData(userId);
 
     this.onSave = this.onSave.bind(this);
     this.onChanged = this.onChanged.bind(this);
@@ -35,7 +40,7 @@ class Profile extends React.Component {
       email: this.props.email,
       username: this.props.username,
       interests: this.props.interests
-    }
+    };
   }
 
   refreshProfile() {
@@ -139,9 +144,8 @@ const mapStateToProps = (state) => {
   return {
     ...state.user.data,
     isRegisteredUser: !!state.user.data.username,
-    isUserOnboarded: isOnboarded(state.user),
     showModal: state.profileImage.showModal
-  }
+  };
 };
 
 const mapDispatchToProps = dispatch => ({
