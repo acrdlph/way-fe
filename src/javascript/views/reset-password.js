@@ -15,14 +15,23 @@ class ResetPassword extends React.Component {
     super(props);
     const path = this.props.location.pathname;
     trackPageView(path);
+
+    this.state = {
+      login: null
+    };
+    this.changeLogin = this.changeLogin.bind(this);
+    this.resetPassword = this.resetPassword.bind(this);
   }
 
-  changeLoginName() {
-
+  changeLogin(event, login) {
+    this.setState({login});
   }
 
   resetPassword() {
+    const {login} = this.state;
+    console.log("Reset password for " + login);
 
+    // TODO: call password reset endpoint here
   }
 
   render() {
@@ -39,7 +48,7 @@ class ResetPassword extends React.Component {
 
         <TextField
           floatingLabelText="Username or Email"
-          onChange={this.changeLoginName}
+          onChange={this.changeLogin}
           fullWidth={true}
         />
 
