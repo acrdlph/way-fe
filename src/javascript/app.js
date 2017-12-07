@@ -8,6 +8,7 @@ import Profile from './views/profile';
 import Login from './views/login';
 import Registration from './views/registration';
 import Signup from './views/signup';
+import ResetPassword from './views/reset-password';
 import WaitList from './views/waitlist';
 import Challenge from './views/challenge';
 import Chat from './views/chat';
@@ -29,6 +30,7 @@ export default class App extends React.Component {
           <Route exact path="/onboarding" component={Onboarding}/>
           <Route exact path="/signup" component={Signup}/>
           <Route exact path="/signup/:locationId" component={Signup}/>
+          <Route exact path="/reset-password" component={ResetPassword}/>
           <Route exact path="/waitlist/" component={WaitList}/>
           <Route exact path="/waitlist/:locationId" component={WaitList}/>
           <Route exact path="/waitlist/:locationId/chat/:chatPartnerId" component={Chat}/>

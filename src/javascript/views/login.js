@@ -79,6 +79,9 @@ class Login extends React.Component {
         <div className='login-register'>
           You don't have an account yet? <NavLink to='/register'>Register here!</NavLink>
         </div>
+        <div className='login-reset-password'>
+          Forgot password? <NavLink to='/reset-password'>Reset it!</NavLink>
+        </div>
 
         <InfoBox text={errorText} visible={!!errorText}/>
         <TermsAndPolicy/>

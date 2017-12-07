@@ -1,9 +1,8 @@
 import React from 'react';
 import {NavLink} from 'react-router-dom';
 import {Card} from 'material-ui/Card';
+import {PAGES_WITH_HEADER} from '../util/constants';
 import './header.less';
-
-const PAGES_WITH_HEADER = ['waitlist', 'signup', 'login', 'challenge', 'register', 'chat', 'profile'];
 
 export default class Header extends React.Component {
   render() {
