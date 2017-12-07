@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import _ from 'lodash';
-import {supportedLocations} from '../util/constants';
+import {PARTNER_LOCATIONS} from '../util/constants';
 import './footer.less';
 
 class Footer extends React.Component {
@@ -9,7 +9,7 @@ class Footer extends React.Component {
     let airport = null;
     const {airportName} = this.props;
     if(airportName) {
-      if(_.includes(supportedLocations, airportName)) {
+      if(_.includes(PARTNER_LOCATIONS, airportName)) {
         airport = <img src={`assets/airport-logo-${airportName}.png`}/>;
       } else {
         airport = `Airport: ${airportName}`;

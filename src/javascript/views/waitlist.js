@@ -16,7 +16,7 @@ import {loadWaitlist} from '../stores/waitlistStore';
 import {loadUserData, isOnboarded} from '../stores/userStore';
 import {loadPartnerData} from '../stores/partnerStore';
 import {requestPermissionForNotifications} from '../util/notification';
-import {supportedLocations} from '../util/constants';
+import {PARTNER_LOCATIONS} from '../util/constants';
 import './waitlist.less';
 
 class WaitList extends React.Component {
@@ -85,7 +85,7 @@ class WaitList extends React.Component {
     }
 
     airportName = airportName || airportCode;
-    if(_.includes(supportedLocations, airportCode)) {
+    if(_.includes(PARTNER_LOCATIONS, airportCode)) {
       const logoPath = `assets/airport-logo-${airportCode}-small.jpg`;
       return (
         <WaitListItem

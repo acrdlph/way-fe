@@ -8,7 +8,7 @@ import {Row, Col} from 'react-bootstrap';
 import _ from 'lodash';
 import TermsAndPolicy from '../components/terms-and-policy';
 import {trackPageView, trackEvent, events} from '../util/google-analytics';
-import {supportedLocations} from '../util/constants';
+import {PARTNER_LOCATIONS} from '../util/constants';
 import Infobox from '../components/infobox';
 import {loadPartnerData} from '../stores/partnerStore';
 import './signup.less';
@@ -28,7 +28,7 @@ class Signup extends React.Component {
 
     const locationIdFromPath = _.get(this.props.match, 'params.locationId');
     // TODO make this validation using partner api
-    const isValidLocation = locationIdFromPath && _.includes(supportedLocations, locationIdFromPath);
+    const isValidLocation = locationIdFromPath && _.includes(PARTNER_LOCATIONS, locationIdFromPath);
 
     this.changeAirport = this.changeAirport.bind(this);
     this.changeWaitingTime = this.changeWaitingTime.bind(this);
