@@ -13,6 +13,7 @@ import {loadPartnerData} from '../stores/partnerStore';
 import './signup.less';
 
 const locationInput = 'signup-location-input';
+let circle = false;
 
 let geolocationAvailable = false;
 let autocompleteApi = false;
@@ -107,7 +108,7 @@ class Signup extends React.Component {
           lat: location.coords.latitude,
           lng: location.coords.longitude
         };
-        const circle = new google.maps.Circle({
+        circle = new google.maps.Circle({
           center: geolocation,
           radius: location.coords.accuracy
         });
@@ -205,6 +206,9 @@ class Signup extends React.Component {
 
   clearLocation() {
     this.setLocationInputValue('');
+    if (autocompleteApi && circle) {
+      autocompleteApi.setBounds(circle.getBounds());
+    } 
   }
 
   setLocationInputValue(value) {
