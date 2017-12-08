@@ -29,8 +29,7 @@ class Signup extends React.Component {
     const locationIdFromPath = _.get(this.props.match, 'params.locationId');
     // TODO make this validation using partner api
     const isValidLocation = locationIdFromPath && _.includes(supportedLocations, locationIdFromPath);
-
-    this.changeAirport = this.changeAirport.bind(this);
+    
     this.changeWaitingTime = this.changeWaitingTime.bind(this);
     this.save = this.save.bind(this);
     this.update = this.update.bind(this);
@@ -62,12 +61,6 @@ class Signup extends React.Component {
 
   componentDidMount() {
     this.buildLocation();
-  }
-
-  changeAirport(event) {
-    this.setState({
-      airport: event ? event.value : null
-    });
   }
 
   changeGeolocation() {
