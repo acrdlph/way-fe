@@ -39,6 +39,10 @@ class Signup extends React.Component {
     this.initAutoComplete = this.initAutoComplete.bind(this);
     this.changeGeolocation = this.changeGeolocation.bind(this);
     this.renderLocationInput = this.renderLocationInput.bind(this);
+    this.geocodeLocation = this.geocodeLocation.bind(this);
+    this.clearLocation = this.clearLocation.bind(this);
+    this.setLocationInputValue = this.setLocationInputValue.bind(this);
+    this.setPlace = this.setPlace.bind(this);
 
     const userId = sessionStorage.getItem('userId');
     const locationId = sessionStorage.getItem('locationId');
@@ -48,6 +52,7 @@ class Signup extends React.Component {
     this.props.loadPartnerData();
     this.state = {
       showLocationRequiredHint: false,
+      autoSelectedLocaton: undefined,
       geolocation: null,
       airport: isValidLocation ? locationIdFromPath : null,
       waitingTime: 30
@@ -66,15 +71,18 @@ class Signup extends React.Component {
 
   changeGeolocation() {
     const place = autocompleteApi.getPlace();
-    console.log(place);
+    this.setPlace(place.place_id, place.geometry.location.lng(), place.geometry.location.lat());
+    trackEvent(events.USER_SELECTED_LOCATION, {label: place.place_id});
+  }
+
+  setPlace(placeId, lng, lat) {
     this.setState({
-      airport: place.place_id,
+      airport: placeId,
       geolocation: {
-        longitude: place.geometry.location.lng(),
-        latitude: place.geometry.location.lat()
+        longitude: lng,
+        latitude: lat
       }
     });
-    trackEvent(events.USER_SELECTED_LOCATION, {label: place.place_id});
   }
 
   changeWaitingTime(event, value) {
@@ -106,10 +114,36 @@ class Signup extends React.Component {
         if (autocompleteApi) {
           autocompleteApi.setBounds(circle.getBounds());
         } 
+        const res = await this.geocodeLocation(geolocation);
+        this.setPlace(res.place_id, geolocation.lng, geolocation.lat);
+        this.setLocationInputValue(res.name);
       } catch(error) {
         console.log(error);
       }
     }
+  }
+
+  geocodeLocation(geolocation) {
+    return new Promise(function (resolve, reject) {
+      const request = {
+        location: geolocation,
+        radius: '500',
+        type: ['point_of_interest']
+      };
+      const service = 
+      new google.maps.places.PlacesService(document.getElementById(locationInput));
+      service.nearbySearch(request, function(results, status) {
+        if (status == google.maps.places.PlacesServiceStatus.OK) {
+          if (results[0]) {
+            resolve(results[0]);
+          } else {
+            reject();
+          }
+          } else {
+            reject(status);
+        }
+      });
+    });
   }
 
   async save(body) {
@@ -169,6 +203,16 @@ class Signup extends React.Component {
     this.props.history.push(`/waitlist/${locationId}`);
   }
 
+  clearLocation() {
+    this.setLocationInputValue('');
+  }
+
+  setLocationInputValue(value) {
+    // this primitive trick helps to avoid problems with react and google maps
+    // getting in the way of eachother
+    document.getElementById(locationInput).value = value;
+  }
+
   initAutoComplete() {
     autocompleteApi = new google.maps.places.Autocomplete(document.getElementById(locationInput));
     autocompleteApi.addListener('place_changed', this.changeGeolocation);
@@ -195,7 +239,8 @@ class Signup extends React.Component {
           visible={this.state.showLocationRequiredHint}
           text={'Please enter your location first to join the waitlist'}
         />
-        <input className="signup-location-input-style" id={locationInput} type="text"
+        <input onFocus={this.clearLocation}  
+        className="signup-location-input-style" id={locationInput} type="text"
             placeholder="Enter location"/>
         {this.initAutoComplete()}
       </div>
