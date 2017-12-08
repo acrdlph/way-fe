@@ -13,8 +13,8 @@ import {loadPartnerData} from '../stores/partnerStore';
 import './signup.less';
 
 const locationInput = 'signup-location-input';
-let circle = false;
 
+let circle = false;
 let geolocationAvailable = false;
 let autocompleteApi = false;
 
