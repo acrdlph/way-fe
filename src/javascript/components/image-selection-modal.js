@@ -28,10 +28,16 @@ class ImageSelection extends React.Component {
     this.selectFile = this.selectFile.bind(this);
     this.uploadImage = this.uploadImage.bind(this);
     this.onChangeFile = this.onChangeFile.bind(this);
+    this.renderImage = this.renderImage.bind(this);
+    this.rotate = this.rotate.bind(this);
     this.state = {
       invalidFile: false,
       hasSelectedFile: false
     };
+  }
+
+  rotate() {
+    this.renderImage(90);
   }
 
   selectFile() {
@@ -50,7 +56,6 @@ class ImageSelection extends React.Component {
   }
 
   onChangeFile() {
-
     if(isValidFileName(this.fileInput.value)) {
       this.setState({invalidFile:false});
       const that = this;
@@ -60,25 +65,7 @@ class ImageSelection extends React.Component {
       const filereader = new FileReader();
       filereader.onload = function (event) {
         previewImage.onload = function (event) {
-          const canvas = document.getElementById('img-preview-canvas');
-          const ctx = canvas.getContext("2d");
-          let sx, sy, sw, sh;
-          const smallerSideLength = Math.min(previewImage.width, previewImage.height);
-          if(previewImage.width === smallerSideLength) {
-            sx = 0;
-            sw = previewImage.width;
-            sy = 0.5 * (previewImage.height - previewImage.width);
-            sh = previewImage.width;
-          } else {
-            sx = 0.5 * (previewImage.width - previewImage.height);
-            sw = previewImage.height;
-            sy = 0;
-            sh = previewImage.height;
-          }
-          ctx.drawImage(previewImage, sx, sy, sw, sh, 0, 0, 100, 100);
-          const file = canvas2Blob(canvas);
-          that.props.setImage({fileName: 'profile-image', data: file});
-          that.setState({hasSelectedFile: true});
+          that.renderImage();
         };
         previewImage.src = event.target.result;
       };
@@ -86,6 +73,35 @@ class ImageSelection extends React.Component {
     } else {
       this.setState({invalidFile: true});
     }
+  }
+
+  renderImage(angle=0) {
+    const previewImage = document.getElementById('img-preview');
+    const canvas = document.getElementById('img-preview-canvas');
+    const ctx = canvas.getContext("2d");
+    let sx, sy, sw, sh;
+    const smallerSideLength = Math.min(previewImage.width, previewImage.height);
+    if(previewImage.width === smallerSideLength) {
+      sx = 0;
+      sw = previewImage.width;
+      sy = 0.5 * (previewImage.height - previewImage.width);
+      sh = previewImage.width;
+    } else {
+      sx = 0.5 * (previewImage.width - previewImage.height);
+      sw = previewImage.height;
+      sy = 0;
+      sh = previewImage.height;
+    }
+
+    ctx.translate(50, 50);
+    ctx.rotate(angle * Math.PI/180);
+    ctx.translate(-50, -50);
+
+    ctx.drawImage(previewImage, sx, sy, sw, sh, 0, 0, 100, 100);
+
+    const file = canvas2Blob(canvas);
+    this.props.setImage({fileName: 'profile-image', data: file});
+    this.setState({hasSelectedFile: true});
   }
 
   render() {
@@ -99,12 +115,24 @@ class ImageSelection extends React.Component {
         />
       </div>
     );
+
+    const rotateButton = (
+      <div className='image-selection-button'>
+        <RaisedButton
+          onClick={this.rotate}
+          backgroundColor='#ffd801'
+          label='Rotate'
+        />
+      </div>
+    );
+
     const errorMessage = invalidFile ? 'Please select an image file!' : null;
     const style = {
       content: {
         marginLeft: '-125px',
+        marginTop: '40px',
         width: '250px',
-        height: '300px',
+        height: '350px',
         textAlign: 'center',
         left: '50%'
       }
@@ -145,8 +173,12 @@ class ImageSelection extends React.Component {
               <img id='img-old' src={this.props.user.data.photo}/>
             </div>
 
+            {this.state.hasSelectedFile ? rotateButton : null}
+
             {errorMessage}
+
             {this.state.hasSelectedFile ? okButton : null}
+
             <div className='image-selection-button image-selection-button-cancel'>
               <RaisedButton
                 onClick={this.props.close}
@@ -154,6 +186,7 @@ class ImageSelection extends React.Component {
                 label='Cancel'
               />
             </div>
+
           </div>
         </Modal>
       </div>
