@@ -10,6 +10,13 @@ const isValidFileName = filename => {
   return filename.endsWith('.jpg') || filename.endsWith('.png');
 };
 
+const exifDataToAngle = {
+  "1": 0,
+  "8": -90,
+  "3": -180,
+  "6": 90
+}
+
 // src: https://stackoverflow.com/questions/19032406/convert-html5-canvas-into-file-to-be-uploaded
 const canvas2Blob = canvas => {
   const canvasData = canvas.toDataURL();
@@ -30,6 +37,8 @@ class ImageSelection extends React.Component {
     this.onChangeFile = this.onChangeFile.bind(this);
     this.renderImage = this.renderImage.bind(this);
     this.rotate = this.rotate.bind(this);
+    this.adjustRotation = this.adjustRotation.bind(this);
+    this.getOrientation = this.getOrientation.bind(this);
     this.state = {
       invalidFile: false,
       hasSelectedFile: false
@@ -62,6 +71,7 @@ class ImageSelection extends React.Component {
       let data = this.fileInput.files[0];
       const fileName = data.name;
       const previewImage = document.getElementById('img-preview');
+      this.adjustRotation(data);
       const filereader = new FileReader();
       filereader.onload = function (event) {
         previewImage.onload = function (event) {
@@ -73,6 +83,47 @@ class ImageSelection extends React.Component {
     } else {
       this.setState({invalidFile: true});
     }
+  }
+
+  async adjustRotation(file) {
+    const orientation = await this.getOrientation(file);
+    console.log(orientation);
+    this.renderImage(exifDataToAngle[orientation]);
+  }
+
+  /**
+   * experimental
+   * @param {*} file 
+   * @param {*} callback 
+   */
+  getOrientation(file, callback) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const view = new DataView(e.target.result);
+        if (view.getUint16(0, false) != 0xFFD8) return resolve(-2);
+        const length = view.byteLength; 
+        let offset = 2;
+        while (offset < length) {
+          const marker = view.getUint16(offset, false);
+          offset += 2;
+          if (marker == 0xFFE1) {
+            if (view.getUint32(offset += 2, false) != 0x45786966) return resolve(-1);
+            const little = view.getUint16(offset += 6, false) == 0x4949;
+            offset += view.getUint32(offset + 4, little);
+            const tags = view.getUint16(offset, little);
+            offset += 2;
+            for (let i = 0; i < tags; i++)
+              if (view.getUint16(offset + (i * 12), little) == 0x0112)
+                return resolve(view.getUint16(offset + (i * 12) + 8, little));
+          }
+          else if ((marker & 0xFF00) != 0xFF00) break;
+          else offset += view.getUint16(offset, false);
+        }
+        return resolve(-1);
+      };
+      reader.readAsArrayBuffer(file);
+    });
   }
 
   renderImage(angle=0) {
