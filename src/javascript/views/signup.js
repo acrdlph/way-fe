@@ -29,7 +29,7 @@ class Signup extends React.Component {
     const locationIdFromPath = _.get(this.props.match, 'params.locationId');
     // TODO make this validation using partner api
     const isValidLocation = locationIdFromPath && _.includes(supportedLocations, locationIdFromPath);
-    
+
     this.changeWaitingTime = this.changeWaitingTime.bind(this);
     this.save = this.save.bind(this);
     this.update = this.update.bind(this);
@@ -121,8 +121,8 @@ class Signup extends React.Component {
     return new Promise(function (resolve, reject) {
       const request = {
         location: geolocation,
-        radius: '500',
-        type: ['point_of_interest']
+        radius: '500'
+        //type: ['point_of_interest', 'airport', 'hospital', '']
       };
       const service = 
       new google.maps.places.PlacesService(document.getElementById(locationInput));
