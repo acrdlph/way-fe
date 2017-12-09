@@ -224,8 +224,6 @@ class ImageSelection extends React.Component {
               <img id='img-old' src={this.props.user.data.photo}/>
             </div>
 
-            {this.state.hasSelectedFile ? rotateButton : null}
-
             {errorMessage}
 
             {this.state.hasSelectedFile ? okButton : null}
