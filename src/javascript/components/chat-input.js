@@ -8,7 +8,7 @@ export default class ChatInput extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      message: '',
+      message: ''
     };
     this.changeMessage = this.changeMessage.bind(this);
     this.onKeyPressInTextField = this.onKeyPressInTextField.bind(this);
@@ -38,6 +38,7 @@ export default class ChatInput extends React.Component {
       <div className='chat-input container'>
         <div className='chat-input-text'>
           <TextField
+            disabled={this.props.disabled}
             hintText="Message"
             fullWidth="true"
             value={this.state.message}
@@ -47,6 +48,7 @@ export default class ChatInput extends React.Component {
         </div>
         <div className='chat-input-button'>
           <RaisedButton
+            disabled={this.props.disabled}
             label="Send"
             backgroundColor='#ffd801'
             onClick={this.saveAndContinue}
