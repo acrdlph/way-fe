@@ -2,9 +2,10 @@ import React from 'react';
 import Modal from 'react-modal';
 import { connect } from 'react-redux';
 import RaisedButton from 'material-ui/RaisedButton';
+import $ from 'jquery';
 import {trackEvent, events} from '../util/google-analytics';
-import './image-selection-modal.less';
 import {showModal, setImage, uploadImage} from '../stores/profileImageStore';
+import './image-selection-modal.less';
 
 const isValidFileName = filename => {
   return filename.endsWith('.jpg') || filename.endsWith('.png');
@@ -15,7 +16,7 @@ const exifDataToAngle = {
   "8": -90,
   "3": -180,
   "6": 90
-}
+};
 
 // src: https://stackoverflow.com/questions/19032406/convert-html5-canvas-into-file-to-be-uploaded
 const canvas2Blob = canvas => {
@@ -39,10 +40,16 @@ class ImageSelection extends React.Component {
     this.rotate = this.rotate.bind(this);
     this.adjustRotation = this.adjustRotation.bind(this);
     this.getOrientation = this.getOrientation.bind(this);
+
     this.state = {
       invalidFile: false,
       hasSelectedFile: false
     };
+
+    const that = this;
+    $(document).ready(function() {
+      that.selectFile();
+    });
   }
 
   rotate() {
@@ -93,8 +100,8 @@ class ImageSelection extends React.Component {
 
   /**
    * experimental
-   * @param {*} file 
-   * @param {*} callback 
+   * @param {*} file
+   * @param {*} callback
    */
   getOrientation(file, callback) {
     return new Promise((resolve, reject) => {
@@ -102,7 +109,7 @@ class ImageSelection extends React.Component {
       reader.onload = function(e) {
         const view = new DataView(e.target.result);
         if (view.getUint16(0, false) != 0xFFD8) return resolve(-2);
-        const length = view.byteLength; 
+        const length = view.byteLength;
         let offset = 2;
         while (offset < length) {
           const marker = view.getUint16(offset, false);
