@@ -11,9 +11,11 @@ export const events = {
 
 export const initializeGoogleAnalytics = () => {
   if(GOOGLE_ANALYTICS_ID.length > 0) {
-    ReactGA.initialize(GOOGLE_ANALYTICS_ID, {
+    const options = {
       debug: DEVELOPMENT_MODE
-    });
+    };
+    console.log("initialize Google Analytics", options);
+    ReactGA.initialize(GOOGLE_ANALYTICS_ID, options);
   }
 };
 

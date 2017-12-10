@@ -4,7 +4,7 @@ import fetch from 'isomorphic-fetch';
 import {Row, Col} from 'react-bootstrap';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
-import Avatar from 'material-ui/Avatar';
+import Avatar from './avatar';
 import WaitListItem from '../components/waitlist-item';
 import {trackEvent, events} from '../util/google-analytics';
 import {loadUserData, updateUserData, editUserData, isOnboarded} from '../stores/userStore';
@@ -78,6 +78,7 @@ class Profile extends React.Component {
               onClick={this.selectImage}
               size={100}
               src={photo}
+              displayPlus={true}
             />
             {imageSelectionModal}
           </Col>

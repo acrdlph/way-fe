@@ -2,12 +2,20 @@ import React from 'react';
 import Modal from 'react-modal';
 import { connect } from 'react-redux';
 import RaisedButton from 'material-ui/RaisedButton';
+import $ from 'jquery';
 import {trackEvent, events} from '../util/google-analytics';
-import './image-selection-modal.less';
 import {showModal, setImage, uploadImage} from '../stores/profileImageStore';
+import './image-selection-modal.less';
 
 const isValidFileName = filename => {
   return filename.endsWith('.jpg') || filename.endsWith('.png');
+};
+
+const exifDataToAngle = {
+  "1": 0,
+  "8": -90,
+  "3": -180,
+  "6": 90
 };
 
 // src: https://stackoverflow.com/questions/19032406/convert-html5-canvas-into-file-to-be-uploaded
@@ -28,10 +36,24 @@ class ImageSelection extends React.Component {
     this.selectFile = this.selectFile.bind(this);
     this.uploadImage = this.uploadImage.bind(this);
     this.onChangeFile = this.onChangeFile.bind(this);
+    this.renderImage = this.renderImage.bind(this);
+    this.rotate = this.rotate.bind(this);
+    this.adjustRotation = this.adjustRotation.bind(this);
+    this.getOrientation = this.getOrientation.bind(this);
+
     this.state = {
       invalidFile: false,
       hasSelectedFile: false
     };
+
+    const that = this;
+    $(document).ready(function() {
+      that.selectFile();
+    });
+  }
+
+  rotate() {
+    this.renderImage(90);
   }
 
   selectFile() {
@@ -50,35 +72,17 @@ class ImageSelection extends React.Component {
   }
 
   onChangeFile() {
-
     if(isValidFileName(this.fileInput.value)) {
       this.setState({invalidFile:false});
       const that = this;
       let data = this.fileInput.files[0];
       const fileName = data.name;
       const previewImage = document.getElementById('img-preview');
+      this.adjustRotation(data);
       const filereader = new FileReader();
       filereader.onload = function (event) {
         previewImage.onload = function (event) {
-          const canvas = document.getElementById('img-preview-canvas');
-          const ctx = canvas.getContext("2d");
-          let sx, sy, sw, sh;
-          const smallerSideLength = Math.min(previewImage.width, previewImage.height);
-          if(previewImage.width === smallerSideLength) {
-            sx = 0;
-            sw = previewImage.width;
-            sy = 0.5 * (previewImage.height - previewImage.width);
-            sh = previewImage.width;
-          } else {
-            sx = 0.5 * (previewImage.width - previewImage.height);
-            sw = previewImage.height;
-            sy = 0;
-            sh = previewImage.height;
-          }
-          ctx.drawImage(previewImage, sx, sy, sw, sh, 0, 0, 100, 100);
-          const file = canvas2Blob(canvas);
-          that.props.setImage({fileName: 'profile-image', data: file});
-          that.setState({hasSelectedFile: true});
+          that.renderImage();
         };
         previewImage.src = event.target.result;
       };
@@ -86,6 +90,76 @@ class ImageSelection extends React.Component {
     } else {
       this.setState({invalidFile: true});
     }
+  }
+
+  async adjustRotation(file) {
+    const orientation = await this.getOrientation(file);
+    console.log(orientation);
+    this.renderImage(exifDataToAngle[orientation]);
+  }
+
+  /**
+   * experimental
+   * @param {*} file
+   * @param {*} callback
+   */
+  getOrientation(file, callback) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const view = new DataView(e.target.result);
+        if (view.getUint16(0, false) != 0xFFD8) return resolve(-2);
+        const length = view.byteLength;
+        let offset = 2;
+        while (offset < length) {
+          const marker = view.getUint16(offset, false);
+          offset += 2;
+          if (marker == 0xFFE1) {
+            if (view.getUint32(offset += 2, false) != 0x45786966) return resolve(-1);
+            const little = view.getUint16(offset += 6, false) == 0x4949;
+            offset += view.getUint32(offset + 4, little);
+            const tags = view.getUint16(offset, little);
+            offset += 2;
+            for (let i = 0; i < tags; i++)
+              if (view.getUint16(offset + (i * 12), little) == 0x0112)
+                return resolve(view.getUint16(offset + (i * 12) + 8, little));
+          }
+          else if ((marker & 0xFF00) != 0xFF00) break;
+          else offset += view.getUint16(offset, false);
+        }
+        return resolve(-1);
+      };
+      reader.readAsArrayBuffer(file);
+    });
+  }
+
+  renderImage(angle=0) {
+    const previewImage = document.getElementById('img-preview');
+    const canvas = document.getElementById('img-preview-canvas');
+    const ctx = canvas.getContext("2d");
+    let sx, sy, sw, sh;
+    const smallerSideLength = Math.min(previewImage.width, previewImage.height);
+    if(previewImage.width === smallerSideLength) {
+      sx = 0;
+      sw = previewImage.width;
+      sy = 0.5 * (previewImage.height - previewImage.width);
+      sh = previewImage.width;
+    } else {
+      sx = 0.5 * (previewImage.width - previewImage.height);
+      sw = previewImage.height;
+      sy = 0;
+      sh = previewImage.height;
+    }
+
+    ctx.translate(50, 50);
+    ctx.rotate(angle * Math.PI/180);
+    ctx.translate(-50, -50);
+
+    ctx.drawImage(previewImage, sx, sy, sw, sh, 0, 0, 100, 100);
+
+    const file = canvas2Blob(canvas);
+    this.props.setImage({fileName: 'profile-image', data: file});
+    this.setState({hasSelectedFile: true});
   }
 
   render() {
@@ -99,12 +173,24 @@ class ImageSelection extends React.Component {
         />
       </div>
     );
+
+    const rotateButton = (
+      <div className='image-selection-button'>
+        <RaisedButton
+          onClick={this.rotate}
+          backgroundColor='#ffd801'
+          label='Rotate'
+        />
+      </div>
+    );
+
     const errorMessage = invalidFile ? 'Please select an image file!' : null;
     const style = {
       content: {
         marginLeft: '-125px',
+        marginTop: '40px',
         width: '250px',
-        height: '300px',
+        height: '350px',
         textAlign: 'center',
         left: '50%'
       }
@@ -146,7 +232,9 @@ class ImageSelection extends React.Component {
             </div>
 
             {errorMessage}
+
             {this.state.hasSelectedFile ? okButton : null}
+
             <div className='image-selection-button image-selection-button-cancel'>
               <RaisedButton
                 onClick={this.props.close}
@@ -154,6 +242,7 @@ class ImageSelection extends React.Component {
                 label='Cancel'
               />
             </div>
+
           </div>
         </Modal>
       </div>
