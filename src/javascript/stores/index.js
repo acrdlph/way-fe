@@ -5,6 +5,7 @@ import chatStore from './chatStore';
 import userDirectoryStore from './userDirectoryStore';
 import partnerStore from './partnerStore';
 import profileImageStore from './profileImageStore';
+import feedbackStore from './feedbackStore';
 
 export default combineReducers({
   waitlist: waitlistStore.reducer,
@@ -12,5 +13,6 @@ export default combineReducers({
   chat: chatStore.reducer,
   userDirectory: userDirectoryStore.reducer,
   partners: partnerStore.reducer,
-  profileImage: profileImageStore.reducer
+  profileImage: profileImageStore.reducer,
+  feedback: feedbackStore.reducer
 });

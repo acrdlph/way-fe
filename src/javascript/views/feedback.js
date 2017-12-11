@@ -1,11 +1,13 @@
 import React from 'react';
+import {connect} from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 import {trackPageView} from '../util/google-analytics';
+import {submitFeedback} from '../stores/feedbackStore.js';
 import './feedback.less';
 
-export default class Feedback extends React.Component {
+class Feedback extends React.Component {
 
   constructor(props) {
     super(props);
@@ -18,7 +20,7 @@ export default class Feedback extends React.Component {
     event.preventDefault();
     const email = event.target.email.value;
     const feedback = event.target.feedback.value;
-    // TODO: send feedback
+    this.props.submitFeedback(email, feedback);
   }
 
   render() {
@@ -57,3 +59,12 @@ export default class Feedback extends React.Component {
     );
   }
 }
+
+const mapStateToProps = (state) => ({
+});
+
+const mapDispatchToProps = dispatch => ({
+  submitFeedback: (email, feedback) => dispatch(submitFeedback(email, feedback)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Feedback);
