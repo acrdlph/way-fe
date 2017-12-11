@@ -18,6 +18,9 @@ export const submitFeedback = (email, feedback) => (dispatch) => {
     })
   })
   .then((res) => {
+    if (res.status < 200 || res.status > 299) {
+      throw new Error("Something went wrong!");
+    }
     dispatch({type: types.SUCCESSFUL});
   })
   .catch((error) => {
@@ -26,8 +29,8 @@ export const submitFeedback = (email, feedback) => (dispatch) => {
 };
 
 const initialState = {
-  pending: false,
-  successful: null,
+  isPending: false,
+  isSuccessful: null,
   error: null
 };
 
@@ -35,20 +38,20 @@ const reducer = (state = initialState, action) => {
   switch (action.type) {
     case types.LOADING:
       return {
-        pending: true,
-        successful: null,
+        isPending: true,
+        isSuccessful: null,
         error: null
       };
     case types.SUCCESSFUL:
       return {
-        pending: false,
-        successful: true,
+        isPending: false,
+        isSuccessful: true,
         error: false
       };
     case types.ERROR:
       return {
-        pending: false,
-        successful: false,
+        isPending: false,
+        isSuccessful: false,
         error: true
       };
     default:
