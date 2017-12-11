@@ -72,6 +72,11 @@ class Chat extends React.Component {
     });
   }
 
+  /**
+   * TODO This should be modified so that messages get stored locally and sent later
+   * Problem: user should get some feedback on non delivered messages
+   * @param {*} message 
+   */
   async sendMessage(message) {
     const chatPartnerId = _.get(this.props.match, 'params.chatPartnerId');
     const userId = sessionStorage.getItem('userId');
