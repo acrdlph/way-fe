@@ -27,9 +27,11 @@ const transformMessages = (messages) => {
   _.each(messages, entry => {
     transformedMessages.push({
       id: entry.id,
+      local_id: entry.local_id,
       sender: entry.sender_id,
       receiver: entry.receiver_id,
       message: entry.message,
+      delivered: entry.delivered,
       createdAt: entry.created_at
     });
   });
@@ -37,7 +39,12 @@ const transformMessages = (messages) => {
 };
 
 const sortMessages = (messages) => {
-  return _.sortBy(messages, 'createdAt');
+  const distinctMessages = _(messages)
+  .orderBy('createdAt', 'desc')
+  .uniqBy('local_id') // uniqBy will remove duplicates(locally added messages when offline) by keeping only the first occurrence
+  .reverse() // reverse again to make it createdAt asc
+  .value();
+  return distinctMessages;
 };
 
 export const loadMessages = (userId, chatPartnerId) => (dispatch) => {
