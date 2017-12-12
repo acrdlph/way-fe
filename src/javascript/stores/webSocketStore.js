@@ -6,14 +6,18 @@ let messageHandler = null;
 let connectionCloseHandler = null;
 let connectionSuccessHandler = null;
 let userId = null;
+let intialized = false;
 
 export const initWebSocketStore = (newUserId, newMessageHandler, 
     newConnectionSuccessHandler, newConnectionCloseHandler) => {
-    userId = newUserId;
     messageHandler = newMessageHandler || (() => {throw new Error('Message handle required');})();
     connectionCloseHandler = newConnectionCloseHandler || (() => {});
     connectionSuccessHandler = newConnectionSuccessHandler || (() => {});
-    newConnection();
+    if (!intialized && !isConnected()) {
+        userId = newUserId;
+        newConnection();
+        intialized = true;
+    }
 };
 
 export const send = async function send(msg) {
@@ -39,7 +43,8 @@ const managedSend = async function managedSend(msg) {
 };
 
 const isConnected = function isConnected() {
-    return currentConnection && currentConnection.readyState === currentConnection.OPEN;
+    return currentConnection && currentConnection.readyState === currentConnection.OPEN 
+            && navigator.onLine;
 }
 
 const newConnection = async function newConnection() {
@@ -47,9 +52,11 @@ const newConnection = async function newConnection() {
     addClosehandler(connection);
     connection.onmessage = messageHandler;
     currentConnection = await connectionPromise(connection);
-    // send previously delayed messages
-    sendDelayedMessages();
-    connectionSuccessHandler();
+    // send previously delayed messages after a small delay
+    setTimeout(() => {
+        sendDelayedMessages();
+        connectionSuccessHandler();
+    }, 500);
     return connection;
 } 
 

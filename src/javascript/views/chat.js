@@ -33,7 +33,7 @@ class Chat extends React.Component {
     this.enableChat = this.enableChat.bind(this);
     this.disableChat = this.disableChat.bind(this);
     this.state = {
-      disableChat: true
+      disableChat: false
     };
   }
 
