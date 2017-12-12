@@ -9,8 +9,9 @@ export default class Header extends React.Component {
     const isInWaitlist = this.props.location.pathname.includes('waitlist');
     const isInSignup = this.props.location.pathname.includes('signup');
     const isInChat = this.props.location.pathname.includes('chat');
+    const isInFeedback = this.props.location.pathname.includes('feedback');
 
-    if(!(isInWaitlist || isInSignup)) {
+    if(!(isInWaitlist || isInSignup || isInFeedback)) {
       return null;
     }
 
