@@ -6,6 +6,7 @@ import {trackPageView, trackEvent, events} from '../util/google-analytics';
 import ChatInput from '../components/chat-input';
 import Conversation from '../components/conversation';
 import {loadMessages, addMessagesToChat} from '../stores/chatStore';
+import {initWebSocketStore, getWebSocketConnection} from '../stores/webSocketStore';
 import './chat.less';
 
 class Chat extends React.Component {
@@ -25,17 +26,21 @@ class Chat extends React.Component {
     } else {
       this.props.history.push("/signup");
     }
-
     this.sendMessage = this.sendMessage.bind(this);
+    this.enableChat = this.enableChat.bind(this);
+    this.disableChat = this.disableChat.bind(this);
+    this.state = {
+      disableChat: true
+    };
   }
 
   componentDidMount() {
     console.log("create WebSocket connection");
-    const userId = sessionStorage.getItem('userId');
     const chatPartnerId = _.get(this.props.match, 'params.chatPartnerId');
-    this.connection = new WebSocket(WEBSOCKET_BASE_URL+userId);
+    const userId = sessionStorage.getItem('userId');
     const addMessages = this.props.addMessagesToChat;
-    this.connection.onmessage = function (event) {
+    initWebSocketStore(userId, (event) => {
+      // new message
       console.log("receive websocket message: " + JSON.stringify(event.data));
       const message = JSON.parse(event.data);
       addMessages([message], chatPartnerId);
@@ -46,10 +51,28 @@ class Chat extends React.Component {
       if(message.sender_id !== userId) {
         trackEvent(events.USER_RECEIVED_MESSAGE);
       }
-    };
+    }, () => {
+      // connected
+      this.enableChat();
+    }, () => {
+      // connection closed
+      this.disableChat();
+    });
   }
 
-  sendMessage(message) {
+  enableChat() {
+    this.setState({
+      disableChat: false
+    });
+  }
+
+  disableChat() {
+    this.setState({
+      disableChat: true
+    });
+  }
+
+  async sendMessage(message) {
     const chatPartnerId = _.get(this.props.match, 'params.chatPartnerId');
     const userId = sessionStorage.getItem('userId');
     const payload = {
@@ -58,8 +81,9 @@ class Chat extends React.Component {
       receiver_id: chatPartnerId
     };
     const payloadString = JSON.stringify(payload);
+    const connection = await getWebSocketConnection(); 
     console.log("send message: " + payloadString);
-    this.connection.send(payloadString);
+    connection.send(payloadString);
     trackEvent(events.USER_SEND_MESSAGE);
     /*
     // this only works if server and client time are the same...
@@ -76,7 +100,6 @@ class Chat extends React.Component {
     const chatPartnerId = _.get(this.props.match, 'params.chatPartnerId');
     const userlist = this.props.userlist;
     const messages = this.props.chat.data;
-    const connection = this.connection;
     const chatParnerName = userlist[chatPartnerId].name;
     return (
       <div className='chat'>
@@ -84,7 +107,7 @@ class Chat extends React.Component {
           <Conversation user={userId} userPhoto={this.props.userPhoto} users={userlist} messages={messages}/>
         </div>
         <div className='chat-chat-input'>
-          <ChatInput onSend={this.sendMessage}/>
+          <ChatInput onSend={this.sendMessage} disabled={this.state.disableChat}/>
         </div>
       </div>
     );

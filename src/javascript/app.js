@@ -12,6 +12,7 @@ import ResetPassword from './views/reset-password';
 import WaitList from './views/waitlist';
 import Challenge from './views/challenge';
 import Chat from './views/chat';
+import Feedback from './views/feedback';
 import './app.less';
 
 export default class App extends React.Component {
@@ -34,6 +35,7 @@ export default class App extends React.Component {
           <Route exact path="/waitlist/" component={WaitList}/>
           <Route exact path="/waitlist/:locationId" component={WaitList}/>
           <Route exact path="/waitlist/:locationId/chat/:chatPartnerId" component={Chat}/>
+          <Route exact path="/feedback" component={Feedback}/>
         </div>
         <Footer/>
       </div>

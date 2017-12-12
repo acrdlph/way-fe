@@ -4,7 +4,7 @@ import fetch from 'isomorphic-fetch';
 import {Row, Col} from 'react-bootstrap';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
-import Avatar from 'material-ui/Avatar';
+import Avatar from './avatar';
 import {NavLink} from 'react-router-dom';
 import InfoBox from './infobox';
 import WaitListItem from '../components/waitlist-item';
@@ -83,6 +83,7 @@ class UserData extends React.Component {
               onClick={this.selectImage}
               size={100}
               src={photo}
+              displayPlus={true}
             />
             {imageSelectionModal}
           </Col>
