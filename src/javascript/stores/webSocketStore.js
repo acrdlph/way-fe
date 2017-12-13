@@ -50,15 +50,30 @@ const isConnected = function isConnected() {
 const newConnection = async function newConnection() {
     let connection = new WebSocket(WEBSOCKET_BASE_URL + userId);
     addClosehandler(connection);
-    connection.onmessage = messageHandler;
+    connection.onmessage = onMessage;
     currentConnection = await connectionPromise(connection);
     // send previously delayed messages after a small delay
     setTimeout(() => {
         sendDelayedMessages();
-        connectionSuccessHandler();
+        onSuccess();
     }, 500);
     return connection;
 } 
+
+const onSuccess = function onSuccess() {
+    // indirection so that messageHandler can be replaced after connection had been created
+    connectionSuccessHandler();
+}
+
+const onMessage = function onMessage(event) {
+    // indirection so that messageHandler can be replaced after connection had been created
+    messageHandler(event);
+}
+
+const onClose = function onClose() {
+    // indirection so that messageHandler can be replaced after connection had been created
+    connectionCloseHandler();
+}
 
 function sendDelayedMessages() {
     while (delayedMessages.length && isConnected()) {
@@ -78,7 +93,7 @@ const addClosehandler = function addClosehandler(connection) {
     connection.onclose = (evt) => {
         console.log('web socket connection closed ', evt);
         currentConnection = null;
-        connectionCloseHandler();
+        onClose();
         setTimeout(newConnection, 1000); // try to reconnect after 1 second     
     };
 } 
