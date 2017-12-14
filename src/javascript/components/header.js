@@ -3,6 +3,16 @@ import {NavLink} from 'react-router-dom';
 import {Card} from 'material-ui/Card';
 import './header.less';
 
+const createBackButton = (to) => {
+  return (
+    <div className='header-back-button'>
+      <NavLink to={to}>
+        <span className="glyphicon glyphicon glyphicon-chevron-left"/>
+      </NavLink>
+    </div>
+  );
+};
+
 export default class Header extends React.Component {
   render() {
 
@@ -15,13 +25,13 @@ export default class Header extends React.Component {
       return null;
     }
 
-    const backButton = isInChat ? (
-      <div className='header-back-button'>
-        <NavLink to="/waitlist">
-          <span className="glyphicon glyphicon glyphicon-chevron-left"/>
-        </NavLink>
-      </div>
-    ) : null;
+    let backButton = null;
+    if(isInChat) {
+      backButton = createBackButton('/waitlist');
+    };
+    if(isInFeedback) {
+      backButton = createBackButton('/');
+    };
 
     return (
       <Card className='header'>

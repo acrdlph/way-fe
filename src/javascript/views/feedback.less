@@ -1,12 +1,14 @@
 .feedback {
-  position: absolute;
-  max-width: 350px;
   text-align: center;
+  position: relative;
+}
+
+.feedback-content {
+  max-width: 350px;
 }
 
 @media (min-width: 350px) {
-  .feedback {
-    left: 50%;
-    margin-left: -175px;
+  .feedback-content {
+    margin: 0 auto;
   }
 }

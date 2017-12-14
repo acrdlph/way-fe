@@ -26,7 +26,7 @@ export default class App extends React.Component {
           <Route exact path="/waitlist/:locationId/chat/:chatPartnerId" component={Chat}/>
           <Route exact path="/feedback" component={Feedback}/>
         </div>
-        <Footer/>
+        <Route component={Footer}/>
       </div>
     );
   }

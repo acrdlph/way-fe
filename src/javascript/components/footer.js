@@ -1,38 +1,22 @@
 import React from 'react';
-import { connect } from 'react-redux';
-import _ from 'lodash';
-import {supportedLocations} from '../util/constants';
+import { NavLink } from 'react-router-dom';
 import './footer.less';
 
-class Footer extends React.Component {
-  render() {
-    let airport = null;
-    const {airportName} = this.props;
-    if(airportName) {
-      if(_.includes(supportedLocations, airportName)) {
-        airport = <img src={`assets/airport-logo-${airportName}.png`}/>;
-      } else {
-        airport = `Airport: ${airportName}`;
-      }
-    }
+export default class Footer extends React.Component {
 
-    if(airport) {
-      return (
-        <div className="footer">
-          <div className='footer-airport-name'>
-            {airport}
-          </div>
-        </div>
-      );
-    } else {
+  render() {
+    const isInChat = this.props.location.pathname.includes('chat');
+    if(isInChat) {
       return null;
     }
 
+    return (
+      <div className="footer">
+        <div className='footer-links'>
+          <NavLink to='/feedback'>Feedback</NavLink>
+        </div>
+      </div>
+    );
   }
+
 }
-
-const mapStateToProps = (state) => ({
-  airportName: _.get(state.user, 'data.location')
-});
-
-export default connect(mapStateToProps)(Footer);
