@@ -4,6 +4,16 @@ import {Card} from 'material-ui/Card';
 import {PAGES_WITH_HEADER} from '../util/constants';
 import './header.less';
 
+const createBackButton = (to) => {
+  return (
+    <div className='header-back-button'>
+      <NavLink to={to}>
+        <span className="glyphicon glyphicon glyphicon-chevron-left"/>
+      </NavLink>
+    </div>
+  );
+};
+
 export default class Header extends React.Component {
   render() {
 
@@ -13,14 +23,17 @@ export default class Header extends React.Component {
       return null;
     }
 
-    const isInChat = pathname.includes('chat');
-    const backButton = isInChat ? (
-      <div className='header-back-button'>
-        <NavLink to="/waitlist">
-          <span className="glyphicon glyphicon glyphicon-chevron-left"/>
-        </NavLink>
-      </div>
-    ) : null;
+    let backButton = null;
+    const isInChat = this.props.location.pathname.includes('chat');
+    if(isInChat) {
+      backButton = createBackButton('/waitlist');
+    };
+    const isInFeedback = this.props.location.pathname.includes('feedback');
+    const isInLegalNotice = this.props.location.pathname.includes('legalnotice');
+    if(isInFeedback || isInLegalNotice) {
+      backButton = createBackButton('/');
+    };
+
 
     return (
       <Card className='header'>

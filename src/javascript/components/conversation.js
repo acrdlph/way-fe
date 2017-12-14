@@ -28,9 +28,10 @@ export default class Conversation extends React.Component {
           photo = otherPhoto;
         }
       }
+      const undeliveredMsgClass = msg.id ? '' : 'undelivered-msg-style'; 
 
       return (
-        <div key={msg.id} className='chat-item-wrapper'>
+        <div key={msg.local_id} className='chat-item-wrapper'>
           <div className={`chat-item chat-item-${cssClass}`}>
             <div className={`avatar avatar-${cssClass}`}>
               <Avatar
@@ -39,7 +40,7 @@ export default class Conversation extends React.Component {
               />
             </div>
             <div className={`content content-${cssClass}`}>
-              <div className='bubble' style={style}>
+              <div className={`bubble ${undeliveredMsgClass}`} style={style}>
                 {msg.message}
               </div>
               <div className='meta-info'>

@@ -1,6 +1,5 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import { NavLink } from 'react-router-dom';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 import RefreshIndicator from 'material-ui/RefreshIndicator';
@@ -110,7 +109,9 @@ class Feedback extends React.Component {
 
     return (
       <div className='feedback'>
-        {content}
+        <div className='feedback-content'>
+          {content}
+        </div>
       </div>
     );
   }

@@ -2,11 +2,13 @@ import React from 'react';
 import {connect} from 'react-redux';
 import {NavLink} from 'react-router-dom';
 import _ from 'lodash';
+import uuidv4 from 'uuid/v4';
+import LinearProgress from 'material-ui/LinearProgress';
 import {trackPageView, trackEvent, events} from '../util/google-analytics';
 import ChatInput from '../components/chat-input';
 import Conversation from '../components/conversation';
 import {loadMessages, addMessagesToChat} from '../stores/chatStore';
-import {initWebSocketStore, getWebSocketConnection} from '../stores/webSocketStore';
+import {initWebSocketStore, send} from '../stores/webSocketStore';
 import './chat.less';
 
 class Chat extends React.Component {
@@ -27,37 +29,39 @@ class Chat extends React.Component {
       this.props.history.push("/signup");
     }
     this.sendMessage = this.sendMessage.bind(this);
+    this.onMessageUpdate = this.onMessageUpdate.bind(this);
     this.enableChat = this.enableChat.bind(this);
     this.disableChat = this.disableChat.bind(this);
     this.state = {
-      disableChat: true
+      disableChat: false
     };
   }
 
   componentDidMount() {
     console.log("create WebSocket connection");
-    const chatPartnerId = _.get(this.props.match, 'params.chatPartnerId');
     const userId = sessionStorage.getItem('userId');
-    const addMessages = this.props.addMessagesToChat;
-    initWebSocketStore(userId, (event) => {
-      // new message
-      console.log("receive websocket message: " + JSON.stringify(event.data));
-      const message = JSON.parse(event.data);
-      addMessages([message], chatPartnerId);
-      const path = sessionStorage.getItem('path');
-      if(path.includes('chat')) {
-        window.scrollTo(0, document.body.scrollHeight);
-      }
-      if(message.sender_id !== userId) {
-        trackEvent(events.USER_RECEIVED_MESSAGE);
-      }
-    }, () => {
+    initWebSocketStore(userId, /* new message */ this.onMessageUpdate, () => {
       // connected
       this.enableChat();
     }, () => {
       // connection closed
       this.disableChat();
     });
+  }
+
+  onMessageUpdate(event) {
+    console.log("received message: " + JSON.stringify(event.data));
+    const chatPartnerId = _.get(this.props.match, 'params.chatPartnerId');
+    const userId = sessionStorage.getItem('userId');
+    const message = JSON.parse(event.data);
+    this.props.addMessagesToChat([message], chatPartnerId);
+    const path = sessionStorage.getItem('path');
+    if(path.includes('chat')) {
+      window.scrollTo(0, document.body.scrollHeight);
+    }
+    if(message.sender_id !== userId) {
+      trackEvent(events.USER_RECEIVED_MESSAGE);
+    }
   }
 
   enableChat() {
@@ -72,18 +76,29 @@ class Chat extends React.Component {
     });
   }
 
+  /**
+   * Problem: user should get some feedback on non delivered messages
+   * @param {*} message 
+   */
   async sendMessage(message) {
     const chatPartnerId = _.get(this.props.match, 'params.chatPartnerId');
     const userId = sessionStorage.getItem('userId');
     const payload = {
+      local_id: uuidv4(),
       message,
       sender_id: userId,
       receiver_id: chatPartnerId
     };
-    const payloadString = JSON.stringify(payload);
-    const connection = await getWebSocketConnection(); 
-    console.log("send message: " + payloadString);
-    connection.send(payloadString);
+    const success = await send(payload);
+    if (!success) {
+      // add messages locally
+      // set local time as created_at as the server did not get to generate it.
+      // when the server responds it will send the corret created_at, triggering a reorder
+      payload.created_at = new Date();
+      this.onMessageUpdate({
+        data: JSON.stringify(payload)
+      });
+    }
     trackEvent(events.USER_SEND_MESSAGE);
     /*
     // this only works if server and client time are the same...
@@ -101,13 +116,16 @@ class Chat extends React.Component {
     const userlist = this.props.userlist;
     const messages = this.props.chat.data;
     const chatParnerName = userlist[chatPartnerId].name;
+    const networkErrorIndicator = this.state.disableChat ? <LinearProgress color="#337ab7" mode="indeterminate"/> : null;
+
     return (
       <div className='chat'>
+        {networkErrorIndicator}
         <div className='chat-content'>
           <Conversation user={userId} userPhoto={this.props.userPhoto} users={userlist} messages={messages}/>
         </div>
         <div className='chat-chat-input'>
-          <ChatInput onSend={this.sendMessage} disabled={this.state.disableChat}/>
+          <ChatInput onSend={this.sendMessage} disabled={false}/>
         </div>
       </div>
     );

@@ -14,6 +14,7 @@ import Infobox from '../components/infobox';
 import EmptyLocationMessage from '../components/empty-location-message';
 import {loadWaitlist} from '../stores/waitlistStore';
 import {loadUserData, isOnboarded} from '../stores/userStore';
+import {initWebSocketStore} from '../stores/webSocketStore';
 import {loadPartnerData} from '../stores/partnerStore';
 import {requestPermissionForNotifications} from '../util/notification';
 import {PARTNER_LOCATIONS} from '../util/constants';
@@ -59,6 +60,12 @@ class WaitList extends React.Component {
     if(FEATURE_NOTIFICATIONS) {
       requestPermissionForNotifications();
     }
+  }
+
+  componentDidMount() {
+    // initialize so that messages can be delivered, but not acted upon
+    // TODO handle the incoming messages and update chat bubbles
+    initWebSocketStore(sessionStorage.getItem('userId'), () => {});
   }
 
   openChat(chatPartnerId) {
