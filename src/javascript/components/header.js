@@ -20,8 +20,9 @@ export default class Header extends React.Component {
     const isInSignup = this.props.location.pathname.includes('signup');
     const isInChat = this.props.location.pathname.includes('chat');
     const isInFeedback = this.props.location.pathname.includes('feedback');
+    const isInLegalNotice = this.props.location.pathname.includes('legalnotice');
 
-    if(!(isInWaitlist || isInSignup || isInFeedback)) {
+    if(!(isInWaitlist || isInSignup || isInFeedback || isInLegalNotice)) {
       return null;
     }
 
@@ -29,7 +30,7 @@ export default class Header extends React.Component {
     if(isInChat) {
       backButton = createBackButton('/waitlist');
     };
-    if(isInFeedback) {
+    if(isInFeedback || isInLegalNotice) {
       backButton = createBackButton('/');
     };
 

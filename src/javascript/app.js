@@ -8,6 +8,7 @@ import Signup from './views/signup';
 import WaitList from './views/waitlist';
 import Chat from './views/chat';
 import Feedback from './views/feedback';
+import LegalNotice from './views/legal-notice';
 import './app.less';
 
 export default class App extends React.Component {
@@ -25,6 +26,7 @@ export default class App extends React.Component {
           <Route exact path="/waitlist/:locationId" component={WaitList}/>
           <Route exact path="/waitlist/:locationId/chat/:chatPartnerId" component={Chat}/>
           <Route exact path="/feedback" component={Feedback}/>
+          <Route exact path="/legalnotice" component={LegalNotice}/>
         </div>
         <Route component={Footer}/>
       </div>
