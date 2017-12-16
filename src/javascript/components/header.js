@@ -1,6 +1,8 @@
 import React from 'react';
+import {connect} from 'react-redux';
 import {NavLink} from 'react-router-dom';
 import {Card} from 'material-ui/Card';
+import MaterialUiAvatar from 'material-ui/Avatar';
 import {PAGES_WITH_HEADER} from '../util/constants';
 import './header.less';
 
@@ -14,7 +16,7 @@ const createBackButton = (to) => {
   );
 };
 
-export default class Header extends React.Component {
+class Header extends React.Component {
   render() {
 
     const {pathname} = this.props.location;
@@ -34,15 +36,35 @@ export default class Header extends React.Component {
       backButton = createBackButton('/');
     };
 
+    const {isLoggedIn, username, photo} = this.props;
+    const profileIcon = isLoggedIn ? (
+      <div className='header-profileicon'>
+        {username}
+        <MaterialUiAvatar
+          size={35}
+          src={photo}
+        />
+      </div>
+    ) : null;
 
     return (
       <Card className='header'>
         {backButton}
-        <img
-          className='logo'
-          src='assets/waitlistlogo.svg'
-        />
+        <div className='header-logo'>
+          <img
+            src='assets/waitlistlogo.svg'
+          />
+        </div>
+        {profileIcon}
       </Card>
     );
   }
 }
+
+const mapStateToProps = (state) => ({
+  username: _.get(state.user, 'data.username'),
+  isLoggedIn: state.account.wasLoginSuccessful,
+  photo: _.get(state.user, 'data.photo', 'assets/avatar-placeholder.png')
+});
+
+export default connect(mapStateToProps)(Header);
