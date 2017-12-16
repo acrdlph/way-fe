@@ -12,10 +12,14 @@ export default class Footer extends React.Component {
 
     return (
       <div className="footer">
-        <div className='footer-links'>
-          Copyright © WaitList 2017&emsp;
-          <NavLink to='/legalnotice'>Legal Notice</NavLink>&emsp;
-          <NavLink to='/feedback'>Feedback</NavLink>
+        <div className='footer-content'>
+          <span>
+            Copyright © WaitList 2017&emsp;
+          </span>
+          <span>
+            <NavLink to='/legalnotice'>Legal Notice</NavLink>&emsp;
+            <NavLink to='/feedback'>Feedback</NavLink>
+          </span>
         </div>
       </div>
     );
