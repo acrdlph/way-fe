@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
-import Avatar from 'material-ui/Avatar';
+import Avatar from '../components/avatar';
 import {trackPageView} from '../util/google-analytics';
 import TermsAndPolicy from '../components/terms-and-policy';
 import InfoBox from '../components/infobox';
@@ -93,6 +93,7 @@ class Profile extends React.Component {
 
   render() {
     const { username, name, interests, photo } = this.props;
+
     const photoUrl = photo || 'assets/avatar-placeholder.png';
     console.log(username, name, interests, photoUrl);
     const imageSelectionModal = this.props.showModal ?
@@ -113,9 +114,9 @@ class Profile extends React.Component {
         <Row>
           <Col sm={12}>
             <Avatar
-              onClick={this.onImageClick}
-              size={100}
               src={photoUrl}
+              onClick={this.onImageClick}
+              displayPlus={true}
             />
             {imageSelectionModal}
           </Col>
@@ -125,15 +126,15 @@ class Profile extends React.Component {
             <h3>{username}</h3>
             <TextField
               name="name"
-              value={name}
-              floatingLabelText="Name"
+              defaultValue={name}
+              hintText="Name"
               onChange={this.onChanged}
               fullWidth={true}
             />
             <TextField
               name="interest"
-              value={interests}
-              floatingLabelText="Interest"
+              defaultValue={interests}
+              hintText="Interest"
               onChange={this.onChanged}
               fullWidth={true}
             />
