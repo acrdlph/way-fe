@@ -10,6 +10,7 @@ import InfoBox from './infobox';
 import WaitListItem from '../components/waitlist-item';
 import {trackEvent, events} from '../util/google-analytics';
 import {loadUserData, updateUserData, editUserData, isOnboarded} from '../stores/userStore';
+import {isLoggedIn} from '../stores/accountStore';
 import {showModal} from '../stores/profileImageStore';
 import ImageSelection from './image-selection-modal';
 import './user-data.less';
@@ -117,7 +118,7 @@ class UserData extends React.Component {
     ) : (
       <div>
         <WaitListItem photo={photo} interests={interests} name={name} onClick={this.setEditable}/>
-        <InfoBox visible={!this.props.isRegisteredUser} text={registerText}/>
+        <InfoBox visible={!isLoggedIn()} text={registerText}/>
       </div>
     );
   }
@@ -126,7 +127,6 @@ class UserData extends React.Component {
 
 const mapStateToProps = (state) => ({
   user: state.user,
-  isRegisteredUser: !!state.user.data.username,
   isUserOnboarded: isOnboarded(state.user),
   showModal: state.profileImage.showModal
 });
