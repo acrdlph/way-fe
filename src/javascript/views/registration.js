@@ -4,7 +4,7 @@ import { NavLink } from 'react-router-dom';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 import {checkUsernameAvailability, registerAccount} from '../stores/accountStore';
-import {trackPageView} from '../util/google-analytics';
+import {trackPageView, trackEvent, events} from '../util/google-analytics';
 import TermsAndPolicy from '../components/terms-and-policy';
 import InfoBox from '../components/infobox';
 import './registration.less';
@@ -58,6 +58,7 @@ class Onboarding extends React.Component {
   componentWillReceiveProps(props) {
     if(props.account.wasRegistrationSuccessful && !this.props.account.wasRegistrationSuccessful) {
       sessionStorage.setItem('userId', props.account.userId);
+      trackEvent(events.USER_REGISTERED_ACCOUNT);
       this.props.history.push(`/signup`);
     }
   }

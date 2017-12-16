@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
-import {trackPageView} from '../util/google-analytics';
+import {trackPageView, trackEvent, events} from '../util/google-analytics';
 import TermsAndPolicy from '../components/terms-and-policy';
 import InfoBox from '../components/infobox';
 import {login} from '../stores/accountStore';
@@ -30,6 +30,7 @@ class Login extends React.Component {
   componentWillReceiveProps(props) {
     if(props.account.wasLoginSuccessful && !this.props.account.wasLoginSuccessful) {
       sessionStorage.setItem('userId', props.account.userId);
+      trackEvent(events.USER_LOGGED_IN);
       this.props.history.push(`/signup`);
     }
   }
