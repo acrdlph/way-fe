@@ -1,6 +1,8 @@
 import React from 'react';
+import {connect} from 'react-redux';
 import ReactDOM from 'react-dom';
 import {Route} from 'react-router-dom';
+import {loadUserData} from './stores/userStore';
 import Header from './components/header';
 import Footer from './components/footer';
 import Onboarding from './views/onboarding';
@@ -16,7 +18,17 @@ import Feedback from './views/feedback';
 import LegalNotice from './views/legal-notice';
 import './app.less';
 
-export default class App extends React.Component {
+class App extends React.Component {
+
+  constructor(props) {
+    super(props);
+    const userId = sessionStorage.getItem('userId');
+    if(userId) {
+      console.log("App: loadUserData", userId);
+      this.props.loadUserData(userId);
+    }
+  }
+
   render() {
     sessionStorage.setItem('path', this.props.location.pathname);
     return (
@@ -44,3 +56,12 @@ export default class App extends React.Component {
     );
   }
 };
+
+const mapStateToProps = (state) => ({
+});
+
+const mapDispatchToProps = dispatch => ({
+  loadUserData: (userId) => dispatch(loadUserData(userId))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
