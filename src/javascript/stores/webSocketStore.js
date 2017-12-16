@@ -1,3 +1,5 @@
+import io from 'socket.io-client';
+
 // move to local storage
 const delayedMessages = [];
 
@@ -24,44 +26,37 @@ export const send = async function send(msg) {
     if (!userId && !messageHandler) {
         throw new Error('call initStore first');
     }
-    const payloadString = JSON.stringify(msg);
-    const result = await managedSend(payloadString); 
-    console.log("send message: " + payloadString);
+    const result = await managedSend(msg); 
+    console.log("send message: " + msg);
     return result;
 }
 
 const managedSend = async function managedSend(msg) {
     if (isConnected()) {
-        currentConnection.send(msg);
+        currentConnection.emit('NEW_MESSAGE', msg);
         return true;
     } else {
         // connection issue, store messages locally
         delayedMessages.push(msg);
-        newConnection();
+        // newConnection();
         return false;
     }
 };
 
 const isConnected = function isConnected() {
-    return currentConnection && currentConnection.readyState === currentConnection.OPEN 
-            && navigator.onLine;
+    return currentConnection && currentConnection.connected;
 }
 
 const newConnection = async function newConnection() {
-    let connection = new WebSocket(WEBSOCKET_BASE_URL + userId);
+    let connection = io(WEBSOCKET_BASE_URL + 'messaging?user_id=' + userId);
+    addMessagehandler(connection);
     addClosehandler(connection);
-    connection.onmessage = onMessage;
-    currentConnection = await connectionPromise(connection);
-    // send previously delayed messages after a small delay
-    setTimeout(() => {
-        sendDelayedMessages();
-        onSuccess();
-    }, 500);
+    addConnectionhandler(connection);
     return connection;
 } 
 
 const onSuccess = function onSuccess() {
-    // indirection so that messageHandler can be replaced after connection had been created
+    // indirection so that connectionSuccessHandler can be replaced after connection had been created
     connectionSuccessHandler();
 }
 
@@ -71,30 +66,38 @@ const onMessage = function onMessage(event) {
 }
 
 const onClose = function onClose() {
-    // indirection so that messageHandler can be replaced after connection had been created
+    // indirection so that connectionCloseHandler can be replaced after connection had been created
     connectionCloseHandler();
 }
 
 function sendDelayedMessages() {
     while (delayedMessages.length && isConnected()) {
-        currentConnection.send(delayedMessages.shift());
+        currentConnection.emit('NEW_MESSAGE', delayedMessages.shift());
     }
 }
 
-const connectionPromise = function connectionPromise(connection) {
-    return new Promise((resolve, reject) => {
-        connection.onopen = () => {
-            resolve(connection);
-        };
+const addConnectionhandler = function addConnectionhandler(connection) {
+    connection.on('connect', () => {
+        currentConnection = connection;
+        // send previously delayed messages after a small delay
+        setTimeout(() => {
+            sendDelayedMessages();
+            onSuccess();
+        }, 500);
+    });
+}
+
+const addMessagehandler = function addMessagehandler(connection) {
+    connection.on('NEW_MESSAGE', (msg) => {
+        console.log('message received ', JSON.stringify(msg));
+        onMessage(msg);
     });
 }
 
 const addClosehandler = function addClosehandler(connection) {
-    connection.onclose = (evt) => {
-        console.log('web socket connection closed ', evt);
-        currentConnection = null;
+    connection.on('disconnect', (reason) => {
+        console.log('chat connection closed ', reason);
         onClose();
-        setTimeout(newConnection, 1000); // try to reconnect after 1 second     
-    };
+    });
 } 
 

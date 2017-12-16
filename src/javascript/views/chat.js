@@ -49,11 +49,9 @@ class Chat extends React.Component {
     });
   }
 
-  onMessageUpdate(event) {
-    console.log("received message: " + JSON.stringify(event.data));
+  onMessageUpdate(message) {
     const chatPartnerId = _.get(this.props.match, 'params.chatPartnerId');
     const userId = sessionStorage.getItem('userId');
-    const message = JSON.parse(event.data);
     this.props.addMessagesToChat([message], chatPartnerId);
     const path = sessionStorage.getItem('path');
     if(path.includes('chat')) {
@@ -95,18 +93,9 @@ class Chat extends React.Component {
       // set local time as created_at as the server did not get to generate it.
       // when the server responds it will send the corret created_at, triggering a reorder
       payload.created_at = new Date();
-      this.onMessageUpdate({
-        data: JSON.stringify(payload)
-      });
+      this.onMessageUpdate(payload);
     }
     trackEvent(events.USER_SEND_MESSAGE);
-    /*
-    // this only works if server and client time are the same...
-    this.props.addMessagesToChat([{
-      ...payload,
-      created_at: new Date()
-    }]);
-    */
   }
 
   render() {
@@ -116,7 +105,8 @@ class Chat extends React.Component {
     const userlist = this.props.userlist;
     const messages = this.props.chat.data;
     const chatParnerName = userlist[chatPartnerId].name;
-    const networkErrorIndicator = this.state.disableChat ? <LinearProgress color="#337ab7" mode="indeterminate"/> : null;
+    const networkErrorIndicator = this.state.disableChat ? 
+    <LinearProgress style={{position: 'fixed', width: '96%'}} color="#337ab7" mode="indeterminate"/> : null;
 
     return (
       <div className='chat'>
