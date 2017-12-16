@@ -28,7 +28,8 @@ class Header extends React.Component {
 
     let backButton = null;
     const isInChat = this.props.location.pathname.includes('chat');
-    if(isInChat) {
+    const isInProfile = this.props.location.pathname.includes('profile');
+    if(isInChat || isInProfile) {
       backButton = createBackButton('/waitlist');
     };
     const isInFeedback = this.props.location.pathname.includes('feedback');
