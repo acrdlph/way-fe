@@ -36,9 +36,14 @@ export const registerAccount = (data) => (dispatch) => {
   .then((res) => res.json())
   .then((data) => {
     console.log("registration passed", data);
+    sessionStorage.setItem('token', data.token);
     dispatch({
       type: types.ACCOUNT_REGISTER_PASSED,
       data
+    });
+    dispatch({
+      type: types.ACCOUNT_LOGIN_PASSED,
+      userId: data.token
     });
   })
   .catch(error => {
