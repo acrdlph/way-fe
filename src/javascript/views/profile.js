@@ -93,7 +93,8 @@ class Profile extends React.Component {
 
   render() {
     const { username, name, interests, photo } = this.props;
-    console.log(username, name, interests, photo);
+    const photoUrl = photo || 'assets/avatar-placeholder.png';
+    console.log(username, name, interests, photoUrl);
     const imageSelectionModal = this.props.showModal ?
     <ImageSelection onUpload={this.refreshProfile} /> : null;
 
@@ -114,20 +115,14 @@ class Profile extends React.Component {
             <Avatar
               onClick={this.onImageClick}
               size={100}
-              src={photo}
+              src={photoUrl}
             />
             {imageSelectionModal}
           </Col>
         </Row>
         <Row>
           <Col sm={12}>
-            <TextField
-              value={this.props.username}
-              name="username"
-              floatingLabelText="Username"
-              onChange={this.onChanged}
-              fullWidth={true}
-            />
+            <h3>{username}</h3>
             <TextField
               name="name"
               value={name}
