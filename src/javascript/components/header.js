@@ -4,6 +4,7 @@ import {NavLink} from 'react-router-dom';
 import {Card} from 'material-ui/Card';
 import MaterialUiAvatar from 'material-ui/Avatar';
 import {PAGES_WITH_HEADER} from '../util/constants';
+import {isLoggedIn} from '../stores/accountStore';
 import './header.less';
 
 const createBackButton = (to) => {
@@ -36,8 +37,8 @@ class Header extends React.Component {
       backButton = createBackButton('/');
     };
 
-    const {isLoggedIn, username, photo} = this.props;
-    const profileIcon = isLoggedIn ? (
+    const {username, photo} = this.props;
+    const profileIcon = isLoggedIn() ? (
       <div className='header-profileicon'>
         {username}
         <MaterialUiAvatar
@@ -63,7 +64,6 @@ class Header extends React.Component {
 
 const mapStateToProps = (state) => ({
   username: _.get(state.user, 'data.username'),
-  isLoggedIn: state.account.wasLoginSuccessful,
   photo: _.get(state.user, 'data.photo', 'assets/avatar-placeholder.png')
 });
 

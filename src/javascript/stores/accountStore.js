@@ -12,6 +12,14 @@ const types = {
   ACCOUNT_LOGIN_FAILED: 'ACCOUNT_LOGIN_FAILED'
 };
 
+export const isLoggedIn = () => {
+  const userId = sessionStorage.getItem('userId');
+  const token = sessionStorage.getItem('token');
+  const loggedIn = userId && token;
+  console.log("isLoggedIn", loggedIn);
+  return loggedIn;
+};
+
 export const registerAccount = (data) => (dispatch) => {
   dispatch({
     type: types.ACCOUNT_REGISTER_PENDING,

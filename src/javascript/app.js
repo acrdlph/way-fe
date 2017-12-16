@@ -3,6 +3,7 @@ import {connect} from 'react-redux';
 import ReactDOM from 'react-dom';
 import {Route} from 'react-router-dom';
 import {loadUserData} from './stores/userStore';
+import {isLoggedIn} from './stores/accountStore';
 import Header from './components/header';
 import Footer from './components/footer';
 import Onboarding from './views/onboarding';
@@ -22,10 +23,16 @@ class App extends React.Component {
 
   constructor(props) {
     super(props);
-    const userId = sessionStorage.getItem('userId');
-    if(userId) {
+    if(isLoggedIn()) {
+      const userId = sessionStorage.getItem('userId');
       console.log("App: loadUserData", userId);
       this.props.loadUserData(userId);
+    }
+  }
+
+  componentWillReceiveProps(props) {
+    if(props.account.wasLoginSuccessful) {
+      this.props.loadUserData(props.account.userId);
     }
   }
 
@@ -58,6 +65,7 @@ class App extends React.Component {
 };
 
 const mapStateToProps = (state) => ({
+  account: state.account
 });
 
 const mapDispatchToProps = dispatch => ({
