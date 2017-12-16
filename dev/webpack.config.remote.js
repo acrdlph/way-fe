@@ -21,7 +21,7 @@ module.exports = {
     new ExtractTextPlugin('style.css'),
     new webpack.DefinePlugin({
       DEVELOPMENT_MODE: true,
-      WEBSOCKET_BASE_URL: JSON.stringify('https://'+backend.host+':'+backend.port+'/'),
+      WEBSOCKET_BASE_URL: JSON.stringify('https://'+backend.host+ '/'),
       FEATURE_NOTIFICATIONS: true,
       GOOGLE_ANALYTICS_ID: JSON.stringify('')
     }),
