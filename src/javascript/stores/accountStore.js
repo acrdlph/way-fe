@@ -84,6 +84,7 @@ export const login = (loginname, password) => (dispatch) => {
   })
   .then((res) => res.json())
   .then((data) => {
+    sessionStorage.setItem('token', data.token);
     dispatch({
       type: types.ACCOUNT_LOGIN_PASSED,
       userId: data.token
