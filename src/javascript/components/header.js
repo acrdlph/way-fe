@@ -9,11 +9,9 @@ import './header.less';
 
 const createBackButton = (to) => {
   return (
-    <div className='header-back-button'>
-      <NavLink to={to}>
-        <span className="glyphicon glyphicon glyphicon-chevron-left"/>
-      </NavLink>
-    </div>
+    <NavLink to={to}>
+      <span className="glyphicon glyphicon glyphicon-chevron-left"/>
+    </NavLink>
   );
 };
 
@@ -38,7 +36,7 @@ class Header extends React.Component {
       backButton = createBackButton('/');
     };
 
-    const {username, photo} = this.props;
+    const {username, photo, locationName} = this.props;
     const profileIcon = isLoggedIn() ? (
       <div className='header-profileicon'>
         <NavLink to='/profile'>
@@ -53,23 +51,50 @@ class Header extends React.Component {
       </div>
     ) : null;
 
+    const location = locationName ? (
+      <div className='header-location'>
+        {locationName}
+        <img
+          src='assets/waitlist-location-icon.png'
+        />
+      </div>
+    ) : null;
+
     return (
       <Card className='header'>
-        {backButton}
+        <div className='header-back-button'>
+          {backButton}
+        </div>
         <div className='header-logo'>
           <img
             src='assets/waitlistlogo.svg'
           />
         </div>
+        {location}
         {profileIcon}
       </Card>
     );
   }
 }
 
+const extractLocationName = (state) => {
+  const locationKey = _.get(state.user, 'data.location');
+  if(locationKey && state.partners.loaded) {
+    console.log("locationKey", locationKey);
+    const locationNumber = _.findKey(state.partners.data, (loc) => {
+      return (loc.uniqueKey === locationKey.toUpperCase() || loc.location === locationKey.toUpperCase());
+    });
+    if(locationNumber) {
+      return state.partners.data[locationNumber].name;
+    }
+  }
+  return null;
+};
+
 const mapStateToProps = (state) => ({
   username: _.get(state.user, 'data.username'),
-  photo: _.get(state.user, 'data.photo', 'assets/avatar-placeholder.png')
+  photo: _.get(state.user, 'data.photo', 'assets/avatar-placeholder.png'),
+  locationName: extractLocationName(state)
 });
 
 export default connect(mapStateToProps)(Header);
