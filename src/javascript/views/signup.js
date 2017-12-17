@@ -6,8 +6,9 @@ import {NavLink} from 'react-router-dom';
 import fetch from 'isomorphic-fetch';
 import {Row, Col} from 'react-bootstrap';
 import _ from 'lodash';
+import TermsAndPolicy from '../components/terms-and-policy';
 import {trackPageView, trackEvent, events} from '../util/google-analytics';
-import {supportedLocations} from '../util/constants';
+import {PARTNER_LOCATIONS} from '../util/constants';
 import Infobox from '../components/infobox';
 import {loadPartnerData} from '../stores/partnerStore';
 import './signup.less';
@@ -28,7 +29,7 @@ class Signup extends React.Component {
 
     const locationIdFromPath = _.get(this.props.match, 'params.locationId');
     // TODO make this validation using partner api
-    const isValidLocation = locationIdFromPath && _.includes(supportedLocations, locationIdFromPath);
+    const isValidLocation = locationIdFromPath && _.includes(PARTNER_LOCATIONS, locationIdFromPath);
 
     this.changeWaitingTime = this.changeWaitingTime.bind(this);
     this.save = this.save.bind(this);
@@ -46,7 +47,7 @@ class Signup extends React.Component {
 
     const userId = sessionStorage.getItem('userId');
     const locationId = sessionStorage.getItem('locationId');
-    if(userId) {
+    if(userId && !props.user) {
       this.props.history.push(`/waitlist/${locationId}`); // user is onboarded already
     }
     this.props.loadPartnerData();
@@ -107,7 +108,7 @@ class Signup extends React.Component {
         });
         if (autocompleteApi) {
           autocompleteApi.setBounds(circle.getBounds());
-        } 
+        }
         const res = await this.geocodeLocation(geolocation);
         this.setPlace(res.place_id, geolocation.lng, geolocation.lat);
         this.setLocationInputValue(res.name);
@@ -124,7 +125,7 @@ class Signup extends React.Component {
         radius: '500'
         //type: ['point_of_interest', 'airport', 'hospital', '']
       };
-      const service = 
+      const service =
       new google.maps.places.PlacesService(document.getElementById(locationInput));
       service.nearbySearch(request, function(results, status) {
         if (status == google.maps.places.PlacesServiceStatus.OK) {
@@ -187,7 +188,7 @@ class Signup extends React.Component {
     });
     // if geolocationAvailable then we have already saved the user then update
     let json = {};
-    if (!geolocationAvailable) {
+    if (!geolocationAvailable  && !sessionStorage.getItem('userId')) {
       json = await this.save(body);
     } else {
       json = await this.update(body);
@@ -201,7 +202,7 @@ class Signup extends React.Component {
     this.setLocationInputValue('');
     if (autocompleteApi && circle) {
       autocompleteApi.setBounds(circle.getBounds());
-    } 
+    }
   }
 
   setLocationInputValue(value) {
@@ -236,7 +237,7 @@ class Signup extends React.Component {
           visible={this.state.showLocationRequiredHint}
           text={'Please enter your location first to join the waitlist'}
         />
-        <input onFocus={this.clearLocation}  
+        <input onFocus={this.clearLocation}
         className="signup-location-input-style" id={locationInput} type="text"
             placeholder="Enter location"/>
         {this.initAutoComplete()}
@@ -274,11 +275,7 @@ class Signup extends React.Component {
           onClick={this.saveAndContinue}
         />
 
-        <p className='signup-legal-texts'>
-          By proceeding, you agree to our{' '}
-          <a href='https://s3.eu-central-1.amazonaws.com/waitlist-assets/Terms_of_Use.pdf'>Terms of Use</a>{' '}&{' '}
-          <a href='https://s3.eu-central-1.amazonaws.com/waitlist-assets/Privacy_Policy.pdf'>Privacy Policy</a>
-        </p>
+        <TermsAndPolicy/>
       </div>
     );
   }
@@ -286,7 +283,8 @@ class Signup extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-    partners: state.partners
+    partners: state.partners,
+    user: state.user
   };
 };
 

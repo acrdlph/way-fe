@@ -1,6 +1,10 @@
 import React from 'react';
+import {connect} from 'react-redux';
 import {NavLink} from 'react-router-dom';
 import {Card} from 'material-ui/Card';
+import MaterialUiAvatar from 'material-ui/Avatar';
+import {PAGES_WITH_HEADER} from '../util/constants';
+import {isLoggedIn} from '../stores/accountStore';
 import './header.less';
 
 const createBackButton = (to) => {
@@ -13,35 +17,57 @@ const createBackButton = (to) => {
   );
 };
 
-export default class Header extends React.Component {
+class Header extends React.Component {
   render() {
 
-    const isInWaitlist = this.props.location.pathname.includes('waitlist');
-    const isInSignup = this.props.location.pathname.includes('signup');
-    const isInChat = this.props.location.pathname.includes('chat');
-    const isInFeedback = this.props.location.pathname.includes('feedback');
-    const isInLegalNotice = this.props.location.pathname.includes('legalnotice');
-
-    if(!(isInWaitlist || isInSignup || isInFeedback || isInLegalNotice)) {
+    const {pathname} = this.props.location;
+    const isHeaderVisible = _.filter(PAGES_WITH_HEADER, page => pathname.includes(page)).length > 0;
+    if(!isHeaderVisible) {
       return null;
     }
 
     let backButton = null;
-    if(isInChat) {
+    const isInChat = this.props.location.pathname.includes('chat');
+    const isInProfile = this.props.location.pathname.includes('profile');
+    if(isInChat || isInProfile) {
       backButton = createBackButton('/waitlist');
     };
+    const isInFeedback = this.props.location.pathname.includes('feedback');
+    const isInLegalNotice = this.props.location.pathname.includes('legalnotice');
     if(isInFeedback || isInLegalNotice) {
       backButton = createBackButton('/');
     };
 
+    const {username, photo} = this.props;
+    const profileIcon = isLoggedIn() ? (
+      <div className='header-profileicon'>
+        <span className='header-profileicon-username'>
+          <NavLink to='/profile'>{username}</NavLink>
+        </span>
+        <MaterialUiAvatar
+          size={35}
+          src={photo}
+        />
+      </div>
+    ) : null;
+
     return (
       <Card className='header'>
         {backButton}
-        <img
-          className='logo'
-          src='assets/waitlistlogo.svg'
-        />
+        <div className='header-logo'>
+          <img
+            src='assets/waitlistlogo.svg'
+          />
+        </div>
+        {profileIcon}
       </Card>
     );
   }
 }
+
+const mapStateToProps = (state) => ({
+  username: _.get(state.user, 'data.username'),
+  photo: _.get(state.user, 'data.photo', 'assets/avatar-placeholder.png')
+});
+
+export default connect(mapStateToProps)(Header);

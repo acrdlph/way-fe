@@ -8,7 +8,7 @@ import Avatar from 'material-ui/Avatar';
 import _ from 'lodash';
 import fetch from 'isomorphic-fetch';
 import {trackPageView} from '../util/google-analytics';
-import Profile from '../components/profile';
+import UserData from '../components/user-data';
 import WaitListItem from '../components/waitlist-item';
 import Infobox from '../components/infobox';
 import EmptyLocationMessage from '../components/empty-location-message';
@@ -17,7 +17,7 @@ import {loadUserData, isOnboarded} from '../stores/userStore';
 import {initWebSocketStore} from '../stores/webSocketStore';
 import {loadPartnerData} from '../stores/partnerStore';
 import {requestPermissionForNotifications} from '../util/notification';
-import {supportedLocations} from '../util/constants';
+import {PARTNER_LOCATIONS} from '../util/constants';
 import './waitlist.less';
 
 class WaitList extends React.Component {
@@ -92,7 +92,7 @@ class WaitList extends React.Component {
     }
 
     airportName = airportName || airportCode;
-    if(_.includes(supportedLocations, airportCode)) {
+    if(_.includes(PARTNER_LOCATIONS, airportCode)) {
       const logoPath = `assets/airport-logo-${airportCode}-small.jpg`;
       return (
         <WaitListItem
@@ -133,15 +133,16 @@ class WaitList extends React.Component {
       );
     });
 
+    const isLoggedInUser = !!this.props.user.data.username;
     if(list.length == 0) {
       list.push(
-        <EmptyLocationMessage/>
+        <EmptyLocationMessage showChallenge={FEATURE_WAITCOIN_CHALLENGE && isLoggedInUser}/>
       );
     }
 
     return (
       <div>
-        <Profile/>
+        <UserData/>
         <Infobox
           visible={!isUserOnboarded && this.state.showIncompleteProfileHint}
           text={'Enter your name and interests to start communicating with other passengers'}

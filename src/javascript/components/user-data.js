@@ -5,14 +5,17 @@ import {Row, Col} from 'react-bootstrap';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 import Avatar from './avatar';
+import {NavLink} from 'react-router-dom';
+import InfoBox from './infobox';
 import WaitListItem from '../components/waitlist-item';
 import {trackEvent, events} from '../util/google-analytics';
 import {loadUserData, updateUserData, editUserData, isOnboarded} from '../stores/userStore';
+import {isLoggedIn} from '../stores/accountStore';
 import {showModal} from '../stores/profileImageStore';
 import ImageSelection from './image-selection-modal';
-import './profile.less';
+import './user-data.less';
 
-class Profile extends React.Component {
+class UserData extends React.Component {
 
   constructor(props) {
     super(props);
@@ -50,7 +53,6 @@ class Profile extends React.Component {
       name: this.state.name,
       interests: this.state.interests
     };
-    console.log('Save profile: ' + JSON.stringify(data));
     this.props.updateUserData(userId, data);
     trackEvent(events.USER_CHANGED_PROFILE_DATA);
   }
@@ -70,8 +72,12 @@ class Profile extends React.Component {
     const name = _.get(user, 'data.name', '');
     const interests = _.get(user, 'data.interests', '');
     const photo = _.get(user, 'data.photo', 'assets/avatar-placeholder.png');
+    const registerText = (
+      <span>You are using WaitList as a guest. <NavLink to='/register'>Register now</NavLink> to save your profile or just <NavLink to='/login'>log in</NavLink> if you have already an account.</span>
+    );
+
     return !isUserOnboarded || this.props.user.isEditable ? (
-      <div className='profile'>
+      <div className='userdata'>
         <Row>
           <Col className='col-xs-12 col-lg-4'>
             <Avatar
@@ -112,6 +118,7 @@ class Profile extends React.Component {
     ) : (
       <div>
         <WaitListItem photo={photo} interests={interests} name={name} onClick={this.setEditable}/>
+        <InfoBox visible={!isLoggedIn()} text={registerText}/>
       </div>
     );
   }
@@ -131,4 +138,4 @@ const mapDispatchToProps = dispatch => ({
   openModal: () => dispatch(showModal(true))
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Profile);
+export default connect(mapStateToProps, mapDispatchToProps)(UserData);
