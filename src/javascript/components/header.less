@@ -17,8 +17,15 @@
 }
 
 .header-logo {
-  float: left;
   display: inline-block;
+  @media (min-width: 600px) {
+    float: left;
+  }
+  @media (max-width: 600px) {
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%,0);
+  }
 }
 
 .header-logo img {
