@@ -33,7 +33,12 @@ export const registerAccount = (data) => (dispatch) => {
       'content-type': 'application/json'
     })
   })
-  .then((res) => res.json())
+  .then((res) => {
+    if (res.status < 200 || res.status > 299) {
+      throw new Error("Something went wrong!");
+    }
+    return res.json();
+  })
   .then((data) => {
     console.log("registration passed", data);
     sessionStorage.setItem('token', data.token);
@@ -95,7 +100,12 @@ export const login = (loginname, password) => (dispatch) => {
       'content-type': 'application/json'
     })
   })
-  .then((res) => res.json())
+  .then((res) => {
+    if (res.status < 200 || res.status > 299) {
+      throw new Error("Something went wrong!");
+    }
+    return res.json();
+  })
   .then((data) => {
     sessionStorage.setItem('token', data.token);
     dispatch({
@@ -121,7 +131,8 @@ const initialState = {
   wasRegistrationSuccessful: null,
 
   isLoginPending: false,
-  wasLoginSuccessful: null
+  wasLoginSuccessful: null,
+  hasLoginFailed: false
 };
 
 const reducer = (state = initialState, action) => {
@@ -170,20 +181,23 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         isLoginPending: true,
-        wasLoginSuccessful: null
+        wasLoginSuccessful: null,
+        hasLoginFailed: false
       };
     case types.ACCOUNT_LOGIN_PASSED:
       return {
         ...state,
         userId: action.userId,
         isLoginPending: false,
-        wasLoginSuccessful: true
+        wasLoginSuccessful: true,
+        hasLoginFailed: false
       };
     case types.ACCOUNT_LOGIN_FAILED:
       return {
         ...state,
         isLoginPending: false,
-        wasLoginSuccessful: false
+        wasLoginSuccessful: false,
+        hasLoginFailed: true
       };
 
     default:

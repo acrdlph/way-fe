@@ -18,8 +18,7 @@ class Login extends React.Component {
 
     this.state = {
       loginName: '',
-      password: '',
-      errorText: null
+      password: ''
     };
 
     this.login = this.login.bind(this);
@@ -48,8 +47,7 @@ class Login extends React.Component {
   }
 
   render() {
-    const {errorText} = this.state;
-    console.log("errorText", errorText);
+
     return (
       <div className='login container'>
 
@@ -77,6 +75,8 @@ class Login extends React.Component {
           fullWidth={true}
         />
 
+        <InfoBox text={"Invalid username or password!"} visible={this.props.account.hasLoginFailed}/>
+
         <div className='login-register'>
           You don't have an account yet? <NavLink to='/register'>Register here!</NavLink>
         </div>
@@ -85,7 +85,6 @@ class Login extends React.Component {
           Forgot password? <NavLink to='/reset-password'>Reset it!</NavLink>
         </div>
         */}
-        <InfoBox text={errorText} visible={!!errorText}/>
         <TermsAndPolicy/>
       </div>
     );
