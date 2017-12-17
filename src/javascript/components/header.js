@@ -41,13 +41,15 @@ class Header extends React.Component {
     const {username, photo} = this.props;
     const profileIcon = isLoggedIn() ? (
       <div className='header-profileicon'>
-        <span className='header-profileicon-username'>
-          <NavLink to='/profile'>{username}</NavLink>
-        </span>
-        <MaterialUiAvatar
-          size={35}
-          src={photo}
-        />
+        <NavLink to='/profile'>
+          <span className='header-profileicon-username'>
+            {username}
+          </span>
+          <MaterialUiAvatar
+            size={35}
+            src={photo}
+          />
+        </NavLink>
       </div>
     ) : null;
 
