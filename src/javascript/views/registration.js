@@ -19,8 +19,9 @@ const validateUsername = (username) => {
 
 const validateEmailAddress = (email) => {
   if(email && email.trim().length > 4) {
-    // TODO: implement real validation
-    return true;
+    // src: https://stackoverflow.com/questions/46155/how-to-validate-email-address-in-javascript
+    const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return emailRegex.test(email.toLowerCase());
   }
   return false;
 };
