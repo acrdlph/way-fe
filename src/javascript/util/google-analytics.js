@@ -6,7 +6,9 @@ export const events = {
   USER_UPLOADED_PROFILE_PHOTO: 'User uploaded profile photo',
   USER_CHANGED_PROFILE_DATA: 'User changed profile data',
   USER_SEND_MESSAGE: 'User send a chat message',
-  USER_RECEIVED_MESSAGE: 'User received a chat message'
+  USER_RECEIVED_MESSAGE: 'User received a chat message',
+  USER_LOGGED_IN: 'User logged in with account',
+  USER_REGISTERED_ACCOUNT: 'User registered an account'
 };
 
 export const initializeGoogleAnalytics = () => {

@@ -1,7 +1,10 @@
 import React from 'react';
+import {connect} from 'react-redux';
 import {NavLink} from 'react-router-dom';
 import {Card} from 'material-ui/Card';
+import MaterialUiAvatar from 'material-ui/Avatar';
 import {PAGES_WITH_HEADER} from '../util/constants';
+import {isLoggedIn} from '../stores/accountStore';
 import './header.less';
 
 const createBackButton = (to) => {
@@ -14,7 +17,7 @@ const createBackButton = (to) => {
   );
 };
 
-export default class Header extends React.Component {
+class Header extends React.Component {
   render() {
 
     const {pathname} = this.props.location;
@@ -25,7 +28,8 @@ export default class Header extends React.Component {
 
     let backButton = null;
     const isInChat = this.props.location.pathname.includes('chat');
-    if(isInChat) {
+    const isInProfile = this.props.location.pathname.includes('profile');
+    if(isInChat || isInProfile) {
       backButton = createBackButton('/waitlist');
     };
     const isInFeedback = this.props.location.pathname.includes('feedback');
@@ -34,15 +38,36 @@ export default class Header extends React.Component {
       backButton = createBackButton('/');
     };
 
+    const {username, photo} = this.props;
+    const profileIcon = isLoggedIn() ? (
+      <div className='header-profileicon'>
+        <span className='header-profileicon-username'>
+          <NavLink to='/profile'>{username}</NavLink>
+        </span>
+        <MaterialUiAvatar
+          size={35}
+          src={photo}
+        />
+      </div>
+    ) : null;
 
     return (
       <Card className='header'>
         {backButton}
-        <img
-          className='logo'
-          src='assets/waitlistlogo.svg'
-        />
+        <div className='header-logo'>
+          <img
+            src='assets/waitlistlogo.svg'
+          />
+        </div>
+        {profileIcon}
       </Card>
     );
   }
 }
+
+const mapStateToProps = (state) => ({
+  username: _.get(state.user, 'data.username'),
+  photo: _.get(state.user, 'data.photo', 'assets/avatar-placeholder.png')
+});
+
+export default connect(mapStateToProps)(Header);

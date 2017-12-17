@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
-import Avatar from 'material-ui/Avatar';
+import Avatar from '../components/avatar';
 import {trackPageView} from '../util/google-analytics';
 import TermsAndPolicy from '../components/terms-and-policy';
 import InfoBox from '../components/infobox';
@@ -18,8 +18,11 @@ class Profile extends React.Component {
 
   constructor(props) {
     super(props);
-    const path = this.props.location.pathname;
-    trackPageView(path);
+
+    if(this.props.location) {
+      const path = this.props.location.pathname;
+      trackPageView(path);
+    }
 
     const usernameFromPath = _.get(this.props.match, 'params.username');
     const userId = sessionStorage.getItem('userId');
@@ -84,8 +87,6 @@ class Profile extends React.Component {
     const userId = sessionStorage.getItem('userId');
     const data = {
       name: this.state.name,
-      email: this.state.email,
-      username: this.state.username,
       interests: this.state.interests
     };
     this.props.updateUserData(userId, data);
@@ -93,7 +94,8 @@ class Profile extends React.Component {
 
   render() {
     const { username, name, interests, photo } = this.props;
-    console.log(username, name, interests, photo);
+
+    const photoUrl = photo || 'assets/avatar-placeholder.png';
     const imageSelectionModal = this.props.showModal ?
     <ImageSelection onUpload={this.refreshProfile} /> : null;
 
@@ -112,33 +114,27 @@ class Profile extends React.Component {
         <Row>
           <Col sm={12}>
             <Avatar
+              src={photoUrl}
               onClick={this.onImageClick}
-              size={100}
-              src={photo}
+              displayPlus={true}
             />
             {imageSelectionModal}
           </Col>
         </Row>
         <Row>
           <Col sm={12}>
-            <TextField
-              value={this.props.username}
-              name="username"
-              floatingLabelText="Username"
-              onChange={this.onChanged}
-              fullWidth={true}
-            />
+            <h3>{username}</h3>
             <TextField
               name="name"
-              value={name}
-              floatingLabelText="Name"
+              defaultValue={name}
+              hintText="Name"
               onChange={this.onChanged}
               fullWidth={true}
             />
             <TextField
-              name="interest"
-              value={interests}
-              floatingLabelText="Interest"
+              name="interests"
+              defaultValue={interests}
+              hintText="Interest"
               onChange={this.onChanged}
               fullWidth={true}
             />

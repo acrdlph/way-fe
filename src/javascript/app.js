@@ -1,6 +1,9 @@
 import React from 'react';
+import {connect} from 'react-redux';
 import ReactDOM from 'react-dom';
 import {Route} from 'react-router-dom';
+import {loadUserData} from './stores/userStore';
+import {isLoggedIn} from './stores/accountStore';
 import Header from './components/header';
 import Footer from './components/footer';
 import Onboarding from './views/onboarding';
@@ -16,7 +19,23 @@ import Feedback from './views/feedback';
 import LegalNotice from './views/legal-notice';
 import './app.less';
 
-export default class App extends React.Component {
+class App extends React.Component {
+
+  constructor(props) {
+    super(props);
+    if(isLoggedIn()) {
+      const userId = sessionStorage.getItem('userId');
+      console.log("App: loadUserData", userId);
+      this.props.loadUserData(userId);
+    }
+  }
+
+  componentWillReceiveProps(props) {
+    if(props.account.wasLoginSuccessful) {
+      this.props.loadUserData(props.account.userId);
+    }
+  }
+
   render() {
     sessionStorage.setItem('path', this.props.location.pathname);
     return (
@@ -44,3 +63,13 @@ export default class App extends React.Component {
     );
   }
 };
+
+const mapStateToProps = (state) => ({
+  account: state.account
+});
+
+const mapDispatchToProps = dispatch => ({
+  loadUserData: (userId) => dispatch(loadUserData(userId))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);

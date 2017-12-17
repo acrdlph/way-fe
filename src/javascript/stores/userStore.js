@@ -53,7 +53,7 @@ export const loadUserDataGeneral = (userId, endpoint) => (dispatch) => {
   .then((data) => {
     const user = {
       id: userId,
-      location: data.location.toLowerCase(),
+      location: data.location ? data.location.toLowerCase() : undefined,
       waitingTime: data.waiting_time,
       photo:  data.photo,
       name: data.name,
