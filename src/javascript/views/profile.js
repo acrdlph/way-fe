@@ -18,8 +18,11 @@ class Profile extends React.Component {
 
   constructor(props) {
     super(props);
-    const path = this.props.location.pathname;
-    trackPageView(path);
+
+    if(this.props.location) {
+      const path = this.props.location.pathname;
+      trackPageView(path);
+    }
 
     const usernameFromPath = _.get(this.props.match, 'params.username');
     const userId = sessionStorage.getItem('userId');
@@ -84,8 +87,6 @@ class Profile extends React.Component {
     const userId = sessionStorage.getItem('userId');
     const data = {
       name: this.state.name,
-      email: this.state.email,
-      username: this.state.username,
       interests: this.state.interests
     };
     this.props.updateUserData(userId, data);
@@ -95,7 +96,6 @@ class Profile extends React.Component {
     const { username, name, interests, photo } = this.props;
 
     const photoUrl = photo || 'assets/avatar-placeholder.png';
-    console.log(username, name, interests, photoUrl);
     const imageSelectionModal = this.props.showModal ?
     <ImageSelection onUpload={this.refreshProfile} /> : null;
 
@@ -132,7 +132,7 @@ class Profile extends React.Component {
               fullWidth={true}
             />
             <TextField
-              name="interest"
+              name="interests"
               defaultValue={interests}
               hintText="Interest"
               onChange={this.onChanged}
