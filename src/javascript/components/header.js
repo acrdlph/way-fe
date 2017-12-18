@@ -5,6 +5,7 @@ import {Card} from 'material-ui/Card';
 import MaterialUiAvatar from 'material-ui/Avatar';
 import {PAGES_WITH_HEADER} from '../util/constants';
 import {isLoggedIn} from '../stores/accountStore';
+import {extractLocationName} from './location-header';
 import './header.less';
 
 const createBackButton = (to) => {
@@ -53,7 +54,7 @@ class Header extends React.Component {
 
     const location = locationName ? (
       <div className='header-location'>
-        {locationName}
+        <NavLink to='/signup'>{locationName}</NavLink>
         <img
           src='assets/waitlist-location-icon.png'
         />
@@ -76,20 +77,6 @@ class Header extends React.Component {
     );
   }
 }
-
-const extractLocationName = (state) => {
-  const locationKey = _.get(state.user, 'data.location');
-  if(locationKey && state.partners.loaded) {
-    console.log("locationKey", locationKey);
-    const locationNumber = _.findKey(state.partners.data, (loc) => {
-      return (loc.uniqueKey === locationKey.toUpperCase() || loc.location === locationKey.toUpperCase());
-    });
-    if(locationNumber) {
-      return state.partners.data[locationNumber].name;
-    }
-  }
-  return null;
-};
 
 const mapStateToProps = (state) => ({
   username: _.get(state.user, 'data.username'),

@@ -12,6 +12,7 @@ import UserData from '../components/user-data';
 import WaitListItem from '../components/waitlist-item';
 import Infobox from '../components/infobox';
 import EmptyLocationMessage from '../components/empty-location-message';
+import LocationHeader from '../components/location-header';
 import {loadWaitlist} from '../stores/waitlistStore';
 import {loadUserData, isOnboarded} from '../stores/userStore';
 import {initWebSocketStore} from '../stores/webSocketStore';
@@ -142,6 +143,7 @@ class WaitList extends React.Component {
 
     return (
       <div>
+        <LocationHeader/>
         <UserData/>
         <Infobox
           visible={!isUserOnboarded && this.state.showIncompleteProfileHint}
