@@ -1,4 +1,5 @@
 import _ from 'lodash';
+import {getAuthHeaders} from '../util/headers';
 import {notify, types as notificationTypes} from '../util/notification';
 
 const types = {
@@ -53,7 +54,9 @@ export const loadMessages = (userId, chatPartnerId) => (dispatch) => {
   const endpoint = `api/messages?sender_id=${userId}&receiver_id=${chatPartnerId}`;
   console.log("load chat: " + endpoint);
 
-  fetch(endpoint)
+  fetch(endpoint, {
+    headers: getAuthHeaders()
+  })
   .then((res) => res.json())
   .then((data) => {
     console.log("receive chat messages: " + JSON.stringify(data));

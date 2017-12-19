@@ -1,4 +1,5 @@
 import _ from 'lodash';
+import {getAuthHeaders} from '../util/headers';
 import {notify, types as notificationTypes} from '../util/notification';
 
 const types = {
@@ -33,7 +34,9 @@ const initialState = {
 const fetcher = (dispatch, userId) => {
   dispatch({type: types.LOADING});
   const endpoint = 'api/users/' + userId;
-  fetch(endpoint)
+  fetch(endpoint, {
+    headers: getAuthHeaders()
+  })
   .then((res) => res.json())
   .then((data) => {
     const onTheListSorted = mapWaitListData(data);
@@ -53,7 +56,9 @@ const createHash = (user) => {
 
 const backgroundFetcher = (dispatch, userId) => {
   const endpoint = 'api/users/' + userId;
-  fetch(endpoint)
+  fetch(endpoint, {
+    headers: getAuthHeaders()
+  })
   .then((res) => res.json())
   .then((data) => {
     const onTheListSorted = mapWaitListData(data);

@@ -32,7 +32,6 @@ class LocationHeader extends React.Component {
 export const extractLocationName = (state) => {
   const locationKey = _.get(state.user, 'data.location');
   if(locationKey && state.partners.loaded) {
-    console.log("locationKey", locationKey);
     const locationNumber = _.findKey(state.partners.data, (loc) => {
       return (loc.uniqueKey === locationKey.toUpperCase() || loc.location === locationKey.toUpperCase());
     });

@@ -8,6 +8,7 @@ import {Row, Col} from 'react-bootstrap';
 import _ from 'lodash';
 import TermsAndPolicy from '../components/terms-and-policy';
 import {trackPageView, trackEvent, events} from '../util/google-analytics';
+import {getAuthHeaders} from '../util/headers';
 import {PARTNER_LOCATIONS} from '../util/constants';
 import Infobox from '../components/infobox';
 import {loadPartnerData} from '../stores/partnerStore';
@@ -156,6 +157,7 @@ class Signup extends React.Component {
       airport: resJson.location
     });
     sessionStorage.setItem('userId', resJson.id);
+    sessionStorage.setItem('userToken', resJson.token);
     return resJson;
   }
 
@@ -163,12 +165,12 @@ class Signup extends React.Component {
     console.log("Update user with: " + JSON.stringify(this.state));
     const userId = sessionStorage.getItem('userId');
     const endpoint = 'api/users/' + userId;
+    const headers = getAuthHeaders();
+    headers.append('content-type','application/json');
     const res = await fetch(endpoint, {
       method: 'put',
       body,
-      headers: new Headers({
-        'content-type': 'application/json'
-      }),
+      headers: headers,
     });
     const resJson = await res.json();
     return resJson;

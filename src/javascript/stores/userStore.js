@@ -1,4 +1,5 @@
 import _ from 'lodash';
+import {getAuthHeaders} from '../util/headers';
 
 const types = {
   EDITING: 'USER_EDIT',
@@ -24,7 +25,9 @@ export const editUserData = () => {
 
 export const reloadProfileImage = (userId) => (dispatch) => {
   const endpoint = 'api/users/' + userId + '/details';
-  fetch(endpoint)
+  fetch(endpoint, {
+    headers: getAuthHeaders()
+  })
   .then((res) => res.json())
   .then((data) => {
     const photo = data.photo;
@@ -48,7 +51,9 @@ export const loadUserData = (userId) => {
 export const loadUserDataGeneral = (userId, endpoint) => (dispatch) => {
   dispatch({type: types.LOADING});
 
-  fetch(endpoint)
+  fetch(endpoint, {
+    headers: getAuthHeaders()
+  })
   .then((res) => res.json())
   .then((data) => {
     const user = {
@@ -71,12 +76,12 @@ export const loadUserDataGeneral = (userId, endpoint) => (dispatch) => {
 export const updateUserData = (userId, data) => (dispatch) => {
   const endpoint = 'api/users/'+userId;
   const body = JSON.stringify(data);
+  const headers = getAuthHeaders();
+  headers.append('content-type','application/json');
   fetch(endpoint, {
     method: 'put',
     body,
-    headers: new Headers({
-      'content-type': 'application/json'
-    })
+    headers: headers
   })
   .then((res) => res.json())
   .then((json) => {

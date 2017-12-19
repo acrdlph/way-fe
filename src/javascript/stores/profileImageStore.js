@@ -1,5 +1,6 @@
 import _ from 'lodash';
 import {reloadProfileImage} from './userStore';
+import {getAuthHeaders} from '../util/headers';
 
 const types = {
   SHOW_MODAL: 'PROFILE_IMAGE_SHOW_MODAL',
@@ -30,7 +31,8 @@ const awaitFetch = async function awaitFetch(fileName, data, dispatch) {
     formData.append('photo', data);
     const result = await fetch(endpoint, {
       method: 'post',
-      body: formData
+      body: formData,
+      headers: getAuthHeaders()
     });
     const resJson = await result.json();
     dispatch({type: types.UPLOADED_IMAGE});
