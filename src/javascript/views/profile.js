@@ -81,7 +81,7 @@ class Profile extends React.Component {
 
   onSave(e) {
     if (!this.props.isRegisteredUser) {
-      this.props.history.push(`/signup`);
+      this.props.history.push(`/register`);
     }
 
     const userId = sessionStorage.getItem('userId');
