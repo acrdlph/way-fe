@@ -1,7 +1,7 @@
 #!/bin/sh
 
 BRANCH=$(git rev-parse --abbrev-ref HEAD)
-if [ "$BRANCH" != "master" ]; then
+if [ "$BRANCH" = "master" ]; then
     DOCKER_LOGIN="$(aws ecr get-login --no-include-email --region eu-central-1)"
 
     $DOCKER_LOGIN
