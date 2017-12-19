@@ -13,6 +13,8 @@ const types = {
 };
 
 export const isLoggedIn = () => {
+  // TODO remove this on FE and do it through an API call
+  // logic - user should be an already signed up user with a currently valid token
   const userId = sessionStorage.getItem('userId');
   const token = sessionStorage.getItem('token');
   const loggedIn = userId && token;
