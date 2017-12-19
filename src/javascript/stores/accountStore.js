@@ -48,7 +48,7 @@ export const registerAccount = (data) => (dispatch) => {
     });
     dispatch({
       type: types.ACCOUNT_LOGIN_PASSED,
-      userId: data.token
+      userId: data.id
     });
   })
   .catch(error => {

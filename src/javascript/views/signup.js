@@ -157,7 +157,7 @@ class Signup extends React.Component {
       airport: resJson.location
     });
     sessionStorage.setItem('userId', resJson.id);
-    sessionStorage.setItem('userToken', resJson.token);
+    sessionStorage.setItem('token', resJson.token);
     return resJson;
   }
 
