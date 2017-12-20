@@ -112,7 +112,7 @@ export const login = (loginname, password) => (dispatch) => {
     sessionStorage.setItem('token', data.token);
     dispatch({
       type: types.ACCOUNT_LOGIN_PASSED,
-      userId: data.token
+      userId: data.id
     });
   })
   .catch(error => {
