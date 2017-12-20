@@ -100,6 +100,7 @@ class Onboarding extends React.Component {
       });
       if(isAvailable) {
         const data = {
+          user_id: sessionStorage.getItem('userId'),
           username,
           email,
           password
