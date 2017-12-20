@@ -27,7 +27,7 @@ export const trackPageView = (path) => {
   }
 };
 
-export const trackEvent = (action, parameters = {}) => {
+export const trackEvent = async function trackEvent(action, parameters = {}) {
   if(GOOGLE_ANALYTICS_ID.length > 0) {
     const {label = null, value = null} = parameters;
     ReactGA.event({
