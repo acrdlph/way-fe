@@ -1,5 +1,6 @@
 import _ from 'lodash';
 import {getAuthHeaders} from '../util/headers';
+import {handle401} from '../util/check-auth';
 
 const types = {
   EDITING: 'USER_EDIT',
@@ -28,6 +29,7 @@ export const reloadProfileImage = (userId) => (dispatch) => {
   fetch(endpoint, {
     headers: getAuthHeaders()
   })
+  .then((res) => handle401(res, dispatch))
   .then((res) => res.json())
   .then((data) => {
     const photo = data.photo;
@@ -54,6 +56,7 @@ export const loadUserDataGeneral = (userId, endpoint) => (dispatch) => {
   fetch(endpoint, {
     headers: getAuthHeaders()
   })
+  .then((res) => handle401(res, dispatch))
   .then((res) => res.json())
   .then((data) => {
     const user = {
@@ -83,6 +86,7 @@ export const updateUserData = (userId, data) => (dispatch) => {
     body,
     headers: headers
   })
+  .then((res) => handle401(res, dispatch))
   .then((res) => res.json())
   .then((json) => {
     dispatch({
