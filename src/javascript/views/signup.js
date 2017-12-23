@@ -164,7 +164,7 @@ class Signup extends React.Component {
   async update(body) {
     console.log("Update user with: " + JSON.stringify(this.state));
     const userId = sessionStorage.getItem('userId');
-    const endpoint = 'api/users/' + userId;
+    const endpoint = 'api/users/' + userId + '?waiting_started=true';
     const headers = getAuthHeaders();
     headers.append('content-type','application/json');
     const res = await fetch(endpoint, {
