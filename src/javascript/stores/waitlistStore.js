@@ -1,5 +1,6 @@
 import _ from 'lodash';
 import {getAuthHeaders} from '../util/headers';
+import {handle401} from '../util/check-auth';
 import {notify, types as notificationTypes} from '../util/notification';
 
 const types = {
@@ -37,6 +38,7 @@ const fetcher = (dispatch, userId) => {
   fetch(endpoint, {
     headers: getAuthHeaders()
   })
+  .then((res) => handle401(res, dispatch))
   .then((res) => res.json())
   .then((data) => {
     const onTheListSorted = mapWaitListData(data);
@@ -59,6 +61,7 @@ const backgroundFetcher = (dispatch, userId) => {
   fetch(endpoint, {
     headers: getAuthHeaders()
   })
+  .then((res) => handle401(res, dispatch))
   .then((res) => res.json())
   .then((data) => {
     const onTheListSorted = mapWaitListData(data);

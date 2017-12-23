@@ -38,7 +38,7 @@ class Header extends React.Component {
     };
 
     const {username, photo, locationName} = this.props;
-    const profileIcon = isLoggedIn() ? (
+    const profileIcon = isLoggedIn() && username ? (
       <div className='header-profileicon'>
         <NavLink to='/profile'>
           <span className='header-profileicon-username'>

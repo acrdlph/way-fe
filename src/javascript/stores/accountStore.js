@@ -9,7 +9,8 @@ const types = {
   ACCOUNT_REGISTER_FAILED: 'ACCOUNT_REGISTER_FAILED',
   ACCOUNT_LOGIN_PENDING: 'ACCOUNT_LOGIN_PENDING',
   ACCOUNT_LOGIN_PASSED: 'ACCOUNT_LOGIN_PASSED',
-  ACCOUNT_LOGIN_FAILED: 'ACCOUNT_LOGIN_FAILED'
+  ACCOUNT_LOGIN_FAILED: 'ACCOUNT_LOGIN_FAILED',
+  ACCOUNT_LOGOUT: 'ACCOUNT_LOGOUT'
 };
 
 export const isLoggedIn = () => {
@@ -200,6 +201,14 @@ const reducer = (state = initialState, action) => {
         isLoginPending: false,
         wasLoginSuccessful: false,
         hasLoginFailed: true
+      };
+    case types.ACCOUNT_LOGOUT:
+      return {
+        ...state,
+        userId: null,
+        isLoginPending: false,
+        wasLoginSuccessful: null,
+        hasLoginFailed: false
       };
 
     default:
