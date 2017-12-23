@@ -14,6 +14,7 @@ import Infobox from '../components/infobox';
 import EmptyLocationMessage from '../components/empty-location-message';
 import LocationHeader from '../components/location-header';
 import {loadWaitlist} from '../stores/waitlistStore';
+import {transformMessages, notifyNewMessage} from '../stores/chatStore';
 import {loadUserData, isOnboarded} from '../stores/userStore';
 import {initWebSocketStore} from '../stores/webSocketStore';
 import {loadPartnerData} from '../stores/partnerStore';
@@ -66,7 +67,8 @@ class WaitList extends React.Component {
   componentDidMount() {
     // initialize so that messages can be delivered, but not acted upon
     // TODO handle the incoming messages and update chat bubbles
-    initWebSocketStore(sessionStorage.getItem('userId'), () => {});
+    initWebSocketStore(sessionStorage.getItem('userId'), 
+      (event) => notifyNewMessage(transformMessages([event])[0]));
   }
 
   openChat(chatPartnerId) {

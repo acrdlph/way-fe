@@ -14,7 +14,7 @@ const getUsername = (userId) => {
   return usernames[userId];
 };
 
-const onNewMessage = (message) => {
+export const notifyNewMessage = (message) => {
   const currentPath = window.location.hash;
   const userId = sessionStorage.getItem('userId');
   if(message.sender != userId && !currentPath.includes(message.sender)) {
@@ -23,7 +23,7 @@ const onNewMessage = (message) => {
   }
 };
 
-const transformMessages = (messages) => {
+export const transformMessages = (messages) => {
   const transformedMessages = [];
   _.each(messages, entry => {
     transformedMessages.push({
@@ -71,7 +71,7 @@ export const loadMessages = (userId, chatPartnerId) => (dispatch) => {
 export const addMessagesToChat = (messages, chatPartnerId) => {
   const transformedMessages = transformMessages(messages);
   _.each(transformedMessages, (message) => {
-    onNewMessage(message);
+    notifyNewMessage(message);
   });
   const messagesFromOpenChatOnly = _.filter(transformedMessages, (msg) => {
     return msg.sender === chatPartnerId || msg.receiver === chatPartnerId;
