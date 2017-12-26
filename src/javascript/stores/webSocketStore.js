@@ -52,7 +52,8 @@ const isConnected = function isConnected() {
 }
 
 const newConnection = async function newConnection() {
-    let connection = io(WEBSOCKET_BASE_URL + 'messaging?user_id=' + userId);
+    let connection = io(WEBSOCKET_BASE_URL + 
+        'messaging?user_id=' + userId + '&token=' + sessionStorage.getItem('token'));
     addMessagehandler(connection);
     addClosehandler(connection);
     addConnectionhandler(connection);
