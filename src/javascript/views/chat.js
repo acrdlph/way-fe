@@ -8,7 +8,7 @@ import {trackPageView, trackEvent, events} from '../util/google-analytics';
 import ChatInput from '../components/chat-input';
 import Conversation from '../components/conversation';
 import {loadMessages, addMessagesToChat} from '../stores/chatStore';
-import {initWebSocketStore, send} from '../stores/webSocketStore';
+import {initWebSocketStore, send, markDelivered} from '../stores/webSocketStore';
 import './chat.less';
 
 class Chat extends React.Component {
@@ -58,6 +58,7 @@ class Chat extends React.Component {
       window.scrollTo(0, document.body.scrollHeight);
     }
     if(message.sender_id !== userId) {
+      markDelivered(message);
       trackEvent(events.USER_RECEIVED_MESSAGE);
     }
   }

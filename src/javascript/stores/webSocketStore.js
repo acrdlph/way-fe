@@ -31,6 +31,10 @@ export const send = async function send(msg) {
     return result;
 }
 
+export const markDelivered = async function markDelivered(msg) {
+    currentConnection.emit('MESSAGE_DELIVERED', msg.id);
+}
+
 const managedSend = async function managedSend(msg) {
     if (isConnected()) {
         currentConnection.emit('NEW_MESSAGE', msg);

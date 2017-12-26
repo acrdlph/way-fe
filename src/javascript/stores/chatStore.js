@@ -51,10 +51,11 @@ const sortMessages = (messages) => {
 export const loadMessages = (userId, chatPartnerId) => (dispatch) => {
   dispatch({type: types.LOADING});
 
-  const endpoint = `api/messages?sender_id=${userId}&receiver_id=${chatPartnerId}`;
+  const endpoint = `api/messages/receive?buddy_id=${chatPartnerId}`;
   console.log("load chat: " + endpoint);
 
   fetch(endpoint, {
+    method: 'post',
     headers: getAuthHeaders()
   })
   .then((res) => res.json())
