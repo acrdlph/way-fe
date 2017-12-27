@@ -27,6 +27,12 @@ export default class WaitListItem extends React.Component {
       photo = 'assets/avatar-placeholder.png';
     }
 
+    const onClickHelper = (event) => {
+      event.name = name;
+      event.photo = photo;
+      this.props.onClick(event);
+    }
+
     // "timeLeft === undefined" means: this is the profile card
     let timeLeftText = '';
     let arrowClass = 'waitlist-item-invisible';
@@ -43,7 +49,7 @@ export default class WaitListItem extends React.Component {
     const hasUnreadMessagesClass = nonDeliveredChatCount > 0 ? '' : 'waitlist-item-invisible';
 
     return (
-      <div className={'waitlist-item ' + alreadyContactedClass} onClick={this.props.onClick}>
+      <div className={'waitlist-item ' + alreadyContactedClass} onClick={onClickHelper}>
 
         <div className='waitlist-item-avatar'>
           <Avatar

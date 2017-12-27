@@ -8,6 +8,8 @@ import {trackPageView, trackEvent, events} from '../util/google-analytics';
 import ChatInput from '../components/chat-input';
 import Conversation from '../components/conversation';
 import {loadMessages, addMessagesToChat} from '../stores/chatStore';
+import {loadUserData} from '../stores/userStore';
+import {loadChatPartnerData} from '../stores/chatPartnerStore';
 import {initWebSocketStore, send, markDelivered} from '../stores/webSocketStore';
 import './chat.less';
 
@@ -24,6 +26,8 @@ class Chat extends React.Component {
     const chatPartnerId = _.get(this.props.match, 'params.chatPartnerId');
     if(userId && chatPartnerId) {
       console.log('show chat between ' + userId + ' and ' + chatPartnerId);
+      this.props.loadUserData(userId);
+      this.props.loadChatParnerData(chatPartnerId);
       this.props.loadMessages(userId, chatPartnerId);
     } else {
       this.props.history.push("/signup");
@@ -103,9 +107,19 @@ class Chat extends React.Component {
     const chatItems = [];
     const userId = sessionStorage.getItem('userId');
     const chatPartnerId = _.get(this.props.match, 'params.chatPartnerId');
-    const userlist = this.props.userlist;
+    const user = _.get(this.props.user, 'data');
+    const partner = _.get(this.props.chatPartner, 'data');
+    const userDetails = {
+      id: userId,
+      name: user.name,
+      photo: user.photo
+    }
+    const partnerDetails = {
+      id: chatPartnerId,
+      name: partner.name,
+      photo: partner.photo
+    }
     const messages = this.props.chat.data;
-    const chatParnerName = userlist[chatPartnerId].name;
     const networkErrorIndicator = this.state.disableChat ? 
     <LinearProgress style={{position: 'fixed', width: '96%'}} color="#337ab7" mode="indeterminate"/> : null;
 
@@ -113,7 +127,7 @@ class Chat extends React.Component {
       <div className='chat'>
         {networkErrorIndicator}
         <div className='chat-content'>
-          <Conversation user={userId} userPhoto={this.props.userPhoto} users={userlist} messages={messages}/>
+          <Conversation user={userDetails} partner={partnerDetails} messages={messages}/>
         </div>
         <div className='chat-chat-input'>
           <ChatInput onSend={this.sendMessage} disabled={false}/>
@@ -125,13 +139,16 @@ class Chat extends React.Component {
 
 const mapStateToProps = (state) => ({
   chat: state.chat,
-  userPhoto: state.user.data.photo,
-  userlist: state.userDirectory
+  user: state.user,
+  chatPartner: state.chatPartner,
 });
 
 const mapDispatchToProps = dispatch => ({
   loadMessages: (userId, chatPartnerId) => dispatch(loadMessages(userId, chatPartnerId)),
-  addMessagesToChat: (messages, chatPartnerId) => dispatch(addMessagesToChat(messages, chatPartnerId))
+  addMessagesToChat: (messages, chatPartnerId) => dispatch(addMessagesToChat(messages, chatPartnerId)),
+  loadUserData: (userId) => dispatch(loadUserData(userId)),
+  // TODO replace this with more restrictive call just for chat parner instead of user/details
+  loadChatParnerData: (chatPartnerId) => dispatch(loadChatPartnerData(chatPartnerId))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Chat);

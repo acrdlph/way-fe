@@ -9,20 +9,22 @@ const CHAT_BUBBLE_COLOR_RIGHT = '#00FF7F';
 export default class Conversation extends React.Component {
 
   render() {
-    const {user, users, messages} = this.props;
+    const {user, partner, messages} = this.props;
     const bubbles = messages.map(msg => {
-      const cssClass = msg.sender === user ? 'right' : 'left';
       const time = dateFormat(msg.createdAt, 'hh:MM');
-      const name = users[msg.sender].name;
-      const otherPhoto = users[msg.sender].photo;
+      const otherPhoto = partner.photo;
       const style = {
-        backgroundColor: msg.sender === user ? CHAT_BUBBLE_COLOR_LEFT : CHAT_BUBBLE_COLOR_RIGHT
+        backgroundColor: msg.sender === user.id ? CHAT_BUBBLE_COLOR_LEFT : CHAT_BUBBLE_COLOR_RIGHT
       };
       let photo = 'assets/avatar-placeholder.png';
-      if(msg.sender === user) {
-        if(this.props.userPhoto) {
-          photo = this.props.userPhoto;
+      let name = partner.name;
+      let cssClass = 'left';
+      if(msg.sender === user.id) {
+        cssClass = 'right';
+        if(user.photo) {
+          photo = user.photo;
         }
+        name = user.name;
       } else {
         if(otherPhoto) {
           photo = otherPhoto;
