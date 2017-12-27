@@ -122,7 +122,6 @@ class Chat extends React.Component {
 
     return (
       <div className='chat'>
-
         {networkErrorIndicator}
         <div className='chat-content'>
           <Conversation user={userDetails} partner={partnerDetails} messages={messages}/>
@@ -145,7 +144,6 @@ const mapDispatchToProps = dispatch => ({
   loadMessages: (userId, chatPartnerId) => dispatch(loadMessages(userId, chatPartnerId)),
   addMessagesToChat: (messages, chatPartnerId) => dispatch(addMessagesToChat(messages, chatPartnerId)),
   loadUserData: (userId) => dispatch(loadUserData(userId)),
-  // TODO replace this with more restrictive call just for chat parner instead of user/details
   loadChatParnerData: (chatPartnerId) => dispatch(loadChatPartnerData(chatPartnerId))
 });
 

@@ -6,6 +6,7 @@ import MaterialUiAvatar from 'material-ui/Avatar';
 import {PAGES_WITH_HEADER} from '../util/constants';
 import {isLoggedIn} from '../stores/accountStore';
 import {extractLocationName} from './location-header';
+import ChatHeader from './chat-header';
 import './header.less';
 
 const createBackButton = (to) => {
@@ -18,16 +19,22 @@ const createBackButton = (to) => {
 
 class Header extends React.Component {
   render() {
-
+    const {username, photo, locationName, chatPartner} = this.props;
     const {pathname} = this.props.location;
     const isHeaderVisible = _.filter(PAGES_WITH_HEADER, page => pathname.includes(page)).length > 0;
+    const isInChat = pathname.includes('chat');
+    console.log(PAGES_WITH_HEADER, isHeaderVisible);
     if(!isHeaderVisible) {
       return null;
     }
+    
+    if (isInChat) {
+      return <ChatHeader chatPartner={chatPartner}/>;
+    }
 
     let backButton = null;
-    const isInChat = this.props.location.pathname.includes('chat');
-    const isInProfile = this.props.location.pathname.includes('profile');
+    
+    const isInProfile = pathname.includes('profile');
     if(isInChat || isInProfile) {
       backButton = createBackButton('/waitlist');
     };
@@ -37,7 +44,7 @@ class Header extends React.Component {
       backButton = createBackButton('/');
     };
 
-    const {username, photo, locationName} = this.props;
+    
     const profileIcon = isLoggedIn() && username ? (
       <div className='header-profileicon'>
         <NavLink to='/profile'>
@@ -81,7 +88,8 @@ class Header extends React.Component {
 const mapStateToProps = (state) => ({
   username: _.get(state.user, 'data.username'),
   photo: _.get(state.user, 'data.photo', 'assets/avatar-placeholder.png'),
-  locationName: extractLocationName(state)
+  locationName: extractLocationName(state),
+  chatPartner: _.get(state.chatPartner, 'data'),
 });
 
 export default connect(mapStateToProps)(Header);
