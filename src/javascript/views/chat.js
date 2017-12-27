@@ -58,9 +58,6 @@ class Chat extends React.Component {
     const userId = sessionStorage.getItem('userId');
     this.props.addMessagesToChat([message], chatPartnerId);
     const path = sessionStorage.getItem('path');
-    if(path.includes('chat')) {
-      window.scrollTo(0, document.body.scrollHeight);
-    }
     if(message.sender_id !== userId) {
       markDelivered(message);
       trackEvent(events.USER_RECEIVED_MESSAGE);
@@ -125,6 +122,7 @@ class Chat extends React.Component {
 
     return (
       <div className='chat'>
+
         {networkErrorIndicator}
         <div className='chat-content'>
           <Conversation user={userDetails} partner={partnerDetails} messages={messages}/>

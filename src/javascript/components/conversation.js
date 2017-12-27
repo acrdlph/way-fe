@@ -1,5 +1,6 @@
 import React from 'react';
 import dateFormat from 'dateformat';
+import ReactDOM from 'react-dom';
 import Avatar from 'material-ui/Avatar';
 import './conversation.less';
 
@@ -7,6 +8,26 @@ const CHAT_BUBBLE_COLOR_LEFT = '#FFA500';
 const CHAT_BUBBLE_COLOR_RIGHT = '#00FF7F';
 
 export default class Conversation extends React.Component {
+
+  constructor(props) {
+    super(props);
+    this.scrollToBottom = this.scrollToBottom.bind(this);
+  }
+
+  scrollToBottom() {
+    const scrollEnd = ReactDOM.findDOMNode(this).getElementsByClassName('chat-scroll-end');
+    if (scrollEnd.length) {
+      scrollEnd[0].scrollIntoView({ behavior: "smooth" });
+    }
+  }
+  
+  componentDidMount() {
+    this.scrollToBottom();
+  }
+  
+  componentDidUpdate() {
+    this.scrollToBottom();
+  }
 
   render() {
     const {user, partner, messages} = this.props;
@@ -57,6 +78,7 @@ export default class Conversation extends React.Component {
     return (
       <div className='chat'>
         {bubbles}
+        <div className="chat-scroll-end"/> 
       </div>
     );
   }
