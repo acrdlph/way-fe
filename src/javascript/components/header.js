@@ -23,7 +23,6 @@ class Header extends React.Component {
     const {pathname} = this.props.location;
     const isHeaderVisible = _.filter(PAGES_WITH_HEADER, page => pathname.includes(page)).length > 0;
     const isInChat = pathname.includes('chat');
-    console.log(PAGES_WITH_HEADER, isHeaderVisible);
     if(!isHeaderVisible) {
       return null;
     }
