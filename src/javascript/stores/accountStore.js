@@ -18,7 +18,8 @@ export const isLoggedIn = () => {
   // logic - user should be an already signed up user with a currently valid token
   const userId = sessionStorage.getItem('userId');
   const token = sessionStorage.getItem('token');
-  const loggedIn = userId && token;
+  const username = sessionStorage.getItem('username');
+  const loggedIn = userId && token && username;
   console.log("isLoggedIn", loggedIn);
   return loggedIn;
 };
@@ -45,6 +46,7 @@ export const registerAccount = (data) => (dispatch) => {
   .then((data) => {
     console.log("registration passed", data);
     sessionStorage.setItem('token', data.token);
+    sessionStorage.setItem('username', data.username);
     dispatch({
       type: types.ACCOUNT_REGISTER_PASSED,
       data
@@ -111,6 +113,7 @@ export const login = (loginname, password) => (dispatch) => {
   })
   .then((data) => {
     sessionStorage.setItem('token', data.token);
+    sessionStorage.setItem('username', data.username);
     dispatch({
       type: types.ACCOUNT_LOGIN_PASSED,
       userId: data.id
