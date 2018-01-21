@@ -10,7 +10,7 @@ if [ "$BRANCH" = "prod_env" ]; then
 
     npm install
 
-    ./node_modules/.bin/gulp build --hostname api.waitlist.live --port 443 --enableNotifications true --googleAnalyticsId UA-110490924-1
+    ./node_modules/.bin/gulp build --hostname api.waitlist.live --port 443 --enableNotifications true --googleAnalyticsId UA-110490924-2
 
     echo "Building docker image"
 
