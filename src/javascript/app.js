@@ -15,6 +15,7 @@ import ResetPassword from './views/reset-password';
 import WaitList from './views/waitlist';
 import Challenge from './views/challenge';
 import Chat from './views/chat';
+import InteractionConfirmation from './views/interaction-confirmation';
 import Feedback from './views/feedback';
 import LegalNotice from './views/legal-notice';
 import './app.less';
@@ -55,6 +56,7 @@ class App extends React.Component {
           <Route exact path="/waitlist/" component={WaitList}/>
           <Route exact path="/waitlist/:locationId" component={WaitList}/>
           <Route exact path="/waitlist/:locationId/chat/:chatPartnerId" component={Chat}/>
+          <Route exact path="/confirm-interaction/:interactionCode" component={InteractionConfirmation}/>
           <Route exact path="/feedback" component={Feedback}/>
           <Route exact path="/legalnotice" component={LegalNotice}/>
         </div>
