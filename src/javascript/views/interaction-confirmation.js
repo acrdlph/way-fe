@@ -15,13 +15,13 @@ class InteractionConfirmation extends React.Component {
       trackPageView(path);
     }
 
-    const userId = sessionStorage.getItem('userId');
     this.confirm = this.confirm.bind(this);
   }
 
   confirm() {
     const interactionCode = _.get(this.props.match, 'params.interactionCode');
-    this.props.confirmInteraction(interactionCode);
+    const userId = sessionStorage.getItem('userId');
+    this.props.confirmInteraction(interactionCode, userId);
   }
 
   render() {
@@ -41,10 +41,12 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = dispatch => ({
-  confirmInteraction: (code) => dispatch(
+  confirmInteraction: (code, verifierId) => dispatch(
     interactionConfirmationStore.actions.send({
-      url: `api/interactions/username/${code}`,
-      payload: ''
+      url: `api/interactions/${code}`,
+      payload: {
+        verifierId
+      }
     })
   )
 });
