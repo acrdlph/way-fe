@@ -1,7 +1,8 @@
+import _ from 'lodash';
 import {getAuthHeaders} from './headers';
 import {handle401} from './check-auth';
 
-export default (name) => {
+export default ({name, route}) => {
 
   const actionPrefix = name.toUpperCase();
   const types = {
@@ -10,30 +11,8 @@ export default (name) => {
     FAILED: `${actionPrefix}_FAILED`,
   };
 
-  const load = ({url, responseMapper = (res) => res}) => (dispatch) => {
-    dispatch({
-      type: types.PENDING
-    });
-    const headers = getAuthHeaders();
-    fetch(url, {
-      headers
-    })
-    .then((res) => handle401(res, dispatch))
-    .then((res) => res.json())
-    .then((json) => {
-      dispatch({
-        type: types.SUCCESSFUL,
-        data: responseMapper(json)
-      });
-    })
-    .catch(error => {
-      dispatch({
-        type: types.FAILED
-      });
-    });
-  };
-
-  const send = ({url, payload, responseMapper = (res) => res}) => (dispatch) => {
+  const send = (payload) => (dispatch) => {
+    const url = _.isFunction(route) ? route(payload) : route;
     dispatch({
       type: types.PENDING
     });
@@ -51,7 +30,7 @@ export default (name) => {
     .then((json) => {
       dispatch({
         type: types.SUCCESSFUL,
-        data: responseMapper(json)
+        data: json
       });
     })
     .catch(error => {
@@ -101,7 +80,6 @@ export default (name) => {
     types,
     reducer,
     actions: {
-      load,
       send
     }
   };

@@ -41,12 +41,10 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = dispatch => ({
-  confirmInteraction: (code, verifierId) => dispatch(
+  confirmInteraction: (confirmationCode, confirmorId) => dispatch(
     interactionConfirmationStore.actions.send({
-      url: `api/interactions/${code}`,
-      payload: {
-        verifierId
-      }
+      confirmationCode,
+      confirmorId
     })
   )
 });
