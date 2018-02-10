@@ -4,6 +4,7 @@ import { NavLink } from 'react-router-dom';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 import {checkUsernameAvailability, registerAccount} from '../stores/accountStore';
+import interactionConfirmationStore from '../stores/interactionConfirmationStore';
 import {trackPageView, trackEvent, events} from '../util/google-analytics';
 import TermsAndPolicy from '../components/terms-and-policy';
 import InfoBox from '../components/infobox';
@@ -60,6 +61,13 @@ class Onboarding extends React.Component {
     if(props.account.wasRegistrationSuccessful && !this.props.account.wasRegistrationSuccessful) {
       sessionStorage.setItem('userId', props.account.userId);
       trackEvent(events.USER_REGISTERED_ACCOUNT);
+
+      // confirm interaction (for users who joined via waytcoin challenge)
+      const interactionCode = sessionStorage.getItem('interactionCode');
+      if(interactionCode) {
+        this.props.confirmInteraction(interactionCode, props.account.userId);
+      }
+
       this.props.history.push(`/signup`);
     }
   }
@@ -173,7 +181,13 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = dispatch => ({
   checkUsernameAvailability: (username) => dispatch(checkUsernameAvailability(username)),
-  registerAccount: (data) => dispatch(registerAccount(data))
+  registerAccount: (data) => dispatch(registerAccount(data)),
+  confirmInteraction: (confirmationCode, confirmorId) => dispatch(
+    interactionConfirmationStore.actions.send({
+      confirmationCode,
+      confirmorId
+    })
+  )
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Onboarding);
