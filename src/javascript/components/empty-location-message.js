@@ -18,7 +18,7 @@ export default class ChatInput extends React.Component {
             Start an interaction with a stranger
           </div>
           <div className='empty-message-wayt-symbol'>
-            <img src='/assets/wayt-symbol.png' />
+            <img src='/assets/waytcoin-symbol.png' />
           </div>
           <NavLink to='/challenge'>
             <RaisedButton

@@ -93,7 +93,7 @@ class Profile extends React.Component {
   }
 
   render() {
-    const { username, name, interests, photo } = this.props;
+    const { username, name, interests, photo, waytcoins } = this.props;
 
     const photoUrl = photo || 'assets/avatar-placeholder.png';
     const imageSelectionModal = this.props.showModal ?
@@ -106,6 +106,15 @@ class Profile extends React.Component {
           backgroundColor='#ffd801'
           label='logout'
         />
+      </div>
+    ) : null;
+
+    const balance = waytcoins ? (
+      <div>
+        <span className='profile-waytcoin-symbol'>
+          <img src='/assets/waytcoin-symbol.png' />
+        </span>
+        {waytcoins}
       </div>
     ) : null;
 
@@ -124,6 +133,11 @@ class Profile extends React.Component {
         <Row>
           <Col sm={12}>
             <h3>{username}</h3>
+            {balance}
+          </Col>
+        </Row>
+        <Row>
+          <Col sm={12}>
             <TextField
               name="name"
               defaultValue={name}

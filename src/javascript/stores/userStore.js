@@ -67,7 +67,8 @@ export const loadUserDataGeneral = (userId, endpoint) => (dispatch) => {
       name: data.name,
       interests: data.interests,
       username: data.username,
-      interactionUrl: data.interation_url
+      interactionUrl: data.interaction_url,
+      waytcoins: data.waytcoins
     };
     dispatch({
       type: types.LOADED,

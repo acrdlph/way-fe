@@ -54,7 +54,7 @@ class Challenge extends React.Component {
         </div>
 
         <div className='challenge-wayt-symbol'>
-          <img src='/assets/wayt-symbol.png' />
+          <img src='/assets/waytcoin-symbol.png' />
         </div>
 
         <div className='challenge-message'>
