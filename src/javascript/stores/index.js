@@ -18,5 +18,5 @@ export default combineReducers({
   profileImage: profileImageStore.reducer,
   account: accountStore.reducer,
   feedback: feedbackStore.reducer,
-  [interactionConfirmationStore.name]: interactionConfirmationStore.reducer
+  confirmInteraction: interactionConfirmationStore.reducer
 });

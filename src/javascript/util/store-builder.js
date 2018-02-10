@@ -26,12 +26,18 @@ export default ({name, route}) => {
       body: JSON.stringify(payload)
     })
     .then((res) => handle401(res, dispatch))
-    .then((res) => res.json())
-    .then((json) => {
-      dispatch({
-        type: types.SUCCESSFUL,
-        data: json
-      });
+    .then((res) => {
+      if (res.status < 200 || res.status > 299) {
+        dispatch({
+          type: types.FAILED
+        });
+      } else {
+        const json = res.json();
+        dispatch({
+          type: types.SUCCESSFUL,
+          data: json
+        });
+      }
     })
     .catch(error => {
       dispatch({
@@ -41,8 +47,9 @@ export default ({name, route}) => {
   };
 
   const initialState = {
-    loading: false,
-    loaded: false,
+    initiated: false,
+    pending: false,
+    successful: false,
     failed: false,
     data: null
   };
@@ -52,21 +59,24 @@ export default ({name, route}) => {
       case types.PENDING:
         return {
           ...state,
-          loading: true,
-          loaded: false,
+          initiated: true,
+          pending: true,
+          successful: false,
           failed: false
         };
       case types.SUCCESSFUL:
         return {
-          loading: false,
-          loaded: true,
+          initiated: true,
+          pending: false,
+          successful: true,
           failed: false,
           data: action.data
         };
       case types.FAILED:
         return {
-          loading: false,
-          loaded: false,
+          initiated: true,
+          pending: false,
+          successful: false,
           failed: true,
           data: null
         };
