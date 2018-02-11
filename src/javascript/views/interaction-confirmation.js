@@ -5,6 +5,7 @@ import RefreshIndicator from 'material-ui/RefreshIndicator';
 import RaisedButton from 'material-ui/RaisedButton';
 import {trackPageView} from '../util/google-analytics';
 import interactionConfirmationStore from '../stores/interactionConfirmationStore';
+import _ from 'lodash';
 import './interaction-confirmation.less';
 
 class InteractionConfirmation extends React.Component {
@@ -55,7 +56,7 @@ class InteractionConfirmation extends React.Component {
   }
 
   render() {
-    const {initiated, pending, successful} = this.props.confirmInteractionStore;
+    const {initiated, pending, successful, data} = this.props.confirmInteractionStore;
 
     let content = null;
     if(!initiated) {
@@ -65,15 +66,17 @@ class InteractionConfirmation extends React.Component {
         content = this.renderSpinner();
       } else {
         if(successful) {
+          const location = _.get(data, 'location');
+          sessionStorage.setItem('challengeLocation', location);
           content = (
             <div>
               Interaction confirmed!
               <br/><br/>
               <div>
-                <NavLink to='/profile'>
+                <NavLink to='/signup'>
                   <RaisedButton
                     backgroundColor='#ffd801'
-                    label='OK'
+                    label='Join Chat'
                   />
                 </NavLink>
               </div>

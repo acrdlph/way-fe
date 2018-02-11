@@ -32,10 +32,11 @@ export default ({name, route}) => {
           type: types.FAILED
         });
       } else {
-        const json = res.json();
-        dispatch({
-          type: types.SUCCESSFUL,
-          data: json
+        res.json().then(json => {
+          dispatch({
+            type: types.SUCCESSFUL,
+            data: json
+          });
         });
       }
     })

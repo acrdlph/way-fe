@@ -229,6 +229,22 @@ class Signup extends React.Component {
         }
       );
     });
+
+    const challengeLocation = sessionStorage.getItem('challengeLocation');
+    if(challengeLocation) {
+      /*
+      autocompleteApi = new google.maps.places.Autocomplete(document.getElementById(challengeLocation));
+      autocompleteApi.addListener('place_changed', this.changeGeolocation);
+      */
+
+      /*
+      this.setState({
+        airport: challengeLocation
+      });
+      this.saveAndContinue();
+      */
+    }
+
     return (
       <div style={{paddingBottom: '15px'}}>
         <div>
@@ -241,7 +257,7 @@ class Signup extends React.Component {
         />
         <input onFocus={this.clearLocation}
         className="signup-location-input-style" id={locationInput} type="text"
-            placeholder="Enter location"/>
+            placeholder="Enter location" value={challengeLocation}/>
         {this.initAutoComplete()}
       </div>
     );
