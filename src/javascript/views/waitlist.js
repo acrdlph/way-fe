@@ -67,7 +67,7 @@ class WaitList extends React.Component {
   componentDidMount() {
     // initialize so that messages can be delivered, but not acted upon
     // TODO handle the incoming messages and update chat bubbles
-    initWebSocketStore(sessionStorage.getItem('userId'), 
+    initWebSocketStore(sessionStorage.getItem('userId'),
       (event) => notifyNewMessage(transformMessages([event])[0]));
   }
 
@@ -137,7 +137,7 @@ class WaitList extends React.Component {
     });
 
     const isLoggedInUser = !!this.props.user.data.username;
-    if(list.length == 0) {
+    if(list.length <= 3) {
       list.push(
         <EmptyLocationMessage showChallenge={FEATURE_WAITCOIN_CHALLENGE && isLoggedInUser}/>
       );
