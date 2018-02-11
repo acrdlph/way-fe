@@ -96,7 +96,15 @@ class Signup extends React.Component {
   }
 
   async buildLocation() {
-    if (navigator.geolocation && !geolocationAvailable) {
+    const challengeLocation = sessionStorage.getItem('challengeLocation');
+    if(challengeLocation) {
+      try {
+        this.setPlace(challengeLocation, 0, 0);
+        this.setLocationInputValue(challengeLocation);
+      } catch(error) {
+        console.log(error);
+      }
+    } else if (navigator.geolocation && !geolocationAvailable) {
       try {
         const location = await this.getGeolocation();
         const geolocation = {
@@ -230,21 +238,6 @@ class Signup extends React.Component {
       );
     });
 
-    const challengeLocation = sessionStorage.getItem('challengeLocation');
-    if(challengeLocation) {
-      /*
-      autocompleteApi = new google.maps.places.Autocomplete(document.getElementById(challengeLocation));
-      autocompleteApi.addListener('place_changed', this.changeGeolocation);
-      */
-
-      /*
-      this.setState({
-        airport: challengeLocation
-      });
-      this.saveAndContinue();
-      */
-    }
-
     return (
       <div style={{paddingBottom: '15px'}}>
         <div>
@@ -257,7 +250,7 @@ class Signup extends React.Component {
         />
         <input onFocus={this.clearLocation}
         className="signup-location-input-style" id={locationInput} type="text"
-            placeholder="Enter location" value={challengeLocation}/>
+            placeholder="Enter location"/>
         {this.initAutoComplete()}
       </div>
     );
