@@ -109,14 +109,16 @@ class Profile extends React.Component {
       </div>
     ) : null;
 
-    const balance = waytcoins ? (
+    const balance = (
       <div>
-        <span className='profile-waytcoin-symbol'>
-          <img src='/assets/waytcoin-symbol.png' />
-        </span>
+        <NavLink to='/challenge'>
+          <span className='profile-waytcoin-symbol'>
+            <img src='/assets/waytcoin-symbol.png' />
+          </span>
+        </NavLink>
         {waytcoins}
       </div>
-    ) : null;
+    );
 
     return (
       <Grid className="profile">
