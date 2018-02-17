@@ -67,7 +67,7 @@ class WaitList extends React.Component {
   componentDidMount() {
     // initialize so that messages can be delivered, but not acted upon
     // TODO handle the incoming messages and update chat bubbles
-    initWebSocketStore(sessionStorage.getItem('userId'), 
+    initWebSocketStore(sessionStorage.getItem('userId'),
       (event) => notifyNewMessage(transformMessages([event])[0]));
   }
 
@@ -79,6 +79,7 @@ class WaitList extends React.Component {
     });
   }
 
+  /* partner locations deactivated for now
   createAirportCard() {
     const airportCode = _.get(this.props.user, 'data.location');
     if(!airportCode) {
@@ -108,13 +109,17 @@ class WaitList extends React.Component {
     }
     return null;
   }
+  */
 
   render() {
     const list = [];
+
+    /*
     const waitlistItemOfAirport = this.createAirportCard();
     if(waitlistItemOfAirport) {
       list.push(waitlistItemOfAirport);
     }
+    */
 
     const {isUserOnboarded} = this.props;
     _.each(this.props.waitlist.data, (entry, key) => {
@@ -137,11 +142,9 @@ class WaitList extends React.Component {
     });
 
     const isLoggedInUser = !!this.props.user.data.username;
-    if(list.length == 0) {
-      list.push(
-        <EmptyLocationMessage showChallenge={FEATURE_WAITCOIN_CHALLENGE && isLoggedInUser}/>
-      );
-    }
+    list.push(
+      <EmptyLocationMessage showChallenge={FEATURE_WAITCOIN_CHALLENGE && isLoggedInUser}/>
+    );
 
     return (
       <div>

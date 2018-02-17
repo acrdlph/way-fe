@@ -96,7 +96,15 @@ class Signup extends React.Component {
   }
 
   async buildLocation() {
-    if (navigator.geolocation && !geolocationAvailable) {
+    const challengeLocation = sessionStorage.getItem('challengeLocation');
+    if(challengeLocation) {
+      try {
+        this.setPlace(challengeLocation, 0, 0);
+        this.setLocationInputValue(challengeLocation);
+      } catch(error) {
+        console.log(error);
+      }
+    } else if (navigator.geolocation && !geolocationAvailable) {
       try {
         const location = await this.getGeolocation();
         const geolocation = {
@@ -229,6 +237,7 @@ class Signup extends React.Component {
         }
       );
     });
+
     return (
       <div style={{paddingBottom: '15px'}}>
         <div>

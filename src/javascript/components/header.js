@@ -26,13 +26,13 @@ class Header extends React.Component {
     if(!isHeaderVisible) {
       return null;
     }
-    
+
     if (isInChat) {
       return <ChatHeader chatPartner={chatPartner}/>;
     }
 
     let backButton = null;
-    
+
     const isInProfile = pathname.includes('profile');
     if(isInChat || isInProfile) {
       backButton = createBackButton('/waitlist');
@@ -43,7 +43,7 @@ class Header extends React.Component {
       backButton = createBackButton('/');
     };
 
-    
+
     const profileIcon = isLoggedIn() && username ? (
       <div className='header-profileicon'>
         <NavLink to='/profile'>
@@ -73,9 +73,11 @@ class Header extends React.Component {
           {backButton}
         </div>
         <div className='header-logo'>
-          <img
-            src='assets/waitlistlogo.svg'
-          />
+          <NavLink to='/'>
+            <img
+              src='assets/waitlistlogo.svg'
+            />
+          </NavLink>
         </div>
         {location}
         {profileIcon}
