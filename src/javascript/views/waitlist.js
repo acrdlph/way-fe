@@ -79,6 +79,7 @@ class WaitList extends React.Component {
     });
   }
 
+  /* partner locations deactivated for now
   createAirportCard() {
     const airportCode = _.get(this.props.user, 'data.location');
     if(!airportCode) {
@@ -108,13 +109,17 @@ class WaitList extends React.Component {
     }
     return null;
   }
+  */
 
   render() {
     const list = [];
+
+    /*
     const waitlistItemOfAirport = this.createAirportCard();
     if(waitlistItemOfAirport) {
       list.push(waitlistItemOfAirport);
     }
+    */
 
     const {isUserOnboarded} = this.props;
     _.each(this.props.waitlist.data, (entry, key) => {
