@@ -74,12 +74,10 @@ class Header extends React.Component {
         </div>
         <div className='header-logo'>
           <NavLink to='/'>
-            <img
-              src='assets/waitlistlogo.svg'
-            />
+            <h3>blockgeeks.berlin</h3>
           </NavLink>
         </div>
-        {location}
+        
         {profileIcon}
       </Card>
     );

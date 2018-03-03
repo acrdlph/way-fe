@@ -9,23 +9,7 @@ import './location-header.less';
 
 class LocationHeader extends React.Component {
   render() {
-
-    const {locationName} = this.props;
-
-    const location = locationName ? (
-      <div className='location-header-location'>
-        <NavLink to='/signup'>{locationName}</NavLink>
-        <img
-          src='assets/waitlist-location-icon.png'
-        />
-      </div>
-    ) : null;
-
-    return (
-      <div className='location-header'>
-        {/* {location} */}
-      </div>
-    );
+    
   }
 }
 

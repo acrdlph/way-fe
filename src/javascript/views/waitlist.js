@@ -12,7 +12,6 @@ import UserData from '../components/user-data';
 import WaitListItem from '../components/waitlist-item';
 import Infobox from '../components/infobox';
 import EmptyLocationMessage from '../components/empty-location-message';
-import LocationHeader from '../components/location-header';
 import {loadWaitlist} from '../stores/waitlistStore';
 import {transformMessages, notifyNewMessage} from '../stores/chatStore';
 import {loadUserData, isOnboarded} from '../stores/userStore';
@@ -150,13 +149,11 @@ class WaitList extends React.Component {
 
     return (
       <div>
-        <LocationHeader/>
         <UserData/>
         <Infobox
           visible={!isUserOnboarded && this.state.showIncompleteProfileHint}
           text={'Enter your name and interests to start communicating with other passengers'}
         />
-        <div className='divider'/>
         <List>
           {list}
         </List>

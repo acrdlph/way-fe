@@ -1,6 +1,6 @@
 import React from 'react';
-import {NavLink} from 'react-router-dom';
-import {Row, Col} from 'react-bootstrap';
+import { NavLink } from 'react-router-dom';
+import { Row, Col } from 'react-bootstrap';
 import CommunicationChatBubble from 'material-ui/svg-icons/communication/chat-bubble';
 import Avatar from 'material-ui/Avatar';
 import './waitlist-item.less';
@@ -17,10 +17,13 @@ export default class WaitListItem extends React.Component {
       lastContact,
       onClick
     } = this.props;
-    if(interests.trim() === '') {
+
+    const isActionVisible = this.props.isActionVisible === false ? false : true;
+
+    if (interests.trim() === '') {
       interests = "Just waiting";
     }
-    if(name.trim() === '') {
+    if (name.trim() === '') {
       name = 'No name specified';
     }
     if (!photo) {
@@ -36,8 +39,8 @@ export default class WaitListItem extends React.Component {
     // "timeLeft === undefined" means: this is the profile card
     let timeLeftText = '';
     let arrowClass = 'waitlist-item-invisible';
-    if(timeLeft !== undefined) {
-      if(timeLeft > 0) {
+    if (timeLeft !== undefined) {
+      if (timeLeft > 0) {
         timeLeftText = `${timeLeft} min`;
       }
       arrowClass = '';
@@ -49,35 +52,36 @@ export default class WaitListItem extends React.Component {
     const hasUnreadMessagesClass = nonDeliveredChatCount > 0 ? '' : 'waitlist-item-invisible';
 
     return (
-      <div className={'waitlist-item ' + alreadyContactedClass} onClick={onClickHelper}>
+      <div className={'waitlist-item-parent'}>
+        <div className={'waitlist-item ' + alreadyContactedClass} >
 
-        <div className='waitlist-item-avatar'>
-          <Avatar
-            size={50}
-            src={photo}
-          />
+          <div className='waitlist-item-avatar'>
+            <Avatar
+              size={50}
+              src={photo}
+            />
+          </div>
+
+          <div className='waitlist-item-data'>
+            <p className='waitlist-item-data-name'>
+              {name}
+            </p>
+            <p className="waitlist-item-data-address">0xcf946a9cd4dc4af24588d24c3df9d493fd7656c471924acfeade9e04a1fdebf8</p>
+            <p className="waitlist-item-data-backing">
+              Backing <strong>20 GEEK</strong>
+            </p>
+
+          </div>
+
+          {isActionVisible && <ul className='waitlist-item-actions'>
+            <li><button onClick={onClickHelper} className='waitlist-item-button blue'> Meet </button></li>
+            <li><button className='waitlist-item-button green'> Endorse </button></li>
+          </ul>}
         </div>
 
-        <div className='waitlist-item-data'>
-          <div className='waitlist-item-data-name'>
-            {name}
-          </div>
-          <div className='waitlist-item-data-interests'>
-            {interests}
-          </div>
-        </div>
-
-        <div className='waitlist-item-meta'>
-          <div className='waitlist-item-meta-timeleft'>
-            {timeLeftText}
-          </div>
-          <div className={'waitlist-item-meta-arrow ' + arrowClass}>
-            <span className="glyphicon glyphicon-chevron-right"/>
-          </div>
-          <div className={'waitlist-item-meta-chat-bubble ' + hasUnreadMessagesClass}>
-            <CommunicationChatBubble />
-          </div>
-        </div>
+        <p className='waitlist-item-data-interests'>
+          {interests} This is dummy text just written in purporse for nothing  dummy text just written in purporse for nothing.
+        </p>
 
       </div>
     );
