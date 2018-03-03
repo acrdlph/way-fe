@@ -23,7 +23,7 @@ class LocationHeader extends React.Component {
 
     return (
       <div className='location-header'>
-        {location}
+        {/* {location} */}
       </div>
     );
   }
