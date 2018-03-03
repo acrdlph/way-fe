@@ -79,6 +79,8 @@ class WaitList extends React.Component {
     });
   }
 
+
+
   /* partner locations deactivated for now
   createAirportCard() {
     const airportCode = _.get(this.props.user, 'data.location');

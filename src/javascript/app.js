@@ -6,7 +6,6 @@ import {loadUserData} from './stores/userStore';
 import {isLoggedIn} from './stores/accountStore';
 import Header from './components/header';
 import Footer from './components/footer';
-import Onboarding from './views/onboarding';
 import Profile from './views/profile';
 import Login from './views/login';
 import Registration from './views/registration';
@@ -43,13 +42,12 @@ class App extends React.Component {
       <div className='app-container'>
         <Route component={Header}/>
         <div className='app-content'>
-          <Route exact path="/" component={Onboarding}/>
+          <Route exact path="/" component={Signup}/>
           <Route exact path="/login" component={Login}/>
           <Route exact path="/register" component={Registration}/>
           <Route exact path="/challenge" component={Challenge}/>
           <Route exact path="/profile" component={Profile}/>
           <Route exact path="/profile/:username" component={Profile}/>
-          <Route exact path="/onboarding" component={Onboarding}/>
           <Route exact path="/signup" component={Signup}/>
           <Route exact path="/signup/:locationId" component={Signup}/>
           <Route exact path="/reset-password" component={ResetPassword}/>
