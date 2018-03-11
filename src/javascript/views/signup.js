@@ -200,7 +200,8 @@ class Signup extends React.Component {
     const body = JSON.stringify({
       'location': this.state.airport,
       'geolocation': this.state.geolocation,
-      'waiting_time': this.state.waitingTime
+      'waiting_time': this.state.waitingTime,
+      'address': window.web3 ? window.web3.eth.accounts[0] : null
     });
     // if geolocationAvailable then we have already saved the user then update
     let json = {};
@@ -287,6 +288,17 @@ class Signup extends React.Component {
           backgroundColor='#43d676'
           onClick={this.saveAndContinue}
         />
+
+        <RaisedButton
+          className="login-btn"
+          label="Login"
+          backgroundColor='white'
+
+          onClick={() => {
+            this.props.history.push('login')
+          }}
+        />
+
 
         <TermsAndPolicy />
       </div>

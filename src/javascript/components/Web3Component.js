@@ -4,8 +4,10 @@ import Web3 from 'web3'
 
 let web3 = window.web3;
 export const initContract = async (abi, address) => {
-    if (web3)
+    if (web3) {
         return web3.eth.contract(abi).at(address);
+    }
+        
 }
 
 

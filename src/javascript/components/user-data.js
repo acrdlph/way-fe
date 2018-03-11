@@ -80,7 +80,7 @@ class UserData extends React.Component {
     );
 
     return !isUserOnboarded || this.props.user.isEditable ? (
-       
+
       <div className='userdata'>
 
         <Row>

@@ -38,6 +38,7 @@ export const markDelivered = async function markDelivered(msg) {
 const managedSend = async function managedSend(msg) {
     if (isConnected()) {
         currentConnection.emit('NEW_MESSAGE', msg);
+        console.log("Supposed to be SENT. :D", msg)
         return true;
     } else {
         // connection issue, store messages locally
@@ -54,9 +55,11 @@ const isConnected = function isConnected() {
 const newConnection = async function newConnection() {
     let connection = io(WEBSOCKET_BASE_URL + 
         'messaging?user_id=' + userId + '&token=' + sessionStorage.getItem('token'));
+    console.log("New connection setted up");
     addMessagehandler(connection);
     addClosehandler(connection);
     addConnectionhandler(connection);
+    console.log("New connection Finished", connection);
     return connection;
 } 
 
@@ -94,7 +97,7 @@ const addConnectionhandler = function addConnectionhandler(connection) {
 
 const addMessagehandler = function addMessagehandler(connection) {
     connection.on('NEW_MESSAGE', (msg) => {
-        console.log('message received ', JSON.stringify(msg));
+        console.log('message received', JSON.stringify(msg));
         onMessage(msg);
     });
 }

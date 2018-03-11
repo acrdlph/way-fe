@@ -82,11 +82,12 @@ class WaitList extends React.Component {
   async componentDidMount() {
     // initialize so that messages can be delivered, but not acted upon
     // TODO handle the incoming messages and update chat bubbles
+
     initWebSocketStore(sessionStorage.getItem('userId'),
       (event) => notifyNewMessage(transformMessages([event])[0]));
 
     await this.getContract();
-    await this.getPeople();
+    // this.getPeople();
     // if (this.state.contract) {
     //   try {
     //     this.state.contract.getEndorsementsFull('0xe1ea7d39425f99897da0d25224ea58bdfb87981b',
@@ -106,10 +107,10 @@ class WaitList extends React.Component {
   }
 
   async getPeople() {
-    const contract = this.state.contract;
-    contract.getUsers((error, result) => {
-      console.log(result, error)
-    });
+    // const contract = this.state.contract;
+    // contract.getUsers((error, result) => {
+    //   console.log(result, error)
+    // });
   }
 
   openChat(chatPartnerId) {
@@ -123,6 +124,9 @@ class WaitList extends React.Component {
   changeDistance(event, value) {
     // @TODO: store distance in backend
     const roundedValue = Math.floor(value);
+    sessionStorage.setItem('distance', roundedValue);
+    const userId = sessionStorage.getItem('userId'); 
+    this.props.loadWaitlist(userId);
     this.setState({
       distance: roundedValue
     });
@@ -160,7 +164,7 @@ class WaitList extends React.Component {
           lastContact={entry.lastContact}
           onClick={onClick}
           onEndorse={onEndorse}
-          address={"0xcf946a9cd4dctestaddress"}
+          address={entry.address}
         />
       );
     });

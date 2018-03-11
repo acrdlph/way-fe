@@ -83,7 +83,9 @@ class Profile extends React.Component {
 
   onLogout() {
     sessionStorage.clear();
+    localStorage.clear();
     this.props.history.push(`/`);
+    location.reload();
   }
 
   onSave(e) {
