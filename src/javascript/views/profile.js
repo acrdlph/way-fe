@@ -1,35 +1,42 @@
 import React from 'react';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 import Avatar from '../components/avatar';
-import {trackPageView} from '../util/google-analytics';
+import { trackPageView } from '../util/google-analytics';
 import TermsAndPolicy from '../components/terms-and-policy';
 import InfoBox from '../components/infobox';
-import {Grid, Row, Col} from 'react-bootstrap';
+import { Grid, Row, Col } from 'react-bootstrap';
 import ImageSelection from '../components/image-selection-modal';
-import {showModal} from '../stores/profileImageStore';
-import {loadUserData, updateUserData, editUserData, isOnboarded} from '../stores/userStore';
+import { showModal } from '../stores/profileImageStore';
+import { loadUserData, updateUserData, editUserData, isOnboarded } from '../stores/userStore';
 import './profile.less';
+import { Web3Provider } from 'react-web3';
+import Web3Component, { initContract } from '../components/Web3Component'
+import { isLoggedIn } from '../stores/accountStore';
 
 
 class Profile extends React.Component {
 
   constructor(props) {
     super(props);
+    if (!isLoggedIn()) {
+      this.props.history.push('/register');
+    }
 
-    if(this.props.location) {
+    if (this.props.location) {
       const path = this.props.location.pathname;
       trackPageView(path);
     }
 
-    const usernameFromPath = _.get(this.props.match, 'params.username');
     const userId = sessionStorage.getItem('userId');
-    console.log("usernameFromPath", usernameFromPath);
-    if(!usernameFromPath && (props.username || userId)) {
+
+    const usernameFromPath = _.get(this.props.match, 'params.username');
+    if (!usernameFromPath && (props.username || userId)) {
       this.props.history.push(`/profile/${props.username || userId}`);
     }
+
     this.props.loadUserData(usernameFromPath);
 
 
@@ -49,7 +56,7 @@ class Profile extends React.Component {
 
   componentWillReceiveProps(props) {
     const usernameFromPath = _.get(this.props.match, 'params.username');
-    if(props.username && props.username != usernameFromPath) {
+    if (props.username && props.username != usernameFromPath) {
       this.props.history.push(`/profile/${props.username}`);
     }
   }
@@ -59,7 +66,7 @@ class Profile extends React.Component {
     this.props.loadUserData(userId);
   }
 
-  onChanged(e){
+  onChanged(e) {
     let obj = {};
     obj[e.target.name] = e.target.value;
     this.setState(obj);
@@ -70,7 +77,7 @@ class Profile extends React.Component {
   }
 
 
-  onChangeImage(e){
+  onChangeImage(e) {
     console.log(e);
   }
 
@@ -97,7 +104,7 @@ class Profile extends React.Component {
 
     const photoUrl = photo || 'assets/avatar-placeholder.png';
     const imageSelectionModal = this.props.showModal ?
-    <ImageSelection onUpload={this.refreshProfile} /> : null;
+      <ImageSelection onUpload={this.refreshProfile} /> : null;
 
     const logoutButton = this.props.isRegisteredUser ? (
       <div className='profile-button profile-button-logout'>
@@ -121,6 +128,8 @@ class Profile extends React.Component {
     );
 
     return (
+
+
       <Grid className="profile">
         <Row>
           <Col sm={12}>
@@ -132,6 +141,15 @@ class Profile extends React.Component {
             {imageSelectionModal}
           </Col>
         </Row>
+
+        <div>
+
+          <Web3Provider>
+            <Web3Component />
+          </Web3Provider>
+
+        </div>
+
         <Row>
           <Col sm={12}>
             <h3>{username}</h3>
@@ -140,6 +158,7 @@ class Profile extends React.Component {
         </Row>
         <Row>
           <Col sm={12}>
+
             <TextField
               name="name"
               defaultValue={name}
@@ -154,19 +173,36 @@ class Profile extends React.Component {
               onChange={this.onChanged}
               fullWidth={true}
             />
+            <TextField
+              Address="address"
+              hintText="ETH Address"
+              fullWidth={true}
+            />
+            <TextField
+              Balance="balance"
+              hintText="GEEK Balance"
+              fullWidth={true}
+            />
+            <TextField
+              Balance="backing"
+              hintText="GEEK Backing"
+              fullWidth={true}
+            />
           </Col>
         </Row>
         <Row>
 
-        <div className='profile-button profile-button-save'>
-          <RaisedButton
-            onClick={this.onSave}
-            backgroundColor='#ffd801'
-            label={ this.props.isRegisteredUser ? 'Save' : 'Register' }
-          />
-        </div>
 
-        {logoutButton}
+          <div className='profile-button profile-button-save'>
+            <RaisedButton
+              onClick={this.onSave}
+              backgroundColor='#ffd801'
+              label={this.props.isRegisteredUser ? 'Save' : 'Register'}
+            />
+          </div>
+
+
+          {logoutButton}
 
         </Row>
       </Grid>

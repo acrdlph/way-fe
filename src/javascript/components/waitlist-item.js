@@ -15,7 +15,9 @@ export default class WaitListItem extends React.Component {
       hasChat,
       nonDeliveredChatCount,
       lastContact,
-      onClick
+      onClick,
+      onEndorse,
+      address
     } = this.props;
 
     const isActionVisible = this.props.isActionVisible === false ? false : true;
@@ -66,7 +68,7 @@ export default class WaitListItem extends React.Component {
             <p className='waitlist-item-data-name'>
               {name}
             </p>
-            <p className="waitlist-item-data-address">0xcf946a9cd4dc4af24588d24c3df9d493fd7656c471924acfeade9e04a1fdebf8</p>
+            <p className="waitlist-item-data-address">{address}</p>
             <p className="waitlist-item-data-backing">
               Backing <strong>20 GEEK</strong>
             </p>
@@ -75,12 +77,25 @@ export default class WaitListItem extends React.Component {
 
           {isActionVisible && <ul className='waitlist-item-actions'>
             <li><button onClick={onClickHelper} className='waitlist-item-button blue'> Meet </button></li>
-            <li><button className='waitlist-item-button green'> Endorse </button></li>
+            <li><button className='waitlist-item-button green' onClick={() => {
+              try {
+                onEndorse("0xe1ea7d39425f99897da0d25224ea58bdfb87981b", {
+                  from: window.web3.eth.accounts ? window.web3.eth.accounts[0] : null,
+                  gas: 0,
+                  value: web3.toWei(0, 'ether')
+                }, (error, result) => {
+                  console.log(result)
+                  console.log(error)
+                });
+              } catch (error) {
+                console.error(error);
+              }
+            }}> Endorse </button></li>
           </ul>}
         </div>
 
         <p className='waitlist-item-data-interests'>
-          {interests} This is dummy text just written in purporse for nothing  dummy text just written in purporse for nothing.
+          {interests} Test Text
         </p>
 
       </div>

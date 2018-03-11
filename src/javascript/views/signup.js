@@ -266,14 +266,25 @@ class Signup extends React.Component {
     const { waitingTime } = this.state;
     return (
       <div className='signup'>
-       <h1>
-               Find blockchain lovers nearby.
+
+
+        <div className='onboarding-logo'>
+          <img
+            className='logo'
+            src='assets/bglogo.png'
+          />
+        </div>
+
+        <h1>
+          Find [blockchain] lovers nearby.
         </h1>
         {this.renderLocationInput()}
 
+        <br></br>
+
         <RaisedButton
-          label="See who's here"
-          backgroundColor='#ffd801'
+          label="Start"
+          backgroundColor='#43d676'
           onClick={this.saveAndContinue}
         />
 
