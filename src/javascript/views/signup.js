@@ -247,10 +247,7 @@ class Signup extends React.Component {
 
     return (
       <div style={{ paddingBottom: '15px', display: this.state.isSearchBoxVisible ? 'block' : 'none' }}>
-        <div>
-          <img src='assets/airport-selection-icon.png' className='signup-selection-icon' />
-        </div>
-        <p className='signup-im-here'>I'm here</p>
+      
         <Infobox
           visible={this.state.showLocationRequiredHint}
           text={'Please enter your location first to join the waitlist'}
