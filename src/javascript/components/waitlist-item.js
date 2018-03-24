@@ -17,7 +17,9 @@ export default class WaitListItem extends React.Component {
       lastContact,
       onClick,
       onEndorse,
-      address
+      address,
+      endorsement,
+      balance
     } = this.props;
 
     const isActionVisible = this.props.isActionVisible === false ? false : true;
@@ -70,7 +72,7 @@ export default class WaitListItem extends React.Component {
             </p>
             <p className="waitlist-item-data-address">{address}</p>
             <p className="waitlist-item-data-backing">
-              Backing <strong>20 GEEK</strong>
+              Backing <strong>{endorsement} GEEK</strong>
             </p>
 
           </div>

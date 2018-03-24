@@ -1,157 +1,150 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import Slider from 'material-ui/Slider';
-import DropDownMenu from 'material-ui/DropDownMenu';
-import MenuItem from 'material-ui/MenuItem';
-import { List } from 'material-ui/List';
-import Avatar from 'material-ui/Avatar';
-import _ from 'lodash';
-import fetch from 'isomorphic-fetch';
-import { trackPageView } from '../util/google-analytics';
-import UserData from '../components/user-data';
-import WaitListItem from '../components/waitlist-item';
-import Infobox from '../components/infobox';
-import EmptyLocationMessage from '../components/empty-location-message';
-import { loadWaitlist } from '../stores/waitlistStore';
-import { transformMessages, notifyNewMessage } from '../stores/chatStore';
-import { loadUserData, isOnboarded } from '../stores/userStore';
-import { initWebSocketStore } from '../stores/webSocketStore';
-import { loadPartnerData } from '../stores/partnerStore';
-import { requestPermissionForNotifications } from '../util/notification';
-import { PARTNER_LOCATIONS } from '../util/constants';
-import './waitlist.less';
-import { promisify } from "bluebird";
-import { Web3Provider } from 'react-web3';
-import Web3Component, { initContract } from '../components/Web3Component'
+import React from 'react'
+import { connect } from 'react-redux'
+import Slider from 'material-ui/Slider'
+import DropDownMenu from 'material-ui/DropDownMenu'
+import MenuItem from 'material-ui/MenuItem'
+import { List } from 'material-ui/List'
+import Avatar from 'material-ui/Avatar'
+import _ from 'lodash'
+import fetch from 'isomorphic-fetch'
+import { trackPageView } from '../util/google-analytics'
+import UserData from '../components/user-data'
+import WaitListItem from '../components/waitlist-item'
+import Infobox from '../components/infobox'
+import EmptyLocationMessage from '../components/empty-location-message'
+import { loadWaitlist } from '../stores/waitlistStore'
+import { transformMessages, notifyNewMessage } from '../stores/chatStore'
+import { loadUserData, isOnboarded } from '../stores/userStore'
+import { initWebSocketStore } from '../stores/webSocketStore'
+import { loadPartnerData } from '../stores/partnerStore'
+import { requestPermissionForNotifications } from '../util/notification'
+import { PARTNER_LOCATIONS } from '../util/constants'
+import './waitlist.less'
+import { promisify } from 'bluebird'
+import { Web3Provider } from 'react-web3'
+import Web3Component, { initContract, getWeb3 } from '../components/Web3Component'
 import Blockgeeks from '../../abi/Blockgeeks.json'
-import { debug } from 'util';
+import { debug } from 'util'
 
 class WaitList extends React.Component {
 
-  constructor(props) {
-    super(props);
+  constructor (props) {
+    super(props)
 
-    const path = this.props.location.pathname;
-    trackPageView(path);
+    const path = this.props.location.pathname
+    trackPageView(path)
 
-    const userId = sessionStorage.getItem('userId');
-    const locationIdFromPath = _.get(this.props.match, 'params.locationId');
+    const userId = sessionStorage.getItem('userId')
+    const locationIdFromPath = _.get(this.props.match, 'params.locationId')
 
-    this.changeDistance = this.changeDistance.bind(this);
-    this.changeReputation = this.changeReputation.bind(this);
+    this.changeDistance = this.changeDistance.bind(this)
+    this.changeReputation = this.changeReputation.bind(this)
 
     if (userId) {
 
       // redirect to waitlist where the user is signed in
-      const locationId = sessionStorage.getItem('locationId');
+      const locationId = sessionStorage.getItem('locationId')
       if (!locationIdFromPath || locationIdFromPath != locationId) {
-        console.log(`redirect to /waitlist/${locationId}`);
-        this.props.history.push(`/waitlist/${locationId}`);
+        console.log(`redirect to /waitlist/${locationId}`)
+        this.props.history.push(`/waitlist/${locationId}`)
       }
 
-      this.props.loadUserData(userId);
-      this.props.loadWaitlist(userId);
+      this.props.loadUserData(userId)
+      this.props.loadWaitlist(userId)
       if (!this.props.partners.loaded) {
-        this.props.loadPartnerData();
+        this.props.loadPartnerData()
       }
     } else {
       if (locationIdFromPath) {
-        this.props.history.push(`/signup/${locationIdFromPath}`);
+        this.props.history.push(`/signup/${locationIdFromPath}`)
       } else {
-        this.props.history.push('/signup');
+        this.props.history.push('/signup')
       }
     }
 
     this.state = {
       showIncompleteProfileHint: false
-    };
-    this.openChat = this.openChat.bind(this);
+    }
+    this.openChat = this.openChat.bind(this)
 
     if (FEATURE_NOTIFICATIONS) {
-      requestPermissionForNotifications();
+      requestPermissionForNotifications()
     }
 
     this.setState({
       distance: 5000,
       reputation: 100,
       contract: null,
-      contractAddress: '0x3f9dd33ba26905a3a177441cfa744e80aa9a3bca'
-    });
+      contractAddress: '0x7d7a7c78564a37bdbc22de6dc3de2d8c8c51124e'
+    })
   }
 
-  async componentDidMount() {
+  async componentDidMount () {
     // initialize so that messages can be delivered, but not acted upon
     // TODO handle the incoming messages and update chat bubbles
 
     initWebSocketStore(sessionStorage.getItem('userId'),
-      (event) => notifyNewMessage(transformMessages([event])[0]));
+      (event) => notifyNewMessage(transformMessages([event])[0]))
 
-    await this.getContract();
-    // this.getPeople();
-    // if (this.state.contract) {
-    //   try {
-    //     this.state.contract.getEndorsementsFull('0xe1ea7d39425f99897da0d25224ea58bdfb87981b',
-    //     (result, error) => {
-    //       console.log(result, error);
-    //     });  
-    //   } catch(error) {
-    //     console.error(error);
-    //   }
-    // }
-
+    await this.getContract()
+    const contract = this.state.contract
+    const event = contract.allEvents()
+    event.get((erros, logs) => {
+      console.log('LOGS', logs)
+      // this.setState({logs, })
+    })
   }
 
-  async getContract() {
-    const contract = await initContract(Blockgeeks, this.state.contractAddress);
-    this.setState({ contract: contract });
+  async getContract () {
+    const contract = await initContract(Blockgeeks, this.state.contractAddress)
+    this.setState({contract: contract})
   }
 
-  async getPeople() {
+  async getPeople () {
     // const contract = this.state.contract;
     // contract.getUsers((error, result) => {
     //   console.log(result, error)
     // });
   }
 
-  openChat(chatPartnerId) {
-    console.log('open chat with: ' + chatPartnerId);
-    const locationId = sessionStorage.getItem('locationId');
+  openChat (chatPartnerId) {
+    console.log('open chat with: ' + chatPartnerId)
+    const locationId = sessionStorage.getItem('locationId')
     this.props.history.push({
       pathname: `/waitlist/${locationId}/chat/${chatPartnerId}`
-    });
+    })
   }
 
-  changeDistance(event, value) {
+  changeDistance (event, value) {
     // @TODO: store distance in backend
-    const roundedValue = Math.floor(value);
-    sessionStorage.setItem('distance', roundedValue);
-    const userId = sessionStorage.getItem('userId'); 
-    this.props.loadWaitlist(userId);
+    const roundedValue = Math.floor(value)
+    sessionStorage.setItem('distance', roundedValue)
+    const userId = sessionStorage.getItem('userId')
+    this.props.loadWaitlist(userId)
     this.setState({
       distance: roundedValue
-    });
+    })
   }
 
-  changeReputation(event, value) {
+  changeReputation (event, value) {
     // @TODO: store distance in backend
-    const roundedValue = Math.floor(value);
+    const roundedValue = Math.floor(value)
     this.setState({
       reputation: roundedValue
-    });
+    })
   }
 
+  render () {
+    const list = []
 
-  render() {
-    const list = [];
-
-    const { isUserOnboarded } = this.props;
-    const { distance, reputation } = this.state;
+    const {isUserOnboarded} = this.props
+    const {distance, reputation} = this.state
     _.each(this.props.waitlist.data, (entry, key) => {
       const onClick = isUserOnboarded
         ? () => this.openChat(entry.id)
-        : () => this.setState({ showIncompleteProfileHint: true });
+        : () => this.setState({showIncompleteProfileHint: true})
 
-      const onEndorse = this.state.contract ? this.state.contract.endorse : null;
+      const onEndorse = this.state.contract ? this.state.contract.endorse : null
       list.push(
         <WaitListItem
           key={key}
@@ -165,14 +158,16 @@ class WaitList extends React.Component {
           onClick={onClick}
           onEndorse={onEndorse}
           address={entry.address}
+          endorsement={entry.endorsement}
+          balance={entry.balance}
         />
-      );
-    });
+      )
+    })
 
-    const isLoggedInUser = !!this.props.user.data.username;
+    const isLoggedInUser = !!this.props.user.data.username
     list.push(
-      <EmptyLocationMessage showChallenge={FEATURE_WAITCOIN_CHALLENGE && isLoggedInUser} />
-    );
+      <EmptyLocationMessage showChallenge={FEATURE_WAITCOIN_CHALLENGE && isLoggedInUser}/>
+    )
 
     return (
       <div>
@@ -226,7 +221,7 @@ class WaitList extends React.Component {
         </Web3Provider>
 
       </div>
-    );
+    )
   }
 }
 
@@ -235,12 +230,12 @@ const mapStateToProps = (state) => ({
   user: state.user,
   isUserOnboarded: isOnboarded(state.user),
   partners: state.partners,
-});
+})
 
 const mapDispatchToProps = dispatch => ({
   loadWaitlist: (userId) => dispatch(loadWaitlist(userId)),
   loadUserData: (userId) => dispatch(loadUserData(userId)),
   loadPartnerData: () => dispatch(loadPartnerData())
-});
+})
 
-export default connect(mapStateToProps, mapDispatchToProps)(WaitList);
+export default connect(mapStateToProps, mapDispatchToProps)(WaitList)
