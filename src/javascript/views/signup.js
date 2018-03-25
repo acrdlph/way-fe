@@ -2,6 +2,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 import Slider from 'material-ui/Slider';
 import RaisedButton from 'material-ui/RaisedButton';
+import CircularProgress from 'material-ui/CircularProgress';
+import RefreshIndicator from 'material-ui/RefreshIndicator';
 import { NavLink } from 'react-router-dom';
 import fetch from 'isomorphic-fetch';
 import { Row, Col } from 'react-bootstrap';
@@ -24,7 +26,9 @@ class Signup extends React.Component {
 
   constructor(props) {
     super(props);
-
+    this.state = { show : true };
+        
+    this.toggleDiv = this.toggleDiv.bind(this);
     const path = this.props.location.pathname;
     trackPageView(path);
 
@@ -189,8 +193,9 @@ class Signup extends React.Component {
   }
 
   async saveAndContinue() {
+    this.toggleDiv();
     await this.buildLocation();
-
+    
     if (!this.state.airport) {
       this.setState({
         showLocationRequiredHint: true
@@ -232,7 +237,38 @@ class Signup extends React.Component {
     autocompleteApi = new google.maps.places.Autocomplete(document.getElementById(locationInput));
     autocompleteApi.addListener('place_changed', this.changeGeolocation);
   }
+  CircularProgress() {
+    { this.toggleDiv; }
+    const style = {
+      container: {
+        position: 'relative',
+      },
+      refresh: {
+        display: 'inline-block',
+        position: 'relative',
+      },
+    };
+    return(
+      <div>
+        <div style={style.container}>
+    <RefreshIndicator
+      size={40}
+      left={10}
+      top={0}
+      loadingColor="#3ab966"
+      status="loading"
+      style={style.refresh}
+    />
+  </div>
+    </div>
+    );
+    
+  };
 
+  toggleDiv() {
+    const { show } = this.state;
+    this.setState( { show : !show } );
+}
   renderLocationInput() {
     // TODO move this to a component
     const locationList = [];
@@ -265,23 +301,27 @@ class Signup extends React.Component {
     return (
       <div className='signup'>
 
-
+        
         <div className='onboarding-logo'>
           <img
             className='logo'
             src='assets/bglogo.png'
           />
         </div>
-
+        
         <h1>
           Find [blockchain] lovers nearby.
         </h1>
         {this.renderLocationInput()}
-
-        <br></br>
+        {this.state.show&&this.CircularProgress()} 
+        
+        <br>
+       
+        </br>
 
         <RaisedButton
           label="Start"
+          className="start"
           backgroundColor='#43d676'
           onClick={this.saveAndContinue}
         />
@@ -313,5 +353,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = dispatch => ({
   loadPartnerData: () => dispatch(loadPartnerData())
 });
+
+
 
 export default connect(mapStateToProps, mapDispatchToProps)(Signup);
