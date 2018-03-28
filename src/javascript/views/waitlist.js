@@ -208,11 +208,10 @@ class WaitList extends React.Component {
           </ul>
         </div>
 
-        <Web3Provider>
+
           <List>
             {list}
           </List>
-        </Web3Provider>
 
       </div>
     )
