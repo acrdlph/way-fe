@@ -63,7 +63,8 @@ class WaitList extends React.Component {
     }
 
     this.state = {
-      showIncompleteProfileHint: false
+      showIncompleteProfileHint: false,
+      contractAddress: '0x0ab528157f9a3859ddc54dfac618041b05fdaef0'
     }
     this.openChat = this.openChat.bind(this)
 
@@ -75,36 +76,28 @@ class WaitList extends React.Component {
       distance: 5000,
       reputation: 100,
       contract: null,
-      contractAddress: '0x7d7a7c78564a37bdbc22de6dc3de2d8c8c51124e'
     })
   }
 
-  async componentDidMount () {
+  componentDidMount () {
     // initialize so that messages can be delivered, but not acted upon
     // TODO handle the incoming messages and update chat bubbles
 
     initWebSocketStore(sessionStorage.getItem('userId'),
       (event) => notifyNewMessage(transformMessages([event])[0]))
 
-    await this.getContract()
-    const contract = this.state.contract
-    const event = contract.allEvents()
-    event.get((erros, logs) => {
-      console.log('LOGS', logs)
-      // this.setState({logs, })
-    })
-  }
+    const contract = initContract(Blockgeeks, this.state.contractAddress)
 
-  async getContract () {
-    const contract = await initContract(Blockgeeks, this.state.contractAddress)
     this.setState({contract: contract})
+
+    console.log(contract, this.state.contractAddress)
+
   }
 
-  async getPeople () {
-    // const contract = this.state.contract;
-    // contract.getUsers((error, result) => {
-    //   console.log(result, error)
-    // });
+  getContract () {
+    // console.log("Address", this.state.contractAddress)
+    // const contract = initContract(Blockgeeks, this.state.contractAddress)
+    // this.setState({contract: contract})
   }
 
   openChat (chatPartnerId) {
@@ -145,6 +138,7 @@ class WaitList extends React.Component {
         : () => this.setState({showIncompleteProfileHint: true})
 
       const onEndorse = this.state.contract ? this.state.contract.endorse : null
+
       list.push(
         <WaitListItem
           key={key}

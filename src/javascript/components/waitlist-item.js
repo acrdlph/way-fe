@@ -81,9 +81,12 @@ export default class WaitListItem extends React.Component {
             <li><button onClick={onClickHelper} className='waitlist-item-button blue'> Meet </button></li>
             <li><button className='waitlist-item-button green' onClick={() => {
               try {
-                onEndorse("0xe1ea7d39425f99897da0d25224ea58bdfb87981b", {
+                console.log("To", address)
+                console.log("From", window.web3.eth.accounts ? window.web3.eth.accounts[0] : null,)
+
+                onEndorse(address, {
                   from: window.web3.eth.accounts ? window.web3.eth.accounts[0] : null,
-                  gas: 0,
+                  gas: 300000,
                   value: web3.toWei(0, 'ether')
                 }, (error, result) => {
                   console.log(result)
@@ -97,7 +100,7 @@ export default class WaitListItem extends React.Component {
         </div>
 
         <p className='waitlist-item-data-interests'>
-          {interests} Test Text
+          {interests}
         </p>
 
       </div>

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import Web3 from 'web3'
 
 let web3 = window.web3;
-export const initContract = async(abi, address) => {
+export const initContract = (abi, address) => {
     if (web3) {
         return web3.eth.contract(abi).at(address);
     }
