@@ -23,8 +23,8 @@ import { PARTNER_LOCATIONS } from '../util/constants';
 import './waitlist.less';
 import { promisify } from "bluebird";
 import { Web3Provider } from 'react-web3';
-import Web3Component, { initContract } from '../components/Web3Component'
-import Blockgeeks from '../../abi/Blockgeeks.json'
+import Web3Component, { initContract } from '../components/Web3Component';
+import Blockgeeks from '../../abi/Blockgeeks.json';
 import { debug } from 'util';
 
 class WaitList extends React.Component {
