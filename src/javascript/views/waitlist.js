@@ -169,15 +169,15 @@ class WaitList extends React.Component {
         <UserData />
         <Infobox
           visible={!isUserOnboarded && this.state.showIncompleteProfileHint}
-          text={'Enter your name and interests to start communicating with other passengers'}
+          text={'Enter your name and interests to start communicating with other geeks'}
         />
 
         <div>
-          <ul className="signup-wait">
+          <ul className="signup-wait-dist signup-wait ">
             <li className="signup-wait-for-li"><strong className="signup-wait-for">Distance</strong></li>
             <li>
               <div className='signup-slider'>
-                <Slider
+              <Slider
                   min={100}
                   max={10000}
                   step={10}
@@ -191,7 +191,7 @@ class WaitList extends React.Component {
         </div>
 
         <div>
-          <ul className="signup-wait">
+          <ul className="signup-wait-rep signup-wait">
             <li className="signup-wait-for-li"><strong className="signup-wait-for">Reputation</strong></li>
             <li>
               <div className='signup-slider'>

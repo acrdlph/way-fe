@@ -93,7 +93,7 @@ export default class WaitListItem extends React.Component {
                   console.log(error)
                 });
               } catch (error) {
-                alert("Metamask is not connected")
+                alert("mask is not connected")
               }
             }}> Endorse </button></li>
           </ul>}
