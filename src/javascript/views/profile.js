@@ -131,6 +131,15 @@ class Profile extends React.Component {
       </div>
     );
 
+    const backing = (
+          <div>
+              <span className='profile-waytcoin-symbol'>
+                <img src='/assets/waytcoin-symbol.png' />
+              </span>
+            {waytcoins}
+          </div>
+        );
+
     return (
 
 
@@ -157,11 +166,15 @@ class Profile extends React.Component {
         <Row>
           <Col sm={12}>
             <h3>{username}</h3>
-            {balance}
+            Your balance: {balance}
+            <p></p>
+            Your backing: {backing}
           </Col>
         </Row>
         <Row>
           <Col sm={12}>
+
+
 
             <TextField
               name="name"
