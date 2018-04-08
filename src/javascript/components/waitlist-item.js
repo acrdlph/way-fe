@@ -4,9 +4,11 @@ import { Row, Col } from 'react-bootstrap';
 import CommunicationChatBubble from 'material-ui/svg-icons/communication/chat-bubble';
 import Avatar from 'material-ui/Avatar';
 import './waitlist-item.less';
+import notifyNewMessage from '../stores/chatStore.js'
 
 export default class WaitListItem extends React.Component {
   render() {
+
     let {
       interests,
       name,
@@ -54,10 +56,14 @@ export default class WaitListItem extends React.Component {
       alreadyContactedClassTwo = 'You have a new message'
 
     }
+
+
     const chatBubblePicture = <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg>
     const hasUnreadMessagesClass = nonDeliveredChatCount > 0 ? '' : 'waitlist-item-invisible';
+    let chatBubble = <img id="waitlist-item-chatBubbleLink" src='assets/chat_bubble_black_192x192.png' />
 
     return (
+
       <div className={'waitlist-item-parent ' + alreadyContactedClass}>
         <div className={'waitlist-item '} >
 
@@ -74,17 +80,21 @@ export default class WaitListItem extends React.Component {
             </p>
             <p className="waitlist-item-data-address">{address}</p>
             <p className="waitlist-item-data-backing">
-              Backing <strong>20 GEEK</strong>
+              Backing <strong>20 GEEK </strong>
             </p>
           </div>
 
+
+
           <div className="waitlist-item-notification">
-          <img
-          src='../../static/assets/chat_bubble_black_192x192.png'
-          />
+            <p> {alreadyContactedClassTwo} </p>
+            <div>
+              {chatBubble}
+            </div>
           </div>
 
           {isActionVisible && <ul className='waitlist-item-actions'>
+
             <li><button onClick={onClickHelper} className='waitlist-item-button blue'> Meet </button> </li>
             <li><button className='waitlist-item-button green' onClick={() => {
               try {
