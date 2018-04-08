@@ -13,7 +13,7 @@ import { showModal } from '../stores/profileImageStore';
 import { loadUserData, updateUserData, editUserData, isOnboarded } from '../stores/userStore';
 import './profile.less';
 import { Web3Provider } from 'react-web3';
-import Web3Component, { initContract } from '../components/Web3Component'
+import Web3Component, { initContract, selectedAccount } from '../components/Web3Component'
 import { isLoggedIn } from '../stores/accountStore';
 
 
@@ -31,7 +31,6 @@ class Profile extends React.Component {
     }
 
     const userId = sessionStorage.getItem('userId');
-
     const usernameFromPath = _.get(this.props.match, 'params.username');
     if (!usernameFromPath && (props.username || userId)) {
       this.props.history.push(`/profile/${props.username || userId}`);
@@ -114,7 +113,7 @@ class Profile extends React.Component {
       <div className='profile-button profile-button-logout'>
         <RaisedButton
           onClick={this.onLogout}
-          backgroundColor='#ffd801'
+          backgroundColor='#00cf70'
           label='logout'
         />
       </div>
@@ -190,38 +189,34 @@ class Profile extends React.Component {
               onChange={this.onChanged}
               fullWidth={true}
             />
-            <TextField
-              Address="address"
-              hintText="ETH Address"
-              fullWidth={true}
-            />
-            <TextField
-              Balance="balance"
-              hintText="GEEK Balance"
-              fullWidth={true}
-            />
-            <TextField
-              Balance="backing"
-              hintText="GEEK Backing"
-              fullWidth={true}
-            />
+
+
           </Col>
         </Row>
+
+        <Row>
+          <Col sm={12}>
+           <h5> Your ETH-Adress: </h5>
+           <p> 0x990745ebe511efce5d667bd69458c89cb7418510 </p>
+          </Col>
+        </Row>
+
         <Row>
 
 
           <div className='profile-button profile-button-save'>
             <RaisedButton
               onClick={this.onSave}
-              backgroundColor='#ffd801'
+              backgroundColor='#00cf70'
               label={this.props.isRegisteredUser ? 'Save' : 'Register'}
             />
           </div>
 
 
-          {logoutButton}
-
         </Row>
+          <div>
+            {logoutButton}
+          </div>
       </Grid>
     );
   }
@@ -241,5 +236,6 @@ const mapDispatchToProps = dispatch => ({
   updateUserData: (userId, data) => dispatch(updateUserData(userId, data)),
   openModal: () => dispatch(showModal(true))
 });
+
 
 export default connect(mapStateToProps, mapDispatchToProps)(Profile);
