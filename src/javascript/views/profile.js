@@ -194,16 +194,6 @@ class Profile extends React.Component {
           </Col>
         </Row>
 
-        <Row>
-          <Col sm={12}>
-           <h5> Your ETH-Adress: </h5>
-           <p> 0x990745ebe511efce5d667bd69458c89cb7418510 </p>
-          </Col>
-        </Row>
-
-        <Row>
-
-
           <div className='profile-button profile-button-save'>
             <RaisedButton
               onClick={this.onSave}
@@ -211,6 +201,19 @@ class Profile extends React.Component {
               label={this.props.isRegisteredUser ? 'Save' : 'Register'}
             />
           </div>
+
+        <Row>
+          <Col sm={12}>
+            <div className="profile-eth-adress">
+              <h5> Your ETH-Adress: </h5>
+              <p> 0x990745ebe511efce5d667bd69458c89cb7418510 </p>
+            </div>
+          </Col>
+        </Row>
+
+        <Row>
+
+
 
 
         </Row>

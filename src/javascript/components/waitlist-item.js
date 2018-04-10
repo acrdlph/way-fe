@@ -88,9 +88,6 @@ export default class WaitListItem extends React.Component {
 
           <div className="waitlist-item-notification">
             <p> {alreadyContactedClassTwo} </p>
-            <div>
-              {chatBubble}
-            </div>
           </div>
 
           {isActionVisible && <ul className='waitlist-item-actions'>
