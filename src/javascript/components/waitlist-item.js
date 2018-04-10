@@ -51,10 +51,11 @@ export default class WaitListItem extends React.Component {
     }
     let alreadyContactedClass = '';
     let alreadyContactedClassTwo = '';
+    let notificationDot = '';
     if (lastContact > 0) {
       alreadyContactedClass = 'waitlist-item-already-contacted';
-      alreadyContactedClassTwo = 'You have a new message'
-
+      alreadyContactedClassTwo = 'Unread Message'
+      notificationDot = <div className="waitlist-item-notification-dot"></div>;
     }
 
 
@@ -86,9 +87,6 @@ export default class WaitListItem extends React.Component {
 
 
 
-          <div className="waitlist-item-notification">
-            <p> {alreadyContactedClassTwo} </p>
-          </div>
 
           {isActionVisible && <ul className='waitlist-item-actions'>
 
@@ -109,9 +107,12 @@ export default class WaitListItem extends React.Component {
             }}> Endorse </button></li>
           </ul>}
         </div>
+          <div className="waitlist-item-notification">
+            {notificationDot} <div><p> {alreadyContactedClassTwo} </p></div>
+          </div>
 
         <p className='waitlist-item-data-interests'>
-          {interests} Test Text
+          {interests}
         </p>
 
       </div>
