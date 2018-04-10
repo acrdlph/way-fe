@@ -17,7 +17,7 @@ const Web3Component = (props, context) => {
 
     return (
         <div>
-            Hello {selectedAccount}
+           {selectedAccount}
         </div>
     );
 }

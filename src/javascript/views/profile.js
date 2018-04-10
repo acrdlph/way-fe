@@ -113,7 +113,8 @@ class Profile extends React.Component {
       <div className='profile-button profile-button-logout'>
         <RaisedButton
           onClick={this.onLogout}
-          backgroundColor='#00cf70'
+          buttonStyle={{ border:' 1px solid darkred' }}
+          backgroundColor='white'
           label='logout'
         />
       </div>
@@ -139,6 +140,7 @@ class Profile extends React.Component {
           </div>
         );
 
+
     return (
 
 
@@ -153,28 +155,25 @@ class Profile extends React.Component {
             {imageSelectionModal}
           </Col>
         </Row>
-
-        <div>
-
-          <Web3Provider>
-            <Web3Component />
-          </Web3Provider>
-
-        </div>
-
+        <p> </p>
         <Row>
           <Col sm={12}>
-            <h3>{username}</h3>
+            <h3><strong>{username}</strong></h3>
+
+            <div className="profile-eth-adress">
+              <h6> Your ETH-Adress: </h6>
+              <Web3Provider>
+                <Web3Component />
+              </Web3Provider>
+            </div>
             Your balance: {balance}
             <p></p>
             Your backing: {backing}
           </Col>
         </Row>
+        <p></p>
         <Row>
           <Col sm={12}>
-
-
-
             <TextField
               name="name"
               defaultValue={name}
@@ -201,25 +200,14 @@ class Profile extends React.Component {
               label={this.props.isRegisteredUser ? 'Save' : 'Register'}
             />
           </div>
-
+        <p></p>
         <Row>
           <Col sm={12}>
-            <div className="profile-eth-adress">
-              <h5> Your ETH-Adress: </h5>
-              <p> 0x990745ebe511efce5d667bd69458c89cb7418510 </p>
+            <div>
+              {logoutButton}
             </div>
           </Col>
         </Row>
-
-        <Row>
-
-
-
-
-        </Row>
-          <div>
-            {logoutButton}
-          </div>
       </Grid>
     );
   }
