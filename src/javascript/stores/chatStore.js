@@ -23,7 +23,7 @@ export const notifyNewMessage = (message) => {
   }
 };
 
-export const transformMessages = (messages) => {
+export const TransformMessages = (messages) => {
   const transformedMessages = [];
   _.each(messages, entry => {
     transformedMessages.push({
@@ -35,7 +35,12 @@ export const transformMessages = (messages) => {
       delivered: entry.delivered,
       createdAt: entry.created_at
     });
+     if (entry.delivered === false) {
+      const notifier = "You have a new messages";
+      console.log(notifier);
+    }
   });
+
   return transformedMessages;
 };
 
@@ -61,7 +66,7 @@ export const loadMessages = (userId, chatPartnerId) => (dispatch) => {
   .then((res) => res.json())
   .then((data) => {
     console.log("receive chat messages: " + JSON.stringify(data));
-    const messages = transformMessages(data);
+    const messages = TransformMessages(data);
     dispatch({
       type: types.LOADED,
       data: messages
@@ -70,7 +75,7 @@ export const loadMessages = (userId, chatPartnerId) => (dispatch) => {
 };
 
 export const addMessagesToChat = (messages, chatPartnerId) => {
-  const transformedMessages = transformMessages(messages);
+  const transformedMessages = TransformMessages(messages);
   _.each(transformedMessages, (message) => {
     notifyNewMessage(message);
   });

@@ -4,7 +4,8 @@ import { Row, Col } from 'react-bootstrap';
 import CommunicationChatBubble from 'material-ui/svg-icons/communication/chat-bubble';
 import Avatar from 'material-ui/Avatar';
 import './waitlist-item.less';
-import notifyNewMessage from '../stores/chatStore.js'
+import {notifyNewMessage} from '../stores/chatStore.js'
+import {TransformMessages} from '../stores/chatStore.js'
 
 export default class WaitListItem extends React.Component {
   render() {
@@ -64,58 +65,67 @@ export default class WaitListItem extends React.Component {
     let chatBubble = <img id="waitlist-item-chatBubbleLink" src='assets/chat_bubble_black_192x192.png' />
 
     return (
+      <div>
+        <div className={'waitlist-item-parent ' + alreadyContactedClass}>
+          <div className={'waitlist-item '} >
 
-      <div className={'waitlist-item-parent ' + alreadyContactedClass}>
-        <div className={'waitlist-item '} >
+            <div className='waitlist-item-avatar'>
+              <Avatar
+                size={50}
+                src={photo}
+              />
+            </div>
 
-          <div className='waitlist-item-avatar'>
-            <Avatar
-              size={50}
-              src={photo}
-            />
+            <div className='waitlist-item-data'>
+              <p className='waitlist-item-data-name'>
+                {name}
+              </p>
+              <p className="waitlist-item-data-address">{address}</p>
+              <p className="waitlist-item-data-backing">
+                Backing <strong>20 GEEK </strong>
+              </p>
+            </div>
+
+
+
+
+            {isActionVisible && <ul className='waitlist-item-actions'>
+
+              <li><button onClick={onClickHelper} className='waitlist-item-button blue'> Meet </button> </li>
+              <li><button className='waitlist-item-button green' onClick={() => {
+                try {
+                  onEndorse("0xe1ea7d39425f99897da0d25224ea58bdfb87981b", {
+                    from: window.web3.eth.accounts ? window.web3.eth.accounts[0] : null,
+                    gas: 0,
+                    value: web3.toWei(0, 'ether')
+                  }, (error, result) => {
+                    console.log(result)
+                    console.log(error)
+                  });
+                } catch (error) {
+                  console.error(error);
+                }
+              }}> Endorse </button></li>
+            </ul>}
           </div>
+            <div className="waitlist-item-notification">
+              <div>
+                <p>
+                  <TransformMessages />
+                </p>
+              </div>
+            </div>
 
-          <div className='waitlist-item-data'>
-            <p className='waitlist-item-data-name'>
-              {name}
-            </p>
-            <p className="waitlist-item-data-address">{address}</p>
-            <p className="waitlist-item-data-backing">
-              Backing <strong>20 GEEK </strong>
-            </p>
-          </div>
+          <p className='waitlist-item-data-interests'>
+            {interests}
+          </p>
 
-
-
-
-          {isActionVisible && <ul className='waitlist-item-actions'>
-
-            <li><button onClick={onClickHelper} className='waitlist-item-button blue'> Meet </button> </li>
-            <li><button className='waitlist-item-button green' onClick={() => {
-              try {
-                onEndorse("0xe1ea7d39425f99897da0d25224ea58bdfb87981b", {
-                  from: window.web3.eth.accounts ? window.web3.eth.accounts[0] : null,
-                  gas: 0,
-                  value: web3.toWei(0, 'ether')
-                }, (error, result) => {
-                  console.log(result)
-                  console.log(error)
-                });
-              } catch (error) {
-                console.error(error);
-              }
-            }}> Endorse </button></li>
-          </ul>}
         </div>
-          <div className="waitlist-item-notification">
-            {notificationDot} <div><p> {alreadyContactedClassTwo} </p></div>
-          </div>
 
-        <p className='waitlist-item-data-interests'>
-          {interests}
-        </p>
 
-      </div>
+
+
+     </div>
     );
   }
 }
