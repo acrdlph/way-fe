@@ -1,6 +1,8 @@
+import React from 'react'
 import _ from 'lodash';
 import {getAuthHeaders} from '../util/headers';
 import {notify, types as notificationTypes} from '../util/notification';
+import Push from 'push.js'
 
 const types = {
   LOADING: 'CHAT_LOADING',
@@ -9,17 +11,29 @@ const types = {
 };
 
 const getUsername = (userId) => {
+
+
+
+
   // TODO: This is highly inefficient and has to be refactored!
-  const usernames = JSON.parse(sessionStorage.getItem('usernames'));
-  return usernames[userId];
+  // const usernames = JSON.parse(sessionStorage.getItem('username'));
+  // console.log(usernames)
+  // return username[userId];
 };
 
+// pop-up notification function for chat service
+
 export const notifyNewMessage = (message) => {
+
+  TransformMessages(message);
   const currentPath = window.location.hash;
   const userId = sessionStorage.getItem('userId');
-  if(message.sender != userId && !currentPath.includes(message.sender)) {
-    const senderName = getUsername(message.sender).name;
-    notify(`New message from ${senderName}`, notificationTypes.NEW_MESSAGE_RECEIVED, message.message);
+  const senderId = message.sender;
+  const senderName = "Test"
+  if (message.receiver != message.sender ) {
+    Push.create(`You have a new message from ${senderName}`);
+    // notify(`New message from ${senderName}`, notificationTypes.NEW_MESSAGE_RECEIVED, message.message);
+    // alert(`Message from ${senderName}`);
   }
 };
 
@@ -35,10 +49,14 @@ export const TransformMessages = (messages) => {
       delivered: entry.delivered,
       createdAt: entry.created_at
     });
+
      if (entry.delivered === false) {
-      const notifier = "You have a new messages";
-      console.log(notifier);
-    }
+      const notifier = "You have a new message";
+      notifier;
+     return(
+        <p>{notifier}</p>
+      );
+    };
   });
 
   return transformedMessages;
