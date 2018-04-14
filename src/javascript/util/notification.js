@@ -5,7 +5,6 @@ export const types = {
   NEW_MESSAGE_RECEIVED: 'NEW_MESSAGE_RECEIVED'
 };
 
-// Push.Permission.request(onGranted, onDenied);
 
 
 const getType = (typeName) => {
