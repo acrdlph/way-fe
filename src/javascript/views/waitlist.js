@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import React from 'react';
 import { connect } from 'react-redux';
 import Slider from 'material-ui/Slider';
@@ -27,35 +26,6 @@ import { Web3Provider } from 'react-web3';
 import Web3Component, { initContract } from '../components/Web3Component';
 import Blockgeeks from '../../abi/Blockgeeks.json';
 import { debug } from 'util';
-=======
-import React from 'react'
-import { connect } from 'react-redux'
-import Slider from 'material-ui/Slider'
-import DropDownMenu from 'material-ui/DropDownMenu'
-import MenuItem from 'material-ui/MenuItem'
-import { List } from 'material-ui/List'
-import Avatar from 'material-ui/Avatar'
-import _ from 'lodash'
-import fetch from 'isomorphic-fetch'
-import { trackPageView } from '../util/google-analytics'
-import UserData from '../components/user-data'
-import WaitListItem from '../components/waitlist-item'
-import Infobox from '../components/infobox'
-import EmptyLocationMessage from '../components/empty-location-message'
-import { loadWaitlist } from '../stores/waitlistStore'
-import { transformMessages, notifyNewMessage } from '../stores/chatStore'
-import { loadUserData, isOnboarded } from '../stores/userStore'
-import { initWebSocketStore } from '../stores/webSocketStore'
-import { loadPartnerData } from '../stores/partnerStore'
-import { requestPermissionForNotifications } from '../util/notification'
-import { PARTNER_LOCATIONS } from '../util/constants'
-import './waitlist.less'
-import { promisify } from 'bluebird'
-import { Web3Provider } from 'react-web3'
-import Web3Component, { initContract, getWeb3 } from '../components/Web3Component'
-import Blockgeeks from '../../abi/Blockgeeks.json'
-import { debug } from 'util'
->>>>>>> 6b1431814007edf8f9fc74f9a60e553aa526b451
 
 class WaitList extends React.Component {
 
