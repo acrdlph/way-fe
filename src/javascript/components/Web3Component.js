@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Web3 from 'web3'
+import {username} from '../stores/accountStore';
 
 let web3 = window.web3;
 export const initContract = (abi, address) => {
@@ -17,7 +18,7 @@ const Web3Component = (props, context) => {
     const web3Context = context.web3;
     const { selectedAccount } = web3Context;
 
-    return ( <div> Hello { selectedAccount } </div>);
+    return ( <div> Hello { username } </div>);
 }
 
 
