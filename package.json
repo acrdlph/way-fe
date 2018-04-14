@@ -1,5 +1,5 @@
 {
-  "nam-": "waitlist-webapp",
+  "name": "waitlist-webapp",
   "scripts": {
     "build": "echo Deprecated: Use 'gulp build' instead!",
     "server": "webpack-dev-server --config dev/webpack.config.local.js",
