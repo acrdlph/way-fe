@@ -89,8 +89,10 @@ class Profile extends React.Component {
   }
 
   onSave(e) {
+    // this for test Save button
+    this.props.history.push(`/waitlist`);
     if (!this.props.isRegisteredUser) {
-      this.props.history.push(`/register`);
+      this.props.history.push(`/waitlist`);
     }
 
     const userId = sessionStorage.getItem('userId');
