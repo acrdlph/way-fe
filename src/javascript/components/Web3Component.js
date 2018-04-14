@@ -1,25 +1,24 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Web3 from 'web3'
+import {username} from '../stores/accountStore';
 
 let web3 = window.web3;
-export const initContract = async (abi, address) => {
+export const initContract = (abi, address) => {
     if (web3) {
         return web3.eth.contract(abi).at(address);
     }
-        
 }
 
+export const getWeb3 = () => {
+    return web3;
+}
 
 const Web3Component = (props, context) => {
     const web3Context = context.web3;
     const { selectedAccount } = web3Context;
 
-    return (
-        <div>
-            Hello {selectedAccount}
-        </div>
-    );
+    return ( <div> Hello { username } </div>);
 }
 
 

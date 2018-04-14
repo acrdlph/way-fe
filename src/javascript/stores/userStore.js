@@ -14,7 +14,6 @@ export const isOnboarded = (user) => {
   const name = _.get(user, 'data.name', '');
   const interests = _.get(user, 'data.interests', '');
   const isOnboarded = name.trim() !== '' && interests.trim() !== '';
-  console.log("isOnboarded: " + isOnboarded);
   return isOnboarded;
 };
 

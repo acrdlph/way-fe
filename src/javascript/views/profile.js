@@ -179,7 +179,7 @@ class Profile extends React.Component {
             />
             <TextField
               Address="address"
-              hintText="ETH Address"
+              hintText="ETH address"
               fullWidth={true}
             />
             <TextField
