@@ -3,6 +3,7 @@ import {connect} from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
+import CircularProgress from 'material-ui/CircularProgress';
 import {trackPageView, trackEvent, events} from '../util/google-analytics';
 import TermsAndPolicy from '../components/terms-and-policy';
 import InfoBox from '../components/infobox';
@@ -56,12 +57,16 @@ class Login extends React.Component {
         </div>
 
         <TextField
+          id='username'
+          className='username'
           floatingLabelText="Username or Email"
           onChange={this.changeLoginName}
           fullWidth={true}
         />
 
         <TextField
+          id='password'
+          className='password'
           floatingLabelText="Password"
           type="Password"
           onChange={this.changePassword}
@@ -70,6 +75,7 @@ class Login extends React.Component {
 
         <RaisedButton
           label="OK"
+          className='login-button'
           backgroundColor='#ffd801'
           onClick={this.login}
           fullWidth={true}
@@ -80,11 +86,11 @@ class Login extends React.Component {
         <div className='login-register'>
           You don't have an account yet? <NavLink to='/register'>Register here!</NavLink>
         </div>
-        {/*
-        <div className='login-reset-password'>
+        
+       {/* <div className='login-reset-password'>
           Forgot password? <NavLink to='/reset-password'>Reset it!</NavLink>
-        </div>
-        */}
+    </div>*/}
+        
         <TermsAndPolicy/>
       </div>
     );

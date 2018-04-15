@@ -6,7 +6,7 @@ const types = {
 };
 
 const awaitFetch = async function awaitFetch(dispatch) {
-  const endpoint = 'api/partners/';
+  const endpoint = 'api/partners';
   try {
     const result = await fetch(endpoint);
     const resJson = await result.json();

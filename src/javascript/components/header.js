@@ -19,10 +19,12 @@ const createBackButton = (to) => {
 
 class Header extends React.Component {
   render() {
-    const {username, photo, locationName, chatPartner} = this.props;
+    const {username, photo, locationName, chatPartner, name} = this.props;
+    console.log("User", this.props)
     const {pathname} = this.props.location;
     const isHeaderVisible = _.filter(PAGES_WITH_HEADER, page => pathname.includes(page)).length > 0;
     const isInChat = pathname.includes('chat');
+    
     if(!isHeaderVisible) {
       return null;
     }
@@ -44,11 +46,11 @@ class Header extends React.Component {
     };
 
 
-    const profileIcon = isLoggedIn() && username ? (
+    const profileIcon =  (
       <div className='header-profileicon'>
         <NavLink to='/profile'>
           <span className='header-profileicon-username'>
-            {username}
+            {username || name}
           </span>
           <MaterialUiAvatar
             size={35}
@@ -56,7 +58,7 @@ class Header extends React.Component {
           />
         </NavLink>
       </div>
-    ) : null;
+    ) ;
 
     const location = locationName ? (
       <div className='header-location'>
@@ -74,12 +76,12 @@ class Header extends React.Component {
         </div>
         <div className='header-logo'>
           <NavLink to='/'>
-            <img
-              src='assets/waitlistlogo.svg'
-            />
-          </NavLink>
+          <img
+              src='assets/bglogo.png'
+            />          </NavLink>
         </div>
-        {location}
+        
+        
         {profileIcon}
       </Card>
     );
@@ -88,6 +90,7 @@ class Header extends React.Component {
 
 const mapStateToProps = (state) => ({
   username: _.get(state.user, 'data.username'),
+  name: _.get(state.user, 'data.name', ''),
   photo: _.get(state.user, 'data.photo', 'assets/avatar-placeholder.png'),
   locationName: extractLocationName(state),
   chatPartner: _.get(state.chatPartner, 'data'),

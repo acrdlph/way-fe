@@ -14,7 +14,7 @@ export default class Footer extends React.Component {
       <div className="footer">
         <div className='footer-content'>
           <span>
-            Copyright © WaitList 2018&emsp;
+            Copyright © Way 2018&emsp;
           </span>
           <span>
             <NavLink to='/legalnotice'>Legal Notice</NavLink>&emsp;

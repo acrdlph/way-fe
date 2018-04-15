@@ -38,7 +38,7 @@ export default class ChatInput extends React.Component {
             No one here yet.
           </div>
           <div className='empty-location-message-body'>
-            Go up to a stranger who looks like someone you would want to meet and tell them about WaitList.
+            Go up to a stranger who looks like someone you would want to meet and tell them about Way.
           </div>
         </div>
       );

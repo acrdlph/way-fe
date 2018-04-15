@@ -1,7 +1,7 @@
 import _ from 'lodash';
-import {getAuthHeaders} from '../util/headers';
-import {handle401} from '../util/check-auth';
-import {notify, types as notificationTypes} from '../util/notification';
+import { getAuthHeaders } from '../util/headers';
+import { handle401 } from '../util/check-auth';
+import { notify, types as notificationTypes } from '../util/notification';
 
 const types = {
   LOADING: 'WAITLIST_LOADING',
@@ -22,7 +22,7 @@ export const loadWaitlist = (userId) => (dispatch) => {
   // updating individual waitlist items and reordering seems the best solution
   fetcher(dispatch, userId);
   if (!refresher) {
-    refresher = setInterval(() => {backgroundFetcher(dispatch, userId);}, 5000);
+    refresher = setInterval(() => { backgroundFetcher(dispatch, userId); }, 5000);
   }
 };
 
@@ -33,58 +33,59 @@ const initialState = {
 };
 
 const fetcher = (dispatch, userId) => {
-  dispatch({type: types.LOADING});
+  dispatch({ type: types.LOADING });
   const endpoint = 'api/users/' + userId;
   fetch(endpoint, {
     headers: getAuthHeaders()
   })
-  .then((res) => handle401(res, dispatch))
-  .then((res) => res.json())
-  .then((data) => {
-    const onTheListSorted = mapWaitListData(data);
-    alreadyLoadedData = onTheListSorted;
-    dispatch({
-      type: types.LOADED,
-      data: onTheListSorted
+    .then((res) => handle401(res, dispatch))
+    .then((res) => res.json())
+    .then((data) => {
+      const onTheListSorted = mapWaitListData(data);
+      alreadyLoadedData = onTheListSorted;
+      dispatch({
+        type: types.LOADED,
+        data: onTheListSorted
+      });
     });
-  });
 };
 
 const createHash = (user) => {
-  const {id, nonDeliveredChatCount} = user;
+  const { id, nonDeliveredChatCount } = user;
   const hash = `${id}-${nonDeliveredChatCount}`;
   return hash;
 };
 
 const backgroundFetcher = (dispatch, userId) => {
-  const endpoint = 'api/users/' + userId;
+  const distance = sessionStorage.getItem('distance') || 5000
+  const endpoint = 'api/users/' + userId + "?distance=" + distance;
   fetch(endpoint, {
     headers: getAuthHeaders()
   })
-  .then((res) => handle401(res, dispatch))
-  .then((res) => res.json())
-  .then((data) => {
-    const onTheListSorted = mapWaitListData(data);
-    const existingUserHashes = alreadyLoadedData.map((user) => user.hash);
-    const currentUserHashes = onTheListSorted.map((user) => user.hash);
-    const existingUserIds = alreadyLoadedData.map((user) => user.id);
-    const currentUserIds = onTheListSorted.map((user) => user.id);
+    .then((res) => handle401(res, dispatch))
+    .then((res) => res.json())
+    .then((data) => {
+      const onTheListSorted = mapWaitListData(data);
+      const existingUserHashes = alreadyLoadedData.map((user) => user.hash);
+      const currentUserHashes = onTheListSorted.map((user) => user.hash);
+      const existingUserIds = alreadyLoadedData.map((user) => user.id);
+      const currentUserIds = onTheListSorted.map((user) => user.id);
 
-    if (isDifferent(existingUserHashes, currentUserHashes)) {
-      dispatch({type: types.LOADING});
-      alreadyLoadedData = onTheListSorted;
-      const newUserIds = extractNewUsers(existingUserIds, currentUserIds);
-      _.each(newUserIds, (id) => {
-        const newUser = _.find(onTheListSorted, (user) => user.id === id);
-        onUserJoined(newUser);
+      if (isDifferent(existingUserHashes, currentUserHashes)) {
+        dispatch({ type: types.LOADING });
+        alreadyLoadedData = onTheListSorted;
+        const newUserIds = extractNewUsers(existingUserIds, currentUserIds);
+        _.each(newUserIds, (id) => {
+          const newUser = _.find(onTheListSorted, (user) => user.id === id);
+          onUserJoined(newUser);
+        });
+      }
+
+      dispatch({
+        type: types.LOADED,
+        data: onTheListSorted
       });
-    }
-
-    dispatch({
-      type: types.LOADED,
-      data: onTheListSorted
     });
-  });
 };
 
 const isDifferent = (existingUserHashes, currentUserHashes) => {
@@ -95,7 +96,7 @@ const isDifferent = (existingUserHashes, currentUserHashes) => {
 const extractNewUsers = (existingUserIds, currentUserIds) => {
   const newUsers = [];
   _.each(currentUserIds, id => {
-    if(!_.includes(existingUserIds, id)) {
+    if (!_.includes(existingUserIds, id)) {
       newUsers.push(id);
     }
   });
@@ -117,6 +118,9 @@ const mapWaitListData = (data) => {
       interests: entry.interests || '',
       photo: entry.photo,
       timeLeft: entry.time_left,
+      address: entry.address,
+      balance: entry.address,
+      endorsement: entry.endorsement,
       hasChat: entry.count > 0,
       nonDeliveredChatCount: entry.non_delivered_count,
       lastContact: entry.last_contact ? new Date(entry.last_contact).getTime() : 0
@@ -128,7 +132,7 @@ const mapWaitListData = (data) => {
     ...user,
     hash: createHash(user)
   }));
-  return _.reverse(_.sortBy(_.reverse(_.sortBy(onboardedOnlyWithHash, 'timeLeft')), 'lastContact'));
+  return onTheList;
 };
 
 const reducer = (state = initialState, action) => {
@@ -139,12 +143,12 @@ const reducer = (state = initialState, action) => {
         loaded: false,
         data: []
       };
-      case types.LOADED:
-        return {
-          loading: false,
-          loaded: true,
-          data: action.data
-        };
+    case types.LOADED:
+      return {
+        loading: false,
+        loaded: true,
+        data: action.data
+      };
     default:
       return state;
   };
