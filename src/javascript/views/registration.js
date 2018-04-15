@@ -35,7 +35,7 @@ const validatePassword = (password) => {
   return false;
 };
 
-export class Onboarding extends React.Component {
+class Onboarding extends React.Component {
 
   constructor(props) {
     super(props);
@@ -117,7 +117,6 @@ export class Onboarding extends React.Component {
       }
     }
   }
-
 
   render() {
     const { errorText, username } = this.state;

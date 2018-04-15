@@ -16,16 +16,10 @@ export default class Footer extends React.Component {
           <span>
             Copyright © Way 2018&emsp;
           </span>
-          <div>
-            <span>
-              <div>
-                <NavLink to='/legalnotice'>Legal Notice</NavLink>&emsp;
-              </div>
-              <div>
-                <NavLink to='/feedback'>Feedback</NavLink>
-              </div>
-            </span>
-          </div>
+          <span>
+            <NavLink to='/legalnotice'>Legal Notice</NavLink>&emsp;
+            <NavLink to='/feedback'>Feedback</NavLink>
+          </span>
         </div>
       </div>
     );
