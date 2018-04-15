@@ -20,7 +20,9 @@ export default class WaitListItem extends React.Component {
       lastContact,
       onClick,
       onEndorse,
-      address
+      address,
+      endorsement,
+      balance
     } = this.props;
 
     const isActionVisible = this.props.isActionVisible === false ? false : true;
@@ -86,6 +88,14 @@ export default class WaitListItem extends React.Component {
               </p>
             </div>
 
+          <div className='waitlist-item-data'>
+            <p className='waitlist-item-data-name'>
+              {name}
+            </p>
+            <p className="waitlist-item-data-address">{address}</p>
+            <p className="waitlist-item-data-backing">
+              Backing <strong>{endorsement} GEEK</strong>
+            </p>
 
 
 
@@ -120,8 +130,31 @@ export default class WaitListItem extends React.Component {
             {interests}
           </p>
 
+          {isActionVisible && <ul className='waitlist-item-actions'>
+            <li><button onClick={onClickHelper} className='waitlist-item-button blue'> Meet </button></li>
+            <li><button className='waitlist-item-button green' onClick={() => {
+              try {
+                console.log("To", address)
+                console.log("From", window.web3.eth.accounts ? window.web3.eth.accounts[0] : null,)
+
+                onEndorse(address, {
+                  from: window.web3.eth.accounts ? window.web3.eth.accounts[0] : null,
+                  gas: 300000,
+                  value: web3.toWei(0, 'ether')
+                }, (error, result) => {
+                  console.log(result)
+                  console.log(error)
+                });
+              } catch (error) {
+                alert("Metamask is not connected")
+              }
+            }}> Endorse </button></li>
+          </ul>}
         </div>
 
+        <p className='waitlist-item-data-interests'>
+          {interests}
+        </p>
 
 
 

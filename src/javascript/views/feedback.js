@@ -56,7 +56,7 @@ class Feedback extends React.Component {
 
     return (
       <form onSubmit={this.handleSubmit}>
-        Feel free to share your ideas how to improve WaitList!
+        Feel free to share your ideas how to improve CryptoGeeks!
         <div>
           <TextField
             name='email'
