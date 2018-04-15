@@ -14,7 +14,7 @@ import WaitListItem from '../components/waitlist-item';
 import Infobox from '../components/infobox';
 import EmptyLocationMessage from '../components/empty-location-message';
 import { loadWaitlist } from '../stores/waitlistStore';
-import { TransformMessages, notifyNewMessage } from '../stores/chatStore';
+import { transformMessages, notifyNewMessage } from '../stores/chatStore';
 import { loadUserData, isOnboarded } from '../stores/userStore';
 import { initWebSocketStore } from '../stores/webSocketStore';
 import { loadPartnerData } from '../stores/partnerStore';

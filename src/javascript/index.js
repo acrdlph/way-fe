@@ -10,7 +10,6 @@ import rootReducer from './stores';
 import App from './app';
 import './index.less';
 
-
 initializeGoogleAnalytics();
 
 let composeExtensions = compose;
