@@ -274,7 +274,7 @@ class Signup extends React.Component {
         </div>
 
         <h1>
-          Find [blockchain] lovers nearby.
+          Find blockchain experts nearby.
         </h1>
         {this.renderLocationInput()}
 

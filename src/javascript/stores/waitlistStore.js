@@ -41,7 +41,7 @@ const fetcher = (dispatch, userId) => {
     .then((res) => handle401(res, dispatch))
     .then((res) => res.json())
     .then((data) => {
-      const onTheListSorted = mapWaitListData(data);
+      const onTheListSorted = mapWaitListData(data).sort((a, b ) => b.endorsement - a.endorsement);
       alreadyLoadedData = onTheListSorted;
       dispatch({
         type: types.LOADED,
@@ -65,7 +65,7 @@ const backgroundFetcher = (dispatch, userId) => {
     .then((res) => handle401(res, dispatch))
     .then((res) => res.json())
     .then((data) => {
-      const onTheListSorted = mapWaitListData(data);
+      const onTheListSorted = mapWaitListData(data).sort((a, b ) => b.endorsement - a.endorsement);
       const existingUserHashes = alreadyLoadedData.map((user) => user.hash);
       const currentUserHashes = onTheListSorted.map((user) => user.hash);
       const existingUserIds = alreadyLoadedData.map((user) => user.id);
