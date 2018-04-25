@@ -1,9 +1,9 @@
-import React from 'react'
+import React from 'react';
 import _ from 'lodash';
 import {getAuthHeaders} from '../util/headers';
 import {notify, types as notificationTypes} from '../util/notification';
 import Push from 'push.js';
-import Onboarding, {register} from '../views/registration.js'
+import Onboarding, {register} from '../views/registration.js';
 import UserData from '../components/user-data';
 const types = {
   LOADING: 'CHAT_LOADING',
@@ -25,7 +25,7 @@ export const notifyNewMessage = (message) => {
   const senderId = message.sender;
   const senderName = senderId.username;
   if (userId != message.sender ) {
-    Push.create(`${senderName}`, {
+    Push.create(`New Message`, {
     body: message.message,
     icon: 'https://static.wixstatic.com/media/b0fd8d_f9da5291c3034064ad161d6fe3d166d3~mv2_d_3000_3000_s_4_2.png/v1/crop/x_0,y_0,w_3000,h_1714/fill/w_92,h_44,al_c,usm_0.66_1.00_0.01/b0fd8d_f9da5291c3034064ad161d6fe3d166d3~mv2_d_3000_3000_s_4_2.png',
     timeout: 4000,

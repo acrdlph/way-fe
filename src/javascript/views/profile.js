@@ -13,8 +13,9 @@ import { showModal } from '../stores/profileImageStore';
 import { loadUserData, updateUserData, editUserData, isOnboarded } from '../stores/userStore';
 import './profile.less';
 import { Web3Provider } from 'react-web3';
-import Web3Component, { initContract, selectedAccount } from '../components/Web3Component'
+import Web3Component, { initContract, selectedAccount } from '../components/Web3Component';
 import { isLoggedIn } from '../stores/accountStore';
+import WaitListItem from '../components/waitlist-item';
 class Profile extends React.Component {
   constructor(props) {
     super(props);
