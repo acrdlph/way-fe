@@ -2,6 +2,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 import Slider from 'material-ui/Slider';
 import RaisedButton from 'material-ui/RaisedButton';
+import CircularProgress from 'material-ui/CircularProgress';
+import RefreshIndicator from 'material-ui/RefreshIndicator';
 import { NavLink } from 'react-router-dom';
 import fetch from 'isomorphic-fetch';
 import { Row, Col } from 'react-bootstrap';
@@ -13,25 +15,21 @@ import { PARTNER_LOCATIONS } from '../util/constants';
 import Infobox from '../components/infobox';
 import { loadPartnerData } from '../stores/partnerStore';
 import './signup.less';
-
 const locationInput = 'signup-location-input';
-
 let circle = false;
 let geolocationAvailable = false;
 let autocompleteApi = false;
-
 class Signup extends React.Component {
-
   constructor(props) {
     super(props);
-
+    this.state = { show : true };
+        
+    this.toggleDiv = this.toggleDiv.bind(this);
     const path = this.props.location.pathname;
     trackPageView(path);
-
     const locationIdFromPath = _.get(this.props.match, 'params.locationId');
     // TODO make this validation using partner api
     const isValidLocation = locationIdFromPath && _.includes(PARTNER_LOCATIONS, locationIdFromPath);
-
     this.changeWaitingTime = this.changeWaitingTime.bind(this);
     this.save = this.save.bind(this);
     this.update = this.update.bind(this);
@@ -45,7 +43,6 @@ class Signup extends React.Component {
     this.clearLocation = this.clearLocation.bind(this);
     this.setLocationInputValue = this.setLocationInputValue.bind(this);
     this.setPlace = this.setPlace.bind(this);
-
     const userId = sessionStorage.getItem('userId');
     const locationId = sessionStorage.getItem('locationId');
     if (userId && !props.user) {
@@ -61,17 +58,14 @@ class Signup extends React.Component {
       isSearchBoxVisible: false
     };
   }
-
   componentDidMount() {
     // this.buildLocation();
   }
-
   changeGeolocation() {
     const place = autocompleteApi.getPlace();
     this.setPlace(place.place_id, place.geometry.location.lng(), place.geometry.location.lat());
     trackEvent(events.USER_SELECTED_LOCATION, { label: place.place_id });
   }
-
   setPlace(placeId, lng, lat) {
     this.setState({
       airport: placeId,
@@ -81,7 +75,6 @@ class Signup extends React.Component {
       }
     });
   }
-
   changeWaitingTime(event, value) {
     const roundedValue = Math.floor(value);
     this.setState({
@@ -89,13 +82,11 @@ class Signup extends React.Component {
     });
     trackEvent(events.USER_CHANGED_WAITING_TIME, { value: roundedValue });
   }
-
   getGeolocation() {
     return new Promise(function (resolve, reject) {
       navigator.geolocation.getCurrentPosition(resolve, reject, {});
     });
   }
-
   async buildLocation() {
     const challengeLocation = sessionStorage.getItem('challengeLocation');
     if (challengeLocation) {
@@ -126,11 +117,9 @@ class Signup extends React.Component {
       } catch (error) {
         console.log(error);
         this.setState({ isSearchBoxVisible: true });
-
       }
     }
   }
-
   geocodeLocation(geolocation) {
     return new Promise(function (resolve, reject) {
       const request = {
@@ -153,7 +142,6 @@ class Signup extends React.Component {
       });
     });
   }
-
   async save(body) {
     console.log("Create user with: " + JSON.stringify(this.state));
     const endpoint = 'api/users';
@@ -172,7 +160,6 @@ class Signup extends React.Component {
     sessionStorage.setItem('token', resJson.token);
     return resJson;
   }
-
   async update(body) {
     console.log("Update user with: " + JSON.stringify(this.state));
     const userId = sessionStorage.getItem('userId');
@@ -187,10 +174,10 @@ class Signup extends React.Component {
     const resJson = await res.json();
     return resJson;
   }
-
   async saveAndContinue() {
+    this.toggleDiv();
     await this.buildLocation();
-
+    
     if (!this.state.airport) {
       this.setState({
         showLocationRequiredHint: true
@@ -214,25 +201,52 @@ class Signup extends React.Component {
     sessionStorage.setItem('locationId', locationId);
     this.props.history.push(`/waitlist/${locationId}`);
   }
-
   clearLocation() {
     this.setLocationInputValue('');
     if (autocompleteApi && circle) {
       autocompleteApi.setBounds(circle.getBounds());
     }
   }
-
   setLocationInputValue(value) {
     // this primitive trick helps to avoid problems with react and google maps
     // getting in the way of eachother
     document.getElementById(locationInput).value = value;
   }
-
   initAutoComplete() {
     autocompleteApi = new google.maps.places.Autocomplete(document.getElementById(locationInput));
     autocompleteApi.addListener('place_changed', this.changeGeolocation);
   }
-
+  CircularProgress() {
+    { this.toggleDiv; }
+    const style = {
+      container: {
+        position: 'relative',
+      },
+      refresh: {
+        display: 'inline-block',
+        position: 'relative',
+      },
+    };
+    return(
+      <div>
+        <div style={style.container}>
+    <RefreshIndicator
+      size={40}
+      left={10}
+      top={0}
+      loadingColor="#3ab966"
+      status="loading"
+      style={style.refresh}
+    />
+  </div>
+    </div>
+    );
+    
+  };
+  toggleDiv() {
+    const { show } = this.state;
+    this.setState( { show : !show } );
+}
   renderLocationInput() {
     // TODO move this to a component
     const locationList = [];
@@ -244,7 +258,6 @@ class Signup extends React.Component {
         }
       );
     });
-
     return (
       <div style={{ paddingBottom: '15px', display: this.state.isSearchBoxVisible ? 'block' : 'none' }}>
       
@@ -259,59 +272,54 @@ class Signup extends React.Component {
       </div>
     );
   }
-
   render() {
     const { waitingTime } = this.state;
     return (
       <div className='signup'>
-
-
+        
         <div className='onboarding-logo'>
           <img
             className='logo'
             src='assets/bglogo.png'
           />
         </div>
-
+        
         <h1>
           Find blockchain experts nearby.
         </h1>
         {this.renderLocationInput()}
-
-        <br></br>
-
+        {this.state.show&&this.CircularProgress()} 
+        
+        <br>
+       
+        </br>
         <RaisedButton
           label="Start"
+          className="start"
           backgroundColor='#43d676'
           onClick={this.saveAndContinue}
         />
-
         <RaisedButton
           className="login-btn"
           label="Login"
           backgroundColor='white'
-
           onClick={() => {
-            this.props.history.push('login')
+            this.props.history.push('login');
           }}
         />
-
-
         <TermsAndPolicy />
       </div>
     );
   }
 }
-
 const mapStateToProps = (state) => {
   return {
     partners: state.partners,
     user: state.user
   };
 };
-
 const mapDispatchToProps = dispatch => ({
   loadPartnerData: () => dispatch(loadPartnerData())
 });
-
 export default connect(mapStateToProps, mapDispatchToProps)(Signup);
+

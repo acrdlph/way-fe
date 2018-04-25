@@ -38,7 +38,7 @@ export default class WaitListItem extends React.Component {
       event.name = name;
       event.photo = photo;
       this.props.onClick(event);
-    }
+    };
 
     // "timeLeft === undefined" means: this is the profile card
     let timeLeftText = '';
@@ -81,19 +81,19 @@ export default class WaitListItem extends React.Component {
             <li><button onClick={onClickHelper} className='waitlist-item-button blue'> Meet </button></li>
             <li><button className='waitlist-item-button green' onClick={() => {
               try {
-                console.log("To", address)
-                console.log("From", window.web3.eth.accounts ? window.web3.eth.accounts[0] : null,)
+                console.log("To", address);
+                console.log("From", window.web3.eth.accounts ? window.web3.eth.accounts[0] : null,);
 
                 onEndorse(address, {
                   from: window.web3.eth.accounts ? window.web3.eth.accounts[0] : null,
                   gas: 300000,
                   value: web3.toWei(0, 'ether')
                 }, (error, result) => {
-                  console.log(result)
-                  console.log(error)
+                  console.log(result);
+                  console.log(error);
                 });
               } catch (error) {
-                alert("Metamask is not connected")
+                alert("Metamask is not connected");
               }
             }}> Endorse </button></li>
           </ul>}

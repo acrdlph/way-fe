@@ -164,7 +164,7 @@ class Onboarding extends React.Component {
 
         <RaisedButton
           label="OK"
-          backgroundColor='#ffd801'
+          backgroundColor='#68a0ce'
           onClick={this.register}
           fullWidth={true}
           disabled={isRegistrationButtonDisabled}

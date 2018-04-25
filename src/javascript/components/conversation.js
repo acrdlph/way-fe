@@ -4,8 +4,8 @@ import ReactDOM from 'react-dom';
 import Avatar from 'material-ui/Avatar';
 import './conversation.less';
 
-const CHAT_BUBBLE_COLOR_LEFT = '#FFA500';
-const CHAT_BUBBLE_COLOR_RIGHT = '#00FF7F';
+const CHAT_BUBBLE_COLOR_LEFT = '#43D676';
+const CHAT_BUBBLE_COLOR_RIGHT = '#68A0CE';
 
 export default class Conversation extends React.Component {
 

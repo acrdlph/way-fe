@@ -14,7 +14,7 @@ let alreadyLoadedData = [];
 const onUserJoined = (user) => {
   console.log("new user joined: " + JSON.stringify(user));
   const name = user.name || 'An anonymous bird';
-  notify(`${name} has joined the WaitList!`, notificationTypes.USER_JOINED_WAITLIST);
+  notify(`${name} has joined the Blockgeeks!`, notificationTypes.USER_JOINED_WAITLIST);
 };
 
 export const loadWaitlist = (userId) => (dispatch) => {
@@ -57,7 +57,7 @@ const createHash = (user) => {
 };
 
 const backgroundFetcher = (dispatch, userId) => {
-  const distance = sessionStorage.getItem('distance') || 5000
+  const distance = sessionStorage.getItem('distance') || 5000;
   const endpoint = 'api/users/' + userId + "?distance=" + distance;
   fetch(endpoint, {
     headers: getAuthHeaders()

@@ -50,7 +50,7 @@ export default class ChatInput extends React.Component {
           <RaisedButton
             disabled={this.props.disabled}
             label="Send"
-            backgroundColor='#ffd801'
+            backgroundColor='#43D676'
             onClick={this.saveAndContinue}
             onClick={this.sendMessage}
           />
