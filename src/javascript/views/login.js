@@ -75,8 +75,7 @@ class Login extends React.Component {
 
         <RaisedButton
           label="OK"
-          className='login-button'
-          backgroundColor='#ffd801'
+          backgroundColor='#43D676'
           onClick={this.login}
           fullWidth={true}
         />

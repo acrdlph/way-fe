@@ -24,7 +24,7 @@ export default class ChatInput extends React.Component {
             <RaisedButton
               className='empty-location-message-button'
               label="Accept Challenge"
-              backgroundColor='#ffd801'
+              backgroundColor='#43D676'
             />
           </NavLink>
         </Paper>
@@ -38,7 +38,7 @@ export default class ChatInput extends React.Component {
             No one here yet.
           </div>
           <div className='empty-location-message-body'>
-            Go up to a stranger who looks like someone you would want to meet and tell them about Way.
+            Go up to a stranger who looks like someone you would want to meet and tell them about Blockgeeks.
           </div>
         </div>
       );

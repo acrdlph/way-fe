@@ -14,7 +14,7 @@ let alreadyLoadedData = [];
 const onUserJoined = (user) => {
   console.log("new user joined: " + JSON.stringify(user));
   const name = user.name || 'An anonymous bird';
-  notify(`${name} has joined the WaitList!`, notificationTypes.USER_JOINED_WAITLIST);
+  notify(`${name} has joined the Blockgeeks!`, notificationTypes.USER_JOINED_WAITLIST);
 };
 
 export const loadWaitlist = (userId) => (dispatch) => {
@@ -41,7 +41,7 @@ const fetcher = (dispatch, userId) => {
     .then((res) => handle401(res, dispatch))
     .then((res) => res.json())
     .then((data) => {
-      const onTheListSorted = mapWaitListData(data);
+      const onTheListSorted = mapWaitListData(data).sort((a, b ) => b.endorsement - a.endorsement);
       alreadyLoadedData = onTheListSorted;
       dispatch({
         type: types.LOADED,
@@ -57,7 +57,7 @@ const createHash = (user) => {
 };
 
 const backgroundFetcher = (dispatch, userId) => {
-  const distance = sessionStorage.getItem('distance') || 5000
+  const distance = sessionStorage.getItem('distance') || 5000;
   const endpoint = 'api/users/' + userId + "?distance=" + distance;
   fetch(endpoint, {
     headers: getAuthHeaders()
@@ -65,7 +65,7 @@ const backgroundFetcher = (dispatch, userId) => {
     .then((res) => handle401(res, dispatch))
     .then((res) => res.json())
     .then((data) => {
-      const onTheListSorted = mapWaitListData(data);
+      const onTheListSorted = mapWaitListData(data).sort((a, b ) => b.endorsement - a.endorsement);
       const existingUserHashes = alreadyLoadedData.map((user) => user.hash);
       const currentUserHashes = onTheListSorted.map((user) => user.hash);
       const existingUserIds = alreadyLoadedData.map((user) => user.id);

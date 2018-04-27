@@ -6,7 +6,6 @@ import {PAGES_WITH_HEADER} from '../util/constants';
 import {isLoggedIn} from '../stores/accountStore';
 import {BrowserRouter,Route,Switch, Link} from 'react-router-dom';
 import './header.less';
-
 const createBackButton = (to) => {
   return (
     <NavLink to={to}>
@@ -14,7 +13,6 @@ const createBackButton = (to) => {
     </NavLink>
   );
 };
-
 export default class ChatHeader extends React.Component {
   render() {
     
@@ -39,8 +37,6 @@ export default class ChatHeader extends React.Component {
         </span>
       </div>
     );
-
-
     return (
       <Card className='header'>
         <div className='header-back-button'>

@@ -20,7 +20,7 @@ const createBackButton = (to) => {
 class Header extends React.Component {
   render() {
     const {username, photo, locationName, chatPartner, name} = this.props;
-    console.log("User", this.props)
+    console.log("User", this.props);
     const {pathname} = this.props.location;
     const isHeaderVisible = _.filter(PAGES_WITH_HEADER, page => pathname.includes(page)).length > 0;
     const isInChat = pathname.includes('chat');

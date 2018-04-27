@@ -35,7 +35,7 @@ class Feedback extends React.Component {
         <div>
           <RaisedButton
             onClick={this.goToHomepage}
-            backgroundColor='#ffd801'
+            backgroundColor='#68a0ce'
             label='OK'
           />
         </div>
@@ -56,7 +56,7 @@ class Feedback extends React.Component {
 
     return (
       <form onSubmit={this.handleSubmit}>
-        Feel free to share your ideas how to improve CryptoGeeks!
+        Feel free to share your ideas how to improve Blockgeeks!
         <div>
           <TextField
             name='email'
@@ -76,7 +76,7 @@ class Feedback extends React.Component {
         <div>
           <RaisedButton
             type='submit'
-            backgroundColor='#ffd801'
+            backgroundColor='#68a0ce'
             label='OK'
             fullWidth={true}
           />

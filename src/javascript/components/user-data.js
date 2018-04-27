@@ -84,7 +84,7 @@ class UserData extends React.Component {
       <div className='userdata'>
 
         <Row>
-          <Col className='col-xs-12 col-lg-4'>
+          <Col className='col-xs-12 col-lg-12'>
             <Avatar
               onClick={this.selectImage}
               size={100}
@@ -93,7 +93,7 @@ class UserData extends React.Component {
             />
             {imageSelectionModal}
           </Col>
-          <Col className='col-xs-12 col-lg-8'>
+          <Col className='col-xs-12 col-lg-12 name-inputfield'>
             <TextField
               defaultValue={name}
               hintText="Name"
@@ -101,7 +101,7 @@ class UserData extends React.Component {
               fullWidth={true}
             />
           </Col>
-          <Col className='col-xs-12 col-lg-8'>
+          <Col className='col-xs-12 col-lg-12 description-inputfield'>
             <TextField
               defaultValue={interests}
               hintText="What are you looking for?"
@@ -109,7 +109,7 @@ class UserData extends React.Component {
               fullWidth={true}
             />
           </Col>
-          <Col className='col-xs-12 col-lg-8'>
+          <Col className='col-xs-12 col-lg-12 userdata-confirm-button'>
             <RaisedButton
               label="OK"
               backgroundColor='#43d676'
