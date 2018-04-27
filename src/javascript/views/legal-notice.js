@@ -18,7 +18,7 @@ export default class LegalNotice extends React.Component {
 
           <h3>Contact</h3>
           Achill Rudolph<br/>
-          WaitList c/o hub:raum<br/>
+          Cryptogeeks c/o hub:raum<br/>
           Winterfeldtstr. 21<br/>
           10781 Berlin<br/>
           Germany
