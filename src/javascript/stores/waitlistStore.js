@@ -22,7 +22,7 @@ export const loadWaitlist = (userId) => (dispatch) => {
   // updating individual waitlist items and reordering seems the best solution
   fetcher(dispatch, userId);
   if (!refresher) {
-    refresher = setInterval(() => { backgroundFetcher(dispatch, userId); }, 5000);
+    refresher = setInterval(() => { backgroundFetcher(dispatch, userId); }, 500000);
   }
 };
 
