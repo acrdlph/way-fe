@@ -25,7 +25,7 @@ export default class WaitListItem extends React.Component {
     const isActionVisible = this.props.isActionVisible === false ? false : true;
 
     if (interests.trim() === '') {
-      interests = "Just waiting";
+      interests = "New member, hit me up!";
     }
     if (name.trim() === '') {
       name = 'No name specified';
