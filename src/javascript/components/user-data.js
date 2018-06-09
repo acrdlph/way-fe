@@ -1,19 +1,22 @@
 import React from 'react';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 import fetch from 'isomorphic-fetch';
-import {Row, Col} from 'react-bootstrap';
+import { Row, Col } from 'react-bootstrap';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 import Avatar from './avatar';
-import {NavLink} from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import InfoBox from './infobox';
 import WaitListItem from '../components/waitlist-item';
-import {trackEvent, events} from '../util/google-analytics';
-import {loadUserData, updateUserData, editUserData, isOnboarded} from '../stores/userStore';
-import {isLoggedIn} from '../stores/accountStore';
-import {showModal} from '../stores/profileImageStore';
+import { trackEvent, events } from '../util/google-analytics';
+import { loadUserData, updateUserData, editUserData, isOnboarded } from '../stores/userStore';
+import { isLoggedIn } from '../stores/accountStore';
+import { showModal } from '../stores/profileImageStore';
 import ImageSelection from './image-selection-modal';
 import './user-data.less';
+import { Web3Provider } from 'react-web3';
+import Web3Component, { initContract } from '../components/Web3Component';
+
 
 class UserData extends React.Component {
 
@@ -32,11 +35,11 @@ class UserData extends React.Component {
   }
 
   changeInterests(event, interests) {
-    this.setState({interests});
+    this.setState({ interests });
   }
 
   changeName(event, name) {
-    this.setState({name});
+    this.setState({ name });
   }
 
   setEditable() {
@@ -63,8 +66,8 @@ class UserData extends React.Component {
   }
 
   render() {
-    const {user, isUserOnboarded} = this.props;
-    if(user.loading) {
+    const { user, isUserOnboarded, address } = this.props;
+    if (user.loading) {
       return (<div>loading...</div>);
     }
     const imageSelectionModal = this.props.showModal ?
@@ -73,13 +76,15 @@ class UserData extends React.Component {
     const interests = _.get(user, 'data.interests', '');
     const photo = _.get(user, 'data.photo', 'assets/avatar-placeholder.png');
     const registerText = (
-      <span>You are using WaitList as a guest. <NavLink to='/register'>Register now</NavLink> to save your profile or just <NavLink to='/login'>log in</NavLink> if you have already an account.</span>
+      <span>Register <NavLink to='/register'>here</NavLink> to retain your GEEK status</span>
     );
 
     return !isUserOnboarded || this.props.user.isEditable ? (
+
       <div className='userdata'>
+
         <Row>
-          <Col className='col-xs-12 col-lg-4'>
+          <Col className='col-xs-12 col-lg-12'>
             <Avatar
               onClick={this.selectImage}
               size={100}
@@ -88,7 +93,7 @@ class UserData extends React.Component {
             />
             {imageSelectionModal}
           </Col>
-          <Col className='col-xs-12 col-lg-8'>
+          <Col className='col-xs-12 col-lg-12 name-inputfield'>
             <TextField
               defaultValue={name}
               hintText="Name"
@@ -96,7 +101,7 @@ class UserData extends React.Component {
               fullWidth={true}
             />
           </Col>
-          <Col className='col-xs-12 col-lg-8'>
+          <Col className='col-xs-12 col-lg-12 description-inputfield'>
             <TextField
               defaultValue={interests}
               hintText="What are you looking for?"
@@ -104,10 +109,10 @@ class UserData extends React.Component {
               fullWidth={true}
             />
           </Col>
-          <Col className='col-xs-12 col-lg-8'>
+          <Col className='col-xs-12 col-lg-12 userdata-confirm-button'>
             <RaisedButton
               label="OK"
-              backgroundColor='#ffd801'
+              backgroundColor='#43d676'
               onClick={this.saveAndContinue}
               onClick={this.saveProfile}
               fullWidth={true}
@@ -116,11 +121,11 @@ class UserData extends React.Component {
         </Row>
       </div>
     ) : (
-      <div>
-        <WaitListItem photo={photo} interests={interests} name={name} onClick={this.setEditable}/>
-        <InfoBox visible={!isLoggedIn()} text={registerText}/>
-      </div>
-    );
+        <div>
+          <InfoBox visible={!isLoggedIn()} text={registerText} />
+          <WaitListItem photo={photo} interests={interests} name={name} address={address} onClick={this.setEditable} isActionVisible={false} />
+        </div>
+      );
   }
 }
 

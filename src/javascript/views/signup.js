@@ -2,36 +2,34 @@ import React from 'react';
 import { connect } from 'react-redux';
 import Slider from 'material-ui/Slider';
 import RaisedButton from 'material-ui/RaisedButton';
-import {NavLink} from 'react-router-dom';
+import CircularProgress from 'material-ui/CircularProgress';
+import RefreshIndicator from 'material-ui/RefreshIndicator';
+import { NavLink } from 'react-router-dom';
 import fetch from 'isomorphic-fetch';
-import {Row, Col} from 'react-bootstrap';
+import { Row, Col } from 'react-bootstrap';
 import _ from 'lodash';
 import TermsAndPolicy from '../components/terms-and-policy';
-import {trackPageView, trackEvent, events} from '../util/google-analytics';
-import {getAuthHeaders} from '../util/headers';
-import {PARTNER_LOCATIONS} from '../util/constants';
+import { trackPageView, trackEvent, events } from '../util/google-analytics';
+import { getAuthHeaders } from '../util/headers';
+import { PARTNER_LOCATIONS } from '../util/constants';
 import Infobox from '../components/infobox';
-import {loadPartnerData} from '../stores/partnerStore';
+import { loadPartnerData } from '../stores/partnerStore';
 import './signup.less';
-
 const locationInput = 'signup-location-input';
-
 let circle = false;
 let geolocationAvailable = false;
 let autocompleteApi = false;
-
 class Signup extends React.Component {
-
   constructor(props) {
     super(props);
-
+    this.state = { show : true };
+        
+    this.toggleDiv = this.toggleDiv.bind(this);
     const path = this.props.location.pathname;
     trackPageView(path);
-
     const locationIdFromPath = _.get(this.props.match, 'params.locationId');
     // TODO make this validation using partner api
     const isValidLocation = locationIdFromPath && _.includes(PARTNER_LOCATIONS, locationIdFromPath);
-
     this.changeWaitingTime = this.changeWaitingTime.bind(this);
     this.save = this.save.bind(this);
     this.update = this.update.bind(this);
@@ -45,10 +43,9 @@ class Signup extends React.Component {
     this.clearLocation = this.clearLocation.bind(this);
     this.setLocationInputValue = this.setLocationInputValue.bind(this);
     this.setPlace = this.setPlace.bind(this);
-
     const userId = sessionStorage.getItem('userId');
     const locationId = sessionStorage.getItem('locationId');
-    if(userId && !props.user) {
+    if (userId && !props.user) {
       this.props.history.push(`/waitlist/${locationId}`); // user is onboarded already
     }
     this.props.loadPartnerData();
@@ -57,20 +54,18 @@ class Signup extends React.Component {
       autoSelectedLocaton: undefined,
       geolocation: null,
       airport: isValidLocation ? locationIdFromPath : null,
-      waitingTime: 30
+      waitingTime: 30,
+      isSearchBoxVisible: false
     };
   }
-
   componentDidMount() {
-    this.buildLocation();
+    // this.buildLocation();
   }
-
   changeGeolocation() {
     const place = autocompleteApi.getPlace();
     this.setPlace(place.place_id, place.geometry.location.lng(), place.geometry.location.lat());
-    trackEvent(events.USER_SELECTED_LOCATION, {label: place.place_id});
+    trackEvent(events.USER_SELECTED_LOCATION, { label: place.place_id });
   }
-
   setPlace(placeId, lng, lat) {
     this.setState({
       airport: placeId,
@@ -80,29 +75,27 @@ class Signup extends React.Component {
       }
     });
   }
-
   changeWaitingTime(event, value) {
     const roundedValue = Math.floor(value);
     this.setState({
       waitingTime: roundedValue
     });
-    trackEvent(events.USER_CHANGED_WAITING_TIME, {value: roundedValue});
+    trackEvent(events.USER_CHANGED_WAITING_TIME, { value: roundedValue });
   }
-
   getGeolocation() {
     return new Promise(function (resolve, reject) {
       navigator.geolocation.getCurrentPosition(resolve, reject, {});
     });
   }
-
   async buildLocation() {
     const challengeLocation = sessionStorage.getItem('challengeLocation');
-    if(challengeLocation) {
+    if (challengeLocation) {
       try {
         this.setPlace(challengeLocation, 0, 0);
         this.setLocationInputValue(challengeLocation);
-      } catch(error) {
+      } catch (error) {
         console.log(error);
+        this.setState({ isSearchBoxVisible: true });
       }
     } else if (navigator.geolocation && !geolocationAvailable) {
       try {
@@ -121,12 +114,12 @@ class Signup extends React.Component {
         const res = await this.geocodeLocation(geolocation);
         this.setPlace(res.place_id, geolocation.lng, geolocation.lat);
         this.setLocationInputValue(res.name);
-      } catch(error) {
+      } catch (error) {
         console.log(error);
+        this.setState({ isSearchBoxVisible: true });
       }
     }
   }
-
   geocodeLocation(geolocation) {
     return new Promise(function (resolve, reject) {
       const request = {
@@ -135,21 +128,20 @@ class Signup extends React.Component {
         //type: ['point_of_interest', 'airport', 'hospital', '']
       };
       const service =
-      new google.maps.places.PlacesService(document.getElementById(locationInput));
-      service.nearbySearch(request, function(results, status) {
+        new google.maps.places.PlacesService(document.getElementById(locationInput));
+      service.nearbySearch(request, function (results, status) {
         if (status == google.maps.places.PlacesServiceStatus.OK) {
           if (results[0]) {
             resolve(results[0]);
           } else {
             reject();
           }
-          } else {
-            reject(status);
+        } else {
+          reject(status);
         }
       });
     });
   }
-
   async save(body) {
     console.log("Create user with: " + JSON.stringify(this.state));
     const endpoint = 'api/users';
@@ -168,13 +160,12 @@ class Signup extends React.Component {
     sessionStorage.setItem('token', resJson.token);
     return resJson;
   }
-
   async update(body) {
     console.log("Update user with: " + JSON.stringify(this.state));
     const userId = sessionStorage.getItem('userId');
     const endpoint = 'api/users/' + userId + '?waiting_started=true';
     const headers = getAuthHeaders();
-    headers.append('content-type','application/json');
+    headers.append('content-type', 'application/json');
     const res = await fetch(endpoint, {
       method: 'put',
       body,
@@ -183,8 +174,10 @@ class Signup extends React.Component {
     const resJson = await res.json();
     return resJson;
   }
-
   async saveAndContinue() {
+    this.toggleDiv();
+    await this.buildLocation();
+    
     if (!this.state.airport) {
       this.setState({
         showLocationRequiredHint: true
@@ -194,11 +187,12 @@ class Signup extends React.Component {
     const body = JSON.stringify({
       'location': this.state.airport,
       'geolocation': this.state.geolocation,
-      'waiting_time': this.state.waitingTime
+      'waiting_time': this.state.waitingTime,
+      'address': window.web3 ? window.web3.eth.accounts[0] : null
     });
     // if geolocationAvailable then we have already saved the user then update
     let json = {};
-    if (!geolocationAvailable  && !sessionStorage.getItem('userId')) {
+    if (!geolocationAvailable && !sessionStorage.getItem('userId')) {
       json = await this.save(body);
     } else {
       json = await this.update(body);
@@ -207,25 +201,52 @@ class Signup extends React.Component {
     sessionStorage.setItem('locationId', locationId);
     this.props.history.push(`/waitlist/${locationId}`);
   }
-
   clearLocation() {
     this.setLocationInputValue('');
     if (autocompleteApi && circle) {
       autocompleteApi.setBounds(circle.getBounds());
     }
   }
-
   setLocationInputValue(value) {
     // this primitive trick helps to avoid problems with react and google maps
     // getting in the way of eachother
     document.getElementById(locationInput).value = value;
   }
-
   initAutoComplete() {
     autocompleteApi = new google.maps.places.Autocomplete(document.getElementById(locationInput));
     autocompleteApi.addListener('place_changed', this.changeGeolocation);
   }
-
+  CircularProgress() {
+    { this.toggleDiv; }
+    const style = {
+      container: {
+        position: 'relative',
+      },
+      refresh: {
+        display: 'inline-block',
+        position: 'relative',
+      },
+    };
+    return(
+      <div>
+        <div style={style.container}>
+    <RefreshIndicator
+      size={40}
+      left={10}
+      top={0}
+      loadingColor="#3ab966"
+      status="loading"
+      style={style.refresh}
+    />
+  </div>
+    </div>
+    );
+    
+  };
+  toggleDiv() {
+    const { show } = this.state;
+    this.setState( { show : !show } );
+}
   renderLocationInput() {
     // TODO move this to a component
     const locationList = [];
@@ -237,70 +258,68 @@ class Signup extends React.Component {
         }
       );
     });
-
     return (
-      <div style={{paddingBottom: '15px'}}>
-        <div>
-          <img src='assets/airport-selection-icon.png' className='signup-selection-icon'/>
-        </div>
-        <p className='signup-im-here'>I'm here</p>
+      <div style={{ paddingBottom: '15px', display: this.state.isSearchBoxVisible ? 'block' : 'none' }}>
+      
         <Infobox
           visible={this.state.showLocationRequiredHint}
           text={'Please enter your location first to join the waitlist'}
         />
         <input onFocus={this.clearLocation}
-        className="signup-location-input-style" id={locationInput} type="text"
-            placeholder="Enter location"/>
+          className="signup-location-input-style" id={locationInput} type="text"
+          placeholder="Enter location" />
         {this.initAutoComplete()}
       </div>
     );
   }
-
   render() {
-    const {waitingTime} = this.state;
+    const { waitingTime } = this.state;
     return (
       <div className='signup'>
+        
+        <div className='onboarding-logo'>
+          <img
+            className='logo'
+            src='assets/bglogo.png'
+          />
+        </div>
+        
+        <h1>
+          Find blockchain experts nearby.
+        </h1>
         {this.renderLocationInput()}
-        <div>
-          <img src='assets/waiting-time-selection-icon.png' className='signup-selection-icon'/>
-        </div>
-
-        <div>
-          <div className="signup-wait-for">Waiting for</div>
-          <div className="signup-wait-for-minutes">{waitingTime} Minutes</div>
-          <div className='signup-slider'>
-            <Slider
-              sliderStyle={{height: '4px'}}
-              min={10}
-              max={300}
-              step={10}
-              defaultValue={30}
-              onChange={this.changeWaitingTime}
-            />
-          </div>
-        </div>
-
+        {this.state.show&&this.CircularProgress()} 
+        
+        <br>
+       
+        </br>
         <RaisedButton
-          label="See who's here"
-          backgroundColor='#ffd801'
+          label="Start"
+          className="start"
+          backgroundColor='#43d676'
           onClick={this.saveAndContinue}
         />
-
-        <TermsAndPolicy/>
+        <RaisedButton
+          className="login-btn"
+          label="Login"
+          backgroundColor='white'
+          onClick={() => {
+            this.props.history.push('login');
+          }}
+        />
+        <TermsAndPolicy />
       </div>
     );
   }
 }
-
 const mapStateToProps = (state) => {
   return {
     partners: state.partners,
     user: state.user
   };
 };
-
 const mapDispatchToProps = dispatch => ({
   loadPartnerData: () => dispatch(loadPartnerData())
 });
-
 export default connect(mapStateToProps, mapDispatchToProps)(Signup);
+

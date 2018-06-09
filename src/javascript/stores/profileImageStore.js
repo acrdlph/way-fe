@@ -1,6 +1,6 @@
 import _ from 'lodash';
-import {reloadProfileImage} from './userStore';
-import {getAuthHeaders} from '../util/headers';
+import { reloadProfileImage } from './userStore';
+import { getAuthHeaders } from '../util/headers';
 
 const types = {
   SHOW_MODAL: 'PROFILE_IMAGE_SHOW_MODAL',
@@ -13,21 +13,22 @@ export const showModal = (isVisible) => ({
   isVisible
 });
 
-export const setImage = ({fileName, data}) => ({
+export const setImage = ({ fileName, data }) => ({
   type: types.SET_IMAGE,
-  fileName,
+  fileName: fileName,
   data
 });
 
-export const uploadImage = ({fileName, data}) => dispatch => {
+export const uploadImage = ({ fileName, data }) => dispatch => {
   awaitFetch(fileName, data, dispatch);
 };
 
 const awaitFetch = async function awaitFetch(fileName, data, dispatch) {
+  console.log(fileName, data)
   const userId = sessionStorage.getItem('userId');
   const endpoint = `api/users/${userId}/photo`;
   try {
-    const formData  = new FormData();
+    const formData = new FormData();
     formData.append('photo', data);
     const result = await fetch(endpoint, {
       method: 'post',
@@ -35,9 +36,9 @@ const awaitFetch = async function awaitFetch(fileName, data, dispatch) {
       headers: getAuthHeaders()
     });
     const resJson = await result.json();
-    dispatch({type: types.UPLOADED_IMAGE});
+    dispatch({ type: types.UPLOADED_IMAGE });
     dispatch(reloadProfileImage(userId));
-  } catch(e) {
+  } catch (e) {
     console.log(e);
   }
 };

@@ -1,9 +1,14 @@
 @import '../variables';
 
+.waitlist-item-parent {
+  border-bottom: 1px solid #d9d9d9;
+  margin-top: 30px;
+  padding-bottom: 30px;
+
+}
+
 .waitlist-item {
   display: flex;
-  margin-top: 2px;
-  margin-bottom: 2px;
 }
 
 .waitlist-item-already-contacted {
@@ -20,18 +25,53 @@
   padding: 5px;
 };
 
+ul.waitlist-item-actions {
+  flex: 0 0 50px;
+}
+
+ul.waitlist-item-actions li {
+  list-style-type: none;
+  float: right;
+}
 
 .waitlist-item-data {
   flex: 1;
-};
-.waitlist-item-data-interests {
-  font-size: 1.5em;
-};
-.waitlist-item-data-name {
-  font-size: 1.0em;
-  color: @waitlist-blue;
+  padding-top: 4px; 
 };
 
+.waitlist-item-data-interests {
+  font-size: 14px;
+};
+
+.waitlist-item-data-address {
+  font-size: 10px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 116px;  
+  margin-bottom: 0px;
+}
+.waitlist-item-data-backing {
+  font-size: 10px;
+  color: #39d872;
+}
+
+.waitlist-item-data-name {
+  font-size: 0.9em;
+  color: @waitlist-blue;
+  margin: 0px;
+};
+
+
+.waitlist-item-button {
+  border: none;
+  color: white;
+  text-align: center;
+  width: 110px;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+}
 
 .waitlist-item-meta {
   flex: 0 0 50px;
@@ -45,5 +85,30 @@
   padding-right: 5px;
   color: @waitlist-yellow;
 }
-.waitlist-item-meta-chat-bubble {
+
+.waitlist-item-table tr {
+  border: none;
+}
+
+.waitlist-item-table td {
+  padding: 1px;
+  vertical-align: top;
+  font-size: 11px;
+  text-align: center;
+  border: none;
+}
+.waitlist-item-table th {
+  padding: 1px;
+  vertical-align: top;
+  font-size: 11px;
+  text-align: center;
+  border: none;
+}
+.waitlist-item-table {
+  background: #e4dcda;
+  color: #0062c3;
+}
+
+.table thead th {
+  border-bottom: 1px solid white !important;
 }

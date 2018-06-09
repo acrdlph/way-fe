@@ -168,7 +168,7 @@ class ImageSelection extends React.Component {
       <div className='image-selection-button image-selection-button-ok'>
         <RaisedButton
           onClick={this.uploadImage}
-          backgroundColor='#ffd801'
+          backgroundColor='#68a0ce'
           label='OK'
         />
       </div>
@@ -178,7 +178,7 @@ class ImageSelection extends React.Component {
       <div className='image-selection-button'>
         <RaisedButton
           onClick={this.rotate}
-          backgroundColor='#ffd801'
+          backgroundColor='#68a0ce'
           label='Rotate'
         />
       </div>
@@ -217,7 +217,7 @@ class ImageSelection extends React.Component {
             <div className='image-selection-button'>
               <RaisedButton
                 onClick={this.selectFile}
-                backgroundColor='#ffd801'
+                backgroundColor='#68a0ce'
                 label='Select file'
                 style={{overflow: 'hidden'}}
               />
@@ -238,7 +238,7 @@ class ImageSelection extends React.Component {
             <div className='image-selection-button image-selection-button-cancel'>
               <RaisedButton
                 onClick={this.props.close}
-                backgroundColor='#ffd801'
+                backgroundColor='#68a0ce'
                 label='Cancel'
               />
             </div>

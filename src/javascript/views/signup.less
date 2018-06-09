@@ -1,3 +1,5 @@
+@import '../variables';
+
 .signup {
   padding-top: 4px;
   text-align: center;
@@ -8,7 +10,19 @@
   margin: 5px;
 }
 
-.signup-slider {
+.onboarding-logo {
+  text-align: center;
+}
+.onboarding-logo img {
+  max-width: 80%;
+}
+
+.signup-slider-distance {
+  width: 200px;
+  margin: 0 auto;
+}
+
+.signup-slider-reputation {
   width: 200px;
   margin: 0 auto;
 }
@@ -22,10 +36,31 @@
   padding-top: 2px;
 }
 
+.signup-wait {
+  display: flex;
+  padding: 0px;
+}
+
+.signup-wait li.title {
+  margin-top: 20px;
+  padding-left: 10px; 
+}
+.signup-wait-for-li {
+  margin-top: 20px;
+  padding-right: 20px;
+}
+
+.signup-wait li {
+  float: left;
+  list-style: none;
+  max-height: 11px;
+}
+
 .signup-wait-for-minutes {
-  font-size: 25px;
+  font-size: 15px;
   padding-top: 3px;
   font-weight: 500;
+  color: #807b7b;
 }
 
 .signup-location-input-style {
@@ -36,4 +71,9 @@
   margin: 0 auto;
   text-align: center;
   vertical-align: middle;
+}
+
+.login-btn {
+  border: #43d676;
+  background: white !important;
 }

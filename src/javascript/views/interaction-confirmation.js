@@ -75,7 +75,7 @@ class InteractionConfirmation extends React.Component {
               <div>
                 <NavLink to='/signup'>
                   <RaisedButton
-                    backgroundColor='#ffd801'
+                    backgroundColor='#68a0ce'
                     label='Join Chat'
                   />
                 </NavLink>
@@ -90,7 +90,7 @@ class InteractionConfirmation extends React.Component {
               <div>
                 <NavLink to=''>
                   <RaisedButton
-                    backgroundColor='#ffd801'
+                    backgroundColor='#68a0ce'
                     label='OK'
                   />
                 </NavLink>

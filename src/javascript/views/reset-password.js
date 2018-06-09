@@ -54,7 +54,7 @@ class ResetPassword extends React.Component {
 
         <RaisedButton
           label="Reset Password"
-          backgroundColor='#ffd801'
+          backgroundColor='#68a0ce'
           onClick={this.resetPassword}
           fullWidth={true}
         />
