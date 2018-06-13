@@ -15,15 +15,19 @@ import { PARTNER_LOCATIONS } from '../util/constants';
 import Infobox from '../components/infobox';
 import { loadPartnerData } from '../stores/partnerStore';
 import './signup.less';
+import { OnBoarding } from '../components/Modal';
+
 const locationInput = 'signup-location-input';
 let circle = false;
 let geolocationAvailable = false;
 let autocompleteApi = false;
+let showStart = false;
+
 class Signup extends React.Component {
   constructor(props) {
     super(props);
     this.state = { show : true };
-        
+
     this.toggleDiv = this.toggleDiv.bind(this);
     const path = this.props.location.pathname;
     trackPageView(path);
@@ -177,7 +181,7 @@ class Signup extends React.Component {
   async saveAndContinue() {
     this.toggleDiv();
     await this.buildLocation();
-    
+
     if (!this.state.airport) {
       this.setState({
         showLocationRequiredHint: true
@@ -230,23 +234,23 @@ class Signup extends React.Component {
     return(
       <div>
         <div style={style.container}>
-    <RefreshIndicator
-      size={40}
-      left={10}
-      top={0}
-      loadingColor="#3ab966"
-      status="loading"
-      style={style.refresh}
-    />
-  </div>
-    </div>
+          <RefreshIndicator
+            size={40}
+            left={10}
+            top={0}
+            loadingColor="#3ab966"
+            status="loading"
+            style={style.refresh}
+          />
+        </div>
+      </div>
     );
-    
+
   };
   toggleDiv() {
     const { show } = this.state;
     this.setState( { show : !show } );
-}
+  }
   renderLocationInput() {
     // TODO move this to a component
     const locationList = [];
@@ -260,7 +264,7 @@ class Signup extends React.Component {
     });
     return (
       <div style={{ paddingBottom: '15px', display: this.state.isSearchBoxVisible ? 'block' : 'none' }}>
-      
+
         <Infobox
           visible={this.state.showLocationRequiredHint}
           text={'Please enter your location first to join the waitlist'}
@@ -276,29 +280,24 @@ class Signup extends React.Component {
     const { waitingTime } = this.state;
     return (
       <div className='signup'>
-        
+
         <div className='onboarding-logo'>
           <img
             className='logo'
             src='assets/bglogo.png'
           />
         </div>
-        
+
         <h1>
           Find blockchain experts nearby.
         </h1>
         {this.renderLocationInput()}
-        {this.state.show&&this.CircularProgress()} 
-        
+        {this.state.show&&this.CircularProgress()}
+
         <br>
-       
+
         </br>
-        <RaisedButton
-          label="Start"
-          className="start"
-          backgroundColor='#43d676'
-          onClick={this.saveAndContinue}
-        />
+        <OnBoarding saveAndContinue={this.saveAndContinue}/>
         <RaisedButton
           className="login-btn"
           label="Login"
@@ -322,4 +321,3 @@ const mapDispatchToProps = dispatch => ({
   loadPartnerData: () => dispatch(loadPartnerData())
 });
 export default connect(mapStateToProps, mapDispatchToProps)(Signup);
-
