@@ -110,12 +110,12 @@ class Chat extends React.Component {
       id: userId,
       name: user.name,
       photo: user.photo
-    }
+    };
     const partnerDetails = {
       id: chatPartnerId,
       name: partner.name,
       photo: partner.photo
-    }
+    };
     const messages = this.props.chat.data;
     const networkErrorIndicator = this.state.disableChat ? 
     <LinearProgress style={{position: 'fixed', width: '96%'}} color="#337ab7" mode="indeterminate"/> : null;
