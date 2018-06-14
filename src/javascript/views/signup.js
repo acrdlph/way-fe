@@ -267,7 +267,7 @@ class Signup extends React.Component {
 
         <Infobox
           visible={this.state.showLocationRequiredHint}
-          text={'Please enter your location first to join the waitlist'}
+          text={'Please enter your location to join the list - we are starting in Berlin.'}
         />
         <input onFocus={this.clearLocation}
           className="signup-location-input-style" id={locationInput} type="text"
