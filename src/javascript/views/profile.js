@@ -209,15 +209,15 @@ class Profile extends React.Component {
           <Col sm={6}>
             <div className='profile-button profile-button-save'>
               <RaisedButton
-                onClick={this.onBuyHandler}
+                onClick={this.getEtherPrice}
                 backgroundColor='#00cf70'
-                label={'Buy'}
+                label={'Get price (ETH)'}
               />
             </div>
             <RaisedButton
-              onClick={this.getEtherPrice}
+              onClick={this.onBuyHandler}
               backgroundColor='#00cf70'
-              label={'Current price (ETH)'}
+              label={'Buy'}
             />
           </Col>
         </Row>
