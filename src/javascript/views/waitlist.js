@@ -160,9 +160,9 @@ class WaitList extends React.Component {
     });
 
     const isLoggedInUser = !!this.props.user.data.username;
-    list.push(
-      <EmptyLocationMessage showChallenge={FEATURE_WAITCOIN_CHALLENGE && isLoggedInUser}/>
-    );
+//    list.push(
+//      <EmptyLocationMessage showChallenge={FEATURE_WAITCOIN_CHALLENGE && isLoggedInUser}/>
+//    );
 
     return (
       <div>
