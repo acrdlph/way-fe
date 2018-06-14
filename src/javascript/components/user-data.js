@@ -104,7 +104,7 @@ class UserData extends React.Component {
           <Col className='col-xs-12 col-lg-12 description-inputfield'>
             <TextField
               defaultValue={interests}
-              hintText="What are you looking for?"
+              hintText="What are your incentives?"
               onChange={this.changeInterests}
               fullWidth={true}
             />

@@ -240,7 +240,7 @@ class Profile extends React.Component {
             <TextField
               name="interests"
               defaultValue={interests}
-              hintText="Interest"
+              hintText="What are your incentives?"
               onChange={this.onChanged}
               fullWidth={true}
             />
