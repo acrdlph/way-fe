@@ -83,7 +83,7 @@ class Login extends React.Component {
         <InfoBox text={"Invalid username or password!"} visible={this.props.account.hasLoginFailed}/>
 
         <div className='login-register'>
-          You don't have an account yet? <NavLink to='/register'>Register here!</NavLink>
+          Don't have an account yet? <NavLink to='/register'>Register here!</NavLink>
         </div>
         
        {/* <div className='login-reset-password'>

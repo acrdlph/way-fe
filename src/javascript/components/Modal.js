@@ -60,22 +60,40 @@ export class OnBoarding extends React.Component {
           contentLabel="Example Modal"
         >
 
-          <h2 ref={subtitle => this.subtitle = subtitle}>Hello</h2>
+          The first token-curated ranking of  trusted blockchain experts in Berlin.
+          <br>
+          </br>
+          
+          <h2 ref={subtitle => this.subtitle = subtitle}>Instructions</h2>
+
           <div>
-            1. About us <br>
+            <b>Register </b><br>
             </br>
-            CG is the first token-curated ranking of  trusted blockchain experts in Berlin. <a href=" ">Check out how cool it is!</a>
+            Activate <a href="https://chrome.google.com/webstore/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn?hl=en" target="_blank">MetaMask</a>, register your profile and get in touch with blockchain experts nearby.
             <br>
             </br>
-            2. How does it work? <br>
+            <br>
             </br>
-            Register and get in touch with other blockchain experts nearby. When you like someone, increase their reputation by sending an endorsement on the Ethereum Rinkeby blockchain (download and install <a href=" ">Metamask</a> to use CG to its full extent).
-        <br>
+            <b>Get GEEK tokens </b>
+            <br>
             </br>
-            3. How can I get GEEK tokens? <a href=" ">Read this</a> to get your GEEK tokens.
+            Go to the profile page to buy GEEK token with <a href="https://faucet.rinkeby.io/" target="_blank">Rinkeby testnet Ether</a>.
+            <br>
+            </br>
+            <br>
+            </br>
+            <b> Curate the community </b> 
+            <br>
+            </br>
+             When you like someone, increase their reputation by sending an endorsement on the blockchain. <a href="https://medium.com/@w.a.y/cryptogeeks-unite-f0c5c39b30e5" target="_blank">Here</a> is how it works in detail.
+            <br>
+            </br>
+            <br>
+            </br>
+
         </div>
           <form>
-          <button onClick={this.closeModal}>close</button>
+          <button onClick={this.closeModal}>Continue</button>
           </form>
         </Modal>
       </div>

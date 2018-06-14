@@ -10,7 +10,8 @@ if [ "$BRANCH" = "master" ]; then
 
     npm install
 
-    ./node_modules/.bin/gulp build --hostname api.waitlist.live --port 443 --enableNotifications true --googleAnalyticsId UA-110490924-2
+    ./node_modules/.bin/gulp build --hostname api.waitlist.live --port 443 --enableNotifications true --googleAnalyticsId UA-114750373-3
+
 
     echo "Building docker image"
 
