@@ -283,7 +283,7 @@ class Signup extends React.Component {
             src='assets/bglogo.png'
           />
         </div>
-        
+        <br></br>
         <h1>
           Find blockchain experts nearby.
         </h1>

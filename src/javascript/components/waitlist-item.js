@@ -72,7 +72,7 @@ export default class WaitListItem extends React.Component {
             </p>
             <p className="waitlist-item-data-address">{address}</p>
             <p className="waitlist-item-data-backing">
-              Backing <strong>{endorsement} GEEK</strong>
+              Reputation <strong>{endorsement} GEEK</strong>
             </p>
 
           </div>

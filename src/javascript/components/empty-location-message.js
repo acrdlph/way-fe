@@ -12,7 +12,7 @@ export default class ChatInput extends React.Component {
       return (
         <Paper style={{'background-color':'#f5f5fb'}} rounded='true' className='empty-location-message' zDepth={1} >
           <div className='empty-location-message-header'>
-            Earn some WAYTcoin
+            Earn some GEEK
           </div>
           <div className='empty-location-message-body'>
             Start an interaction with a stranger
@@ -38,7 +38,7 @@ export default class ChatInput extends React.Component {
             No one here yet.
           </div>
           <div className='empty-location-message-body'>
-            Go up to a stranger who looks like someone you would want to meet and tell them about Blockgeeks.
+            Go up to a stranger who looks like someone you would want to meet and tell them about Cryptogeeks.
           </div>
         </div>
       );

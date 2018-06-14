@@ -1,12 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Web3 from 'web3'
-import {username} from '../stores/accountStore';
+import { username } from '../stores/accountStore';
 
 let web3 = window.web3;
-export const initContract = (abi, address) => {
+export const contractAddress = '0x56aeab032d7c1b1c00732b501477038b657cce04';
+export const initContract = (abi) => {
     if (web3) {
-        return web3.eth.contract(abi).at(address);
+        return web3.eth.contract(abi).at(contractAddress);
     }
 }
 
@@ -17,9 +18,16 @@ export const getWeb3 = () => {
 const Web3Component = (props, context) => {
     const web3Context = context.web3;
     const { selectedAccount } = web3Context;
-
-    return ( <div> Hello { username } </div>);
+    console.log(selectedAccount);
+    return (<div> {username} </div>);
 }
+
+export const getAddress = (props, context) => {
+    const web3Context = context.web3;
+    const { selectedAccount } = web3Context;
+    return (selectedAccount);
+}
+
 
 
 Web3Component.contextTypes = {

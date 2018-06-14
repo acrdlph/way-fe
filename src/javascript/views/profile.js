@@ -13,7 +13,8 @@ import { showModal } from '../stores/profileImageStore';
 import { loadUserData, updateUserData, editUserData, isOnboarded } from '../stores/userStore';
 import './profile.less';
 import { Web3Provider } from 'react-web3';
-import Web3Component, { initContract, selectedAccount } from '../components/Web3Component';
+import Web3Component, { initContract, getWeb3, contractAddress } from '../components/Web3Component';
+import Blockgeeks from '../../abi/Blockgeeks.json';
 import { isLoggedIn } from '../stores/accountStore';
 import WaitListItem from '../components/waitlist-item';
 class Profile extends React.Component {
@@ -33,15 +34,21 @@ class Profile extends React.Component {
     }
     this.props.loadUserData(usernameFromPath);
     this.onSave = this.onSave.bind(this);
+    this.onBuyHandler = this.onBuyHandler.bind(this);
     this.onChanged = this.onChanged.bind(this);
     this.onImageClick = this.onImageClick.bind(this);
     this.refreshProfile = this.refreshProfile.bind(this);
     this.onLogout = this.onLogout.bind(this);
+    this.getEtherPrice = this.getEtherPrice.bind(this);
     this.state = {
       name: this.props.name,
       email: this.props.email,
       username: this.props.username,
-      interests: this.props.interests
+      interests: this.props.interests,
+      balance: 0,
+      address: web3.eth.accounts[0],
+      tokenContract: initContract(Blockgeeks),
+      priceToEther: null
     };
   }
   componentWillReceiveProps(props) {
@@ -49,6 +56,12 @@ class Profile extends React.Component {
     if (props.username && props.username != usernameFromPath) {
       this.props.history.push(`/profile/${props.username}`);
     }
+
+    const ethereumAddress = web3.eth.accounts[0]
+
+    this.state.tokenContract.balanceOf(ethereumAddress, (err, data) => {
+      this.setState({ balance: data.toNumber() / 10 ** 18 });
+    });
   }
   refreshProfile() {
     const userId = sessionStorage.getItem('userId');
@@ -58,6 +71,45 @@ class Profile extends React.Component {
     let obj = {};
     obj[e.target.name] = e.target.value;
     this.setState(obj);
+  }
+  _getBuyPrice(tokenAmount) {
+    const getBuyPrice = this.state.tokenContract ? this.state.tokenContract.getBuyPrice : null;
+
+    getBuyPrice(tokenAmount*10**18, {
+      from: window.web3.eth.accounts ? window.web3.eth.accounts[0] : null,
+      gas: 300000,
+      value: 0
+    },
+      (error, data) => {
+        this.setState({ "priceToEther": web3.fromWei(data.toNumber(), 'ether') });
+      });
+  }
+  getEtherPrice(e) {
+    this._getBuyPrice(this.state.token_amount ? this.state.token_amount : 0)
+  }
+
+  onBuyHandler(e) {
+    const onBuy = this.state.tokenContract ? this.state.tokenContract.buyTokens : null;
+    const price = this.state.priceToEther;
+
+    try {
+      console.log("Token amount needed", this.state.token_amount);
+      console.log("From", window.web3.eth.accounts);
+      console.log("Price", web3.toWei(price, 'ether'));
+
+      onBuy(this.state.token_amount*10**18, {
+        from: window.web3.eth.accounts ? window.web3.eth.accounts[0] : null,
+        gas: 300000,
+        value: web3.toWei(price, 'ether')
+      }, (error, result) => {
+        console.log("Result", result);
+        console.error("error", error);
+      });
+    } catch (error) {
+      alert(error, "Metamask is not connected");
+    }
+
+
   }
   onImageClick() {
     this.props.openModal();
@@ -93,7 +145,7 @@ class Profile extends React.Component {
       <div className='profile-button profile-button-logout'>
         <RaisedButton
           onClick={this.onLogout}
-          buttonStyle={{ border:' 1px solid darkred' }}
+          buttonStyle={{ border: ' 1px solid darkred' }}
           backgroundColor='white'
           label='logout'
         />
@@ -110,13 +162,13 @@ class Profile extends React.Component {
       </div>
     );
     const backing = (
-          <div>
-              <span className='profile-waytcoin-symbol'>
-                <img src='/assets/waytcoin-symbol.png' />
-              </span>
-            {waytcoins}
-          </div>
-        );
+      <div>
+        <span className='profile-waytcoin-symbol'>
+          <img src='/assets/waytcoin-symbol.png' />
+        </span>
+        {waytcoins}
+      </div>
+    );
     return (
       <Grid className="profile">
         <Row>
@@ -134,17 +186,48 @@ class Profile extends React.Component {
           <Col sm={12}>
             <h3><strong>{username}</strong></h3>
             <div className="profile-eth-adress">
-              <h6> Your ETH-Adress: </h6>
+              <h6> Your ETH-Adress: {getWeb3().eth.accounts[0]} </h6>
               <Web3Provider>
                 <Web3Component />
               </Web3Provider>
             </div>
-            Your balance: {balance}
+            Your balance: {this.state.balance}
             <p></p>
-            Your backing: {backing}
+            Your reputation: {backing}
           </Col>
         </Row>
-        <p></p>
+        <Row>
+          <Col sm={6}>
+            <TextField
+              name="token_amount"
+              hintText="Token amount"
+              onChange={this.onChanged}
+              fullWidth={false}
+            />
+            <label>{this.state.priceToEther}</label>
+          </Col>
+          <Col sm={6}>
+            <div className='profile-button profile-button-save'>
+              <RaisedButton
+                onClick={this.onBuyHandler}
+                backgroundColor='#00cf70'
+                label={'Buy'}
+              />
+            </div>
+            <RaisedButton
+              onClick={this.getEtherPrice}
+              backgroundColor='#00cf70'
+              label={'Current price (ETH)'}
+            />
+          </Col>
+        </Row>
+        <Row>
+          <Col sm={12}>
+          <font size="1">
+              Contract: <a href="https://rinkeby.etherscan.io/address/0x56aeab032d7c1b1c00732b501477038b657cce04" target="_blank">0x56aeab032d7c1b1c00732b501477038b657cce04</a>
+            </font>
+          </Col>
+        </Row>
         <Row>
           <Col sm={12}>
             <TextField
@@ -163,13 +246,13 @@ class Profile extends React.Component {
             />
           </Col>
         </Row>
-          <div className='profile-button profile-button-save'>
-            <RaisedButton
-              onClick={this.onSave}
-              backgroundColor='#00cf70'
-              label={this.props.isRegisteredUser ? 'Save' : 'Register'}
-            />
-          </div>
+        <div className='profile-button profile-button-save'>
+          <RaisedButton
+            onClick={this.onSave}
+            backgroundColor='#00cf70'
+            label={this.props.isRegisteredUser ? 'Save' : 'Register'}
+          />
+        </div>
         <p></p>
         <Row>
           <Col sm={12}>

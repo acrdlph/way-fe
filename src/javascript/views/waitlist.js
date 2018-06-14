@@ -26,6 +26,7 @@ import Web3Component, { initContract, getWeb3 } from '../components/Web3Componen
 import Blockgeeks from '../../abi/Blockgeeks.json';
 import { debug } from 'util';
 
+
 class WaitList extends React.Component {
 
   constructor (props) {
@@ -86,7 +87,7 @@ class WaitList extends React.Component {
     initWebSocketStore(sessionStorage.getItem('userId'),
       (event) => notifyNewMessage(transformMessages([event])[0]));
 
-    const contract = initContract(Blockgeeks, this.state.contractAddress);
+    const contract = initContract(Blockgeeks);
 
     this.setState({contract: contract});
 
