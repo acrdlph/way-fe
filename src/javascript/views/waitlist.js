@@ -74,7 +74,7 @@ class WaitList extends React.Component {
     }
 
     this.setState({
-      distance: 5000,
+      distance: 500000000,
       reputation: 100,
       contract: null,
     });
@@ -133,13 +133,13 @@ class WaitList extends React.Component {
 
     const {isUserOnboarded} = this.props;
     const {distance, reputation} = this.state;
+
     _.each(this.props.waitlist.data, (entry, key) => {
       const onClick = isUserOnboarded
         ? () => this.openChat(entry.id)
         : () => this.setState({showIncompleteProfileHint: true});
 
       const onEndorse = this.state.contract ? this.state.contract.endorse : null;
-
       list.push(
         <WaitListItem
           key={key}
@@ -172,7 +172,7 @@ class WaitList extends React.Component {
           visible={!isUserOnboarded && this.state.showIncompleteProfileHint}
           text={'Enter your name and interests to start communicating with other geeks'}
         />
-
+{/*
         <div>
           <ul className="signup-wait-dist signup-wait ">
             <li className="signup-wait-for-li"><strong className="signup-wait-for">Distance</strong></li>
@@ -207,7 +207,7 @@ class WaitList extends React.Component {
             <li className="title"><p className="signup-wait-for">{reputation} GEEK</p></li>
           </ul>
         </div>
-
+*/}
 
           <List>
             {list}

@@ -74,6 +74,7 @@ class UserData extends React.Component {
       <ImageSelection onUpload={this.refreshProfile} /> : null;
     const name = _.get(user, 'data.name', '');
     const interests = _.get(user, 'data.interests', '');
+    const endorsement = _.get(user, 'data.endorsement', '');
     const photo = _.get(user, 'data.photo', 'assets/avatar-placeholder.png');
     const registerText = (
       <span>Register <NavLink to='/register'>here</NavLink> to retain your GEEK status</span>
@@ -123,7 +124,7 @@ class UserData extends React.Component {
     ) : (
         <div>
           <InfoBox visible={!isLoggedIn()} text={registerText} />
-          <WaitListItem photo={photo} interests={interests} name={name} address={address} onClick={this.setEditable} isActionVisible={false} />
+          <WaitListItem endorsement={endorsement} photo={photo} interests={interests} name={name} address={address} onClick={this.setEditable} isActionVisible={false} />
         </div>
       );
   }

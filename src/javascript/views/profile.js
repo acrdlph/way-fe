@@ -46,6 +46,7 @@ class Profile extends React.Component {
       username: this.props.username,
       interests: this.props.interests,
       balance: 0,
+      endorsement: this.props.endorsement,
       address: web3.eth.accounts[0],
       tokenContract: initContract(Blockgeeks),
       priceToEther: null
@@ -137,7 +138,7 @@ class Profile extends React.Component {
     this.props.updateUserData(userId, data);
   }
   render() {
-    const { username, name, interests, photo, waytcoins } = this.props;
+    const { username, name, interests, photo, waytcoins, endorsement } = this.props;
     const photoUrl = photo || 'assets/avatar-placeholder.png';
     const imageSelectionModal = this.props.showModal ?
       <ImageSelection onUpload={this.refreshProfile} /> : null;
@@ -193,7 +194,7 @@ class Profile extends React.Component {
             </div>
             Your balance: {this.state.balance}
             <p></p>
-            Your reputation: {backing}
+            Your reputation: {endorsement}
           </Col>
         </Row>
         <Row>
