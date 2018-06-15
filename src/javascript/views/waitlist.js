@@ -65,7 +65,7 @@ class WaitList extends React.Component {
 
     this.state = {
       showIncompleteProfileHint: false,
-      contractAddress: '0x0ab528157f9a3859ddc54dfac618041b05fdaef0'
+      contractAddress: '0xbaa593e9c1f11bbcfa4725085211d764eec26592'
     };
     this.openChat = this.openChat.bind(this);
 

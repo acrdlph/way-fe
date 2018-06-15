@@ -4,7 +4,7 @@ import Web3 from 'web3'
 import { username } from '../stores/accountStore';
 
 let web3 = window.web3;
-export const contractAddress = '0x56aeab032d7c1b1c00732b501477038b657cce04';
+export const contractAddress = '0xbaa593e9c1f11bbcfa4725085211d764eec26592';
 export const initContract = (abi) => {
     if (web3) {
         return web3.eth.contract(abi).at(contractAddress);

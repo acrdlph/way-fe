@@ -201,7 +201,7 @@ class Profile extends React.Component {
           <Col sm={6}>
             <TextField
               name="token_amount"
-              hintText="Token amount"
+              hintText="Desired token amount"
               onChange={this.onChanged}
               fullWidth={false}
             />
@@ -225,7 +225,7 @@ class Profile extends React.Component {
         <Row>
           <Col sm={12}>
           <font size="1">
-              Contract: <a href="https://rinkeby.etherscan.io/address/0x56aeab032d7c1b1c00732b501477038b657cce04" target="_blank">0x56aeab032d7c1b1c00732b501477038b657cce04</a>
+              Contract: <a href="https://rinkeby.etherscan.io/address/0x56aeab032d7c1b1c00732b501477038b657cce04" target="_blank">0xbaa593e9c1f11bbcfa4725085211d764eec26592</a>
             </font>
           </Col>
         </Row>
