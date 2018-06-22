@@ -166,7 +166,6 @@ class WaitList extends React.Component {
 
     return (
       <div>
-
         <UserData />
         <Infobox
           visible={!isUserOnboarded && this.state.showIncompleteProfileHint}
