@@ -55,7 +55,7 @@ export default class WaitListItem extends React.Component {
     }
     let hasUnreadMessagesClass = '';
     if (lastContact > 0 && nonDeliveredChatCount > 0) {
-      hasUnreadMessagesClass = <p> You have unread messages ({nonDeliveredChatCount}) </p>;
+      hasUnreadMessagesClass = <p> <CommunicationChatBubble /> ({nonDeliveredChatCount})</p>
     }
 
     // const hasUnreadMessagesClass = nonDeliveredChatCount > 0 ? '' : 'waitlist-item-invisible';
