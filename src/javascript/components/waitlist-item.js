@@ -53,13 +53,17 @@ export default class WaitListItem extends React.Component {
     if (lastContact > 0) {
       alreadyContactedClass = 'waitlist-item-already-contacted';
     }
-    const hasUnreadMessagesClass = nonDeliveredChatCount > 0 ? '' : 'waitlist-item-invisible';
+    let hasUnreadMessagesClass = '';
+    if (lastContact > 0 && nonDeliveredChatCount > 0) {
+      hasUnreadMessagesClass = <p> <CommunicationChatBubble /> ({nonDeliveredChatCount})</p>
+    }
 
+    // const hasUnreadMessagesClass = nonDeliveredChatCount > 0 ? '' : 'waitlist-item-invisible';
     return (
       <div className={'waitlist-item-parent'}>
-        <div className={'waitlist-item ' + alreadyContactedClass} >
+        <div className={'waitlist-item ' + alreadyContactedClass}  >
 
-          <div className='waitlist-item-avatar'>
+          <div className={ 'waitlist-item-avatar' }>
             <Avatar
               size={50}
               src={photo}
@@ -75,6 +79,10 @@ export default class WaitListItem extends React.Component {
               Reputation <strong>{endorsement} GEEK</strong>
             </p>
 
+          </div>
+
+          <div className="waitlist-item-unread">
+            {hasUnreadMessagesClass}
           </div>
 
           {isActionVisible && <ul className='waitlist-item-actions'>

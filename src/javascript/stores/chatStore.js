@@ -37,6 +37,7 @@ export const notifyNewMessage = (message) => {
     // notify(`New message from ${senderName}`, notificationTypes.NEW_MESSAGE_RECEIVED, message.message);
   }
 };
+
 export const TransformMessages = (messages) => {
   const transformedMessages = [];
   _.each(messages, entry => {
