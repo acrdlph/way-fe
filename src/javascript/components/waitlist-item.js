@@ -86,7 +86,7 @@ export default class WaitListItem extends React.Component {
           </div>
 
           {isActionVisible && <ul className='waitlist-item-actions'>
-            <li><button onClick={onClickHelper} className='waitlist-item-button blue'> Meet </button></li>
+            <li><button onClick={onClickHelper} className='waitlist-item-button blue'> Chat </button></li>
             <li><button className='waitlist-item-button green' onClick={() => {
               try {
                 console.log("To", address);
