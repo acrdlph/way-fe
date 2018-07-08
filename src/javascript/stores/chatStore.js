@@ -5,10 +5,12 @@ import {notify, types as notificationTypes} from '../util/notification';
 import Push from 'push.js';
 import Onboarding, {register} from '../views/registration.js';
 import UserData from '../components/user-data';
+import {loadChatPartnerData} from '../stores/chatPartnerStore';
 const types = {
   LOADING: 'CHAT_LOADING',
   LOADED: 'CHAT_LOADED',
   ADDMESSAGE: 'CHAT_ADD_MESSAGE',
+  SENT: 'NOTIFICATION_SENT'
 };
 const getUsername = (userId) => {
   // TODO: This is highly inefficient and has to be refactored!
@@ -19,13 +21,14 @@ const getUsername = (userId) => {
   return username[userId];
 };
 // pop-up notification function for chat service
-export const notifyNewMessage = (message) => {
+export const notifyNewMessage = (message, senderName) => {
   const currentPath = window.location.hash;
-  const userId = sessionStorage.getItem('userId');
+  const receiverId = message.receiver_id;
   const senderId = message.sender;
-  const senderName = senderId.username;
-  if (userId != message.sender ) {
-    Push.create(`New Message`, {
+  const userId = sessionStorage.getItem('userId');
+  
+  if (userId !== senderId ) {
+    Push.create(`${senderName} messaged you`, {
     body: message.message,
     icon: 'https://static.wixstatic.com/media/b0fd8d_f9da5291c3034064ad161d6fe3d166d3~mv2_d_3000_3000_s_4_2.png/v1/crop/x_0,y_0,w_3000,h_1714/fill/w_92,h_44,al_c,usm_0.66_1.00_0.01/b0fd8d_f9da5291c3034064ad161d6fe3d166d3~mv2_d_3000_3000_s_4_2.png',
     timeout: 4000,
@@ -35,7 +38,7 @@ export const notifyNewMessage = (message) => {
     }
 });
     // notify(`New message from ${senderName}`, notificationTypes.NEW_MESSAGE_RECEIVED, message.message);
-  }
+ }
 };
 
 export const TransformMessages = (messages) => {
@@ -89,7 +92,6 @@ export const loadMessages = (userId, chatPartnerId) => (dispatch) => {
 export const addMessagesToChat = (messages, chatPartnerId) => {
   const transformedMessages = TransformMessages(messages);
   _.each(transformedMessages, (message) => {
-    notifyNewMessage(message);
   });
   const messagesFromOpenChatOnly = _.filter(transformedMessages, (msg) => {
     return msg.sender === chatPartnerId || msg.receiver === chatPartnerId;
@@ -99,10 +101,16 @@ export const addMessagesToChat = (messages, chatPartnerId) => {
     data: messagesFromOpenChatOnly
   };
 };
+export const notificationSent = () => {
+  return{
+    type: types.SENT
+  };
+};
 const initialState = {
   loading: false,
   loaded: false,
-  data: []
+  data: [],
+  showNotification: false
 };
 const reducer = (state = initialState, action) => {
   switch (action.type) {
@@ -123,12 +131,20 @@ const reducer = (state = initialState, action) => {
         const allMessages = sortMessages(newMessages.concat(state.data));
         return {
           ...state,
-          data: allMessages
+          data: allMessages,
+          showNotification: true
+        };
+      case types.SENT:
+        return{
+          ...state,
+          showNotification:false
         };
     default:
       return state;
   };
 };
+
+
 export default {
   reducer
 };

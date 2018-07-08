@@ -29,16 +29,16 @@ export const send = async function send(msg) {
     const result = await managedSend(msg); 
     console.log("send message: " + msg);
     return result;
-}
+};
 
 export const markDelivered = async function markDelivered(msg) {
     currentConnection.emit('MESSAGE_DELIVERED', msg.id);
-}
+};
 
 const managedSend = async function managedSend(msg) {
     if (isConnected()) {
         currentConnection.emit('NEW_MESSAGE', msg);
-        console.log("Supposed to be SENT. :D", msg)
+        console.log("Supposed to be SENT. :D", msg);
         return true;
     } else {
         // connection issue, store messages locally
@@ -50,7 +50,7 @@ const managedSend = async function managedSend(msg) {
 
 const isConnected = function isConnected() {
     return currentConnection && currentConnection.connected;
-}
+};
 
 const newConnection = async function newConnection() {
     let connection = io(WEBSOCKET_BASE_URL + 
@@ -61,22 +61,22 @@ const newConnection = async function newConnection() {
     addConnectionhandler(connection);
     console.log("New connection Finished", connection);
     return connection;
-} 
+};
 
 const onSuccess = function onSuccess() {
     // indirection so that connectionSuccessHandler can be replaced after connection had been created
     connectionSuccessHandler();
-}
+};
 
 const onMessage = function onMessage(event) {
     // indirection so that messageHandler can be replaced after connection had been created
     messageHandler(event);
-}
+};
 
 const onClose = function onClose() {
     // indirection so that connectionCloseHandler can be replaced after connection had been created
     connectionCloseHandler();
-}
+};
 
 function sendDelayedMessages() {
     while (delayedMessages.length && isConnected()) {
@@ -93,19 +93,20 @@ const addConnectionhandler = function addConnectionhandler(connection) {
             onSuccess();
         }, 500);
     });
-}
+};
 
 const addMessagehandler = function addMessagehandler(connection) {
     connection.on('NEW_MESSAGE', (msg) => {
         console.log('message received', JSON.stringify(msg));
         onMessage(msg);
+        const usernames = JSON.parse(sessionStorage.getItem('username'));
     });
-}
+};
 
 const addClosehandler = function addClosehandler(connection) {
     connection.on('disconnect', (reason) => {
         console.log('chat connection closed ', reason);
         onClose();
     });
-} 
+};
 

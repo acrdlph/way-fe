@@ -79,7 +79,7 @@ export const loadUserDataGeneral = (userId, endpoint) => (dispatch) => {
 
 export const updateUserData = (userId, data) => (dispatch) => {
   const endpoint = 'api/users/' + userId;
-  data['address'] = window.web3 ? window.web3.eth.accounts[0] : null
+  data['address'] = window.web3 ? window.web3.eth.accounts[0] : null;
   const body = JSON.stringify(data);
   const headers = getAuthHeaders();
   headers.append('content-type', 'application/json');
