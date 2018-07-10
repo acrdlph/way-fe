@@ -24,7 +24,6 @@ export const uploadImage = ({ fileName, data }) => dispatch => {
 };
 
 const awaitFetch = async function awaitFetch(fileName, data, dispatch) {
-  console.log(fileName, data)
   const userId = sessionStorage.getItem('userId');
   const endpoint = `api/users/${userId}/photo`;
   try {

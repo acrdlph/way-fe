@@ -2,6 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import Modal from 'react-modal';
 import RaisedButton from 'material-ui/RaisedButton';
+import { showTheModal } from '../stores/modalStore';
+import { connect } from 'react-redux';
 
 
 const customStyles = {
@@ -20,7 +22,8 @@ export class OnBoarding extends React.Component {
     super(props);
 
     this.state = {
-      modalIsOpen: false
+      modalIsOpen: true,
+      visibleModal: false
     };
 
     this.openModal = this.openModal.bind(this);
@@ -38,20 +41,14 @@ export class OnBoarding extends React.Component {
   }
 
   closeModal() {
-    this.setState({ modalIsOpen: false });
+    this.props.close();
     this.props.saveAndContinue();
   }
 
   render() {
+    
     return (
       <div>
-        
-        <RaisedButton
-          label="Start"
-          className="start"
-          backgroundColor='#43d676'
-          onClick={this.openModal}
-        />
         <Modal
           isOpen={this.state.modalIsOpen}
           onAfterOpen={this.afterOpenModal}
@@ -60,11 +57,11 @@ export class OnBoarding extends React.Component {
           contentLabel="Example Modal"
         >
 
-          <u>Cryptogeeks.Berlin: The first token-curated ranking of  trusted blockchain experts.</u>
+          <u>Cryptogeeks.Berlin: The first token-curated ranking of trusted blockchain experts.</u>
           <br>
           </br>
           
-          <h2 ref={subtitle => this.subtitle = subtitle}>Instructions</h2>
+          <h2 ref={subtitle => this.subtitle = subtitle} >Instructions</h2>
 
           <div>
             <b>1. Register </b><br>
@@ -97,3 +94,11 @@ export class OnBoarding extends React.Component {
     );
   }
 }
+
+const mapDispatchToProps = dispatch => ({
+  close: () => {
+    dispatch(showTheModal(false));
+  }
+});
+
+export default connect(null, mapDispatchToProps)(OnBoarding);
