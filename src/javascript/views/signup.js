@@ -15,7 +15,8 @@ import { PARTNER_LOCATIONS } from '../util/constants';
 import Infobox from '../components/infobox';
 import { loadPartnerData } from '../stores/partnerStore';
 import './signup.less';
-import { OnBoarding } from '../components/Modal';
+import OnBoarding from '../components/Modal';
+import { showTheModal } from '../stores/modalStore';
 
 const locationInput = 'signup-location-input';
 let circle = false;
@@ -47,6 +48,7 @@ class Signup extends React.Component {
     this.clearLocation = this.clearLocation.bind(this);
     this.setLocationInputValue = this.setLocationInputValue.bind(this);
     this.setPlace = this.setPlace.bind(this);
+    this.openTheModal = this.openTheModal.bind(this);
     const userId = sessionStorage.getItem('userId');
     const locationId = sessionStorage.getItem('locationId');
     if (userId && !props.user) {
@@ -59,7 +61,8 @@ class Signup extends React.Component {
       geolocation: null,
       airport: isValidLocation ? locationIdFromPath : null,
       waitingTime: 30,
-      isSearchBoxVisible: false
+      isSearchBoxVisible: false,
+      visibleModal: false
     };
   }
   componentDidMount() {
@@ -220,6 +223,9 @@ class Signup extends React.Component {
     autocompleteApi = new google.maps.places.Autocomplete(document.getElementById(locationInput));
     autocompleteApi.addListener('place_changed', this.changeGeolocation);
   }
+  openTheModal() {
+    this.props.openTheModal();
+  }
   CircularProgress() {
     { this.toggleDiv; }
     const style = {
@@ -247,6 +253,8 @@ class Signup extends React.Component {
     );
 
   };
+
+
   toggleDiv() {
     const { show } = this.state;
     this.setState( { show : !show } );
@@ -276,8 +284,11 @@ class Signup extends React.Component {
       </div>
     );
   }
+
   render() {
     const { waitingTime } = this.state;
+    const Modal = this.props.showTheModal ?
+    <OnBoarding saveAndContinue={this.saveAndContinue} /> : null;
     return (
       <div className='signup'>
 
@@ -297,7 +308,19 @@ class Signup extends React.Component {
         <br>
 
         </br>
-        <OnBoarding saveAndContinue={this.saveAndContinue}/>
+        
+        <RaisedButton
+          label="Start"
+          className="start"
+          backgroundColor='#43d676'
+          onClick={this.openTheModal}
+        />
+        <br></br>
+        {Modal}
+       {/*  <OnBoarding 
+          saveAndContinue={this.saveAndContinue}
+          visibleModal= {this.state.visibleModal}
+        />; */}
         <RaisedButton
           className="login-btn"
           label="Login"
@@ -314,10 +337,12 @@ class Signup extends React.Component {
 const mapStateToProps = (state) => {
   return {
     partners: state.partners,
-    user: state.user
+    user: state.user,
+    showTheModal: state.modalStore.showTheModal
   };
 };
 const mapDispatchToProps = dispatch => ({
-  loadPartnerData: () => dispatch(loadPartnerData())
+  loadPartnerData: () => dispatch(loadPartnerData()),
+  openTheModal: () => dispatch(showTheModal(true))
 });
 export default connect(mapStateToProps, mapDispatchToProps)(Signup);

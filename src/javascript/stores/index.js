@@ -8,6 +8,7 @@ import profileImageStore from './profileImageStore';
 import accountStore from './accountStore';
 import feedbackStore from './feedbackStore';
 import interactionConfirmationStore from './interactionConfirmationStore';
+import modalStore from './modalStore';
 
 export default combineReducers({
   waitlist: waitlistStore.reducer,
@@ -18,5 +19,6 @@ export default combineReducers({
   profileImage: profileImageStore.reducer,
   account: accountStore.reducer,
   feedback: feedbackStore.reducer,
-  confirmInteraction: interactionConfirmationStore.reducer
+  confirmInteraction: interactionConfirmationStore.reducer,
+  modalStore:modalStore.reducer
 });
