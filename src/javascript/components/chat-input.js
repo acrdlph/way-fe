@@ -51,7 +51,6 @@ export default class ChatInput extends React.Component {
             disabled={this.props.disabled}
             label="Send"
             backgroundColor='#43D676'
-            onClick={this.saveAndContinue}
             onClick={this.sendMessage}
           />
         </div>
@@ -59,3 +58,4 @@ export default class ChatInput extends React.Component {
     );
   }
 }
+

@@ -17,6 +17,7 @@ import { transformMessages, notifyNewMessage } from '../stores/chatStore';
 import { loadUserData, isOnboarded } from '../stores/userStore';
 import { initWebSocketStore } from '../stores/webSocketStore';
 import { loadPartnerData } from '../stores/partnerStore';
+import {loadChatPartnerData} from '../stores/chatPartnerStore';
 import { requestPermissionForNotifications } from '../util/notification';
 import { PARTNER_LOCATIONS } from '../util/constants';
 import './waitlist.less';
@@ -25,7 +26,6 @@ import { Web3Provider } from 'react-web3';
 import Web3Component, { initContract, getWeb3 } from '../components/Web3Component';
 import Blockgeeks from '../../abi/Blockgeeks.json';
 import { debug } from 'util';
-
 
 class WaitList extends React.Component {
 
@@ -40,6 +40,7 @@ class WaitList extends React.Component {
 
     this.changeDistance = this.changeDistance.bind(this);
     this.changeReputation = this.changeReputation.bind(this);
+   // this.toShowNotification = this.toShowNotification.bind(this);
 
     if (userId) {
 
@@ -65,7 +66,8 @@ class WaitList extends React.Component {
 
     this.state = {
       showIncompleteProfileHint: false,
-      contractAddress: '0xbaa593e9c1f11bbcfa4725085211d764eec26592'
+      contractAddress: '0xbaa593e9c1f11bbcfa4725085211d764eec26592',
+      showNotification: false
     };
     this.openChat = this.openChat.bind(this);
 
@@ -79,20 +81,14 @@ class WaitList extends React.Component {
       contract: null,
     });
   }
-
+  
   componentDidMount () {
     // initialize so that messages can be delivered, but not acted upon
     // TODO handle the incoming messages and update chat bubbles
 
-    initWebSocketStore(sessionStorage.getItem('userId'),
-      (event) => notifyNewMessage(transformMessages([event])[0]));
-
     const contract = initContract(Blockgeeks);
 
     this.setState({contract: contract});
-
-    console.log(contract, this.state.contractAddress);
-
   }
 
   getContract () {
@@ -128,11 +124,11 @@ class WaitList extends React.Component {
     });
   }
 
+
   render () {
     const list = [];
-
-    const {isUserOnboarded} = this.props;
-    const {distance, reputation} = this.state;
+    const {isUserOnboarded, chat} = this.props;
+    const {distance, reputation, showNotification} = this.state;
 
     _.each(this.props.waitlist.data, (entry, key) => {
       const onClick = isUserOnboarded
@@ -159,7 +155,17 @@ class WaitList extends React.Component {
       );
     });
 
-    const isLoggedInUser = !!this.props.user.data.username;
+    initWebSocketStore(sessionStorage.getItem('userId'),
+      (event) => {
+        this.props.loadChatParnerData(event.sender_id);
+        setTimeout( () => {
+          const partner = this.props.chatPartner.data.name;
+          console.log(partner, 'gamo to panagidi su');
+          notifyNewMessage(event, partner);
+        });
+      });
+
+
 //    list.push(
 //      <EmptyLocationMessage showChallenge={FEATURE_WAITCOIN_CHALLENGE && isLoggedInUser}/>
 //    );
@@ -222,12 +228,15 @@ const mapStateToProps = (state) => ({
   user: state.user,
   isUserOnboarded: isOnboarded(state.user),
   partners: state.partners,
+  chat: state.chat,
+  chatPartner: state.chatPartner,
 });
 
 const mapDispatchToProps = dispatch => ({
   loadWaitlist: (userId) => dispatch(loadWaitlist(userId)),
   loadUserData: (userId) => dispatch(loadUserData(userId)),
-  loadPartnerData: () => dispatch(loadPartnerData())
+  loadPartnerData: () => dispatch(loadPartnerData()),
+  loadChatParnerData: (chatPartnerId) => dispatch(loadChatPartnerData(chatPartnerId))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(WaitList);
