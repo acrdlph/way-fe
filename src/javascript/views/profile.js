@@ -17,6 +17,8 @@ import Web3Component, { initContract, getWeb3, contractAddress } from '../compon
 import Blockgeeks from '../../abi/Blockgeeks.json';
 import { isLoggedIn } from '../stores/accountStore';
 import WaitListItem from '../components/waitlist-item';
+
+
 class Profile extends React.Component {
   constructor(props) {
     super(props);
@@ -137,7 +139,21 @@ class Profile extends React.Component {
     };
     this.props.updateUserData(userId, data);
   }
+
+
+  
+
   render() {
+
+    const createBackButton = (to) => {
+      return (
+        <NavLink to={to}>
+          <span className="glyphicon glyphicon glyphicon-chevron-left"/>
+        </NavLink>
+      );
+    };  
+    let backButton = createBackButton('/waitlist');
+    console.log("123456789asdfg", backButton);
     const { username, name, interests, photo, waytcoins, endorsement } = this.props;
     const photoUrl = photo || 'assets/avatar-placeholder.png';
     const imageSelectionModal = this.props.showModal ?
@@ -152,6 +168,7 @@ class Profile extends React.Component {
         />
       </div>
     ) : null;
+       
     const balance = (
       <div>
         <NavLink to='/challenge'>
@@ -172,6 +189,10 @@ class Profile extends React.Component {
     );
     return (
       <Grid className="profile">
+        <NavLink to='/waitlist'><img
+        className='logo-profile'
+        src='assets/icon.png'
+        /></NavLink>
         <Row>
           <Col sm={12}>
             <Avatar
