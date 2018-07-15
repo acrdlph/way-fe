@@ -8,26 +8,24 @@ import { NavLink } from 'react-router-dom';
 import fetch from 'isomorphic-fetch';
 import { Row, Col } from 'react-bootstrap';
 import _ from 'lodash';
+import TextField from 'material-ui/TextField';
 import TermsAndPolicy from '../components/terms-and-policy';
 import { trackPageView, trackEvent, events } from '../util/google-analytics';
 import { getAuthHeaders } from '../util/headers';
 import { PARTNER_LOCATIONS } from '../util/constants';
 import Infobox from '../components/infobox';
 import { loadPartnerData } from '../stores/partnerStore';
+import Login from './login';
 import './signup.less';
-import OnBoarding from '../components/Modal';
-import { showTheModal } from '../stores/modalStore';
 
 const locationInput = 'signup-location-input';
 let circle = false;
 let geolocationAvailable = false;
 let autocompleteApi = false;
-let showStart = false;
 
 class Signup extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { show : true };
 
     this.toggleDiv = this.toggleDiv.bind(this);
     const path = this.props.location.pathname;
@@ -35,7 +33,6 @@ class Signup extends React.Component {
     const locationIdFromPath = _.get(this.props.match, 'params.locationId');
     // TODO make this validation using partner api
     const isValidLocation = locationIdFromPath && _.includes(PARTNER_LOCATIONS, locationIdFromPath);
-    this.changeWaitingTime = this.changeWaitingTime.bind(this);
     this.save = this.save.bind(this);
     this.update = this.update.bind(this);
     this.saveAndContinue = this.saveAndContinue.bind(this);
@@ -47,8 +44,7 @@ class Signup extends React.Component {
     this.geocodeLocation = this.geocodeLocation.bind(this);
     this.clearLocation = this.clearLocation.bind(this);
     this.setLocationInputValue = this.setLocationInputValue.bind(this);
-    this.setPlace = this.setPlace.bind(this);
-    this.openTheModal = this.openTheModal.bind(this);
+    this.setLocationInputValue = this.setLocationInputValue.bind(this);
     const userId = sessionStorage.getItem('userId');
     const locationId = sessionStorage.getItem('locationId');
     if (userId && !props.user) {
@@ -60,13 +56,8 @@ class Signup extends React.Component {
       autoSelectedLocaton: undefined,
       geolocation: null,
       airport: isValidLocation ? locationIdFromPath : null,
-      waitingTime: 30,
       isSearchBoxVisible: false,
-      visibleModal: false
     };
-  }
-  componentDidMount() {
-    // this.buildLocation();
   }
   changeGeolocation() {
     const place = autocompleteApi.getPlace();
@@ -81,13 +72,6 @@ class Signup extends React.Component {
         latitude: lat
       }
     });
-  }
-  changeWaitingTime(event, value) {
-    const roundedValue = Math.floor(value);
-    this.setState({
-      waitingTime: roundedValue
-    });
-    trackEvent(events.USER_CHANGED_WAITING_TIME, { value: roundedValue });
   }
   getGeolocation() {
     return new Promise(function (resolve, reject) {
@@ -170,7 +154,7 @@ class Signup extends React.Component {
   async update(body) {
     console.log("Update user with: " + JSON.stringify(this.state));
     const userId = sessionStorage.getItem('userId');
-    const endpoint = 'api/users/' + userId + '?waiting_started=true';
+    const endpoint = 'api/users/' + this.props.account.userId || userId + '?waiting_started=true';
     const headers = getAuthHeaders();
     headers.append('content-type', 'application/json');
     const res = await fetch(endpoint, {
@@ -182,9 +166,8 @@ class Signup extends React.Component {
     return resJson;
   }
   async saveAndContinue() {
-    this.toggleDiv();
     await this.buildLocation();
-
+    this.props.account.wasLoginSuccessful ? this.toggleDiv() : null;
     if (!this.state.airport) {
       this.setState({
         showLocationRequiredHint: true
@@ -194,16 +177,16 @@ class Signup extends React.Component {
     const body = JSON.stringify({
       'location': this.state.airport,
       'geolocation': this.state.geolocation,
-      'waiting_time': this.state.waitingTime,
       'address': window.web3 ? window.web3.eth.accounts[0] : null
     });
     // if geolocationAvailable then we have already saved the user then update
     let json = {};
-    if (!geolocationAvailable && !sessionStorage.getItem('userId')) {
+/*     if (!geolocationAvailable && !sessionStorage.getItem('userId')) {
       json = await this.save(body);
     } else {
       json = await this.update(body);
-    }
+    } */
+    this.props.account.wasLoginSuccessful ? json = await this.update(body) : null;
     const locationId = json.location.toLowerCase();
     sessionStorage.setItem('locationId', locationId);
     this.props.history.push(`/waitlist/${locationId}`);
@@ -222,9 +205,6 @@ class Signup extends React.Component {
   initAutoComplete() {
     autocompleteApi = new google.maps.places.Autocomplete(document.getElementById(locationInput));
     autocompleteApi.addListener('place_changed', this.changeGeolocation);
-  }
-  openTheModal() {
-    this.props.openTheModal();
   }
   CircularProgress() {
     { this.toggleDiv; }
@@ -251,9 +231,7 @@ class Signup extends React.Component {
         </div>
       </div>
     );
-
   };
-
 
   toggleDiv() {
     const { show } = this.state;
@@ -283,12 +261,10 @@ class Signup extends React.Component {
         {this.initAutoComplete()}
       </div>
     );
-  }
-
+  };
+  
   render() {
-    const { waitingTime } = this.state;
-    const Modal = this.props.showTheModal ?
-    <OnBoarding saveAndContinue={this.saveAndContinue} /> : null;
+  
     return (
       <div className='signup'>
 
@@ -305,28 +281,22 @@ class Signup extends React.Component {
         {this.renderLocationInput()}
         {this.state.show&&this.CircularProgress()}
 
-        <br>
-
-        </br>
+        <br></br>
         
-        <RaisedButton
-          label="Start"
-          className="start"
-          backgroundColor='#43d676'
-          onClick={this.openTheModal}
+        <Login 
+          pathname={this.props.location.pathname} 
+          onClick={this.saveAndContinue}
+          locationId={this.locationId}
+          history={this.props.history}
         />
         <br></br>
-        {Modal}
-       {/*  <OnBoarding 
-          saveAndContinue={this.saveAndContinue}
-          visibleModal= {this.state.visibleModal}
-        />; */}
         <RaisedButton
-          className="login-btn"
-          label="Login"
+          className="Signup-btn"
+          label="Sign up"
           backgroundColor='white'
+          fullWidth={true}
           onClick={() => {
-            this.props.history.push('login');
+            this.props.history.push('register');
           }}
         />
         <TermsAndPolicy />
@@ -338,11 +308,10 @@ const mapStateToProps = (state) => {
   return {
     partners: state.partners,
     user: state.user,
-    showTheModal: state.modalStore.showTheModal
+    account: state.account
   };
 };
 const mapDispatchToProps = dispatch => ({
   loadPartnerData: () => dispatch(loadPartnerData()),
-  openTheModal: () => dispatch(showTheModal(true))
 });
 export default connect(mapStateToProps, mapDispatchToProps)(Signup);
