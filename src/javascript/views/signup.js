@@ -275,9 +275,7 @@ class Signup extends React.Component {
           />
         </div>
         <br></br>
-        <h1>
-          Find blockchain experts.
-        </h1>
+        
         {this.renderLocationInput()}
         {this.state.show&&this.CircularProgress()}
 
