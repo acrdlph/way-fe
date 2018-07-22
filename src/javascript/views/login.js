@@ -45,7 +45,7 @@ class Login extends React.Component {
   login() {
     const {loginName, password} = this.state;
     this.props.login(loginName, password);
-    this.props.onClick();
+    this.props.onClick(this.props.account.wasLoginSuccessful);
   }
 
   render() {
@@ -77,7 +77,7 @@ class Login extends React.Component {
 
         <InfoBox text={"Invalid username or password!"} visible={this.props.account.hasLoginFailed}/>
 
-        
+
        {/* <div className='login-reset-password'>
           Forgot password? <NavLink to='/reset-password'>Reset it!</NavLink>
     </div>*/}

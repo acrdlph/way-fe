@@ -165,9 +165,9 @@ class Signup extends React.Component {
     const resJson = await res.json();
     return resJson;
   }
-  async saveAndContinue() {
+  async saveAndContinue(wasLoginSuccessful) {
     await this.buildLocation();
-    this.props.account.wasLoginSuccessful ? this.toggleDiv() : null;
+    (wasLoginSuccessful || this.props.account.wasLoginSuccessful) ? this.toggleDiv() : null;
     if (!this.state.airport) {
       this.setState({
         showLocationRequiredHint: true
@@ -186,7 +186,7 @@ class Signup extends React.Component {
     } else {
       json = await this.update(body);
     } */
-    this.props.account.wasLoginSuccessful ? json = await this.update(body) : null;
+    if (wasLoginSuccessful || this.props.account.wasLoginSuccessful) {json = await this.update(body);}
     const locationId = json.location.toLowerCase();
     sessionStorage.setItem('locationId', locationId);
     this.props.history.push(`/waitlist/${locationId}`);
@@ -262,9 +262,9 @@ class Signup extends React.Component {
       </div>
     );
   };
-  
+
   render() {
-  
+
     return (
       <div className='signup'>
 
@@ -282,9 +282,9 @@ class Signup extends React.Component {
         {this.state.show&&this.CircularProgress()}
 
         <br></br>
-        
-        <Login 
-          pathname={this.props.location.pathname} 
+
+        <Login
+          pathname={this.props.location.pathname}
           onClick={this.saveAndContinue}
           locationId={this.locationId}
           history={this.props.history}
@@ -294,7 +294,6 @@ class Signup extends React.Component {
           className="Signup-btn"
           label="Sign up"
           backgroundColor='white'
-          fullWidth={true}
           onClick={() => {
             this.props.history.push('register');
           }}
