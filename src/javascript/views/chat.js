@@ -9,7 +9,7 @@ import ChatInput from '../components/chat-input';
 import Conversation from '../components/conversation';
 import {loadMessages, addMessagesToChat, notifyNewMessage, notificationSent} from '../stores/chatStore';
 import {loadUserData} from '../stores/userStore';
-import {loadChatPartnerData} from '../stores/chatPartnerStore';
+import { loadChatPartnerData } from '../stores/chatPartnerStore';
 import {initWebSocketStore, send, markDelivered} from '../stores/webSocketStore';
 import './chat.less';
 
