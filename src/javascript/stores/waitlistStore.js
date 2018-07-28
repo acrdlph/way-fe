@@ -14,7 +14,7 @@ let alreadyLoadedData = [];
 const onUserJoined = (user) => {
   console.log("new user joined: " + JSON.stringify(user));
   const name = user.name || 'An anonymous bird';
-  notify(`${name} has joined the Blockgeeks!`, notificationTypes.USER_JOINED_WAITLIST);
+  notify(`${name} has joined the Cryptogeeks!`, notificationTypes.USER_JOINED_WAITLIST);
 };
 
 export const loadWaitlist = (userId) => (dispatch) => {

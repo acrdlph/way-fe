@@ -14,7 +14,7 @@ class Login extends React.Component {
 
   constructor(props) {
     super(props);
-    const path = this.props.location.pathname;
+    const path = this.props.pathname;
     trackPageView(path);
 
     this.state = {
@@ -28,10 +28,10 @@ class Login extends React.Component {
   }
 
   componentWillReceiveProps(props) {
+    console.log('was called now');
     if(props.account.wasLoginSuccessful && !this.props.account.wasLoginSuccessful) {
       sessionStorage.setItem('userId', props.account.userId);
       trackEvent(events.USER_LOGGED_IN);
-      this.props.history.push(`/signup`);
     }
   }
 
@@ -45,17 +45,12 @@ class Login extends React.Component {
   login() {
     const {loginName, password} = this.state;
     this.props.login(loginName, password);
+    this.props.onClick();
   }
 
   render() {
-
     return (
       <div className='login container'>
-
-        <div className='login-header'>
-          Login
-        </div>
-
         <TextField
           id='username'
           className='username'
@@ -74,7 +69,7 @@ class Login extends React.Component {
         />
 
         <RaisedButton
-          label="OK"
+          label="Log In"
           backgroundColor='#43D676'
           onClick={this.login}
           fullWidth={true}
@@ -82,15 +77,10 @@ class Login extends React.Component {
 
         <InfoBox text={"Invalid username or password!"} visible={this.props.account.hasLoginFailed}/>
 
-        <div className='login-register'>
-          You don't have an account yet? <NavLink to='/register'>Register here!</NavLink>
-        </div>
         
        {/* <div className='login-reset-password'>
           Forgot password? <NavLink to='/reset-password'>Reset it!</NavLink>
     </div>*/}
-        
-        <TermsAndPolicy/>
       </div>
     );
   }

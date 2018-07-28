@@ -8,29 +8,31 @@ import { NavLink } from 'react-router-dom';
 import fetch from 'isomorphic-fetch';
 import { Row, Col } from 'react-bootstrap';
 import _ from 'lodash';
+import TextField from 'material-ui/TextField';
 import TermsAndPolicy from '../components/terms-and-policy';
 import { trackPageView, trackEvent, events } from '../util/google-analytics';
 import { getAuthHeaders } from '../util/headers';
 import { PARTNER_LOCATIONS } from '../util/constants';
 import Infobox from '../components/infobox';
 import { loadPartnerData } from '../stores/partnerStore';
+import Login from './login';
 import './signup.less';
+
 const locationInput = 'signup-location-input';
 let circle = false;
 let geolocationAvailable = false;
 let autocompleteApi = false;
+
 class Signup extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { show : true };
-        
+
     this.toggleDiv = this.toggleDiv.bind(this);
     const path = this.props.location.pathname;
     trackPageView(path);
     const locationIdFromPath = _.get(this.props.match, 'params.locationId');
     // TODO make this validation using partner api
     const isValidLocation = locationIdFromPath && _.includes(PARTNER_LOCATIONS, locationIdFromPath);
-    this.changeWaitingTime = this.changeWaitingTime.bind(this);
     this.save = this.save.bind(this);
     this.update = this.update.bind(this);
     this.saveAndContinue = this.saveAndContinue.bind(this);
@@ -42,7 +44,7 @@ class Signup extends React.Component {
     this.geocodeLocation = this.geocodeLocation.bind(this);
     this.clearLocation = this.clearLocation.bind(this);
     this.setLocationInputValue = this.setLocationInputValue.bind(this);
-    this.setPlace = this.setPlace.bind(this);
+    this.setLocationInputValue = this.setLocationInputValue.bind(this);
     const userId = sessionStorage.getItem('userId');
     const locationId = sessionStorage.getItem('locationId');
     if (userId && !props.user) {
@@ -54,12 +56,8 @@ class Signup extends React.Component {
       autoSelectedLocaton: undefined,
       geolocation: null,
       airport: isValidLocation ? locationIdFromPath : null,
-      waitingTime: 30,
-      isSearchBoxVisible: false
+      isSearchBoxVisible: false,
     };
-  }
-  componentDidMount() {
-    // this.buildLocation();
   }
   changeGeolocation() {
     const place = autocompleteApi.getPlace();
@@ -74,13 +72,6 @@ class Signup extends React.Component {
         latitude: lat
       }
     });
-  }
-  changeWaitingTime(event, value) {
-    const roundedValue = Math.floor(value);
-    this.setState({
-      waitingTime: roundedValue
-    });
-    trackEvent(events.USER_CHANGED_WAITING_TIME, { value: roundedValue });
   }
   getGeolocation() {
     return new Promise(function (resolve, reject) {
@@ -163,7 +154,7 @@ class Signup extends React.Component {
   async update(body) {
     console.log("Update user with: " + JSON.stringify(this.state));
     const userId = sessionStorage.getItem('userId');
-    const endpoint = 'api/users/' + userId + '?waiting_started=true';
+    const endpoint = 'api/users/' + this.props.account.userId || userId + '?waiting_started=true';
     const headers = getAuthHeaders();
     headers.append('content-type', 'application/json');
     const res = await fetch(endpoint, {
@@ -175,9 +166,8 @@ class Signup extends React.Component {
     return resJson;
   }
   async saveAndContinue() {
-    this.toggleDiv();
     await this.buildLocation();
-    
+    this.props.account.wasLoginSuccessful ? this.toggleDiv() : null;
     if (!this.state.airport) {
       this.setState({
         showLocationRequiredHint: true
@@ -187,16 +177,16 @@ class Signup extends React.Component {
     const body = JSON.stringify({
       'location': this.state.airport,
       'geolocation': this.state.geolocation,
-      'waiting_time': this.state.waitingTime,
       'address': window.web3 ? window.web3.eth.accounts[0] : null
     });
     // if geolocationAvailable then we have already saved the user then update
     let json = {};
-    if (!geolocationAvailable && !sessionStorage.getItem('userId')) {
+/*     if (!geolocationAvailable && !sessionStorage.getItem('userId')) {
       json = await this.save(body);
     } else {
       json = await this.update(body);
-    }
+    } */
+    this.props.account.wasLoginSuccessful ? json = await this.update(body) : null;
     const locationId = json.location.toLowerCase();
     sessionStorage.setItem('locationId', locationId);
     this.props.history.push(`/waitlist/${locationId}`);
@@ -230,23 +220,23 @@ class Signup extends React.Component {
     return(
       <div>
         <div style={style.container}>
-    <RefreshIndicator
-      size={40}
-      left={10}
-      top={0}
-      loadingColor="#3ab966"
-      status="loading"
-      style={style.refresh}
-    />
-  </div>
-    </div>
+          <RefreshIndicator
+            size={40}
+            left={10}
+            top={0}
+            loadingColor="#3ab966"
+            status="loading"
+            style={style.refresh}
+          />
+        </div>
+      </div>
     );
-    
   };
+
   toggleDiv() {
     const { show } = this.state;
     this.setState( { show : !show } );
-}
+  }
   renderLocationInput() {
     // TODO move this to a component
     const locationList = [];
@@ -260,10 +250,10 @@ class Signup extends React.Component {
     });
     return (
       <div style={{ paddingBottom: '15px', display: this.state.isSearchBoxVisible ? 'block' : 'none' }}>
-      
+
         <Infobox
           visible={this.state.showLocationRequiredHint}
-          text={'Please enter your location first to join the waitlist'}
+          text={'Please enter your location to join the list - we are starting in Berlin.'}
         />
         <input onFocus={this.clearLocation}
           className="signup-location-input-style" id={locationInput} type="text"
@@ -271,40 +261,42 @@ class Signup extends React.Component {
         {this.initAutoComplete()}
       </div>
     );
-  }
+  };
+  
   render() {
-    const { waitingTime } = this.state;
+  
     return (
       <div className='signup'>
-        
+
         <div className='onboarding-logo'>
           <img
             className='logo'
             src='assets/bglogo.png'
           />
         </div>
-        
-        <h1>
-          Find blockchain experts nearby.
-        </h1>
+        <br></br>
+        <h2>
+          Find blockchain experts.
+        </h2>
         {this.renderLocationInput()}
-        {this.state.show&&this.CircularProgress()} 
+        {this.state.show&&this.CircularProgress()}
+
+        <br></br>
         
-        <br>
-       
-        </br>
-        <RaisedButton
-          label="Start"
-          className="start"
-          backgroundColor='#43d676'
+        <Login 
+          pathname={this.props.location.pathname} 
           onClick={this.saveAndContinue}
+          locationId={this.locationId}
+          history={this.props.history}
         />
+        <br></br>
         <RaisedButton
-          className="login-btn"
-          label="Login"
+          className="Signup-btn"
+          label="Sign up"
           backgroundColor='white'
+          fullWidth={true}
           onClick={() => {
-            this.props.history.push('login');
+            this.props.history.push('register');
           }}
         />
         <TermsAndPolicy />
@@ -315,11 +307,11 @@ class Signup extends React.Component {
 const mapStateToProps = (state) => {
   return {
     partners: state.partners,
-    user: state.user
+    user: state.user,
+    account: state.account
   };
 };
 const mapDispatchToProps = dispatch => ({
-  loadPartnerData: () => dispatch(loadPartnerData())
+  loadPartnerData: () => dispatch(loadPartnerData()),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(Signup);
-

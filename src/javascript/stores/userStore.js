@@ -67,7 +67,8 @@ export const loadUserDataGeneral = (userId, endpoint) => (dispatch) => {
         interests: data.interests,
         username: data.username,
         interactionUrl: data.interaction_url,
-        waytcoins: data.waytcoins
+        waytcoins: data.waytcoins,
+        endorsement: data.endorsement
       };
       dispatch({
         type: types.LOADED,
@@ -78,7 +79,7 @@ export const loadUserDataGeneral = (userId, endpoint) => (dispatch) => {
 
 export const updateUserData = (userId, data) => (dispatch) => {
   const endpoint = 'api/users/' + userId;
-  data['address'] = window.web3 ? window.web3.eth.accounts[0] : null
+  data['address'] = window.web3 ? window.web3.eth.accounts[0] : null;
   const body = JSON.stringify(data);
   const headers = getAuthHeaders();
   headers.append('content-type', 'application/json');

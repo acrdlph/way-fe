@@ -14,8 +14,18 @@
   text-align: center;
 }
 .onboarding-logo img {
-  max-width: 80%;
+  width: 24%;
 }
+@media only screen 
+  and (min-device-width: 320px) 
+  and (max-device-width: 480px)
+  and (-webkit-min-device-pixel-ratio: 2) {
+    .onboarding-logo img {
+      width: 60%;
+    }
+    
+}
+
 
 .signup-slider-distance {
   width: 200px;
@@ -64,7 +74,7 @@
 }
 
 .signup-location-input-style {
-  width: 300px;
+  width: 200px;
   height: 45px;
   font-size: 20px;
   font-weight: 500;
@@ -73,7 +83,12 @@
   vertical-align: middle;
 }
 
-.login-btn {
+.Signup-btn {
   border: #43d676;
   background: white !important;
+  position: relative;
+  width: 50px;
+  text-align: left;
+  padding: 0px
 }
+

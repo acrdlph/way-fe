@@ -25,7 +25,7 @@ export default class WaitListItem extends React.Component {
     const isActionVisible = this.props.isActionVisible === false ? false : true;
 
     if (interests.trim() === '') {
-      interests = "Just waiting";
+      interests = "New member, hit me up!";
     }
     if (name.trim() === '') {
       name = 'No name specified';
@@ -53,13 +53,17 @@ export default class WaitListItem extends React.Component {
     if (lastContact > 0) {
       alreadyContactedClass = 'waitlist-item-already-contacted';
     }
-    const hasUnreadMessagesClass = nonDeliveredChatCount > 0 ? '' : 'waitlist-item-invisible';
+    let hasUnreadMessagesClass = '';
+    if (lastContact > 0 && nonDeliveredChatCount > 0) {
+      hasUnreadMessagesClass = <p> <CommunicationChatBubble /> ({nonDeliveredChatCount})</p>;
+    }
 
+    // const hasUnreadMessagesClass = nonDeliveredChatCount > 0 ? '' : 'waitlist-item-invisible';
     return (
       <div className={'waitlist-item-parent'}>
-        <div className={'waitlist-item ' + alreadyContactedClass} >
+        <div className={'waitlist-item ' + alreadyContactedClass}  >
 
-          <div className='waitlist-item-avatar'>
+          <div className={ 'waitlist-item-avatar' }>
             <Avatar
               size={50}
               src={photo}
@@ -72,13 +76,17 @@ export default class WaitListItem extends React.Component {
             </p>
             <p className="waitlist-item-data-address">{address}</p>
             <p className="waitlist-item-data-backing">
-              Backing <strong>{endorsement} GEEK</strong>
+              Reputation <strong>{endorsement} GEEK</strong>
             </p>
 
           </div>
 
+          <div className="waitlist-item-unread">
+            {hasUnreadMessagesClass}
+          </div>
+
           {isActionVisible && <ul className='waitlist-item-actions'>
-            <li><button onClick={onClickHelper} className='waitlist-item-button blue'> Meet </button></li>
+            <li><button onClick={onClickHelper} className='waitlist-item-button blue'> Chat </button></li>
             <li><button className='waitlist-item-button green' onClick={() => {
               try {
                 console.log("To", address);

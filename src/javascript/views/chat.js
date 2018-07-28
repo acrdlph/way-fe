@@ -7,9 +7,9 @@ import LinearProgress from 'material-ui/LinearProgress';
 import {trackPageView, trackEvent, events} from '../util/google-analytics';
 import ChatInput from '../components/chat-input';
 import Conversation from '../components/conversation';
-import {loadMessages, addMessagesToChat} from '../stores/chatStore';
+import {loadMessages, addMessagesToChat, notifyNewMessage, notificationSent} from '../stores/chatStore';
 import {loadUserData} from '../stores/userStore';
-import {loadChatPartnerData} from '../stores/chatPartnerStore';
+import { loadChatPartnerData } from '../stores/chatPartnerStore';
 import {initWebSocketStore, send, markDelivered} from '../stores/webSocketStore';
 import './chat.less';
 
@@ -61,7 +61,11 @@ class Chat extends React.Component {
     if(message.sender_id !== userId) {
       markDelivered(message);
       trackEvent(events.USER_RECEIVED_MESSAGE);
+      notifyNewMessage(message, "Someone");
     }
+   // const partner = this.props.chatPartner.data.name;
+   // notifyNewMessage(event, partner);
+    this.props.notificationSent();
   }
 
   enableChat() {
@@ -110,12 +114,12 @@ class Chat extends React.Component {
       id: userId,
       name: user.name,
       photo: user.photo
-    }
+    };
     const partnerDetails = {
       id: chatPartnerId,
       name: partner.name,
       photo: partner.photo
-    }
+    };
     const messages = this.props.chat.data;
     const networkErrorIndicator = this.state.disableChat ? 
     <LinearProgress style={{position: 'fixed', width: '96%'}} color="#337ab7" mode="indeterminate"/> : null;
@@ -143,6 +147,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = dispatch => ({
   loadMessages: (userId, chatPartnerId) => dispatch(loadMessages(userId, chatPartnerId)),
   addMessagesToChat: (messages, chatPartnerId) => dispatch(addMessagesToChat(messages, chatPartnerId)),
+  notificationSent: () => dispatch(notificationSent()),
   loadUserData: (userId) => dispatch(loadUserData(userId)),
   loadChatParnerData: (chatPartnerId) => dispatch(loadChatPartnerData(chatPartnerId))
 });
