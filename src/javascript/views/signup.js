@@ -49,21 +49,18 @@ class Signup extends React.Component {
 
   render() {
     return (
-      <div className='signup'>
+      <div className="signup">
         <div className="onboarding-logo">
-          <img
-            alt="here is the logo"
-            className="logo"
-            src="assets/bglogo.png"
-          />
+          <img alt="here is the logo" className="logo" src="assets/bglogo.png" />
         </div>
         <br />
         <h1>
-          Find blockchain experts.
+Find blockchain experts.
         </h1>
         {renderLocationInput(this.state.isSearchBoxVisible, this.state.showLocationRequiredHint)}
-        { this.state.show && CircularProgress() }
+        {this.state.show && CircularProgress()}
         <br />
+
         <Login
           pathname={this.props.location.pathname}
           onClick={saveAndContinue}
@@ -95,4 +92,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   loadPartnerData: () => dispatch(loadPartnerData()),
 });
-export default connect(mapStateToProps, mapDispatchToProps)(Signup);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(Signup);
