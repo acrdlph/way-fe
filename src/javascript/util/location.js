@@ -48,34 +48,33 @@ export function getGeolocation() {
   });
 }
 
-async function save(body) {
-   console.log("Create user with: " + JSON.stringify(this.state));
-   const endpoint = 'api/users';
-   const res = await fetch(endpoint, {
-     method: 'post',
-     body,
-     headers: new Headers({
-       'content-type': 'application/json'
-     }),
-   });
-   const resJson = await res.json();
-   this.setState({
-     airport: resJson.location
-   });
-   sessionStorage.setItem('userId', resJson.id);
-   sessionStorage.setItem('token', resJson.token);
-   return resJson;
- }
+async function save(body, thePlace) {
+  const endpoint = 'api/users';
+  const res = await fetch(endpoint, {
+    method: 'post',
+    body,
+    headers: new Headers({
+      'content-type': 'application/json',
+    }),
+  });
+  const resJson = await res.json();
+  // this.setState({
+  //   airport: resJson.location
+  // });
+  sessionStorage.setItem('userId', resJson.id);
+  sessionStorage.setItem('token', resJson.token);
+  return resJson;
+}
 
 export async function update(body, accUserId) {
   const userId = sessionStorage.getItem('userId');
-  const endpoint = 'api/users/' + accUserId || userId + '?waiting_started=true';
+  const endpoint = `api/users/${accUserId}` || `${userId}?waiting_started=true`;
   const headers = getAuthHeaders();
   headers.append('content-type', 'application/json');
   const res = await fetch(endpoint, {
     method: 'put',
     body,
-    headers: headers,
+    headers,
   });
   const resJson = await res.json();
   return resJson;
@@ -101,11 +100,11 @@ export async function buildLocation(showSearchBox) {
       const location = await getGeolocation();
       const geolocation = {
         lat: location.coords.latitude,
-        lng: location.coords.longitude
+        lng: location.coords.longitude,
       };
       circle = new google.maps.Circle({
         center: geolocation,
-        radius: location.coords.accuracy
+        radius: location.coords.accuracy,
       });
       if (autocompleteApi) {
         autocompleteApi.setBounds(circle.getBounds());
@@ -141,25 +140,31 @@ function clearLocation() {
   }
 }
 
-export async function saveAndContinue(showLocationRequired, showSearchBox, history, toggleDiv, calledFrom) {
+export async function saveAndContinue(
+  showLocationRequired,
+  showSearchBox,
+  history,
+  toggleDiv,
+  calledFrom,
+) {
   thePlace = await buildLocation(showSearchBox);
   if (!thePlace.airport) {
     showLocationRequired();
     return;
   }
   const body = JSON.stringify({
-    'location': thePlace.airport,
-    'geolocation': thePlace.geolocation,
-    'address': window.web3 ? window.web3.eth.accounts[0] : null
+    location: thePlace.airport,
+    geolocation: thePlace.geolocation,
+    address: window.web3 ? window.web3.eth.accounts[0] : null,
   });
   let json = {};
   const accUserId = sessionStorage.getItem('userId');
   if (accUserId) {
     toggleDiv();
-    if (calledFrom === 'login'){
+    if (calledFrom === 'login') {
       json = await update(body, accUserId);
     } else {
-      json = await save(body);
+      json = await save(body, thePlace);
     }
   }
   const locationId = json.location.toLowerCase();

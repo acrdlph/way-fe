@@ -1,6 +1,5 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { NavLink } from 'react-router-dom';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 import { checkUsernameAvailability, registerAccount } from '../stores/accountStore';
@@ -76,7 +75,6 @@ class Onboarding extends React.Component {
       if (interactionCode) {
         this.props.confirmInteraction(interactionCode, props.account.userId);
       }
-      console.log(this.props.history, 'motherfuck')
       saveAndContinue(this.showLocationRequired, this.showSearchBox, this.props.history, this.toggleDiv, calledFrom);
     }
   }
@@ -143,7 +141,7 @@ class Onboarding extends React.Component {
           email,
           password,
         };
-        this.props.registerAccount(data);
+        this.props.account.wasRegistrationSuccessful ? saveAndContinue(this.showLocationRequired, this.showSearchBox, this.props.history, this.toggleDiv, calledFrom) : this.props.registerAccount(data);
       }
     }
   }
