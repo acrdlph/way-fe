@@ -1,29 +1,29 @@
 const types = {
   OPEN: 'OPEN',
-  CLOSE: 'CLOSE'
+  CLOSE: 'CLOSE',
 };
 
-export const showTheModal = (isVeryVisible) => ({
+export const showTheModal = isVeryVisible => ({
   type: types.OPEN,
-  isVeryVisible
+  isVeryVisible,
 });
 
 const initialState = {
-  showTheModal: false
+  showTheModal: false,
 };
 
 const reducer = (state = initialState, action) => {
-  switch(action.type) {
+  switch (action.type) {
     case types.OPEN:
-      return{
+      return {
         ...state,
         showTheModal: action.isVeryVisible,
       };
     default:
       return state;
-  };
+  }
 };
 
 export default {
-  reducer
+  reducer,
 };

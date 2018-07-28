@@ -29,6 +29,7 @@ export const registerAccount = (data) => (dispatch) => {
     type: types.ACCOUNT_REGISTER_PENDING,
   });
   const endpoint = 'api/accounts';
+  console.log(data,'ti pai lathos edo?')
   const body = JSON.stringify(data);
   fetch(endpoint, {
     method: 'post',
