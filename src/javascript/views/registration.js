@@ -8,7 +8,10 @@ import interactionConfirmationStore from '../stores/interactionConfirmationStore
 import { trackPageView, trackEvent, events } from '../util/google-analytics';
 import TermsAndPolicy from '../components/terms-and-policy';
 import InfoBox from '../components/infobox';
+import CircularProgress from '../components/circularProgress';
+import { renderLocationInput, saveAndContinue } from '../util/location';
 import './registration.less';
+
 
 const validateUsername = (username) => {
   if (username && username.trim().length > 2) {
@@ -17,6 +20,7 @@ const validateUsername = (username) => {
   }
   return false;
 };
+const calledFrom = 'signup';
 
 const validateEmailAddress = (email) => {
   if (email && email.trim().length > 4) {
@@ -47,7 +51,9 @@ class Onboarding extends React.Component {
       email: '',
       password: '',
       passwordConfirm: '',
-      errorText: null
+      errorText: null,
+      showLocationRequiredHint: false,
+      isSearchBoxVisible: false,
     };
 
     this.register = this.register.bind(this);
@@ -55,6 +61,9 @@ class Onboarding extends React.Component {
     this.changePassword = this.changePassword.bind(this);
     this.changePasswordConfirm = this.changePasswordConfirm.bind(this);
     this.changeUsername = this.changeUsername.bind(this);
+    this.showSearchBox = this.showSearchBox.bind(this);
+    this.showLocationRequired = this.showLocationRequired.bind(this);
+    this.toggleDiv = this.toggleDiv.bind(this);
   }
 
   componentWillReceiveProps(props) {
@@ -67,27 +76,48 @@ class Onboarding extends React.Component {
       if (interactionCode) {
         this.props.confirmInteraction(interactionCode, props.account.userId);
       }
-
-      this.props.history.push(`/signup`);
+      console.log(this.props.history, 'motherfuck')
+      saveAndContinue(this.showLocationRequired, this.showSearchBox, this.props.history, this.toggleDiv, calledFrom);
     }
+  }
+
+  showSearchBox() {
+    this.setState({ isSearchBoxVisible: true });
+  }
+
+  showLocationRequired() {
+    this.setState({ showLocationRequiredHint: true });
+  }
+
+  toggleDiv() {
+    const { show } = this.state;
+    this.setState({ show: !show });
   }
 
   changeEmail(event, email) {
     this.setState({ email });
   }
+
   changePassword(event, password) {
     this.setState({ password });
   }
+
   changePasswordConfirm(event, passwordConfirm) {
     this.setState({ passwordConfirm });
   }
+
   changeUsername(event, username) {
     this.setState({ username });
     this.props.checkUsernameAvailability(username);
   }
 
   register() {
-    const { username, email, password, passwordConfirm } = this.state;
+    const {
+      username,
+      email,
+      password,
+      passwordConfirm
+    } = this.state;
     const { isAvailable } = this.props.account;
 
     if (!validateUsername(username)) {
@@ -111,7 +141,7 @@ class Onboarding extends React.Component {
           user_id: sessionStorage.getItem('userId'),
           username,
           email,
-          password
+          password,
         };
         this.props.registerAccount(data);
       }
@@ -122,7 +152,6 @@ class Onboarding extends React.Component {
     const { errorText, username } = this.state;
     const { isCheckingAvailability, isAvailable, isRegisteringAccount } = this.props.account;
     const { name } = this.props;
-    console.log("errorText", errorText);
     const isUsernameTaken = !!username && isAvailable == false;
     const isRegistrationButtonDisabled = isRegisteringAccount;
 
@@ -161,6 +190,8 @@ class Onboarding extends React.Component {
           onChange={this.changePasswordConfirm}
           fullWidth={true}
         />
+        {renderLocationInput(this.state.isSearchBoxVisible, this.state.showLocationRequiredHint)}
+        { this.state.show && CircularProgress() }
 
         <RaisedButton
           label="OK"
@@ -169,7 +200,6 @@ class Onboarding extends React.Component {
           fullWidth={true}
           disabled={isRegistrationButtonDisabled}
         />
-
         <InfoBox text={errorText} visible={!!errorText} />
         <TermsAndPolicy />
       </div>

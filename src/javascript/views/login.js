@@ -8,7 +8,10 @@ import {trackPageView, trackEvent, events} from '../util/google-analytics';
 import TermsAndPolicy from '../components/terms-and-policy';
 import InfoBox from '../components/infobox';
 import {login} from '../stores/accountStore';
+import { renderLocationInput, saveAndContinue } from '../util/location';
 import './login.less';
+
+const calledFrom = 'login';
 
 class Login extends React.Component {
 
@@ -19,7 +22,8 @@ class Login extends React.Component {
 
     this.state = {
       loginName: '',
-      password: ''
+      password: '',
+      loginSuccessful: false,
     };
 
     this.login = this.login.bind(this);
@@ -28,24 +32,26 @@ class Login extends React.Component {
   }
 
   componentWillReceiveProps(props) {
-    console.log('was called now');
     if(props.account.wasLoginSuccessful && !this.props.account.wasLoginSuccessful) {
       sessionStorage.setItem('userId', props.account.userId);
+      this.setState({ loginSuccessful: true });
       trackEvent(events.USER_LOGGED_IN);
     }
   }
 
   changeLoginName(event, loginName) {
-    this.setState({loginName});
+    this.setState({ loginName });
   }
+
   changePassword(event, password) {
-    this.setState({password});
+    this.setState({ password });
   }
 
   login() {
-    const {loginName, password} = this.state;
+    const { loginName, password } = this.state;
     this.props.login(loginName, password);
-    this.props.onClick(this.props.account.wasLoginSuccessful);
+    const { showLocationRequired, showSearchBox, history, toggleDiv } = this.props;
+    saveAndContinue(showLocationRequired, showSearchBox, history, toggleDiv, calledFrom);
   }
 
   render() {
@@ -86,8 +92,8 @@ class Login extends React.Component {
   }
 }
 
-const mapStateToProps = (state) => ({
-  account: state.account
+const mapStateToProps = state => ({
+  account: state.account,
 });
 const mapDispatchToProps = dispatch => ({
   login: (userLogin, password) => dispatch(login(userLogin, password)),

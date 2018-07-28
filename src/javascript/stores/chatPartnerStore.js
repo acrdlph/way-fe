@@ -46,17 +46,17 @@ const reducer = (state = initialState, action) => {
     case types.LOADING:
       return {
         ...state,
-        loading: true
+        loading: true,
       };
-      case types.LOADED:
-        return {
-          loading: false,
-          loaded: true,
-          data: action.data
-        };
+    case types.LOADED:
+      return {
+        loading: false,
+        loaded: true,
+        data: action.data,
+      };
     default:
       return state;
-  };
+  }
 };
 
 export default {
