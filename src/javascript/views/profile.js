@@ -17,6 +17,7 @@ import Web3Component, { initContract, getWeb3, contractAddress } from '../compon
 import Blockgeeks from '../../abi/Blockgeeks.json';
 import { isLoggedIn } from '../stores/accountStore';
 import WaitListItem from '../components/waitlist-item';
+import {LineChart} from 'react-easy-chart';
 
 
 class Profile extends React.Component {
@@ -141,7 +142,7 @@ class Profile extends React.Component {
   }
 
 
-  
+
 
   render() {
 
@@ -151,7 +152,7 @@ class Profile extends React.Component {
           <span className="glyphicon glyphicon glyphicon-chevron-left"/>
         </NavLink>
       );
-    };  
+    };
     let backButton = createBackButton('/waitlist');
     console.log("123456789asdfg", backButton);
     const { username, name, interests, photo, waytcoins, endorsement } = this.props;
@@ -168,7 +169,7 @@ class Profile extends React.Component {
         />
       </div>
     ) : null;
-       
+
     const balance = (
       <div>
         <NavLink to='/challenge'>
@@ -240,6 +241,25 @@ class Profile extends React.Component {
               onClick={this.onBuyHandler}
               backgroundColor='#00cf70'
               label={'Buy'}
+            />
+          </Col>
+        </Row>
+        <Row>
+          <Col sm={12}>
+            <LineChart
+              width={800}
+              height={250}
+              data={[
+                [
+                  { x: 1, y: 20 },
+                  { x: 2, y: 10 },
+                  { x: 3, y: 25 }
+                ], [
+                  { x: 1, y: 10 },
+                  { x: 2, y: 12 },
+                  { x: 3, y: 4 }
+                ]
+              ]}
             />
           </Col>
         </Row>
