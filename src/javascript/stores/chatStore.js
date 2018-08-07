@@ -16,8 +16,6 @@ const getUsername = (userId) => {
   // TODO: This is highly inefficient and has to be refactored!
   const usernames = JSON.parse(sessionStorage.getItem('username'));
   const x = this.props.loadUserData(userId);
-  console.log(x);
-  console.log(usernames);
   return username[userId];
 };
 // pop-up notification function for chat service
@@ -74,14 +72,12 @@ const sortMessages = (messages) => {
 export const loadMessages = (userId, chatPartnerId) => (dispatch) => {
   dispatch({type: types.LOADING});
   const endpoint = `api/messages/receive?buddy_id=${chatPartnerId}`;
-  console.log("load chat: " + endpoint);
   fetch(endpoint, {
     method: 'post',
     headers: getAuthHeaders()
   })
   .then((res) => res.json())
   .then((data) => {
-    console.log("receive chat messages: " + JSON.stringify(data));
     const messages = TransformMessages(data);
     dispatch({
       type: types.LOADED,

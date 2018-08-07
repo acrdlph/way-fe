@@ -29,7 +29,6 @@ class ResetPassword extends React.Component {
 
   resetPassword() {
     const {login} = this.state;
-    console.log("Reset password for " + login);
 
     // TODO: call password reset endpoint here
   }

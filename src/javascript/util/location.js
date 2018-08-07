@@ -109,7 +109,6 @@ export async function buildLocation(showSearchBox) {
       if (autocompleteApi) {
         autocompleteApi.setBounds(circle.getBounds());
       }
-      console.log('ego re vlaka', geolocation);
       const res = await geocodeLocation(geolocation);
       thePlace = setPlace(res.place_id, geolocation.lng, geolocation.lat);
       setLocationInputValue(res.name);
