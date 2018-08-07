@@ -86,6 +86,8 @@ class WaitList extends React.Component {
     // initialize so that messages can be delivered, but not acted upon
     // TODO handle the incoming messages and update chat bubbles
 
+    document.title = "WaitList | CryptoGeeks";
+  
     const contract = initContract(Blockgeeks);
 
     this.setState({contract: contract});

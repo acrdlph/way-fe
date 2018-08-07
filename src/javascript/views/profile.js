@@ -61,6 +61,10 @@ class Profile extends React.Component {
     };
   }
 
+  componentDidMount() {
+    document.title = "Profile | CryptoGeeks";
+  }
+
   componentWillReceiveProps(props) {
     const usernameFromPath = _.get(this.props.match, "params.username");
     if (props.username && props.username != usernameFromPath) {

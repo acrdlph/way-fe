@@ -10,6 +10,10 @@ export default class LegalNotice extends React.Component {
     trackPageView(path);
   }
 
+  componentDidMount() {
+    document.title = "Legal Notice | CryptoGeeks";
+  }
+
   render() {
     return (
       <div className='legal-notice'>

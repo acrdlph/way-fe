@@ -16,6 +16,10 @@ class Challenge extends React.Component {
     props.loadUserDataForChallenge(userId);
   }
 
+  componentDidMount() {
+    document.title = "Challenge | CryptoGeeks";
+  }
+
   render() {
     let url = this.props.url;
     let challengeUrl = null;
