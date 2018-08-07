@@ -27,7 +27,6 @@ export const send = async function send(msg) {
         throw new Error('call initStore first');
     }
     const result = await managedSend(msg); 
-    console.log("send message: " + msg);
     return result;
 };
 
@@ -38,7 +37,6 @@ export const markDelivered = async function markDelivered(msg) {
 const managedSend = async function managedSend(msg) {
     if (isConnected()) {
         currentConnection.emit('NEW_MESSAGE', msg);
-        console.log("Supposed to be SENT. :D", msg);
         return true;
     } else {
         // connection issue, store messages locally
@@ -55,11 +53,9 @@ const isConnected = function isConnected() {
 const newConnection = async function newConnection() {
     let connection = io(WEBSOCKET_BASE_URL + 
         'messaging?user_id=' + userId + '&token=' + sessionStorage.getItem('token'));
-    console.log("New connection setted up");
     addMessagehandler(connection);
     addClosehandler(connection);
     addConnectionhandler(connection);
-    console.log("New connection Finished", connection);
     return connection;
 };
 
@@ -97,7 +93,6 @@ const addConnectionhandler = function addConnectionhandler(connection) {
 
 const addMessagehandler = function addMessagehandler(connection) {
     connection.on('NEW_MESSAGE', (msg) => {
-        console.log('message received', JSON.stringify(msg));
         onMessage(msg);
         const usernames = JSON.parse(sessionStorage.getItem('username'));
     });
@@ -105,7 +100,6 @@ const addMessagehandler = function addMessagehandler(connection) {
 
 const addClosehandler = function addClosehandler(connection) {
     connection.on('disconnect', (reason) => {
-        console.log('chat connection closed ', reason);
         onClose();
     });
 };

@@ -118,10 +118,7 @@ class Profile extends React.Component {
     const price = this.state.priceToEther;
 
     try {
-      console.log("Token amount needed", this.state.token_amount);
-      console.log("From", window.web3.eth.accounts);
-      console.log("Price", web3.toWei(price, "ether"));
-
+     
       onBuy(
         this.state.token_amount * 10 ** 18,
         {
@@ -327,7 +324,6 @@ class Profile extends React.Component {
   }
 }
 const mapStateToProps = state => {
-  console.log(state.user.data);
   return {
     ...state.user.data,
     isRegisteredUser: !!state.user.data.username,

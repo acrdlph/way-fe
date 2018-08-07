@@ -25,7 +25,6 @@ class App extends React.Component {
     super(props);
     if (isLoggedIn()) {
       const userId = sessionStorage.getItem('userId');
-      console.log("App: loadUserData", userId);
       this.props.loadUserData(userId);
     }
   }

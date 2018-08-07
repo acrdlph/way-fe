@@ -18,7 +18,6 @@ export const getWeb3 = () => {
 const Web3Component = (props, context) => {
     const web3Context = context.web3;
     const { selectedAccount } = web3Context;
-    console.log(selectedAccount);
     return (<div> {username} </div>);
 }
 

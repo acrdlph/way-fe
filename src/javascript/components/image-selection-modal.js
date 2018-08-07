@@ -94,7 +94,6 @@ class ImageSelection extends React.Component {
 
   async adjustRotation(file) {
     const orientation = await this.getOrientation(file);
-    console.log(orientation);
     this.renderImage(exifDataToAngle[orientation]);
   }
 
