@@ -34,6 +34,10 @@ class Signup extends React.Component {
     };
   }
 
+  componentDidMount() {
+    document.title = "Sign up | CryptoGeeks";
+  }
+
   showSearchBox() {
     this.setState({ isSearchBoxVisible: true });
   }

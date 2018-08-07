@@ -31,6 +31,10 @@ class Login extends React.Component {
     this.changePassword = this.changePassword.bind(this);
   }
 
+  componentDidMount() {
+    document.title = "Login | CryptoGeeks";
+  }
+
   componentWillReceiveProps(props) {
     if(props.account.wasLoginSuccessful && !this.props.account.wasLoginSuccessful) {
       sessionStorage.setItem('userId', props.account.userId);

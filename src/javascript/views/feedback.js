@@ -17,6 +17,10 @@ class Feedback extends React.Component {
     this.goToHomepage = this.goToHomepage.bind(this);
   }
 
+  componentDidMount() {
+    document.title = "Feedback | CryptoGeeks";
+  }
+
   handleSubmit(event) {
     event.preventDefault();
     const email = event.target.email.value;
