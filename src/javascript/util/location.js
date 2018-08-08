@@ -160,11 +160,7 @@ export async function saveAndContinue(
   const accUserId = sessionStorage.getItem('userId');
   if (accUserId) {
     toggleDiv();
-    if (calledFrom === 'login') {
-      json = await update(body, accUserId);
-    } else {
-      json = await save(body, thePlace);
-    }
+    json = await update(body, accUserId);
   }
   const locationId = json.location.toLowerCase();
   sessionStorage.setItem('locationId', locationId);
