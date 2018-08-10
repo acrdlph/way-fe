@@ -20,7 +20,6 @@ export const isLoggedIn = () => {
   const token = sessionStorage.getItem('token');
   const username = sessionStorage.getItem('username');
   const loggedIn = userId && token && username;
-  console.log("isLoggedIn", loggedIn);
   return loggedIn;
 };
 
@@ -44,7 +43,6 @@ export const registerAccount = (data) => (dispatch) => {
     return res.json();
   })
   .then((data) => {
-    console.log("registration passed", data);
     sessionStorage.setItem('token', data.token);
     sessionStorage.setItem('username', data.username);
     dispatch({
@@ -97,7 +95,6 @@ export const login = (loginname, password) => (dispatch) => {
     loginname,
     password
   });
-  console.log("body", body);
   fetch(endpoint, {
     method: 'post',
     body,
@@ -169,7 +166,6 @@ const reducer = (state = initialState, action) => {
         wasRegistrationSuccessful: null
       };
     case types.ACCOUNT_REGISTER_PASSED:
-      console.log("ACCOUNT_REGISTER_PASSED", action);
       return {
         ...state,
         userId: action.data.id,

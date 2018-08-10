@@ -38,7 +38,7 @@ export default class Conversation extends React.Component {
         backgroundColor: msg.sender === user.id ? CHAT_BUBBLE_COLOR_LEFT : CHAT_BUBBLE_COLOR_RIGHT
       };
       let photo = 'assets/avatar-placeholder.png';
-      let name = partner.name;
+      let date = dateFormat( 'dd.mm.yyyy' );
       let cssClass = 'left';
       if(msg.sender === user.id) {
         cssClass = 'right';
@@ -67,7 +67,7 @@ export default class Conversation extends React.Component {
                 {msg.message}
               </div>
               <div className='meta-info'>
-                {name + " / " + time}
+                {date + " / " + time}
               </div>
             </div>
           </div>

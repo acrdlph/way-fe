@@ -47,7 +47,6 @@ class WaitList extends React.Component {
       // redirect to waitlist where the user is signed in
       const locationId = sessionStorage.getItem('locationId');
       if (!locationIdFromPath || locationIdFromPath != locationId) {
-        console.log(`redirect to /waitlist/${locationId}`);
         this.props.history.push(`/waitlist/${locationId}`);
       }
 
@@ -86,19 +85,19 @@ class WaitList extends React.Component {
     // initialize so that messages can be delivered, but not acted upon
     // TODO handle the incoming messages and update chat bubbles
 
+    document.title = "WaitList | CryptoGeeks";
+  
     const contract = initContract(Blockgeeks);
 
     this.setState({contract: contract});
   }
 
   getContract () {
-    // console.log("Address", this.state.contractAddress)
     // const contract = initContract(Blockgeeks, this.state.contractAddress)
     // this.setState({contract: contract})
   }
 
   openChat (chatPartnerId) {
-    console.log('open chat with: ' + chatPartnerId);
     const locationId = sessionStorage.getItem('locationId');
     this.props.history.push({
       pathname: `/waitlist/${locationId}/chat/${chatPartnerId}`
@@ -160,7 +159,6 @@ class WaitList extends React.Component {
         this.props.loadChatParnerData(event.sender_id);
         setTimeout( () => {
           const partner = this.props.chatPartner.data.name;
-          console.log(partner, 'gamo to panagidi su');
           notifyNewMessage(event, partner);
         });
       });

@@ -89,8 +89,6 @@ export default class WaitListItem extends React.Component {
             <li><button onClick={onClickHelper} className='waitlist-item-button blue'> Chat </button></li>
             <li><button className='waitlist-item-button green' onClick={() => {
               try {
-                console.log("To", address);
-                console.log("From", window.web3.eth.accounts ? window.web3.eth.accounts[0] : null,);
 
                 onEndorse(address, {
                   from: window.web3.eth.accounts ? window.web3.eth.accounts[0] : null,

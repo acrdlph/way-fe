@@ -20,5 +20,5 @@ export default combineReducers({
   account: accountStore.reducer,
   feedback: feedbackStore.reducer,
   confirmInteraction: interactionConfirmationStore.reducer,
-  modalStore:modalStore.reducer
+  modalStore: modalStore.reducer,
 });

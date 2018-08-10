@@ -16,7 +16,6 @@ export const initializeGoogleAnalytics = () => {
     const options = {
       debug: DEVELOPMENT_MODE
     };
-    console.log("initialize Google Analytics", options);
     ReactGA.initialize(GOOGLE_ANALYTICS_ID, options);
   }
 };

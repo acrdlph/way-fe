@@ -25,7 +25,6 @@ class Chat extends React.Component {
     const userId = sessionStorage.getItem('userId');
     const chatPartnerId = _.get(this.props.match, 'params.chatPartnerId');
     if(userId && chatPartnerId) {
-      console.log('show chat between ' + userId + ' and ' + chatPartnerId);
       this.props.loadUserData(userId);
       this.props.loadChatParnerData(chatPartnerId);
       this.props.loadMessages(userId, chatPartnerId);
@@ -42,7 +41,6 @@ class Chat extends React.Component {
   }
 
   componentDidMount() {
-    console.log("create WebSocket connection");
     const userId = sessionStorage.getItem('userId');
     initWebSocketStore(userId, /* new message */ this.onMessageUpdate, () => {
       // connected
