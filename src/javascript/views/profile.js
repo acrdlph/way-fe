@@ -226,7 +226,7 @@ class Profile extends React.Component {
 
 
         <Row>
-          <Col>
+          <Col sm={2}>
             <Avatar src={photoUrl} onClick={this.onImageClick} displayPlus />
             {imageSelectionModal}
           </Col>
@@ -253,18 +253,15 @@ class Profile extends React.Component {
             <div className="profile-button profile-button-save">
 
             <Col sm={2}>
-            <Row>
-                <div>{logoutButton}</div>
-              </Row>
-              <Row>
+
+              <div>{logoutButton}</div>
+
               <RaisedButton
+                className="save-button"
                 onClick={this.onSave}
                 backgroundColor="#00cf70"
                 label={this.props.isRegisteredUser ? "Save" : "Register"}
               />
-
-              </Row>
-
               </Col>
             </div>
             </Row>
@@ -326,6 +323,7 @@ class Profile extends React.Component {
               <p />
 
                   <RaisedButton
+                    className="get-price-button"
                     onClick={this.getEtherPrice}
                     backgroundColor="#00cf70"
                     label="Get price (ETH)"
