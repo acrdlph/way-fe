@@ -1,26 +1,3 @@
-<<<<<<< HEAD
-import React from 'react';
-import { connect } from 'react-redux';
-import { NavLink } from 'react-router-dom';
-import TextField from 'material-ui/TextField';
-import RaisedButton from 'material-ui/RaisedButton';
-import Avatar from '../components/avatar';
-import { trackPageView } from '../util/google-analytics';
-import TermsAndPolicy from '../components/terms-and-policy';
-import InfoBox from '../components/infobox';
-import { Grid, Row, Col } from 'react-bootstrap';
-import ImageSelection from '../components/image-selection-modal';
-import { showModal } from '../stores/profileImageStore';
-import { loadUserData, updateUserData, editUserData, isOnboarded } from '../stores/userStore';
-import './profile.less';
-import { Web3Provider } from 'react-web3';
-import Web3Component, { initContract, getWeb3, contractAddress } from '../components/Web3Component';
-import Blockgeeks from '../../abi/Blockgeeks.json';
-import { isLoggedIn } from '../stores/accountStore';
-import WaitListItem from '../components/waitlist-item';
-import {LineChart} from 'react-easy-chart';
-
-=======
 import React from "react";
 import { connect } from "react-redux";
 import { NavLink } from "react-router-dom";
@@ -49,7 +26,7 @@ import Web3Component, {
 import Blockgeeks from "../../abi/Blockgeeks.json";
 import { isLoggedIn } from "../stores/accountStore";
 import WaitListItem from "../components/waitlist-item";
->>>>>>> d35a92ab174ac6eb667ba8bf19ba437f7fa59310
+import {LineChart} from 'react-easy-chart';
 
 class Profile extends React.Component {
   constructor(props) {
@@ -146,7 +123,7 @@ class Profile extends React.Component {
     const price = this.state.priceToEther;
 
     try {
-     
+
       onBuy(
         this.state.token_amount * 10 ** 18,
         {
@@ -193,26 +170,6 @@ class Profile extends React.Component {
     this.props.updateUserData(userId, data);
   }
 
-<<<<<<< HEAD
-
-
-
-  render() {
-
-    const createBackButton = (to) => {
-      return (
-        <NavLink to={to}>
-          <span className="glyphicon glyphicon glyphicon-chevron-left"/>
-        </NavLink>
-      );
-    };
-    let backButton = createBackButton('/waitlist');
-    console.log("123456789asdfg", backButton);
-    const { username, name, interests, photo, waytcoins, endorsement } = this.props;
-    const photoUrl = photo || 'assets/avatar-placeholder.png';
-    const imageSelectionModal = this.props.showModal ?
-      <ImageSelection onUpload={this.refreshProfile} /> : null;
-=======
   render() {
     const createBackButton = to => (
       <NavLink to={to}>
@@ -232,7 +189,6 @@ class Profile extends React.Component {
     const imageSelectionModal = this.props.showModal ? (
       <ImageSelection onUpload={this.refreshProfile} />
     ) : null;
->>>>>>> d35a92ab174ac6eb667ba8bf19ba437f7fa59310
     const logoutButton = this.props.isRegisteredUser ? (
       <div className="profile-button profile-button-logout">
         <RaisedButton
@@ -294,78 +250,7 @@ class Profile extends React.Component {
             Your reputation: {endorsement}
           </Col>
         </Row>
-<<<<<<< HEAD
-        <Row>
-          <Col sm={6}>
-            <TextField
-              name="token_amount"
-              hintText="Desired token amount"
-              onChange={this.onChanged}
-              fullWidth={false}
-            />
-            <label>{this.state.priceToEther}</label>
-          </Col>
-          <Col sm={6}>
-            <div className='profile-button profile-button-save'>
-              <RaisedButton
-                onClick={this.getEtherPrice}
-                backgroundColor='#00cf70'
-                label={'Get price (ETH)'}
-              />
-            </div>
-            <RaisedButton
-              onClick={this.onBuyHandler}
-              backgroundColor='#00cf70'
-              label={'Buy'}
-            />
-          </Col>
-        </Row>
-        <Row>
-          <Col sm={12}>
-            <LineChart
-              width={800}
-              height={250}
-              data={[
-                [
-                  { x: 1, y: 20 },
-                  { x: 2, y: 10 },
-                  { x: 3, y: 25 }
-                ], [
-                  { x: 1, y: 10 },
-                  { x: 2, y: 12 },
-                  { x: 3, y: 4 }
-                ]
-              ]}
-            />
-          </Col>
-        </Row>
-        <Row>
-          <Col sm={12}>
-          <font size="1">
-              Contract: <a href="https://rinkeby.etherscan.io/address/0xbaa593e9c1f11bbcfa4725085211d764eec26592" target="_blank">0xbaa593e9c1f11bbcfa4725085211d764eec26592</a>
-            </font>
-          </Col>
-        </Row>
-        <Row>
-          <Col sm={12}>
-            <TextField
-              name="name"
-              defaultValue={name}
-              hintText="Name"
-              onChange={this.onChanged}
-              fullWidth={true}
-            />
-            <TextField
-              name="interests"
-              defaultValue={interests}
-              hintText="What are your incentives?"
-              onChange={this.onChanged}
-              fullWidth={true}
-            />
-          </Col>
-        </Row>
-        <div className='profile-button profile-button-save'>
-=======
+
         {this.state.metamaskConnected && (
           <div>
             <Row>
@@ -428,7 +313,6 @@ class Profile extends React.Component {
           </div>
         )}
         <div className="profile-button profile-button-save">
->>>>>>> d35a92ab174ac6eb667ba8bf19ba437f7fa59310
           <RaisedButton
             onClick={this.onSave}
             backgroundColor="#00cf70"
@@ -457,11 +341,8 @@ const mapDispatchToProps = dispatch => ({
   updateUserData: (userId, data) => dispatch(updateUserData(userId, data)),
   openModal: () => dispatch(showModal(true))
 });
-<<<<<<< HEAD
-export default connect(mapStateToProps, mapDispatchToProps)(Profile);
-=======
+
 export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(Profile);
->>>>>>> d35a92ab174ac6eb667ba8bf19ba437f7fa59310
