@@ -223,8 +223,17 @@ class Profile extends React.Component {
         <NavLink to="/waitlist">
           <img className="logo-profile" src="assets/icon.png" />
         </NavLink>
+
+
         <Row>
-              <Col sm={12}>
+          <Col>
+            <Avatar src={photoUrl} onClick={this.onImageClick} displayPlus />
+            {imageSelectionModal}
+          </Col>
+
+
+
+              <Col sm={8}>
                 <TextField
                   name="name"
                   defaultValue={name}
@@ -240,39 +249,73 @@ class Profile extends React.Component {
                   fullWidth
                 />
               </Col>
+
+            <div className="profile-button profile-button-save">
+
+            <Col sm={2}>
+            <Row>
+                <div>{logoutButton}</div>
+              </Row>
+              <Row>
+              <RaisedButton
+                onClick={this.onSave}
+                backgroundColor="#00cf70"
+                label={this.props.isRegisteredUser ? "Save" : "Register"}
+              />
+
+              </Row>
+
+              </Col>
+            </div>
             </Row>
-        <Row>
-          <Col sm={12}>
-            <Avatar src={photoUrl} onClick={this.onImageClick} displayPlus />
-            {imageSelectionModal}
-          </Col>
-        </Row>
+
+
+
         <p />
-        <Row>
-          <Col sm={12}>
-            <h3>
+
+        <Row className="info-row">
+        <div className="user-info-profile">
+
+          <Col sm={12} md={4}>
+          <Row>
+            <h3 className="username-profile">
               <strong>{username}</strong>
             </h3>
             <div className="profile-eth-adress">
               <h6>
                 {" "}
-                Your ETH-Adress:
+                Your ETH-Address:
+                <p />
+                <font size="1">
                 {getWeb3().eth.accounts[0]}{" "}
+                </font>
               </h6>
               <Web3Provider>
                 <Web3Component />
               </Web3Provider>
             </div>
             Your balance: {this.state.balance}
+
             <p />
+
             Your reputation: {endorsement}
+            </Row>
           </Col>
-        </Row>
+
+        </div>
+
+        <p />
 
         {this.state.metamaskConnected && (
-          <div>
+          <div class="profile-token-curve">
+
+          <Col sm={12} md={4} className="info-text">
+          <Row>
+          <h6>
+          This particular bonding curve rewards early curators: the price is affected by the ammount of people buying the token.<p /> <strong>Buy fast and start curating the commnuity</strong>
+          </h6>
+          </Row>
             <Row>
-              <Col sm={6}>
                 <TextField
                   name="token_amount"
                   hintText="Desired token amount"
@@ -280,27 +323,28 @@ class Profile extends React.Component {
                   fullWidth={false}
                 />
                 <label>{this.state.priceToEther}</label>
-              </Col>
-              <Col sm={6}>
-                <div className="profile-button profile-button-save">
+              </Row>
+              <p />
+              <Row>
                   <RaisedButton
                     onClick={this.getEtherPrice}
                     backgroundColor="#00cf70"
                     label="Get price (ETH)"
                   />
-                </div>
                 <RaisedButton
                   onClick={this.onBuyHandler}
                   backgroundColor="#00cf70"
                   label="Buy"
                 />
-              </Col>
+
             </Row>
-            <Row>
-            <Col sm={12}>
+            </Col>
+
+            <Col sm={12} md={4} className="info-graph">
+              <Row>
               <LineChart
-                width={500}
-                height={250}
+                width={250}
+                height={175}
                 data={[
                   [
                     { x: 1, y: 20 },
@@ -313,14 +357,9 @@ class Profile extends React.Component {
                   ]
                 ]}
               />
-
-
-
-            </Col>
-            </Row>
-            <Row>
-              <Col sm={12}>
-                <font size="1">
+              </Row>
+              <Row>
+              <font size="1">
                   Contract:{" "}
                   <a
                     href="https://rinkeby.etherscan.io/address/0xbaa593e9c1f11bbcfa4725085211d764eec26592"
@@ -329,23 +368,17 @@ class Profile extends React.Component {
                     0xbaa593e9c1f11bbcfa4725085211d764eec26592
                   </a>
                 </font>
-              </Col>
-            </Row>
+                </Row>
+
+            </Col>
+
+
+
+
           </div>
         )}
-        <div className="profile-button profile-button-save">
-          <RaisedButton
-            onClick={this.onSave}
-            backgroundColor="#00cf70"
-            label={this.props.isRegisteredUser ? "Save" : "Register"}
-          />
-        </div>
-        <p />
-        <Row>
-          <Col sm={12}>
-            <div>{logoutButton}</div>
-          </Col>
         </Row>
+
       </Grid>
     );
   }
