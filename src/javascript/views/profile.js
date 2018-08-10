@@ -224,6 +224,24 @@ class Profile extends React.Component {
           <img className="logo-profile" src="assets/icon.png" />
         </NavLink>
         <Row>
+              <Col sm={12}>
+                <TextField
+                  name="name"
+                  defaultValue={name}
+                  hintText="Name"
+                  onChange={this.onChanged}
+                  fullWidth
+                />
+                <TextField
+                  name="interests"
+                  defaultValue={interests}
+                  hintText="What are your incentives?"
+                  onChange={this.onChanged}
+                  fullWidth
+                />
+              </Col>
+            </Row>
+        <Row>
           <Col sm={12}>
             <Avatar src={photoUrl} onClick={this.onImageClick} displayPlus />
             {imageSelectionModal}
@@ -279,6 +297,28 @@ class Profile extends React.Component {
               </Col>
             </Row>
             <Row>
+            <Col sm={12}>
+              <LineChart
+                width={500}
+                height={250}
+                data={[
+                  [
+                    { x: 1, y: 20 },
+                    { x: 2, y: 10 },
+                    { x: 3, y: 25 }
+                  ], [
+                    { x: 1, y: 10 },
+                    { x: 2, y: 12 },
+                    { x: 3, y: 4 }
+                  ]
+                ]}
+              />
+
+
+
+            </Col>
+            </Row>
+            <Row>
               <Col sm={12}>
                 <font size="1">
                   Contract:{" "}
@@ -289,25 +329,6 @@ class Profile extends React.Component {
                     0xbaa593e9c1f11bbcfa4725085211d764eec26592
                   </a>
                 </font>
-              </Col>
-            </Row>
-
-            <Row>
-              <Col sm={12}>
-                <TextField
-                  name="name"
-                  defaultValue={name}
-                  hintText="Name"
-                  onChange={this.onChanged}
-                  fullWidth
-                />
-                <TextField
-                  name="interests"
-                  defaultValue={interests}
-                  hintText="What are your incentives?"
-                  onChange={this.onChanged}
-                  fullWidth
-                />
               </Col>
             </Row>
           </div>
