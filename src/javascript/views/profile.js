@@ -274,10 +274,10 @@ class Profile extends React.Component {
         <p />
 
         <Row className="info-row">
-        <div className="user-info-profile">
 
-          <Col sm={12} md={4}>
-          <Row>
+
+          <Col sm={12} md={4} className="user-info-profile">
+
             <h3 className="username-profile">
               <strong>{username}</strong>
             </h3>
@@ -299,23 +299,22 @@ class Profile extends React.Component {
             <p />
 
             Your reputation: {endorsement}
-            </Row>
+
           </Col>
 
-        </div>
+
 
         <p />
 
         {this.state.metamaskConnected && (
           <div class="profile-token-curve">
 
-          <Col sm={12} md={4} className="info-text">
-          <Row>
+          <Col sm={12} md={8} className="info-text">
+
           <h6>
           This particular bonding curve rewards early curators: the price is affected by the ammount of people buying the token.<p /> <strong>Buy fast and start curating the commnuity</strong>
           </h6>
-          </Row>
-            <Row>
+
                 <TextField
                   name="token_amount"
                   hintText="Desired token amount"
@@ -323,9 +322,9 @@ class Profile extends React.Component {
                   fullWidth={false}
                 />
                 <label>{this.state.priceToEther}</label>
-              </Row>
+
               <p />
-              <Row>
+
                   <RaisedButton
                     onClick={this.getEtherPrice}
                     backgroundColor="#00cf70"
@@ -337,11 +336,11 @@ class Profile extends React.Component {
                   label="Buy"
                 />
 
-            </Row>
+
             </Col>
 
             <Col sm={12} md={4} className="info-graph">
-              <Row>
+
               <LineChart
                 width={250}
                 height={175}
@@ -357,8 +356,8 @@ class Profile extends React.Component {
                   ]
                 ]}
               />
-              </Row>
-              <Row>
+
+
               <font size="1">
                   Contract:{" "}
                   <a
@@ -368,7 +367,7 @@ class Profile extends React.Component {
                     0xbaa593e9c1f11bbcfa4725085211d764eec26592
                   </a>
                 </font>
-                </Row>
+
 
             </Col>
 
@@ -377,6 +376,20 @@ class Profile extends React.Component {
 
           </div>
         )}
+        </Row>
+        <p />
+        <p />
+        <Row>
+          <Col sm={12}>
+            Read <a href="">this</a> article to know what silly prizes are waiting for you!
+          </Col>
+        </Row>
+        <p />
+
+        <Row>
+          <Col sm={12}>
+            Any problems? <a href="">Contact us</a>
+          </Col>
         </Row>
 
       </Grid>
