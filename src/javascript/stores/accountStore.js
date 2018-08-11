@@ -132,6 +132,8 @@ const initialState = {
 
   isRegisteringAccount: false,
   wasRegistrationSuccessful: null,
+  hasRegisteringFailed: false,
+
 
   isLoginPending: false,
   wasLoginSuccessful: null,
@@ -176,7 +178,8 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         isRegisteringAccount: false,
-        wasRegistrationSuccessful: false
+        wasRegistrationSuccessful: false,
+        hasRegisteringFailed: true
       };
 
     case types.ACCOUNT_LOGIN_PENDING:

@@ -174,7 +174,7 @@ class Onboarding extends React.Component {
           onChange={this.changeEmail}
           fullWidth={true}
         />
-
+        <InfoBox text={"This email is already in use"} visible={this.props.account.hasRegisteringFailed}/>
         <TextField
           floatingLabelText="Password"
           type="Password"
@@ -198,6 +198,7 @@ class Onboarding extends React.Component {
           fullWidth={true}
           disabled={isRegistrationButtonDisabled}
         />
+
         <InfoBox text={errorText} visible={!!errorText} />
         <TermsAndPolicy />
       </div>
