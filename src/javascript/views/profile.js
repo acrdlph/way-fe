@@ -271,7 +271,9 @@ class Profile extends React.Component {
         <p />
 
         <Row className="info-row">
-
+        <Web3Provider>
+                <Web3Component />
+              </Web3Provider>
 
           <Col sm={12} md={4} className="user-info-profile">
 
@@ -287,9 +289,7 @@ class Profile extends React.Component {
                 {getWeb3().eth.accounts[0]}{" "}
                 </font>
               </h6>
-              <Web3Provider>
-                <Web3Component />
-              </Web3Provider>
+
             </div>
             Your balance: {this.state.balance}
 
