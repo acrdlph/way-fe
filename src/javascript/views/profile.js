@@ -55,7 +55,7 @@ class Profile extends React.Component {
       interests: this.props.interests,
       balance: 0,
       endorsement: this.props.endorsement,
-      address: web3.eth.accounts[0],
+      address: window.web3 ? window.web3.eth.accounts[0] : null,
       tokenContract: initContract(Blockgeeks),
       priceToEther: null,
       metamaskConnected: false
@@ -72,7 +72,7 @@ class Profile extends React.Component {
       this.props.history.push(`/profile/${props.username}`);
     }
 
-    const ethereumAddress = web3.eth.accounts[0];
+    const ethereumAddress = window.web3 ? window.web3.eth.accounts[0] : null;
     ethereumAddress
       ? this.state.tokenContract.balanceOf(ethereumAddress, (err, data) => {
           this.setState({
@@ -127,7 +127,7 @@ class Profile extends React.Component {
       onBuy(
         this.state.token_amount * 10 ** 18,
         {
-          from: window.web3.eth.accounts ? window.web3.eth.accounts[0] : null,
+          from: window.web3 ? window.web3.eth.accounts[0] : null,
           gas: 300000,
           value: web3.toWei(price, "ether")
         },
@@ -286,7 +286,7 @@ class Profile extends React.Component {
                 Your ETH-Address:
                 <p />
                 <font size="1">
-                {getWeb3().eth.accounts[0]}{" "}
+                {window.web3 && getWeb3().eth.accounts[0]}{" "}
                 </font>
               </h6>
 
