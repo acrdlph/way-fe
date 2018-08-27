@@ -75,14 +75,17 @@ class Signup extends React.Component {
           toggleDiv={this.toggleDiv}
         />
         <br />
-        <RaisedButton
-          className="Signup-btn"
-          label="Sign up"
-          backgroundColor="white"
-          onClick={() => {
-            this.props.history.push('register');
-          }}
-        />
+        <div className="raised-Btn container">
+          <RaisedButton
+            className="Signup-btn"
+            label="Sign up"
+            backgroundColor="white"
+            fullWidth={true}
+            onClick={() => {
+              this.props.history.push('register');
+            }}
+          />
+        </div>
         <TermsAndPolicy />
       </div>
     );
