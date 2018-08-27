@@ -120,15 +120,15 @@ class Onboarding extends React.Component {
 
     if (!validateUsername(username)) {
       this.setState({
-        errorText: 'Please enter a valid user name!'
+        errorText: 'Username too short!'
       });
     } else if (!validateEmailAddress(email)) {
       this.setState({
-        errorText: 'Please enter a valid eMail address!'
+        errorText: 'Please enter a valid email address!'
       });
     } else if (!validatePassword(password) || (password !== passwordConfirm)) {
       this.setState({
-        errorText: 'Please enter a valid password!'
+        errorText: 'Password has to be at least 4 characters long!'
       });
     } else {
       this.setState({
