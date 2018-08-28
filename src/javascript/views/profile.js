@@ -226,57 +226,49 @@ class Profile extends React.Component {
 
 
         <Row>
-          <Col sm={2}>
+          <Col sm={12}>
             <Avatar src={photoUrl} onClick={this.onImageClick} displayPlus />
             {imageSelectionModal}
           </Col>
 
+          <Col sm={12}>
+            <TextField
+              name="name"
+              defaultValue={name}
+              hintText="Name"
+              onChange={this.onChanged}
+              fullWidth
+            />
+            <TextField
+              name="interests"
+              defaultValue={interests}
+              hintText="What are your incentives?"
+              onChange={this.onChanged}
+              fullWidth
+            />
+          </Col>
 
+          <Col sm={12}>
+              <div className="profile-button profile-button-save">
 
-              <Col sm={8}>
-                <TextField
-                  name="name"
-                  defaultValue={name}
-                  hintText="Name"
-                  onChange={this.onChanged}
-                  fullWidth
+                <div>{logoutButton}</div>
+
+                <RaisedButton
+                  className="save-button"
+                  onClick={this.onSave}
+                  backgroundColor="#00cf70"
+                  label={this.props.isRegisteredUser ? "Save" : "Register"}
                 />
-                <TextField
-                  name="interests"
-                  defaultValue={interests}
-                  hintText="What are your incentives?"
-                  onChange={this.onChanged}
-                  fullWidth
-                />
-              </Col>
-
-            <div className="profile-button profile-button-save">
-
-            <Col sm={2}>
-
-              <div>{logoutButton}</div>
-
-              <RaisedButton
-                className="save-button"
-                onClick={this.onSave}
-                backgroundColor="#00cf70"
-                label={this.props.isRegisteredUser ? "Save" : "Register"}
-              />
-              </Col>
-            </div>
-            </Row>
-
-
-
-        <p />
+              </div>
+          </Col>
+        </Row>
 
         <Row className="info-row">
-        <Web3Provider>
-                <Web3Component />
-              </Web3Provider>
-
-          <Col sm={12} md={4} className="user-info-profile">
-
+            <Web3Provider>
+              <Web3Component />
+            </Web3Provider>
+          
+          <Col lg={3} className="user-info-profile">
             <h3 className="username-profile">
               <strong>{username}</strong>
             </h3>
@@ -284,61 +276,45 @@ class Profile extends React.Component {
               <h6>
                 {" "}
                 Your ETH-Address:
-                <p />
                 <font size="1">
                 {window.web3 && getWeb3().eth.accounts[0]}{" "}
                 </font>
               </h6>
-
             </div>
             Your balance: {this.state.balance}
-
-            <p />
-
             Your reputation: {endorsement}
-
           </Col>
-
-
-
-        <p />
 
         {this.state.metamaskConnected && (
           <div class="profile-token-curve">
+            <Col lg={9} className="info-text">
+              <h6>
+                This particular bonding curve rewards early curators: the price is affected by the ammount of people buying the token.<p /> <strong>Buy fast and start curating the commnuity</strong>
+              </h6>
 
-          <Col sm={12} md={8} className="info-text">
+              <TextField
+                name="token_amount"
+                hintText="Desired token amount"
+                onChange={this.onChanged}
+                fullWidth={false}
+              />
+              <label>{this.state.priceToEther}</label>
 
-          <h6>
-          This particular bonding curve rewards early curators: the price is affected by the ammount of people buying the token.<p /> <strong>Buy fast and start curating the commnuity</strong>
-          </h6>
-
-                <TextField
-                  name="token_amount"
-                  hintText="Desired token amount"
-                  onChange={this.onChanged}
-                  fullWidth={false}
+                <RaisedButton
+                  className="get-price-button"
+                  onClick={this.getEtherPrice}
+                  backgroundColor="#00cf70"
+                  label="Get price (ETH)"
                 />
-                <label>{this.state.priceToEther}</label>
-
-              <p />
-
-                  <RaisedButton
-                    className="get-price-button"
-                    onClick={this.getEtherPrice}
-                    backgroundColor="#00cf70"
-                    label="Get price (ETH)"
-                  />
                 <RaisedButton
                   onClick={this.onBuyHandler}
                   backgroundColor="#00cf70"
                   label="Buy"
                 />
-
-
             </Col>
 
-            <Col sm={12} md={4} className="info-graph">
-
+            <Row className="info-graph">
+            <Col lg={12}>
               <LineChart
                 width={250}
                 height={175}
@@ -354,9 +330,9 @@ class Profile extends React.Component {
                   ]
                 ]}
               />
-
-
-              <font size="1">
+              </Col>
+                <Col lg={12}>
+                <font size="1">
                   Contract:{" "}
                   <a
                     href="https://rinkeby.etherscan.io/address/0xbaa593e9c1f11bbcfa4725085211d764eec26592"
@@ -365,24 +341,18 @@ class Profile extends React.Component {
                     0xbaa593e9c1f11bbcfa4725085211d764eec26592
                   </a>
                 </font>
-
-
-            </Col>
-
-
-
-
+                </Col>
+            </Row>
           </div>
         )}
         </Row>
-        <p />
-        <p />
+       
         <Row>
           <Col sm={12} className="read-this">
             Read <a href="">this</a> article to know what silly prizes are waiting for you!
           </Col>
         </Row>
-        <p />
+        
 
         <Row>
           <Col sm={12}>
