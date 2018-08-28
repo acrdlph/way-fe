@@ -98,7 +98,7 @@ class Header extends React.Component {
           {backButton}
         </div>
         <div className='header-logo'>
-          <NavLink to='/'>
+          <NavLink to='/waitlist'>
             <img
               src='assets/bglogo.png'
             />
