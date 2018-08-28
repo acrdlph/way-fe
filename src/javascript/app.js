@@ -5,7 +5,6 @@ import { Route } from 'react-router-dom';
 import { loadUserData } from './stores/userStore';
 import { isLoggedIn } from './stores/accountStore';
 import Header from './components/header';
-import Footer from './components/footer';
 import Profile from './views/profile';
 import Login from './views/login';
 import Registration from './views/registration';
@@ -58,7 +57,6 @@ class App extends React.Component {
           <Route exact path="/feedback" component={Feedback} />
           <Route exact path="/legalnotice" component={LegalNotice} />
         </div>
-        <Route component={Footer} />
       </div>
 
     );
