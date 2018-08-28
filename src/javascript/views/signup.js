@@ -79,7 +79,7 @@ class Signup extends React.Component {
           <RaisedButton
             className="Signup-btn"
             label="Sign up"
-            backgroundColor="white"
+            backgroundColor="#43D676"
             fullWidth={true}
             onClick={() => {
               this.props.history.push('register');

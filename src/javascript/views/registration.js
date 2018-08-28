@@ -157,7 +157,7 @@ class Onboarding extends React.Component {
       <div className='registration container'>
 
         <div className='registration-header'>
-          Create a new account
+          Sign up
         </div>
 
         <TextField
@@ -193,7 +193,7 @@ class Onboarding extends React.Component {
 
         <RaisedButton
           label="OK"
-          backgroundColor='#68a0ce'
+          backgroundColor='#43d676'
           onClick={this.register}
           fullWidth={true}
           disabled={isRegistrationButtonDisabled}
