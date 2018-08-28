@@ -7,6 +7,7 @@ import { trackPageView } from '../util/google-analytics';
 import CircularProgress from '../components/circularProgress';
 import { PARTNER_LOCATIONS } from '../util/constants';
 import { loadPartnerData } from '../stores/partnerStore';
+import Footer from '../components/footer';
 import Login from './login';
 import { renderLocationInput, saveAndContinue } from '../util/location';
 import './signup.less';
@@ -79,7 +80,7 @@ class Signup extends React.Component {
           <RaisedButton
             className="Signup-btn"
             label="Sign up"
-            backgroundColor="white"
+            backgroundColor="#43D676"
             fullWidth={true}
             onClick={() => {
               this.props.history.push('register');
@@ -87,6 +88,7 @@ class Signup extends React.Component {
           />
         </div>
         <TermsAndPolicy />
+        <Footer />
       </div>
     );
   }

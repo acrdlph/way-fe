@@ -60,8 +60,9 @@ class Header extends React.Component {
     const Modal = this.props.showTheModal ?
     <GenericModal content={onBoardingContent} /> : null;
 
-    const profileIcon = (
-      <div className='header-profileicon'>
+    const profileIcon = iconHide => {
+      return (
+      <div className={iconHide ? 'header-profileicon-hidden' : 'header-profileicon'}>
         <NavLink to='/profile'>
           <span className='header-profileicon-username'>
             {username || name}
@@ -71,8 +72,8 @@ class Header extends React.Component {
             src={photo}
           />
         </NavLink>
-      </div>
-    );
+      </div>)
+    };
     
     const questionMarkIcon = (
       <div className='questionmark-icon'>
@@ -103,7 +104,7 @@ class Header extends React.Component {
             />
           </NavLink>
         </div>
-        {profileIcon}
+        {pathname === '/register' ? profileIcon(true) : profileIcon(false)}
         <div>
            {Modal}
            {questionMarkIcon}
