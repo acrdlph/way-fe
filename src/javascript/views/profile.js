@@ -354,7 +354,7 @@ class Profile extends React.Component {
           </Col>
         )}
         </Row>
-       
+
         <Row>
           <Col sm={12} className="read-this">
             Read <a href="">this</a> article to know what silly prizes are waiting for you!
