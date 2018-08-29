@@ -26,7 +26,7 @@ import Web3Component, {
 import Blockgeeks from "../../abi/Blockgeeks.json";
 import { isLoggedIn } from "../stores/accountStore";
 import WaitListItem from "../components/waitlist-item";
-import {LineChart} from 'react-easy-chart';
+import { LineChart } from 'react-easy-chart';
 
 class Profile extends React.Component {
   constructor(props) {
@@ -43,6 +43,7 @@ class Profile extends React.Component {
     this.props.loadUserData(usernameFromPath);
     this.onSave = this.onSave.bind(this);
     this.onBuyHandler = this.onBuyHandler.bind(this);
+    this.onSellHandler = this.onSellHandler.bind(this);
     this.onChanged = this.onChanged.bind(this);
     this.onImageClick = this.onImageClick.bind(this);
     this.refreshProfile = this.refreshProfile.bind(this);
@@ -75,11 +76,11 @@ class Profile extends React.Component {
     const ethereumAddress = window.web3 ? window.web3.eth.accounts[0] : null;
     ethereumAddress
       ? this.state.tokenContract.balanceOf(ethereumAddress, (err, data) => {
-          this.setState({
-            balance: data.toNumber() / 10 ** 18,
-            metamaskConnected: true
-          });
-        })
+        this.setState({
+          balance: data.toNumber() / 10 ** 18,
+          metamaskConnected: true
+        });
+      })
       : null;
   }
 
@@ -130,6 +131,31 @@ class Profile extends React.Component {
           from: window.web3 ? window.web3.eth.accounts[0] : null,
           gas: 300000,
           value: web3.toWei(price, "ether")
+        },
+        (error, result) => {
+          console.log("Result", result);
+          console.error("error", error);
+        }
+      );
+    } catch (error) {
+      alert(error, "Metamask is not connected");
+    }
+  }
+
+
+  onSellHandler(e) {
+    const onSell = this.state.tokenContract
+      ? this.state.tokenContract.sellTokens
+      : null;
+
+    try {
+
+      onSell(
+        this.state.token_amount * 10 ** 18,
+        {
+          from: window.web3 ? window.web3.eth.accounts[0] : null,
+          gas: 300000,
+          value: 0
         },
         (error, result) => {
           console.log("Result", result);
@@ -233,24 +259,24 @@ class Profile extends React.Component {
 
 
 
-              <Col sm={8}>
-                <TextField
-                  name="name"
-                  defaultValue={name}
-                  hintText="Name"
-                  onChange={this.onChanged}
-                  fullWidth
-                />
-                <TextField
-                  name="interests"
-                  defaultValue={interests}
-                  hintText="What are your incentives?"
-                  onChange={this.onChanged}
-                  fullWidth
-                />
-              </Col>
+          <Col sm={8}>
+            <TextField
+              name="name"
+              defaultValue={name}
+              hintText="Name"
+              onChange={this.onChanged}
+              fullWidth
+            />
+            <TextField
+              name="interests"
+              defaultValue={interests}
+              hintText="What are your incentives?"
+              onChange={this.onChanged}
+              fullWidth
+            />
+          </Col>
 
-            <div className="profile-button profile-button-save">
+          <div className="profile-button profile-button-save">
 
             <Col sm={2}>
 
@@ -262,18 +288,18 @@ class Profile extends React.Component {
                 backgroundColor="#00cf70"
                 label={this.props.isRegisteredUser ? "Save" : "Register"}
               />
-              </Col>
-            </div>
-            </Row>
+            </Col>
+          </div>
+        </Row>
 
 
 
         <p />
 
         <Row className="info-row">
-        <Web3Provider>
-                <Web3Component />
-              </Web3Provider>
+          <Web3Provider>
+            <Web3Component />
+          </Web3Provider>
 
           <Col sm={12} md={4} className="user-info-profile">
 
@@ -286,7 +312,7 @@ class Profile extends React.Component {
                 Your ETH-Address:
                 <p />
                 <font size="1">
-                {window.web3 && getWeb3().eth.accounts[0]}{" "}
+                  {window.web3 && getWeb3().eth.accounts[0]}{" "}
                 </font>
               </h6>
 
@@ -301,62 +327,73 @@ class Profile extends React.Component {
 
 
 
-        <p />
+          <p />
 
-        {this.state.metamaskConnected && (
-          <div class="profile-token-curve">
+          {this.state.metamaskConnected && (
+            <div class="profile-token-curve">
 
-          <Col sm={12} md={8} className="info-text">
+              <Col sm={12} md={8} className="info-text">
 
-          <h6>
-          This particular bonding curve rewards early curators: the price is affected by the ammount of people buying the token.<p /> <strong>Buy fast and start curating the commnuity</strong>
-          </h6>
+                <h6>
+                  This particular bonding curve rewards early curators: the price is affected by the ammount of people buying the token.<p /> <strong>Buy fast and start curating the commnuity</strong>
+                </h6>
 
                 <TextField
                   name="token_amount"
-                  hintText="Desired token amount"
+                  hintText="Token amount"
                   onChange={this.onChanged}
                   fullWidth={false}
                 />
                 <label>{this.state.priceToEther}</label>
 
-              <p />
+                <p />
 
-                  <RaisedButton
-                    className="get-price-button"
-                    onClick={this.getEtherPrice}
-                    backgroundColor="#00cf70"
-                    label="Get price (ETH)"
-                  />
                 <RaisedButton
                   onClick={this.onBuyHandler}
                   backgroundColor="#00cf70"
                   label="Buy"
                 />
+                <RaisedButton
+                  onClick={this.onSellHandler}
+                  backgroundColor="white"
+                  label="Sell"
+                />
+
+                <br></br>
+                <br></br>
 
 
-            </Col>
-
-            <Col sm={12} md={4} className="info-graph">
-
-              <LineChart
-                width={250}
-                height={175}
-                data={[
-                  [
-                    { x: 1, y: 20 },
-                    { x: 2, y: 10 },
-                    { x: 3, y: 25 }
-                  ], [
-                    { x: 1, y: 10 },
-                    { x: 2, y: 12 },
-                    { x: 3, y: 4 }
-                  ]
-                ]}
-              />
+                <RaisedButton
+                  className="get-price-button"
+                  onClick={this.getEtherPrice}
+                  backgroundColor="#00cf70"
+                  label="Get price (ETH)"
+                />
 
 
-              <font size="1">
+
+              </Col>
+
+              <Col sm={12} md={4} className="info-graph">
+
+                <LineChart
+                  width={250}
+                  height={175}
+                  data={[
+                    [
+                      { x: 1, y: 20 },
+                      { x: 2, y: 10 },
+                      { x: 3, y: 25 }
+                    ], [
+                      { x: 1, y: 10 },
+                      { x: 2, y: 12 },
+                      { x: 3, y: 4 }
+                    ]
+                  ]}
+                />
+
+
+                <font size="1">
                   Contract:{" "}
                   <a
                     href="https://rinkeby.etherscan.io/address/0xbaa593e9c1f11bbcfa4725085211d764eec26592"
@@ -367,13 +404,13 @@ class Profile extends React.Component {
                 </font>
 
 
-            </Col>
+              </Col>
 
 
 
 
-          </div>
-        )}
+            </div>
+          )}
         </Row>
         <p />
         <p />
