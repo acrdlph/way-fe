@@ -55,13 +55,15 @@ class Signup extends React.Component {
   render() {
     return (
       <div className="signup">
-        <h2>
-          Trusted blockchain <br /> experts.
-        </h2>
+        
         <div className="onboarding-logo">
           <img alt="here is the logo" className="logo" src="assets/bglogo.png" />
         </div>
         <br />
+
+        <h3>
+          Trusted blockchain <br /> experts.
+        </h3>
 
         {renderLocationInput(this.state.isSearchBoxVisible, this.state.showLocationRequiredHint)}
         {this.state.show && CircularProgress()}

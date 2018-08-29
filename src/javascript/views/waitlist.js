@@ -75,7 +75,7 @@ class WaitList extends React.Component {
     }
 
     this.setState({
-      distance: 500000000,
+      distance: 5,
       reputation: 100,
       contract: null,
     });
@@ -116,7 +116,7 @@ class WaitList extends React.Component {
   }
 
   changeReputation (event, value) {
-    // @TODO: store distance in backend
+    // @TODO: store reputation in backend
     const roundedValue = Math.floor(value);
     this.setState({
       reputation: roundedValue
@@ -175,7 +175,7 @@ class WaitList extends React.Component {
           visible={!isUserOnboarded && this.state.showIncompleteProfileHint}
           text={'Enter your name and interests to start communicating with other geeks'}
         />
-{/*
+
         <div>
           <ul className="signup-wait-dist signup-wait ">
             <li className="signup-wait-for-li"><strong className="signup-wait-for">Distance</strong></li>
@@ -193,6 +193,7 @@ class WaitList extends React.Component {
             <li className="title"><p className="signup-wait-for">{distance}  meters </p></li>
           </ul>
         </div>
+{/*
         <div>
           <ul className="signup-wait-rep signup-wait">
             <li className="signup-wait-for-li"><strong className="signup-wait-for">Reputation</strong></li>
