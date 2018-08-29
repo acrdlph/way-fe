@@ -75,7 +75,7 @@ class WaitList extends React.Component {
     }
 
     this.setState({
-      distance: 5,
+      distance: 5000,
       reputation: 100,
       contract: null,
     });
