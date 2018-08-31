@@ -314,14 +314,14 @@ class Profile extends React.Component {
               <Col className="info-text">
                 <h6>
                   This particular bonding curve rewards early curators: the
-                  price is affected by the ammount of people buying the token.<p />{" "}
+                  price is affected by the amount of people buying the token.<p />{" "}
                   <strong>Buy fast and start curating the commnuity</strong>
                 </h6>
 
                 <TextField
                   className="tokenField"
                   name="token_amount"
-                  hintText="Desired token amount"
+                  hintText="GEEK token amount"
                   onChange={this.onChanged}
                   fullWidth={false}
                 />
