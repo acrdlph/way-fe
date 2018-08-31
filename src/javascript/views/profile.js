@@ -26,7 +26,7 @@ import Web3Component, {
 import Blockgeeks from "../../abi/Blockgeeks.json";
 import { isLoggedIn } from "../stores/accountStore";
 import WaitListItem from "../components/waitlist-item";
-import {LineChart} from 'react-easy-chart';
+import { LineChart } from "react-easy-chart";
 
 class Profile extends React.Component {
   constructor(props) {
@@ -43,6 +43,7 @@ class Profile extends React.Component {
     this.props.loadUserData(usernameFromPath);
     this.onSave = this.onSave.bind(this);
     this.onBuyHandler = this.onBuyHandler.bind(this);
+    this.onSellHandler = this.onSellHandler.bind(this);
     this.onChanged = this.onChanged.bind(this);
     this.onImageClick = this.onImageClick.bind(this);
     this.refreshProfile = this.refreshProfile.bind(this);
@@ -123,13 +124,35 @@ class Profile extends React.Component {
     const price = this.state.priceToEther;
 
     try {
-
       onBuy(
         this.state.token_amount * 10 ** 18,
         {
           from: window.web3 ? window.web3.eth.accounts[0] : null,
           gas: 300000,
           value: web3.toWei(price, "ether")
+        },
+        (error, result) => {
+          console.log("Result", result);
+          console.error("error", error);
+        }
+      );
+    } catch (error) {
+      alert(error, "Metamask is not connected");
+    }
+  }
+
+  onSellHandler(e) {
+    const onSell = this.state.tokenContract
+      ? this.state.tokenContract.sellTokens
+      : null;
+
+    try {
+      onSell(
+        this.state.token_amount * 10 ** 18,
+        {
+          from: window.web3 ? window.web3.eth.accounts[0] : null,
+          gas: 300000,
+          value: 0
         },
         (error, result) => {
           console.log("Result", result);
@@ -224,7 +247,6 @@ class Profile extends React.Component {
           <img className="logo-profile" src="assets/icon.png" />
         </NavLink>
 
-
         <Row>
           <Col sm={12} md={2}>
             <Avatar src={photoUrl} onClick={this.onImageClick} displayPlus />
@@ -248,122 +270,117 @@ class Profile extends React.Component {
             />
           </Col>
 
-          <Col sm={4} md={3} className='buttonBox'>
-              <div className="profile-button profile-button-save">
+          <Col sm={4} md={3} className="buttonBox">
+            <div className="profile-button profile-button-save">
+              <div>{logoutButton}</div>
 
-                <div>{logoutButton}</div>
-
-                <RaisedButton
-                  className="save-button"
-                  onClick={this.onSave}
-                  backgroundColor="#00cf70"
-                  label={this.props.isRegisteredUser ? "Save" : "Register"}
-                />
-              </div>
+              <RaisedButton
+                className="save-button"
+                onClick={this.onSave}
+                backgroundColor="#00cf70"
+                label={this.props.isRegisteredUser ? "Save" : "Register"}
+              />
+            </div>
           </Col>
         </Row>
 
         <Row className="info-row">
-            <Web3Provider>
-              <Web3Component />
-            </Web3Provider>
+          <Web3Provider>
+            <Web3Component />
+          </Web3Provider>
           <Col lg={4} sm={12} className="user-info-profile">
             <h3 className="username-profile">
               <strong>{username}</strong>
             </h3>
             <Col sm={12}>
-            <div className="profile-eth-adress">
-              <h6 className="ethAddress">
-                {" "}
-                Your ETH-Address:
-                <font size="1">
-                  {window.web3 && getWeb3().eth.accounts[0]}{" "}
-                </font>
-              </h6>
-            </div>
+              <div className="profile-eth-adress">
+                <h6 className="ethAddress">
+                  {" "}
+                  Your ETH-Address:
+                  <font size="1">
+                    {window.web3 && getWeb3().eth.accounts[0]}{" "}
+                  </font>
+                </h6>
+              </div>
             </Col>
             <Col sm={12}>
-              <Col>
-              Your balance: {this.state.balance}
-              </Col>
-              <Col>
-              Your reputation: {endorsement}
-              </Col>
+              <Col>Your balance: {this.state.balance}</Col>
+              <Col>Your reputation: {endorsement}</Col>
             </Col>
           </Col>
 
-        {this.state.metamaskConnected && (
+          {this.state.metamaskConnected && (
             <Col lg={8} sm={12} className="profile-token-curve">
-            <Col  className="info-text">
-              <h6>
-                This particular bonding curve rewards early curators: the price is affected by the ammount of people buying the token.<p /> <strong>Buy fast and start curating the commnuity</strong>
-              </h6>
+              <Col className="info-text">
+                <h6>
+                  This particular bonding curve rewards early curators: the
+                  price is affected by the ammount of people buying the token.<p />{" "}
+                  <strong>Buy fast and start curating the commnuity</strong>
+                </h6>
 
-              <TextField
-                className="tokenField"
-                name="token_amount"
-                hintText="Desired token amount"
-                onChange={this.onChanged}
-                fullWidth={false}
-              />
-              <label>{this.state.priceToEther}</label>
-              <Col sm={12} >
-                <RaisedButton
-                  className="get-price-button"
-                  onClick={this.getEtherPrice}
-                  backgroundColor="#00cf70"
-                  label="Get price (ETH)"
+                <TextField
+                  className="tokenField"
+                  name="token_amount"
+                  hintText="Desired token amount"
+                  onChange={this.onChanged}
+                  fullWidth={false}
                 />
-                <RaisedButton
+                <label>{this.state.priceToEther}</label>
+                <Col sm={12}>
+                  <RaisedButton
                     className="get-price-button"
-                  onClick={this.onBuyHandler}
-                  backgroundColor="#00cf70"
-                  label="Buy"
-                />
+                    onClick={this.getEtherPrice}
+                    backgroundColor="#00cf70"
+                    label="Get price (ETH)"
+                  />
+                  <RaisedButton
+                    className="get-price-button"
+                    onClick={this.onBuyHandler}
+                    backgroundColor="#00cf70"
+                    label="Buy"
+                  />
+                  <RaisedButton
+                    onClick={this.onSellHandler}
+                    backgroundColor="white"
+                    label="Sell"
+                  />
                 </Col>
-            </Col>
+              </Col>
 
-            <Col className="info-graph">
-              <Col sm={12} >
-                <LineChart
-                  width={250}
-                  height={175}
-                  data={[
-                    [
-                      { x: 1, y: 20 },
-                      { x: 2, y: 10 },
-                      { x: 3, y: 25 }
-                    ], [
-                      { x: 1, y: 10 },
-                      { x: 2, y: 12 },
-                      { x: 3, y: 4 }
-                    ]
-                  ]}
-                />
-                <font size="1">
-                  Contract:{" "}
-                  <a
-                    href="https://rinkeby.etherscan.io/address/0xbaa593e9c1f11bbcfa4725085211d764eec26592"
-                    target="_blank"
-                  >
-                    0xbaa593e9c1f11bbcfa4725085211d764eec26592
-                  </a>
-                </font>
+              <Col className="info-graph">
+                <Col sm={12}>
+                  <LineChart
+                    width={250}
+                    height={175}
+                    data={[
+                      [{ x: 1, y: 20 }, { x: 2, y: 10 }, { x: 3, y: 25 }],
+                      [{ x: 1, y: 10 }, { x: 2, y: 12 }, { x: 3, y: 4 }]
+                    ]}
+                  />
+                  <font size="1">
+                    Contract:{" "}
+                    <a
+                      href="https://rinkeby.etherscan.io/address/0xbaa593e9c1f11bbcfa4725085211d764eec26592"
+                      target="_blank"
+                    >
+                      0xbaa593e9c1f11bbcfa4725085211d764eec26592
+                    </a>
+                  </font>
+                </Col>
               </Col>
             </Col>
-          </Col>
-        )}
+          )}
         </Row>
 
         <Row>
           <Col sm={12} className="read-this">
-            Read <a href="">this</a> article to know what silly prizes are waiting for you!
+            Read <a href="">this</a> article to know what silly prizes are
+            waiting for you!
           </Col>
           <Col sm={12}>
             Any problems? <a href="">Contact us</a>
           </Col>
         </Row>
-
       </Grid>
     );
   }
