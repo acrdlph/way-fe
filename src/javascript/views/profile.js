@@ -1,32 +1,21 @@
-import React from "react";
-import { connect } from "react-redux";
-import { NavLink } from "react-router-dom";
-import TextField from "material-ui/TextField";
-import RaisedButton from "material-ui/RaisedButton";
-import { Web3Provider } from "react-web3";
-import { Grid, Row, Col } from "react-bootstrap";
-import Avatar from "../components/avatar";
-import { trackPageView } from "../util/google-analytics";
-import TermsAndPolicy from "../components/terms-and-policy";
-import InfoBox from "../components/infobox";
-import ImageSelection from "../components/image-selection-modal";
-import { showModal } from "../stores/profileImageStore";
+import React from 'react';
+import { connect } from 'react-redux';
+import { NavLink } from 'react-router-dom';
+import TextField from 'material-ui/TextField';
+import RaisedButton from 'material-ui/RaisedButton';
+import { Web3Provider } from 'react-web3';
+import { LineChart } from 'react-easy-chart';
+import { Grid, Row, Col } from 'react-bootstrap';
+import Avatar from '../components/avatar';
+import { trackPageView } from '../util/google-analytics';
+import ImageSelection from '../components/image-selection-modal';
+import { showModal } from '../stores/profileImageStore';
 import {
-  loadUserData,
-  updateUserData,
-  editUserData,
-  isOnboarded
-} from "../stores/userStore";
-import "./profile.less";
-import Web3Component, {
-  initContract,
-  getWeb3,
-  contractAddress
-} from "../components/Web3Component";
-import Blockgeeks from "../../abi/Blockgeeks.json";
-import { isLoggedIn } from "../stores/accountStore";
-import WaitListItem from "../components/waitlist-item";
-import { LineChart } from "react-easy-chart";
+  loadUserData, updateUserData, editUserData, isOnboarded,
+} from '../stores/userStore';
+import './profile.less';
+import Web3Component, { initContract, getWeb3, contractAddress } from '../components/Web3Component';
+import Blockgeeks from '../../abi/Blockgeeks.json';
 
 class Profile extends React.Component {
   constructor(props) {
@@ -35,8 +24,8 @@ class Profile extends React.Component {
       const path = this.props.location.pathname;
       trackPageView(path);
     }
-    const userId = sessionStorage.getItem("userId");
-    const usernameFromPath = _.get(this.props.match, "params.username");
+    const userId = sessionStorage.getItem('userId');
+    const usernameFromPath = _.get(this.props.match, 'params.username');
     if (!usernameFromPath && (props.username || userId)) {
       this.props.history.push(`/profile/${props.username || userId}`);
     }
@@ -59,16 +48,16 @@ class Profile extends React.Component {
       address: window.web3 ? window.web3.eth.accounts[0] : null,
       tokenContract: initContract(Blockgeeks),
       priceToEther: null,
-      metamaskConnected: false
+      metamaskConnected: false,
     };
   }
 
   componentDidMount() {
-    document.title = "Profile | CryptoGeeks";
+    document.title = 'Profile | CryptoGeeks';
   }
 
   componentWillReceiveProps(props) {
-    const usernameFromPath = _.get(this.props.match, "params.username");
+    const usernameFromPath = _.get(this.props.match, 'params.username');
     if (props.username && props.username != usernameFromPath) {
       this.props.history.push(`/profile/${props.username}`);
     }
@@ -76,16 +65,16 @@ class Profile extends React.Component {
     const ethereumAddress = window.web3 ? window.web3.eth.accounts[0] : null;
     ethereumAddress
       ? this.state.tokenContract.balanceOf(ethereumAddress, (err, data) => {
-          this.setState({
-            balance: data.toNumber() / 10 ** 18,
-            metamaskConnected: true
-          });
-        })
+        this.setState({
+          balance: data.toNumber() / 10 ** 18,
+          metamaskConnected: true,
+        });
+      })
       : null;
   }
 
   refreshProfile() {
-    const userId = sessionStorage.getItem("userId");
+    const userId = sessionStorage.getItem('userId');
     this.props.loadUserData(userId);
   }
 
@@ -96,20 +85,18 @@ class Profile extends React.Component {
   }
 
   _getBuyPrice(tokenAmount) {
-    const getBuyPrice = this.state.tokenContract
-      ? this.state.tokenContract.getBuyPrice
-      : null;
+    const getBuyPrice = this.state.tokenContract ? this.state.tokenContract.getBuyPrice : null;
 
     getBuyPrice(
       tokenAmount * 10 ** 18,
       {
         from: window.web3.eth.accounts ? window.web3.eth.accounts[0] : null,
         gas: 300000,
-        value: 0
+        value: 0,
       },
       (error, data) => {
-        this.setState({ priceToEther: web3.fromWei(data.toNumber(), "ether") });
-      }
+        this.setState({ priceToEther: web3.fromWei(data.toNumber(), 'ether') });
+      },
     );
   }
 
@@ -118,9 +105,7 @@ class Profile extends React.Component {
   }
 
   onBuyHandler(e) {
-    const onBuy = this.state.tokenContract
-      ? this.state.tokenContract.buyTokens
-      : null;
+    const onBuy = this.state.tokenContract ? this.state.tokenContract.buyTokens : null;
     const price = this.state.priceToEther;
 
     try {
@@ -129,22 +114,20 @@ class Profile extends React.Component {
         {
           from: window.web3 ? window.web3.eth.accounts[0] : null,
           gas: 300000,
-          value: web3.toWei(price, "ether")
+          value: web3.toWei(price, 'ether'),
         },
         (error, result) => {
-          console.log("Result", result);
-          console.error("error", error);
-        }
+          console.log('Result', result);
+          console.error('error', error);
+        },
       );
     } catch (error) {
-      alert(error, "Metamask is not connected");
+      alert(error, 'Metamask is not connected');
     }
   }
 
   onSellHandler(e) {
-    const onSell = this.state.tokenContract
-      ? this.state.tokenContract.sellTokens
-      : null;
+    const onSell = this.state.tokenContract ? this.state.tokenContract.sellTokens : null;
 
     try {
       onSell(
@@ -152,15 +135,15 @@ class Profile extends React.Component {
         {
           from: window.web3 ? window.web3.eth.accounts[0] : null,
           gas: 300000,
-          value: 0
+          value: 0,
         },
         (error, result) => {
-          console.log("Result", result);
-          console.error("error", error);
-        }
+          console.log('Result', result);
+          console.error('error', error);
+        },
       );
     } catch (error) {
-      alert(error, "Metamask is not connected");
+      alert(error, 'Metamask is not connected');
     }
   }
 
@@ -175,20 +158,20 @@ class Profile extends React.Component {
   onLogout() {
     sessionStorage.clear();
     localStorage.clear();
-    this.props.history.push("/");
+    this.props.history.push('/');
     location.reload();
   }
 
   onSave(e) {
     // this for test Save button
-    this.props.history.push("/waitlist");
+    this.props.history.push('/waitlist');
     if (!this.props.isRegisteredUser) {
-      this.props.history.push("/waitlist");
+      this.props.history.push('/waitlist');
     }
-    const userId = sessionStorage.getItem("userId");
+    const userId = sessionStorage.getItem('userId');
     const data = {
       name: this.state.name,
-      interests: this.state.interests
+      interests: this.state.interests,
     };
     this.props.updateUserData(userId, data);
   }
@@ -199,16 +182,11 @@ class Profile extends React.Component {
         <span className="glyphicon glyphicon glyphicon-chevron-left" />
       </NavLink>
     );
-    const backButton = createBackButton("/waitlist");
+    const backButton = createBackButton('/waitlist');
     const {
-      username,
-      name,
-      interests,
-      photo,
-      waytcoins,
-      endorsement
+      username, name, interests, photo, waytcoins, endorsement,
     } = this.props;
-    const photoUrl = photo || "assets/avatar-placeholder.png";
+    const photoUrl = photo || 'assets/avatar-placeholder.png';
     const imageSelectionModal = this.props.showModal ? (
       <ImageSelection onUpload={this.refreshProfile} />
     ) : null;
@@ -216,7 +194,7 @@ class Profile extends React.Component {
       <div className="profile-button profile-button-logout">
         <RaisedButton
           onClick={this.onLogout}
-          buttonStyle={{ border: " 1px solid darkred" }}
+          buttonStyle={{ border: ' 1px solid darkred' }}
           backgroundColor="white"
           label="logout"
         />
@@ -241,6 +219,10 @@ class Profile extends React.Component {
         {waytcoins}
       </div>
     );
+    const xAxis = 4.5;
+    const yAxis = 0.0001 * xAxis;
+    const curveData = [[{ x: 0, y: 0 }, { x: xAxis, y: yAxis }, { x: 10, y: 0.001 }]];
+
     return (
       <Grid className="profile">
         <NavLink to="/waitlist">
@@ -278,7 +260,7 @@ class Profile extends React.Component {
                 className="save-button"
                 onClick={this.onSave}
                 backgroundColor="#00cf70"
-                label={this.props.isRegisteredUser ? "Save" : "Register"}
+                label={this.props.isRegisteredUser ? 'Save' : 'Register'}
               />
             </div>
           </Col>
@@ -295,17 +277,24 @@ class Profile extends React.Component {
             <Col sm={12}>
               <div className="profile-eth-adress">
                 <h6 className="ethAddress">
-                  {" "}
+                  {' '}
                   Your ETH-Address:
                   <font size="1">
-                    {window.web3 && getWeb3().eth.accounts[0]}{" "}
+                    {window.web3 && getWeb3().eth.accounts[0]}
+                    {' '}
                   </font>
                 </h6>
               </div>
             </Col>
             <Col sm={12}>
-              <Col>Your balance: {this.state.balance}</Col>
-              <Col>Your reputation: {endorsement}</Col>
+              <Col>
+                Your balance:
+                {this.state.balance}
+              </Col>
+              <Col>
+                Your reputation:
+                {endorsement}
+              </Col>
             </Col>
           </Col>
 
@@ -313,8 +302,10 @@ class Profile extends React.Component {
             <Col lg={8} sm={12} className="profile-token-curve">
               <Col className="info-text">
                 <h6>
-                  This particular bonding curve rewards early curators: the
-                  price is affected by the amount of people buying the token.<p />{" "}
+                  This particular bonding curve rewards early curators: the price is affected by the
+                  amount of people buying the token.
+                  <p />
+                  {' '}
                   <strong>Buy fast and start curating the commnuity</strong>
                 </h6>
 
@@ -339,26 +330,30 @@ class Profile extends React.Component {
                     backgroundColor="#00cf70"
                     label="Buy"
                   />
-                  <RaisedButton
-                    onClick={this.onSellHandler}
-                    backgroundColor="white"
-                    label="Sell"
-                  />
+                  <RaisedButton onClick={this.onSellHandler} backgroundColor="white" label="Sell" />
                 </Col>
               </Col>
 
               <Col className="info-graph">
                 <Col sm={12}>
                   <LineChart
-                    width={250}
-                    height={175}
-                    data={[
-                      [{ x: 1, y: 20 }, { x: 2, y: 10 }, { x: 3, y: 25 }],
-                      [{ x: 1, y: 10 }, { x: 2, y: 12 }, { x: 3, y: 4 }]
-                    ]}
+                    axes
+                    axisLabels={{ x: 'Token Supply', y: 'Current Price' }}
+                    data={curveData}
+                    dataPoints
+                    margin={{
+                      top: 30,
+                      right: 30,
+                      bottom: 50,
+                      left: 70,
+                    }}
+                    width={500}
+                    height={400}
+                    style={{ '.label': { fill: 'black' } }}
                   />
                   <font size="1">
-                    Contract:{" "}
+                    Contract:
+                    {' '}
                     <a
                       href="https://rinkeby.etherscan.io/address/0xbaa593e9c1f11bbcfa4725085211d764eec26592"
                       target="_blank"
@@ -374,31 +369,34 @@ class Profile extends React.Component {
 
         <Row>
           <Col sm={12} className="read-this">
-            Read <a href="">this</a> article to know what silly prizes are
-            waiting for you!
+            Read
+            {' '}
+            <a href="">this</a>
+            {' '}
+article to know what silly prizes are waiting for you!
           </Col>
           <Col sm={12}>
-            Any problems? <a href="">Contact us</a>
+            Any problems?
+            {' '}
+            <a href="">Contact us</a>
           </Col>
         </Row>
       </Grid>
     );
   }
 }
-const mapStateToProps = state => {
-  return {
-    ...state.user.data,
-    isRegisteredUser: !!state.user.data.username,
-    showModal: state.profileImage.showModal
-  };
-};
+const mapStateToProps = state => ({
+  ...state.user.data,
+  isRegisteredUser: !!state.user.data.username,
+  showModal: state.profileImage.showModal,
+});
 const mapDispatchToProps = dispatch => ({
   loadUserData: userId => dispatch(loadUserData(userId)),
   updateUserData: (userId, data) => dispatch(updateUserData(userId, data)),
-  openModal: () => dispatch(showModal(true))
+  openModal: () => dispatch(showModal(true)),
 });
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(Profile);
