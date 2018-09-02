@@ -17,6 +17,8 @@ import './profile.less';
 import Web3Component, { initContract, getWeb3, contractAddress } from '../components/Web3Component';
 import Blockgeeks from '../../abi/Blockgeeks.json';
 
+const multiplier = 10 ** 18;
+
 class Profile extends React.Component {
   constructor(props) {
     super(props);
@@ -66,11 +68,12 @@ class Profile extends React.Component {
     ethereumAddress
       ? this.state.tokenContract.balanceOf(ethereumAddress, (err, data) => {
         this.setState({
-          balance: data.toNumber() / 10 ** 18,
+          balance: data.toNumber() / multiplier,
           metamaskConnected: true,
         });
       })
       : null;
+    this._getTotalSupply();
   }
 
   refreshProfile() {
@@ -96,6 +99,21 @@ class Profile extends React.Component {
       },
       (error, data) => {
         this.setState({ priceToEther: web3.fromWei(data.toNumber(), 'ether') });
+      },
+    );
+  }
+
+  _getTotalSupply() {
+    const getTotalSupply = this.state.tokenContract ? this.state.tokenContract.totalSupply : null;
+
+    getTotalSupply(
+      {
+        from: window.web3.eth.accounts ? window.web3.eth.accounts[0] : null,
+        gas: 300000,
+        value: 0,
+      },
+      (error, data) => {
+        this.setState({ totalSupply: data.toNumber() });
       },
     );
   }
@@ -219,9 +237,10 @@ class Profile extends React.Component {
         {waytcoins}
       </div>
     );
-    const xAxis = 4.5;
+    const xAxis = this.state.totalSupply / multiplier;
+    console.log(this.state.tokenContract.totalSupply, 'yo yo');
     const yAxis = 0.0001 * xAxis;
-    const curveData = [[{ x: 0, y: 0 }, { x: xAxis, y: yAxis }, { x: 10, y: 0.001 }]];
+    const curveData = [[{ x: 0, y: 0 }, { x: xAxis, y: yAxis }, { x: 10000, y: 1 }]];
 
     return (
       <Grid className="profile">
