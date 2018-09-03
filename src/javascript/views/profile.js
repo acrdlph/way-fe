@@ -307,12 +307,12 @@ class Profile extends React.Component {
             </Col>
             <Col sm={12}>
               <Col>
-                Your balance:
-                {this.state.balance}
+                Your GEEK balance: 
+                {' ' + this.state.balance}
               </Col>
               <Col>
-                Your reputation:
-                {endorsement}
+                Your GEEK reputation: 
+                {' ' + endorsement}
               </Col>
             </Col>
           </Col>
@@ -320,13 +320,12 @@ class Profile extends React.Component {
           {this.state.metamaskConnected && (
             <Col lg={8} sm={12} className="profile-token-curve">
               <Col className="info-text">
-                <h6>
-                  This particular bonding curve rewards early curators: the price is affected by the
-                  amount of people buying the token.
-                  <p />
-                  {' '}
-                  <strong>Buy fast and start curating the commnuity</strong>
-                </h6>
+              <h6>
+                Live on the <u><b>Rinkeby</b></u> Testnet 
+              </h6>
+              <p>
+                Buy GEEK token from this bonding curve to start curating the community. 
+              </p>
 
                 <TextField
                   className="tokenField"
@@ -386,20 +385,7 @@ class Profile extends React.Component {
           )}
         </Row>
 
-        <Row>
-          <Col sm={12} className="read-this">
-            Read
-            {' '}
-            <a href="">this</a>
-            {' '}
-article to know what silly prizes are waiting for you!
-          </Col>
-          <Col sm={12}>
-            Any problems?
-            {' '}
-            <a href="">Contact us</a>
-          </Col>
-        </Row>
+        
       </Grid>
     );
   }
