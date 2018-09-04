@@ -61,16 +61,16 @@ class Header extends React.Component {
     const profileIcon = iconHide => (
       <div className={iconHide ? 'header-profileicon-hidden' : 'header-profileicon'}>
         <NavLink to="/profile">
-          <span className="header-profileicon-username">{username || name}</span>
           <MaterialUiAvatar size={35} src={photo} />
+          <span className="header-profileicon-username">{username || name}</span>
         </NavLink>
       </div>
     );
 
-    const listOrQuestion = showTabs => (
-      <div>
+    const listOrQuestion = (
+      <div className="listOrQuestion">
         <NavLink to="/waitlist">Geek List</NavLink>
-        <NavLink to="/qna">Any Questions?</NavLink>
+        <NavLink to="/qna">Ask a Question?</NavLink>
       </div>
     );
 
@@ -90,20 +90,29 @@ class Header extends React.Component {
     ) : null;
 
     return (
-      <Card className="header">
-        <div className="header-back-button">{backButton}</div>
-        <div className="header-logo">
-          <NavLink to="/waitlist">
-            <img src="assets/bglogo.png" />
-          </NavLink>
+      <div className="header">
+        <div className="logo">
+          <div className="header-back-button">{backButton}</div>
+          <div className="header-logo">
+            <NavLink to="/waitlist">
+              <img src="assets/bglogo.png" />
+            </NavLink>
+          </div>
         </div>
-        {(pathname === '/waitlist' || pathname === '/qna') && listOrQuestion(true)}
-        {pathname === '/register' ? profileIcon(true) : profileIcon(false)}
-        <div>
-          {Modal}
-          {questionMarkIcon}
+        <div className="listQuestion">
+          {listOrQuestion}
         </div>
-      </Card>
+        <div className="markProfile">
+          <div className="borderLine">
+            {(pathname === '/waitlist' || pathname === '/qna') && listOrQuestion(true)}
+            {pathname === '/register' ? profileIcon(true) : profileIcon(false)}
+          </div>
+          <div>
+            {Modal}
+            {questionMarkIcon}
+          </div>
+        </div>
+      </div>
     );
   }
 }
