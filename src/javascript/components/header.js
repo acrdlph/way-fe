@@ -69,7 +69,7 @@ class Header extends React.Component {
 
     const listOrQuestion = (
       <div className="listOrQuestion">
-        <NavLink to="/waitlist">Geek List</NavLink>
+        <NavLink to="/waitlist" activeClassName="active">Geek List</NavLink>
         <NavLink to="/qna">Ask a Question?</NavLink>
       </div>
     );

@@ -54,11 +54,18 @@
   padding-bottom: 1em;
 }
 
-.listOrQuestion a:active {
+.active {
   text-decoration: none;
-  color: #0095b3;
+  color: #0095b3!important;
   border-bottom: 3px solid #0095b3;
   padding-bottom: 1em;
+  @media (max-width: 635px) {
+    padding-bottom: 0;
+  }
+}
+
+.header-logo a {
+  border-bottom: none;
 }
 
 .header-logo img {

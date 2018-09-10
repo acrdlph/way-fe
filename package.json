@@ -46,6 +46,7 @@
     "webpack-stream": "4.0.0"
   },
   "dependencies": {
+    "@types/react-redux": "^6.0.7",
     "babel-runtime": "6.26.0",
     "big-number": "^0.4.0",
     "bluebird": "^3.5.1",
@@ -66,12 +67,13 @@
     "react-modal": "^3.1.4",
     "react-native-code-push": "^5.3.2",
     "react-notify-toast": "^0.4.0",
-    "react-redux": "5.0.6",
+    "react-redux": "^5.0.6",
     "react-router": "4.2.0",
-    "react-router-dom": "4.2.2",
+    "react-router-dom": "^4.2.2",
     "react-select": "^1.0.1",
     "react-slick": "0.15.4",
     "react-web3": "^0.4.5",
+    "reactstrap": "^6.4.0",
     "redux": "3.7.2",
     "redux-thunk": "2.2.0",
     "socket.io-client": "^2.0.4",
