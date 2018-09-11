@@ -69,7 +69,9 @@ class Header extends React.Component {
 
     const listOrQuestion = (
       <div className="listOrQuestion">
-        <NavLink to="/waitlist" activeClassName="active">Geek List</NavLink>
+        <NavLink to="/waitlist" activeClassName="active">
+          Geek List
+        </NavLink>
         <NavLink to="/qna">Ask a Question?</NavLink>
       </div>
     );
@@ -99,12 +101,10 @@ class Header extends React.Component {
             </NavLink>
           </div>
         </div>
-        <div className="listQuestion">
-          {listOrQuestion}
-        </div>
+        <div className="listQuestion">{listOrQuestion}</div>
         <div className="markProfile">
           <div className="borderLine">
-            {(pathname === '/waitlist' || pathname === '/qna') && listOrQuestion(true)}
+            {(pathname === '/waitlist' || pathname === '/qna') && listOrQuestion}
             {pathname === '/register' ? profileIcon(true) : profileIcon(false)}
           </div>
           <div>
