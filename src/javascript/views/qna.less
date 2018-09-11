@@ -1,3 +1,87 @@
-.qnaBody{
-    background: aqua;
+@import '../variables';
+
+.formContainer {
+  padding: 0 138px;
+}
+
+.formGroup {
+  padding: 1em 1.5em;
+  overflow: hidden;
+  border-radius: 4px;
+  background-color: #ffffff;
+  box-shadow: 0 1px 3px 0 rgba(33, 44, 48, 0.15);
+}
+
+.questionBtn {
+  border-radius: 50px;
+  -moz-border-radius: 50px;
+  -webkit-border-radius: 50px;
+  border: none;
+  background-color: #0095b3;
+  float: right;
+}
+
+.form-control {
+  border-radius: 1.25rem;
+  border: none;
+}
+
+.formLink {
+  box-shadow: 0 1px 0 0 rgba(36, 43, 51, 0.1);
+}
+
+.navLink {
+  margin: 2em;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  padding: 0 139px;
+}
+
+.navLink a {
+  color: #6b8299 !important;
+  border-bottom: none;
+}
+
+.navLink a:hover {
+  text-decoration: none;
+  border-bottom: 3px solid #0095b3;
+  color: #0095b3 !important;
+  padding-bottom: 1em;
+}
+
+.active {
+  text-decoration: none;
+  color: #0095b3 !important;
+  border-bottom: 3px solid #0095b3;
+  padding-bottom: 1em;
+  @media (max-width: 635px) {
+    padding-bottom: 0;
+  }
+}
+
+.headPost {
+  box-shadow: 0 1px 0 0 rgba(36, 43, 51, 0.1);
+}
+
+.headPost p,
+.nameUpdate p {
+  font-family: Roboto;
+  font-size: 12px;
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+  padding-bottom: 2em;
+  padding-top: 0.3em;
+  letter-spacing: normal;
+  color: #8899a6;
+}
+
+.nameUpdate p {
+  padding-bottom: 0;
+  padding-top: 0;
+}
+
+.imgText {
+  padding: 0 2em;
 }
