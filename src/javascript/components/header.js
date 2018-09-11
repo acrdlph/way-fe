@@ -4,7 +4,6 @@ import { NavLink } from 'react-router-dom';
 import { Card } from 'material-ui/Card';
 import MaterialUiAvatar from 'material-ui/Avatar';
 import { PAGES_WITH_HEADER } from '../util/constants';
-import { isLoggedIn } from '../stores/accountStore';
 import { extractLocationName } from './location-header';
 import ChatHeader from './chat-header';
 import { showTheModal } from '../stores/modalStore';
@@ -12,27 +11,27 @@ import GenericModal from './Modal';
 import { onBoardingContent } from './onBoardingModalContent';
 import './header.less';
 
-const createBackButton = (to) => {
-  return (
-    <NavLink to={to}>
-      <span className="glyphicon glyphicon glyphicon-chevron-left" />
-    </NavLink>
-  );
-};
+const createBackButton = to => (
+  <NavLink to={to}>
+    <span className="glyphicon glyphicon glyphicon-chevron-left" />
+  </NavLink>
+);
 
 class Header extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { show : true };
+    this.state = { show: true };
     this.openTheModal = this.openTheModal.bind(this);
-  };
-  
+  }
+
   openTheModal() {
     this.props.openTheModal();
   }
 
   render() {
-    const { username, photo, locationName, chatPartner, name } = this.props;
+    const {
+      username, photo, locationName, chatPartner, name,
+    } = this.props;
     const { pathname } = this.props.location;
     const isHeaderVisible = _.filter(PAGES_WITH_HEADER, page => pathname.includes(page)).length > 0;
     const isInChat = pathname.includes('chat');
@@ -50,71 +49,75 @@ class Header extends React.Component {
     const isInProfile = pathname.includes('profile');
     if (isInChat || isInProfile) {
       backButton = createBackButton('/waitlist');
-    };
+    }
     const isInFeedback = this.props.location.pathname.includes('feedback');
     const isInLegalNotice = this.props.location.pathname.includes('legalnotice');
     if (isInFeedback || isInLegalNotice) {
       backButton = createBackButton('/');
-    };
+    }
 
-    const Modal = this.props.showTheModal ?
-    <GenericModal content={onBoardingContent} /> : null;
+    const Modal = this.props.showTheModal ? <GenericModal content={onBoardingContent} /> : null;
 
-    const profileIcon = iconHide => {
-      return (
+    const profileIcon = iconHide => (
       <div className={iconHide ? 'header-profileicon-hidden' : 'header-profileicon'}>
-        <NavLink to='/profile'>
-          <span className='header-profileicon-username'>
-            {username || name}
-          </span>
-          <MaterialUiAvatar
-            size={35}
-            src={photo}
-          />
+        <NavLink to="/profile">
+          <MaterialUiAvatar size={35} src={photo} />
+          <span className="header-profileicon-username">{username || name}</span>
         </NavLink>
-      </div>)
-    };
-    
+      </div>
+    );
+
+    const listOrQuestion = (
+      <div className="listOrQuestion">
+        <NavLink to="/waitlist" activeClassName="active">Geek List</NavLink>
+        <NavLink to="/qna">Ask a Question?</NavLink>
+      </div>
+    );
+
     const questionMarkIcon = (
-      <div className='questionmark-icon'>
-        <button className='questionmark-button' onClick={this.openTheModal}>
-          <img src='assets/questionMark.svg'/>
+      <div className="questionmark-icon">
+        <button className="questionmark-button" onClick={this.openTheModal}>
+          <img src="assets/questionMark.svg" />
         </button>
       </div>
     );
 
     const location = locationName ? (
-      <div className='header-location'>
-        <NavLink to='/signup'>{locationName}</NavLink>
-        <img
-          src='assets/waitlist-location-icon.png'
-        />
+      <div className="header-location">
+        <NavLink to="/signup">{locationName}</NavLink>
+        <img src="assets/waitlist-location-icon.png" />
       </div>
     ) : null;
 
     return (
-      <Card className='header'>
-        <div className='header-back-button'>
-          {backButton}
+      <div className="header">
+        <div className="logo">
+          <div className="header-back-button">{backButton}</div>
+          <div className="header-logo">
+            <NavLink to="/waitlist">
+              <img src="assets/bglogo.png" />
+            </NavLink>
+          </div>
         </div>
-        <div className='header-logo'>
-          <NavLink to='/waitlist'>
-            <img
-              src='assets/bglogo.png'
-            />
-          </NavLink>
+        <div className="listQuestion">
+          {listOrQuestion}
         </div>
-        {pathname === '/register' ? profileIcon(true) : profileIcon(false)}
-        <div>
-           {Modal}
-           {questionMarkIcon}
+        <div className="markProfile">
+          <div className="borderLine">
+            {(pathname === '/waitlist' || pathname === '/qna') && listOrQuestion(true)}
+            {pathname === '/register' ? profileIcon(true) : profileIcon(false)}
+          </div>
+          <div>
+            {Modal}
+            {questionMarkIcon}
+          </div>
         </div>
-      </Card>
+      </div>
     );
   }
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
   username: _.get(state.user, 'data.username'),
   name: _.get(state.user, 'data.name', ''),
   photo: _.get(state.user, 'data.photo', 'assets/avatar-placeholder.png'),
@@ -123,6 +126,9 @@ const mapStateToProps = (state) => ({
   showTheModal: state.modalStore.showTheModal,
 });
 const mapDispatchToProps = dispatch => ({
-  openTheModal: () => dispatch(showTheModal(true))
+  openTheModal: () => dispatch(showTheModal(true)),
 });
-export default connect(mapStateToProps, mapDispatchToProps)(Header);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(Header);

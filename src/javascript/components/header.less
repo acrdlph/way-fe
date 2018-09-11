@@ -2,98 +2,105 @@
 
 .header {
   position: fixed;
+  display: flex;
   width: 100%;
-  top: 0;
-  height: @header-height;
+  height: 56px;
+  background-color: #ffffff;
+  box-shadow: 0 2px 4px 0 rgba(39, 64, 89, 0.1);
   z-index: 10 !important;
+  padding: 0.5em 3em;
+  align-items: center;
+  @media (max-width: 400px) {
+    padding: 0.5em .5em;
+  }
 }
 
 .header-back-button {
-  float: left;
   font-size: 1em;
-  margin: 17px 17px 17px 0px ;
   overflow: hidden;
-  width: 2px;
-}
-
-.header-logo {
-  display: inline-block;
-  @media (min-width: 20px) {
-    float: left;
-    margin-top: 4px;
-  }
-
-  @media (max-width: 40px) {
-    position: absolute;
-    left: 10px;
-    top: 4px;
-    transform: translate(-50%,0);
-  }
-}
-
-.header-logo h3 {
-  color:#43d676;
-}
-
-.header-logo img {
-  max-width: 80%;
-  max-height: 50px;
-  margin-top: 4px;
 }
 
 .questionmark-button {
   border: none;
-  background: #ffffff;
-  float: right;
-  margin-top: 15px;
+  background: rgba(255, 255, 255, 0);
+  padding-right: 0;
+  img {
+    cursor: pointer;
+  }
 }
 
-.questionmark-button img {
-  cursor: pointer;
-
+.listQuestion {
+  margin-left: 6em;
+  width: 60%;
+  color: #6b8299;
+  @media (max-width: 500px) {
+    margin-left: 1.5em;
+  }
 }
 
-.header-location {
-  position: absolute;
-  left: 50%;
-  transform: translate(-50%,0);
-  display: inline-block;
-  margin-top: 12px;
+.listOrQuestion a {
+  margin-right: 3em;
+  color: #6b8299;
+  @media (max-width: 635px) {
+    margin-right: 1em;
+    display: block;
+  }
+}
+
+.listOrQuestion a:hover {
+  text-decoration: none;
+  border-bottom: 3px solid #0095b3;
+  color: #0095b3;
+  padding-bottom: 1em;
+}
+
+.active {
+  text-decoration: none;
+  color: #0095b3!important;
+  border-bottom: 3px solid #0095b3;
+  padding-bottom: 1em;
+  @media (max-width: 635px) {
+    padding-bottom: 0;
+  }
+}
+
+.header-logo a {
+  border-bottom: none;
+}
+
+.header-logo img {
+  max-height: 50px;
+  margin-top: 0;
+  fill: #96a7bb;
+}
+
+.markProfile {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
+  width: calc(40%);
+}
+
+.header-profileicon-username {
+  margin-left: 5px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #6b8299;
+  line-height: 1.14;
+  width: 63px;
+  height: 16px;
+  font-family: Roboto;
+  text-decoration: none;
   @media (max-width: 600px) {
     display: none;
   }
 }
 
-.header-location img {
-  height: 30px;
+.header-profileicon a {
+  margin-right: .5em;
 }
 
-.header-profileicon {
-  float: right;
-  margin: 10px;
-}
-
-.header-profileicon-hidden {
-  float: right;
-  margin: 10px;
-  visibility: hidden;
-}
-
-.header-chat-partner-icon {
-  float: left;
-  margin: 10px;
-}
-
-.header-chat-partner-username {
-  margin-left: 5px;
-  @media (max-width: 200px) {
-    display: none;
-  }
-}
-
-.header-profileicon-username {
-  margin-right: 5px;
-  @media (max-width: 450px) {
-    display: none;
-  }
+.borderLine {
+  border-right: 1px solid #96a7bb;
 }
