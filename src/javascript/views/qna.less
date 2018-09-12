@@ -5,6 +5,7 @@
 }
 
 .formGroup {
+  margin-top: 2.5em;
   padding: 1em 1.5em;
   overflow: hidden;
   border-radius: 4px;
@@ -31,9 +32,9 @@
 }
 
 .navLink {
-  margin: 2em;
+  margin-top: 2em;
   display: flex;
-  justify-content: space-between;
+  justify-content: space-evenly;
   flex-wrap: wrap;
   padding: 0 139px;
 }
@@ -50,11 +51,11 @@
   padding-bottom: 1em;
 }
 
-.active {
+.qnaActive {
   text-decoration: none;
-  color: #0095b3 !important;
+  color: #0095b3!important;
   border-bottom: 3px solid #0095b3;
-  padding-bottom: 1em;
+  padding-bottom: 1.2em;
   @media (max-width: 635px) {
     padding-bottom: 0;
   }
@@ -77,6 +78,16 @@
   color: #8899a6;
 }
 
+.nameUpdate h6 {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 500;
+  font-style: normal;
+  font-stretch: normal;
+  letter-spacing: normal;
+  color: #212c30;
+}
+
 .nameUpdate p {
   padding-bottom: 0;
   padding-top: 0;
@@ -86,16 +97,34 @@
   padding: 0 2em;
 }
 
+.imgBox img {
+  color: rgb(255, 255, 255);
+  background-color: rgb(188, 188, 188);
+  user-select: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 17.5px;
+  border-radius: 50%;
+  height: 40px;
+  width: 40px;
+  margin-right: 1em;
+}
+
 .answerBtn {
-    box-shadow: 0 -5px 1px -4px rgba(36, 43, 51, 0.1);
-    padding: 1.3em 0;
-    margin: 2em 0;
+  box-shadow: 0 -5px 1px -4px rgba(36, 43, 51, 0.1);
+  padding: 1.3em 0;
+  margin-top: 2em;
+  margin-bottom: 0;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
 }
 
 .question h4,
 .answerBtn p{
-    font-size: 16px;
-    font-weight: 500;
-    letter-spacing: normal;
-    color: #6b8299;
+  font-size: 16px;
+  font-weight: 500;
+  letter-spacing: normal;
+  color: #6b8299;
 }
