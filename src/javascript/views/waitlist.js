@@ -14,10 +14,11 @@ import Infobox from '../components/infobox';
 import EmptyLocationMessage from '../components/empty-location-message';
 import { loadWaitlist } from '../stores/waitlistStore';
 import { transformMessages, notifyNewMessage } from '../stores/chatStore';
+import QnA from './qna';
 import { loadUserData, isOnboarded } from '../stores/userStore';
 import { initWebSocketStore } from '../stores/webSocketStore';
 import { loadPartnerData } from '../stores/partnerStore';
-import {loadChatPartnerData} from '../stores/chatPartnerStore';
+import { loadChatPartnerData } from '../stores/chatPartnerStore';
 import { requestPermissionForNotifications } from '../util/notification';
 import { PARTNER_LOCATIONS } from '../util/constants';
 import './waitlist.less';
@@ -28,8 +29,7 @@ import Blockgeeks from '../../abi/Blockgeeks.json';
 import { debug } from 'util';
 
 class WaitList extends React.Component {
-
-  constructor (props) {
+  constructor(props) {
     super(props);
 
     const path = this.props.location.pathname;
@@ -40,10 +40,9 @@ class WaitList extends React.Component {
 
     this.changeDistance = this.changeDistance.bind(this);
     this.changeReputation = this.changeReputation.bind(this);
-   // this.toShowNotification = this.toShowNotification.bind(this);
+    // this.toShowNotification = this.toShowNotification.bind(this);
 
     if (userId) {
-
       // redirect to waitlist where the user is signed in
       const locationId = sessionStorage.getItem('locationId');
       if (!locationIdFromPath || locationIdFromPath != locationId) {
@@ -51,22 +50,21 @@ class WaitList extends React.Component {
       }
 
       this.props.loadUserData(userId);
-      this.props.loadWaitlist(userId);
+      this.props.loadWaitlist(userId, this.props.waitlist.viewQuestions);
       if (!this.props.partners.loaded) {
         this.props.loadPartnerData();
       }
+    } else if (locationIdFromPath) {
+      this.props.history.push(`/signup/${locationIdFromPath}`);
     } else {
-      if (locationIdFromPath) {
-        this.props.history.push(`/signup/${locationIdFromPath}`);
-      } else {
-        this.props.history.push('/signup');
-      }
+      this.props.history.push('/signup');
     }
 
     this.state = {
       showIncompleteProfileHint: false,
       contractAddress: '0xbaa593e9c1f11bbcfa4725085211d764eec26592',
-      showNotification: false
+      showNotification: false,
+      showQuestions: false,
     };
     this.openChat = this.openChat.bind(this);
 
@@ -80,59 +78,58 @@ class WaitList extends React.Component {
       contract: null,
     });
   }
-  
-  componentDidMount () {
+
+  componentDidMount() {
     // initialize so that messages can be delivered, but not acted upon
     // TODO handle the incoming messages and update chat bubbles
 
-    document.title = "People | CryptoGeeks";
-  
+    document.title = 'People | CryptoGeeks';
+
     const contract = initContract(Blockgeeks);
 
-    this.setState({contract: contract});
+    this.setState({ contract });
   }
 
-  getContract () {
+  getContract() {
     // const contract = initContract(Blockgeeks, this.state.contractAddress)
     // this.setState({contract: contract})
   }
 
-  openChat (chatPartnerId) {
+  openChat(chatPartnerId) {
     const locationId = sessionStorage.getItem('locationId');
     this.props.history.push({
-      pathname: `/waitlist/${locationId}/chat/${chatPartnerId}`
+      pathname: `/waitlist/${locationId}/chat/${chatPartnerId}`,
     });
   }
 
-  changeDistance (event, value) {
+  changeDistance(event, value) {
     // @TODO: store distance in backend
     const roundedValue = Math.floor(value);
     sessionStorage.setItem('distance', roundedValue);
     const userId = sessionStorage.getItem('userId');
-    this.props.loadWaitlist(userId);
+    this.props.loadWaitlist(userId, this.props.waitlist.showQuestions);
     this.setState({
-      distance: roundedValue
+      distance: roundedValue,
     });
   }
 
-  changeReputation (event, value) {
+  changeReputation(event, value) {
     // @TODO: store reputation in backend
     const roundedValue = Math.floor(value);
     this.setState({
-      reputation: roundedValue
+      reputation: roundedValue,
     });
   }
 
-
-  render () {
+  render() {
     const list = [];
-    const {isUserOnboarded, chat} = this.props;
-    const {distance, reputation, showNotification} = this.state;
+    const { isUserOnboarded, chat } = this.props;
+    const { distance, reputation, showNotification } = this.state;
 
     _.each(this.props.waitlist.data, (entry, key) => {
       const onClick = isUserOnboarded
         ? () => this.openChat(entry.id)
-        : () => this.setState({showIncompleteProfileHint: true});
+        : () => this.setState({ showIncompleteProfileHint: true });
 
       const onEndorse = this.state.contract ? this.state.contract.endorse : null;
       list.push(
@@ -150,50 +147,59 @@ class WaitList extends React.Component {
           address={entry.address}
           endorsement={entry.endorsement}
           balance={entry.balance}
-        />
+        />,
       );
     });
 
-    initWebSocketStore(sessionStorage.getItem('userId'),
-      (event) => {
-        this.props.loadChatParnerData(event.sender_id);
-        setTimeout( () => {
-          const partner = this.props.chatPartner.data.name;
-          notifyNewMessage(event, partner);
-        });
+    initWebSocketStore(sessionStorage.getItem('userId'), (event) => {
+      this.props.loadChatParnerData(event.sender_id);
+      setTimeout(() => {
+        const partner = this.props.chatPartner.data.name;
+        notifyNewMessage(event, partner);
       });
+    });
 
-
-//    list.push(
-//      <EmptyLocationMessage showChallenge={FEATURE_WAITCOIN_CHALLENGE && isLoggedInUser}/>
-//    );
+    //    list.push(
+    //      <EmptyLocationMessage showChallenge={FEATURE_WAITCOIN_CHALLENGE && isLoggedInUser}/>
+    //    );
 
     return (
       <div>
-        <UserData />
-        <Infobox
-          visible={!isUserOnboarded && this.state.showIncompleteProfileHint}
-          text={'Enter your name and interests to start communicating with other geeks'}
-        />
+        {!this.props.waitlist.viewQuestions ? (
+          <div>
+            <UserData />
+            <Infobox
+              visible={!isUserOnboarded && this.state.showIncompleteProfileHint}
+              text="Enter your name and interests to start communicating with other geeks"
+            />
 
-        <div>
-          <ul className="signup-wait-dist signup-wait ">
-            <li className="signup-wait-for-li"><strong className="signup-wait-for">Distance</strong></li>
-            <li>
-              <div className='signup-slider-distance'>
-                <Slider
-                  min={100}
-                  max={10000}
-                  step={10}
-                  defaultValue={5000}
-                  onChange={this.changeDistance}
-                />
-              </div>
-            </li>
-            <li className="title"><p className="signup-wait-for">{distance}  meters </p></li>
-          </ul>
-        </div>
-{/*
+            <div>
+              <ul className="signup-wait-dist signup-wait ">
+                <li className="signup-wait-for-li">
+                  <strong className="signup-wait-for">Distance</strong>
+                </li>
+                <li>
+                  <div className="signup-slider-distance">
+                    <Slider
+                      min={100}
+                      max={10000}
+                      step={10}
+                      defaultValue={5000}
+                      onChange={this.changeDistance}
+                    />
+                  </div>
+                </li>
+                <li className="title">
+                  <p className="signup-wait-for">
+                    {distance}
+                    {' '}
+meters
+                    {' '}
+                  </p>
+                </li>
+              </ul>
+            </div>
+            {/*
         <div>
           <ul className="signup-wait-rep signup-wait">
             <li className="signup-wait-for-li"><strong className="signup-wait-for">Reputation</strong></li>
@@ -213,16 +219,17 @@ class WaitList extends React.Component {
         </div>
 */}
 
-          <List>
-            {list}
-          </List>
-
+            <List>{list}</List>
+          </div>
+        ) : (
+          <QnA />
+        )}
       </div>
     );
   }
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
   waitlist: state.waitlist,
   user: state.user,
   isUserOnboarded: isOnboarded(state.user),
@@ -232,10 +239,13 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  loadWaitlist: (userId) => dispatch(loadWaitlist(userId)),
-  loadUserData: (userId) => dispatch(loadUserData(userId)),
+  loadWaitlist: (userId, showQuestions) => dispatch(loadWaitlist(userId, showQuestions)),
+  loadUserData: userId => dispatch(loadUserData(userId)),
   loadPartnerData: () => dispatch(loadPartnerData()),
-  loadChatParnerData: (chatPartnerId) => dispatch(loadChatPartnerData(chatPartnerId))
+  loadChatParnerData: chatPartnerId => dispatch(loadChatPartnerData(chatPartnerId)),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(WaitList);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(WaitList);
