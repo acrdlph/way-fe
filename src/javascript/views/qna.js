@@ -50,11 +50,8 @@ class QnA extends React.Component {
         </div>
         <div className="formLink">
           <div className="navLink">
-            <NavLink to="/" activeClassName="active">
-              All questions
-            </NavLink>
+            <NavLink to="/" activeClassName="qnaActive">All questions</NavLink>
             <NavLink to="/">Unanswered questions</NavLink>
-            <NavLink to="/">Point</NavLink>
           </div>
         </div>
         <div className="formContainer">
@@ -67,14 +64,18 @@ class QnA extends React.Component {
               <p>by Michael Gobatchow Aug 25.2018</p>
             </div>
             <div className="imgText">
+            <Row>
               <div className="imgBox">
-                <img />
+                <img src="/assets/avatar-placeholder.png" />
               </div>
               <div className="nameUpdate">
                 <h6>Jean-Marc Denis</h6>
                 <p>answered 20 min ago - 5 updates</p>
               </div>
+              </Row>
+              
               <div className="question">
+              <Row>
                 <p>
                   It’s pretty much nothing more than a distributed permanent ledger system for
                   recording transactions. That’s it. It solves the same problem that having a
@@ -82,13 +83,14 @@ class QnA extends React.Component {
                   certify a transaction on your behalf solves. And fails to solve a lot of other
                   things brokers actually solve, as well.
                 </p>
+                </Row>
                 <img />
                 <h4>Upvote</h4>
               </div>
             </div>
             <div className="answerBtn">
               <p>Show all 3 answer</p>
-              <Button className="questionBtn">Ask a question</Button>
+              <Button className="questionBtn">Reply</Button>
             </div>
           </div>
         </div>
