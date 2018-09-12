@@ -26,7 +26,6 @@ class QnA extends React.Component {
   }
 
   handleSubmit(event) {
-    console.log(this.state.inputValue, 'dosto re pust');
     this.props.postQuestion({ content: this.state.inputValue });
     event.preventDefault();
     this.props.loadQuestions();
@@ -73,7 +72,7 @@ class QnA extends React.Component {
               </div>
               <div className="nameUpdate">
                 <h6>Jean-Marc Denis</h6>
-                <p className="">answered 20 min ago - 5 updates</p>
+                <p>answered 20 min ago - 5 updates</p>
               </div>
               <div className="question">
                 <p>
@@ -83,7 +82,13 @@ class QnA extends React.Component {
                   certify a transaction on your behalf solves. And fails to solve a lot of other
                   things brokers actually solve, as well.
                 </p>
+                <img />
+                <h4>Upvote</h4>
               </div>
+            </div>
+            <div className="answerBtn">
+              <p>Show all 3 answer</p>
+              <Button className="questionBtn">Ask a question</Button>
             </div>
           </div>
         </div>
