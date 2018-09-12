@@ -5,10 +5,11 @@ import { notify, types as notificationTypes } from '../util/notification';
 
 const types = {
   LOADING: 'WAITLIST_LOADING',
-  LOADED: 'WAITLIST_LOADED'
+  LOADED: 'WAITLIST_LOADED',
+  TOGGLE: 'TOGGLE_VIEW',
 };
 
-//let refresher = false;
+// let refresher = false;
 let alreadyLoadedData = [];
 
 const onUserJoined = (user) => {
@@ -16,39 +17,45 @@ const onUserJoined = (user) => {
   notify(`${name} has joined the Cryptogeeks!`, notificationTypes.USER_JOINED_WAITLIST);
 };
 
-export const loadWaitlist = (userId) => (dispatch) => {
+const initialState = {
+  loading: false,
+  loaded: false,
+  data: [],
+  viewQuestions: false,
+};
+
+const fetcher = (dispatch, userId, viewQuestions) => {
+  dispatch({ type: types.LOADING });
+  const distance = sessionStorage.getItem('distance') || 5000;
+  const endpoint = `api/users/${userId}?distance=${distance}`;
+  fetch(endpoint, {
+    headers: getAuthHeaders(),
+  })
+    .then(res => handle401(res, dispatch))
+    .then(res => res.json())
+    .then((data) => {
+      const onTheListSorted = mapWaitListData(data).sort((a, b) => b.endorsement - a.endorsement);
+      alreadyLoadedData = onTheListSorted;
+      dispatch({
+        type: types.LOADED,
+        data: onTheListSorted,
+        viewQuestions,
+      });
+    });
+};
+export const loadWaitlist = (userId, viewQuestions) => (dispatch) => {
   // this might not be optimal
   // updating individual waitlist items and reordering seems the best solution
-  fetcher(dispatch, userId);
+  fetcher(dispatch, userId, viewQuestions);
   // if (!refresher) {
   //   refresher = setInterval(() => { backgroundFetcher(dispatch, userId); }, 5000);
   // }
 };
 
-const initialState = {
-  loading: false,
-  loaded: false,
-  data: []
-};
-
-const fetcher = (dispatch, userId) => {
-  dispatch({ type: types.LOADING });
-  const distance = sessionStorage.getItem('distance') || 5000;
-  const endpoint = 'api/users/' + userId + "?distance=" + distance;
-  fetch(endpoint, {
-    headers: getAuthHeaders()
-  })
-    .then((res) => handle401(res, dispatch))
-    .then((res) => res.json())
-    .then((data) => {
-      const onTheListSorted = mapWaitListData(data).sort((a, b ) => b.endorsement - a.endorsement);
-      alreadyLoadedData = onTheListSorted;
-      dispatch({
-        type: types.LOADED,
-        data: onTheListSorted
-      });
-    });
-};
+export const toggleThatView = (dispatch, viewQuestions) => ({
+  type: types.TOGGLE,
+  viewQuestions: !viewQuestions,
+});
 
 const createHash = (user) => {
   const { id, nonDeliveredChatCount } = user;
@@ -90,12 +97,15 @@ const createHash = (user) => {
 
 const isDifferent = (existingUserHashes, currentUserHashes) => {
   const union = _.intersection(existingUserHashes, currentUserHashes);
-  return !(existingUserHashes.length === currentUserHashes.length && existingUserHashes.length === union.length);
+  return !(
+    existingUserHashes.length === currentUserHashes.length
+    && existingUserHashes.length === union.length
+  );
 };
 
 const extractNewUsers = (existingUserIds, currentUserIds) => {
   const newUsers = [];
-  _.each(currentUserIds, id => {
+  _.each(currentUserIds, (id) => {
     if (!_.includes(existingUserIds, id)) {
       newUsers.push(id);
     }
@@ -111,7 +121,7 @@ const isOnboarded = (user) => {
 
 const mapWaitListData = (data) => {
   const onTheList = [];
-  _.each(data, entry => {
+  _.each(data, (entry) => {
     onTheList.push({
       id: entry.id,
       name: entry.name || entry.default_name || '',
@@ -123,14 +133,14 @@ const mapWaitListData = (data) => {
       endorsement: entry.endorsement,
       hasChat: entry.count > 0,
       nonDeliveredChatCount: entry.non_delivered_count,
-      lastContact: entry.last_contact ? new Date(entry.last_contact).getTime() : 0
+      lastContact: entry.last_contact ? new Date(entry.last_contact).getTime() : 0,
     });
   });
   // TODO: activate this filter as soon as we have more users
   // const onboardedOnly = _.filter(onTheList, (user) => isOnboarded(user));
-  const onboardedOnlyWithHash = onTheList.map((user) => ({
+  const onboardedOnlyWithHash = onTheList.map(user => ({
     ...user,
-    hash: createHash(user)
+    hash: createHash(user),
   }));
   return onTheList;
 };
@@ -141,19 +151,26 @@ const reducer = (state = initialState, action) => {
       return {
         loading: true,
         loaded: false,
-        data: []
+        data: [],
+        viewQuestions: false,
       };
     case types.LOADED:
       return {
         loading: false,
         loaded: true,
-        data: action.data
+        data: action.data,
+        viewQuestions: action.viewQuestions,
+      };
+    case types.TOGGLE:
+      return {
+        ...state,
+        viewQuestions: action.viewQuestions,
       };
     default:
       return state;
-  };
+  }
 };
 
 export default {
-  reducer
+  reducer,
 };

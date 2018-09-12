@@ -2,11 +2,13 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import { Card } from 'material-ui/Card';
+import Button from '@material-ui/core/Button';
 import MaterialUiAvatar from 'material-ui/Avatar';
 import { PAGES_WITH_HEADER } from '../util/constants';
 import { extractLocationName } from './location-header';
 import ChatHeader from './chat-header';
 import { showTheModal } from '../stores/modalStore';
+import { toggleThatView } from '../stores/waitlistStore';
 import GenericModal from './Modal';
 import { onBoardingContent } from './onBoardingModalContent';
 import './header.less';
@@ -22,10 +24,16 @@ class Header extends React.Component {
     super(props);
     this.state = { show: true };
     this.openTheModal = this.openTheModal.bind(this);
+    this.toggleView = this.toggleView.bind(this);
   }
 
   openTheModal() {
     this.props.openTheModal();
+  }
+
+  toggleView() {
+    this.props.toggleThatView(this.props.waitlist.viewQuestions);
+    console.log(this.props.waitlist.viewQuestions);
   }
 
   render() {
@@ -72,7 +80,7 @@ class Header extends React.Component {
         <NavLink to="/waitlist" activeClassName="active">
           Geek List
         </NavLink>
-        <NavLink to="/qna">Ask a Question?</NavLink>
+        <Button onClick={this.toggleView}>Ask a Question?</Button>
       </div>
     );
 
@@ -124,9 +132,11 @@ const mapStateToProps = state => ({
   locationName: extractLocationName(state),
   chatPartner: _.get(state.chatPartner, 'data'),
   showTheModal: state.modalStore.showTheModal,
+  waitlist: state.waitlist,
 });
 const mapDispatchToProps = dispatch => ({
   openTheModal: () => dispatch(showTheModal(true)),
+  toggleThatView: () => dispatch(toggleThatView()),
 });
 export default connect(
   mapStateToProps,

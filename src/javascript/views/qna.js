@@ -5,19 +5,45 @@ import {
   Button, Form, FormGroup, Label, Input, Row, Col,
 } from 'reactstrap';
 import Header from '../components/header.js';
+import { loadQuestions, postQuestion } from '../stores/qnaStore';
 import './qna.less';
 
 class QnA extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { inputValue: '' };
+
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+  componentDidMount() {
+    this.props.loadQuestions();
+  }
+
+  handleChange(event) {
+    this.setState({ inputValue: event.target.value });
+  }
+
+  handleSubmit(event) {
+    console.log(this.state.inputValue, 'dosto re pust');
+    this.props.postQuestion({ content: this.state.inputValue });
+    event.preventDefault();
+    this.props.loadQuestions();
+  }
+
   render() {
     return (
       <div className="qnaBody">
         <div className="formContainer">
-          <Form className="formGroup">
+          <Form className="formGroup" onSubmit={this.handleSubmit}>
             <FormGroup>
               <Input
                 type="textarea"
+                onChange={this.handleChange}
                 name="text"
                 placeholder="What is your question to the Crypto Geeks community?"
+                value={this.inputValue}
               />
             </FormGroup>
             <Button className="questionBtn">Ask a question</Button>
@@ -66,4 +92,16 @@ class QnA extends React.Component {
   }
 }
 
-export default connect()(QnA);
+const mapStateToProps = state => ({
+  questions: state.questions,
+});
+
+const mapDispatchToProps = dispatch => ({
+  loadQuestions: () => dispatch(loadQuestions()),
+  postQuestion: data => dispatch(postQuestion(data)),
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(QnA);

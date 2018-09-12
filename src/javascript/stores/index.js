@@ -9,6 +9,7 @@ import accountStore from './accountStore';
 import feedbackStore from './feedbackStore';
 import interactionConfirmationStore from './interactionConfirmationStore';
 import modalStore from './modalStore';
+import qnaStore from './qnaStore';
 
 export default combineReducers({
   waitlist: waitlistStore.reducer,
@@ -21,4 +22,5 @@ export default combineReducers({
   feedback: feedbackStore.reducer,
   confirmInteraction: interactionConfirmationStore.reducer,
   modalStore: modalStore.reducer,
+  qnaStore: qnaStore.reducer,
 });
