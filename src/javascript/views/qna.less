@@ -1,7 +1,10 @@
 @import '../variables';
 
 .formContainer {
-  padding: 0 138px;
+  padding: 0 3.6em;
+  @media (max-width: 600px){
+    padding: 0 1em;
+  }  
 }
 
 .formGroup {
@@ -36,7 +39,11 @@
   display: flex;
   justify-content: space-evenly;
   flex-wrap: wrap;
-  padding: 0 139px;
+  padding: 0 3.6em;
+  @media (max-width: 500px){
+    padding: 0 1em;
+    margin-right: 1em;
+  }
 }
 
 .navLink a {
