@@ -77,10 +77,8 @@ class Header extends React.Component {
 
     const listOrQuestion = (
       <div className="listOrQuestion">
-        <NavLink to="/waitlist" activeClassName="active">
-          Geek List
-        </NavLink>
-        <Button onClick={this.toggleView}>Ask a Question?</Button>
+        <NavLink to="/waitlist">Geek List</NavLink>
+        <div onClick={this.toggleView}>Ask a Question?</div>
       </div>
     );
 
