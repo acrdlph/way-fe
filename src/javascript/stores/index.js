@@ -22,5 +22,5 @@ export default combineReducers({
   feedback: feedbackStore.reducer,
   confirmInteraction: interactionConfirmationStore.reducer,
   modalStore: modalStore.reducer,
-  qnaStore: qnaStore.reducer,
+  questions: qnaStore.reducer,
 });

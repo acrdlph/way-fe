@@ -14,10 +14,10 @@ import Infobox from '../components/infobox';
 import EmptyLocationMessage from '../components/empty-location-message';
 import { loadWaitlist } from '../stores/waitlistStore';
 import { transformMessages, notifyNewMessage } from '../stores/chatStore';
+import { loadQuestions } from '../stores/qnaStore';
 import QnA from './qna';
 import { loadUserData, isOnboarded } from '../stores/userStore';
 import { initWebSocketStore } from '../stores/webSocketStore';
-import { loadPartnerData } from '../stores/partnerStore';
 import { loadChatPartnerData } from '../stores/chatPartnerStore';
 import { requestPermissionForNotifications } from '../util/notification';
 import { PARTNER_LOCATIONS } from '../util/constants';
@@ -51,9 +51,6 @@ class WaitList extends React.Component {
 
       this.props.loadUserData(userId);
       this.props.loadWaitlist(userId, this.props.waitlist.viewQuestions);
-      if (!this.props.partners.loaded) {
-        this.props.loadPartnerData();
-      }
     } else if (locationIdFromPath) {
       this.props.history.push(`/signup/${locationIdFromPath}`);
     } else {
@@ -86,7 +83,7 @@ class WaitList extends React.Component {
     document.title = 'People | CryptoGeeks';
 
     const contract = initContract(Blockgeeks);
-
+    this.props.loadQuestions();
     this.setState({ contract });
   }
 
@@ -233,7 +230,6 @@ const mapStateToProps = state => ({
   waitlist: state.waitlist,
   user: state.user,
   isUserOnboarded: isOnboarded(state.user),
-  partners: state.partners,
   chat: state.chat,
   chatPartner: state.chatPartner,
 });
@@ -241,7 +237,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   loadWaitlist: (userId, showQuestions) => dispatch(loadWaitlist(userId, showQuestions)),
   loadUserData: userId => dispatch(loadUserData(userId)),
-  loadPartnerData: () => dispatch(loadPartnerData()),
+  loadQuestions: () => dispatch(loadQuestions()),
   loadChatParnerData: chatPartnerId => dispatch(loadChatPartnerData(chatPartnerId)),
 });
 

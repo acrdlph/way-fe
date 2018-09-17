@@ -238,7 +238,6 @@ class Profile extends React.Component {
       </div>
     );
     const xAxis = this.state.totalSupply / multiplier;
-    console.log(this.state.tokenContract.totalSupply, 'yo yo');
     const yAxis = 0.0001 * xAxis;
     const curveData = [[{ x: 0, y: 0 }, { x: xAxis, y: yAxis }, { x: 10000, y: 1 }]];
 
