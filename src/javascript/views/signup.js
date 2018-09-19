@@ -36,7 +36,7 @@ class Signup extends React.Component {
   }
 
   componentDidMount() {
-    document.title = "Sign up | CryptoGeeks";
+    document.title = 'Sign up | CryptoGeeks';
   }
 
   showSearchBox() {
@@ -55,14 +55,17 @@ class Signup extends React.Component {
   render() {
     return (
       <div className="signup">
-        
         <div className="onboarding-logo">
           <img alt="here is the logo" className="logo" src="assets/bglogo.png" />
         </div>
         <br />
 
         <h3>
-          Trusted blockchain <br /> experts.
+          Trusted blockchain
+          {' '}
+          <br />
+          {' '}
+experts.
         </h3>
 
         {renderLocationInput(this.state.isSearchBoxVisible, this.state.showLocationRequiredHint)}
@@ -83,7 +86,7 @@ class Signup extends React.Component {
             className="Signup-btn"
             label="Sign up"
             backgroundColor="#43D676"
-            fullWidth={true}
+            fullWidth
             onClick={() => {
               this.props.history.push('register');
             }}

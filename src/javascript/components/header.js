@@ -19,7 +19,6 @@ const createBackButton = to => (
 class Header extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { show: true };
     this.openTheModal = this.openTheModal.bind(this);
   }
 

@@ -142,9 +142,9 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         data: [
-          ...state.data.slice(0, state.data.findIndex(entry => entry._id === action.data._id)),
-          action.data,
-          ...state.data.slice(state.data.findIndex(entry => entry._id === action.data._id) + 1),
+          ...state.data.slice(0, state.data.findIndex(entry => entry._id === action.data[0]._id)),
+          action.data[0],
+          ...state.data.slice(state.data.findIndex(entry => entry._id === action.data[0]._id) + 1),
         ],
       };
 
