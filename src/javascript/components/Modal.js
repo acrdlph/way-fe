@@ -2,8 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import Modal from 'react-modal';
 import RaisedButton from 'material-ui/RaisedButton';
-import { showTheModal } from '../stores/modalStore';
 import { connect } from 'react-redux';
+import { showTheModal } from '../stores/modalStore';
 
 const customStyles = {
   content: {
@@ -13,11 +13,10 @@ const customStyles = {
     bottom: 'auto',
     marginRight: '-50%',
     transform: 'translate(-50%, -50%)',
-    
-  }
+  },
 };
 
-export class GenericModal extends React.Component {
+class GenericModal extends React.Component {
   constructor(props) {
     super(props);
 
@@ -28,17 +27,16 @@ export class GenericModal extends React.Component {
     this.openModal = this.openModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
   }
-  
+
   openModal() {
     this.setState({ modalIsOpen: true });
   }
 
   closeModal() {
     this.props.close();
- }
+  }
 
   render() {
-    
     return (
       <div>
         <Modal
@@ -48,9 +46,9 @@ export class GenericModal extends React.Component {
           style={customStyles}
           contentLabel="Example Modal"
         >
-         {this.props.content}
+          {this.props.content}
           <form>
-          <button onClick={this.closeModal}>Continue</button>
+            <button onClick={this.closeModal}>Continue</button>
           </form>
         </Modal>
       </div>
@@ -61,7 +59,10 @@ export class GenericModal extends React.Component {
 const mapDispatchToProps = dispatch => ({
   close: () => {
     dispatch(showTheModal(false));
-  }
+  },
 });
 
-export default connect(null, mapDispatchToProps)(GenericModal);
+export default connect(
+  null,
+  mapDispatchToProps,
+)(GenericModal);

@@ -4,6 +4,9 @@ const types = {
   LOADING: 'QUESTION_LOADING',
   LOADED: 'QUESTION_LOADED',
   QPOSTED: 'QUESTION_POSTED',
+  RPOSTED: 'REPLY_POSTED',
+  QDELETED: 'QUESTION_DELETED',
+  RDELETED: 'REPLY_DELETED',
 };
 
 const awaitFetch = async function awaitFetch(dispatch) {
@@ -14,8 +17,8 @@ const awaitFetch = async function awaitFetch(dispatch) {
     const questions = [];
     _.each(resJson, (entry) => {
       questions.push({
-        id: entry._id,
-        asker_id: entry.asker_id,
+        _id: entry._id,
+        asked_by: entry.asked_by,
         asked_at: entry.asked_at,
         upvotes: entry.upvotes,
         content: entry.content,
@@ -36,11 +39,9 @@ export const loadQuestions = () => (dispatch) => {
   awaitFetch(dispatch);
 };
 
-export const postQuestion = data => (dispatch) => {
-  console.log('is stuff happening?');
+export const postQuestion = data => async (dispatch) => {
   const endpoint = 'api/question/';
   const body = JSON.stringify(data);
-  console.log(data, 'yaawwwwwsswwss');
   fetch(endpoint, {
     method: 'post',
     body,
@@ -49,16 +50,53 @@ export const postQuestion = data => (dispatch) => {
     }),
   })
     .then(res => res.json())
-    .then((json) => {
-      dispatch({
-        type: types.QPOSTED,
-      });
-      dispatch(loadQuestions);
-    });
+    .then(json => dispatch({ type: types.QPOSTED, data: json }));
 };
 
-postQuestion();
-console.log('stuff is happening');
+export const postReply = data => (dispatch) => {
+  const endpoint = `api/question/${data.qId}`;
+  const body = JSON.stringify(data);
+  fetch(endpoint, {
+    method: 'PUT',
+    body,
+    headers: new Headers({
+      'content-type': 'application/json',
+    }),
+  })
+    .then(res => res.json())
+    .then(json => dispatch({
+      type: types.RPOSTED,
+      data: json,
+    }));
+};
+
+export const deleteQuestion = qId => (dispatch) => {
+  const endpoint = `api/question/${qId}`;
+  fetch(endpoint, {
+    method: 'DELETE',
+    headers: new Headers({
+      'content-type': 'application/json',
+    }),
+  }).then(() => dispatch({
+    type: types.QDELETED,
+    data: qId,
+  }));
+};
+
+export const deleteReply = data => (dispatch) => {
+  const endpoint = `api/question/${data.qId}/${data.rId}`;
+  fetch(endpoint, {
+    method: 'PUT',
+    headers: new Headers({
+      'content-type': 'application/json',
+    }),
+  })
+    .then(res => res.json())
+    .then(json => dispatch({
+      type: types.RDELETED,
+      data: json,
+    }));
+};
 
 const initialState = {
   loading: false,
@@ -75,10 +113,41 @@ const reducer = (state = initialState, action) => {
       };
     case types.LOADED:
       return {
+        ...state,
         loading: false,
         loaded: true,
         data: action.data,
       };
+    case types.QPOSTED:
+      return {
+        ...state,
+        data: state.data.concat(action.data),
+      };
+    case types.RPOSTED:
+      return {
+        ...state,
+        data: [
+          ...state.data.slice(0, state.data.findIndex(entry => entry._id === action.data[0]._id)),
+          action.data[0],
+          ...state.data.slice(state.data.findIndex(entry => entry._id === action.data[0]._id) + 1),
+        ],
+      };
+    case types.QDELETED:
+      return {
+        ...state,
+        data: state.data.filter(question => question._id !== action.data),
+      };
+    case types.RDELETED:
+      console.log(action, 'an action');
+      return {
+        ...state,
+        data: [
+          ...state.data.slice(0, state.data.findIndex(entry => entry._id === action.data[0]._id)),
+          action.data[0],
+          ...state.data.slice(state.data.findIndex(entry => entry._id === action.data[0]._id) + 1),
+        ],
+      };
+
     default:
       return state;
   }

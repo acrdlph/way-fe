@@ -1,14 +1,11 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { NavLink } from 'react-router-dom';
-import { Card } from 'material-ui/Card';
-import Button from '@material-ui/core/Button';
 import MaterialUiAvatar from 'material-ui/Avatar';
 import { PAGES_WITH_HEADER } from '../util/constants';
 import { extractLocationName } from './location-header';
 import ChatHeader from './chat-header';
 import { showTheModal } from '../stores/modalStore';
-import { toggleThatView } from '../stores/waitlistStore';
 import GenericModal from './Modal';
 import { onBoardingContent } from './onBoardingModalContent';
 import './header.less';
@@ -22,28 +19,20 @@ const createBackButton = to => (
 class Header extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { show: true };
     this.openTheModal = this.openTheModal.bind(this);
-    this.toggleView = this.toggleView.bind(this);
   }
 
   openTheModal() {
     this.props.openTheModal();
   }
 
-  toggleView() {
-    this.props.toggleThatView(this.props.waitlist.viewQuestions);
-    console.log(this.props.waitlist.viewQuestions);
-  }
-
   render() {
     const {
-      username, photo, locationName, chatPartner, name, waitlist
+      username, photo, locationName, chatPartner, name, waitlist,
     } = this.props;
     const { pathname } = this.props.location;
     const isHeaderVisible = _.filter(PAGES_WITH_HEADER, page => pathname.includes(page)).length > 0;
     const isInChat = pathname.includes('chat');
-    const { viewQuestions } = waitlist;
     if (!isHeaderVisible) {
       return null;
     }
@@ -78,7 +67,7 @@ class Header extends React.Component {
     const listOrQuestion = (
       <div className="listOrQuestion">
         <NavLink to="/waitlist">Geek List</NavLink>
-        <div onClick={this.toggleView}>Ask a Question?</div>
+        <NavLink to="/qna">Ask a Question?</NavLink>
       </div>
     );
 
@@ -110,7 +99,6 @@ class Header extends React.Component {
         <div className="listQuestion">{listOrQuestion}</div>
         <div className="markProfile">
           <div className="borderLine">
-            {(pathname === '/waitlist' || pathname === '/qna') && listOrQuestion}
             {pathname === '/register' ? profileIcon(true) : profileIcon(false)}
           </div>
           <div>
@@ -134,7 +122,6 @@ const mapStateToProps = state => ({
 });
 const mapDispatchToProps = dispatch => ({
   openTheModal: () => dispatch(showTheModal(true)),
-  toggleThatView: () => dispatch(toggleThatView()),
 });
 export default connect(
   mapStateToProps,

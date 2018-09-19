@@ -2,47 +2,61 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import {
-  Button, Form, FormGroup, Label, Input, Row, Col,
+  Button, Form, FormGroup, Input,
 } from 'reactstrap';
-import Header from '../components/header.js';
-import { loadQuestions, postQuestion } from '../stores/qnaStore';
+
+import {
+  postQuestion,
+  deleteQuestion,
+  postReply,
+  deleteReply,
+  loadQuestions,
+} from '../stores/qnaStore';
+import QuestionItem from '../components/question-item';
+import sortDate from '../util/sort-date';
 import './qna.less';
 
 class QnA extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { inputValue: '' };
+    this.state = { questionValue: '', questions: this.props.questions.data };
 
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleChangeQuestion = this.handleChangeQuestion.bind(this);
+    this.handleQuestionSubmit = this.handleQuestionSubmit.bind(this);
   }
 
   componentDidMount() {
     this.props.loadQuestions();
   }
 
-  handleChange(event) {
-    this.setState({ inputValue: event.target.value });
+  componentWillReceiveProps(props) {
+    this.setState({ questions: props.questions.data });
   }
 
-  handleSubmit(event) {
-    this.props.postQuestion({ content: this.state.inputValue });
+  handleChangeQuestion(event) {
+    this.setState({ questionValue: event.target.value });
+  }
+
+  handleQuestionSubmit(event) {
     event.preventDefault();
-    this.props.loadQuestions();
+    const userId = sessionStorage.getItem('userId');
+    this.props.postQuestion({ asked_by: userId, content: this.state.questionValue });
+    this.setState({ questionValue: '' });
   }
 
   render() {
+    const questionsList = sortDate(this.state.questions, true);
     return (
       <div className="qnaBody">
         <div className="formContainer">
-          <Form className="formGroup" onSubmit={this.handleSubmit}>
+          <Form className="formGroup" onSubmit={this.handleQuestionSubmit}>
             <FormGroup>
               <Input
                 type="textarea"
-                onChange={this.handleChange}
+                onChange={this.handleChangeQuestion}
                 name="text"
                 placeholder="What is your question to the Crypto Geeks community?"
-                value={this.inputValue}
+                value={this.state.questionValue}
               />
             </FormGroup>
             <Button className="questionBtn">Ask a question</Button>
@@ -50,49 +64,40 @@ class QnA extends React.Component {
         </div>
         <div className="formLink">
           <div className="navLink">
-            <NavLink to="/" activeClassName="qnaActive">All questions</NavLink>
-            <NavLink to="/">Unanswered questions</NavLink>
+            <NavLink to="/qna" activeClassName="qnaActive">
+              All questions
+            </NavLink>
+            <NavLink to="/qna/filtered">Unanswered questions</NavLink>
           </div>
         </div>
         <div className="formContainer">
-          <div className="formGroup">
-            <div className="headPost">
-              <h4>
-                If blockchain was truly revolutionary, why wouldn't top tech firms like Facebook,
-                Amazon, Google, and Apple be doing more with it?
-              </h4>
-              <p>by Michael Gobatchow Aug 25.2018</p>
-            </div>
-            <div className="imgText">
-            <Row>
-              <div className="imgBox">
-                <img src="/assets/avatar-placeholder.png" />
-              </div>
-              <div className="nameUpdate">
-                <h6>Jean-Marc Denis</h6>
-                <p>answered 20 min ago - 5 updates</p>
-              </div>
-              </Row>
-              
-              <div className="question">
-              <Row>
-                <p>
-                  It’s pretty much nothing more than a distributed permanent ledger system for
-                  recording transactions. That’s it. It solves the same problem that having a
-                  trusted broker, like Amazon, or E*Trade, or PayPal, or Visa, or a title company,
-                  certify a transaction on your behalf solves. And fails to solve a lot of other
-                  things brokers actually solve, as well.
-                </p>
-                </Row>
-                <img />
-                <h4>Upvote</h4>
-              </div>
-            </div>
-            <div className="answerBtn">
-              <p>Show all 3 answer</p>
-              <Button className="questionBtn">Reply</Button>
-            </div>
-          </div>
+          {this.props.location.pathname.includes('filtered')
+            ? questionsList
+              .filter(question => question.replies.length === 0)
+              .map(question => (
+                <QuestionItem
+                  key={question._id}
+                  question={question}
+                  deleteQuestion={this.props.deleteQuestion}
+                  handleChangeReply={this.handleChangeReply}
+                  deleteReply={this.props.deleteReply}
+                  handleReplySubmit={this.handleReplySubmit}
+                  postReply={this.props.postReply}
+                  loadQuestions={this.props.loadQuestions}
+                />
+              ))
+            : questionsList.map(question => (
+              <QuestionItem
+                key={question._id}
+                question={question}
+                deleteQuestion={this.props.deleteQuestion}
+                handleChangeReply={this.handleChangeReply}
+                deleteReply={this.props.deleteReply}
+                handleReplySubmit={this.handleReplySubmit}
+                postReply={this.props.postReply}
+                loadQuestions={this.props.loadQuestions}
+              />
+            ))}
         </div>
       </div>
     );
@@ -100,12 +105,16 @@ class QnA extends React.Component {
 }
 
 const mapStateToProps = state => ({
+  waitlist: state.waitlist,
   questions: state.questions,
 });
 
 const mapDispatchToProps = dispatch => ({
-  loadQuestions: () => dispatch(loadQuestions()),
   postQuestion: data => dispatch(postQuestion(data)),
+  deleteQuestion: qId => dispatch(deleteQuestion(qId)),
+  postReply: data => dispatch(postReply(data)),
+  deleteReply: data => dispatch(deleteReply(data)),
+  loadQuestions: () => dispatch(loadQuestions()),
 });
 
 export default connect(

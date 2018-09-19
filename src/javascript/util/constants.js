@@ -1,9 +1,7 @@
-
 export const PARTNER_LOCATIONS = ['muc', 'ams', 'gva', 'cph', 'arn'];
 
 export const PAGES_WITH_HEADER = [
   'waitlist',
-  'signup',
   'login',
   'challenge',
   'register',
@@ -12,5 +10,6 @@ export const PAGES_WITH_HEADER = [
   'reset-password',
   'confirm-interaction',
   'feedback',
-  'legalnotice'
+  'legalnotice',
+  'qna',
 ];
