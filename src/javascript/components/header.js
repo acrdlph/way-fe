@@ -5,9 +5,9 @@ import MaterialUiAvatar from 'material-ui/Avatar';
 import { PAGES_WITH_HEADER } from '../util/constants';
 import { extractLocationName } from './location-header';
 import ChatHeader from './chat-header';
-import { showTheModal } from '../stores/modalStore';
+import { showOnBoardingModal } from '../stores/modalStore';
 import GenericModal from './Modal';
-import { onBoardingContent } from './onBoardingModalContent';
+import onBoardingContent from './onBoardingModalContent';
 import './header.less';
 
 const createBackButton = to => (
@@ -23,7 +23,7 @@ class Header extends React.Component {
   }
 
   openTheModal() {
-    this.props.openTheModal();
+    this.props.showModal();
   }
 
   render() {
@@ -53,7 +53,7 @@ class Header extends React.Component {
       backButton = createBackButton('/');
     }
 
-    const Modal = this.props.showTheModal ? <GenericModal content={onBoardingContent} /> : null;
+    const Modal = this.props.showOnBoardingModal && <GenericModal content={onBoardingContent} />;
 
     const profileIcon = iconHide => (
       <div className={iconHide ? 'header-profileicon-hidden' : 'header-profileicon'}>
@@ -117,11 +117,11 @@ const mapStateToProps = state => ({
   photo: _.get(state.user, 'data.photo', 'assets/avatar-placeholder.png'),
   locationName: extractLocationName(state),
   chatPartner: _.get(state.chatPartner, 'data'),
-  showTheModal: state.modalStore.showTheModal,
+  showOnBoardingModal: state.modalStore.showOnBoardingModal,
   waitlist: state.waitlist,
 });
 const mapDispatchToProps = dispatch => ({
-  openTheModal: () => dispatch(showTheModal(true)),
+  showModal: () => dispatch(showOnBoardingModal(true)),
 });
 export default connect(
   mapStateToProps,

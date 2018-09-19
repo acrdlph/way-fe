@@ -1,23 +1,35 @@
 const types = {
-  OPEN: 'OPEN',
-  CLOSE: 'CLOSE',
+  ONBOARD: 'OPEN_ONBOARDING',
+  INCOMPLETE: 'OPEN_INCOMPLETE',
 };
 
-export const showTheModal = isVeryVisible => ({
-  type: types.OPEN,
-  isVeryVisible,
+export const showOnBoardingModal = showModal => ({
+  type: types.ONBOARD,
+  showModal,
+});
+
+export const showIncompleteModal = showModal => ({
+  type: types.INCOMPLETE,
+  showModal,
 });
 
 const initialState = {
-  showTheModal: false,
+  showOnBoardingModal: false,
+  showIncompleteModal: false,
 };
 
 const reducer = (state = initialState, action) => {
+  console.log(state);
   switch (action.type) {
-    case types.OPEN:
+    case types.ONBOARD:
       return {
         ...state,
-        showTheModal: action.isVeryVisible,
+        showOnBoardingModal: action.showModal,
+      };
+    case types.INCOMPLETE:
+      return {
+        ...state,
+        showIncompleteModal: action.showModal,
       };
     default:
       return state;
