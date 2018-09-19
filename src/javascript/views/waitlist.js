@@ -1,30 +1,25 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import Slider from 'material-ui/Slider';
-import DropDownMenu from 'material-ui/DropDownMenu';
-import MenuItem from 'material-ui/MenuItem';
 import { List } from 'material-ui/List';
-import Avatar from 'material-ui/Avatar';
 import _ from 'lodash';
-import fetch from 'isomorphic-fetch';
 import { trackPageView } from '../util/google-analytics';
 import UserData from '../components/user-data';
 import WaitListItem from '../components/waitlist-item';
 import Infobox from '../components/infobox';
 import { loadWaitlist } from '../stores/waitlistStore';
-import { transformMessages, notifyNewMessage } from '../stores/chatStore';
+import { notifyNewMessage } from '../stores/chatStore';
 import QnA from './qna';
 import { loadUserData, isOnboarded } from '../stores/userStore';
 import { initWebSocketStore } from '../stores/webSocketStore';
 import { loadChatPartnerData } from '../stores/chatPartnerStore';
 import { requestPermissionForNotifications } from '../util/notification';
-import { PARTNER_LOCATIONS } from '../util/constants';
 import './waitlist.less';
-import { promisify } from 'bluebird';
-import { Web3Provider } from 'react-web3';
 import Web3Component, { initContract, getWeb3 } from '../components/Web3Component';
 import Blockgeeks from '../../abi/Blockgeeks.json';
-import { debug } from 'util';
+import { showIncompleteModal } from '../stores/modalStore';
+import GenericModal from '../components/Modal';
+import incompleteProfileModal from '../components/incompleteProfileModalContent';
 
 class WaitList extends React.Component {
   constructor(props) {
@@ -36,9 +31,9 @@ class WaitList extends React.Component {
     const userId = sessionStorage.getItem('userId');
     const locationIdFromPath = _.get(this.props.match, 'params.locationId');
 
+    this.handleOpenModal = this.handleOpenModal.bind(this);
     this.changeDistance = this.changeDistance.bind(this);
     this.changeReputation = this.changeReputation.bind(this);
-    // this.toShowNotification = this.toShowNotification.bind(this);
 
     if (userId) {
       // redirect to waitlist where the user is signed in
@@ -59,7 +54,6 @@ class WaitList extends React.Component {
       showIncompleteProfileHint: false,
       contractAddress: '0xbaa593e9c1f11bbcfa4725085211d764eec26592',
       showNotification: false,
-      showQuestions: false,
     };
     this.openChat = this.openChat.bind(this);
 
@@ -96,6 +90,10 @@ class WaitList extends React.Component {
     });
   }
 
+  handleOpenModal() {
+    this.props.showModal();
+  }
+
   changeDistance(event, value) {
     // @TODO: store distance in backend
     const roundedValue = Math.floor(value);
@@ -119,11 +117,14 @@ class WaitList extends React.Component {
     const list = [];
     const { isUserOnboarded, chat } = this.props;
     const { distance, reputation, showNotification } = this.state;
+    const Modal = this.props.showIncompleteModal && (
+      <GenericModal content={incompleteProfileModal} />
+    );
 
     _.each(this.props.waitlist.data, (entry, key) => {
       const onClick = isUserOnboarded
         ? () => this.openChat(entry.id)
-        : () => this.setState({ showIncompleteProfileHint: true });
+        : () => this.handleOpenModal();
 
       const onEndorse = this.state.contract ? this.state.contract.endorse : null;
       list.push(
@@ -166,7 +167,7 @@ class WaitList extends React.Component {
               visible={!isUserOnboarded && this.state.showIncompleteProfileHint}
               text="Enter your name and interests to start communicating with other geeks"
             />
-
+            {Modal}
             <div>
               <ul className="signup-wait-dist signup-wait ">
                 <li className="signup-wait-for-li">
@@ -229,10 +230,12 @@ const mapStateToProps = state => ({
   isUserOnboarded: isOnboarded(state.user),
   chat: state.chat,
   chatPartner: state.chatPartner,
+  showIncompleteModal: state.modalStore.showIncompleteModal,
 });
 
 const mapDispatchToProps = dispatch => ({
   loadWaitlist: (userId, showQuestions) => dispatch(loadWaitlist(userId, showQuestions)),
+  showModal: () => dispatch(showIncompleteModal(true)),
   loadUserData: userId => dispatch(loadUserData(userId)),
   loadChatParnerData: chatPartnerId => dispatch(loadChatPartnerData(chatPartnerId)),
 });
