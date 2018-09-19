@@ -1,17 +1,19 @@
 import React from 'react';
 import {
-  Button, Row, Form, FormGroup, Input,
+  Button, Form, FormGroup, Input,
 } from 'reactstrap';
 
 import ReplyItem from './reply-item';
+import returnDate from '../util/date';
 
 class QuestionItem extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { replyValue: '' };
+    this.state = { replyValue: '', isHovering: false };
 
     this.handleChangeReply = this.handleChangeReply.bind(this);
     this.handleReplySubmit = this.handleReplySubmit.bind(this);
+    this.handleMouseHover = this.handleMouseHover.bind(this);
   }
 
   handleChangeReply(event) {
@@ -29,23 +31,41 @@ class QuestionItem extends React.Component {
     this.setState({ replyValue: '' });
   }
 
+  handleMouseHover(show) {
+    this.setState({ isHovering: show });
+  }
+
   render() {
     const {
-      question, handleReplySubmit, handleChangeReply, replyValue,
+      id,
+      question,
+      deleteQuestion,
+      handleReplySubmit,
+      deleteReply,
+      handleChangeReply,
+      replyValue,
     } = this.props;
     const {
       content, asked_by, asked_at, replies, _id,
     } = question;
+    const user = sessionStorage.getItem('userId');
+
     return (
-      <div className="formGroup">
+      <div
+        onMouseEnter={() => this.handleMouseHover(true)}
+        onMouseLeave={() => this.handleMouseHover(false)}
+        className="formGroup"
+      >
         <div className="headPost">
           <h4>{content}</h4>
-          <p>{`by ${asked_by.name} ・ ${asked_at}`}</p>
+          {this.state.isHovering
+            && user === asked_by._id && <div onClick={() => deleteQuestion(_id)}>X</div>}
+          <p>{`by ${asked_by.name} ・ ${returnDate(asked_at)}`}</p>
         </div>
-        {question.replies.map(reply => <ReplyItem key={reply._id} reply={reply} />)}
-        <div className="answerBtn">
-          <p>Show all 3 answer</p>
-        </div>
+        {replies.map(reply => (
+          <ReplyItem key={reply._id} reply={reply} deleteReply={deleteReply} qId={_id} />
+        ))}
+        <div className="answerBtn" />
         <div className="formContainer">
           <Form className="formGroup" onSubmit={e => this.handleReplySubmit(e, _id)}>
             <FormGroup>

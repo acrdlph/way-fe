@@ -2,9 +2,16 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import {
-  Button, Form, FormGroup, Label, Input, Row, Col,
+  Button, Form, FormGroup, Input,
 } from 'reactstrap';
-import { postQuestion, postReply, loadQuestions } from '../stores/qnaStore';
+
+import {
+  postQuestion,
+  deleteQuestion,
+  postReply,
+  deleteReply,
+  loadQuestions,
+} from '../stores/qnaStore';
 import QuestionItem from '../components/question-item';
 import sortDate from '../util/sort-date';
 import './qna.less';
@@ -18,6 +25,10 @@ class QnA extends React.Component {
     this.handleQuestionSubmit = this.handleQuestionSubmit.bind(this);
   }
 
+  componentDidMount() {
+    this.props.loadQuestions();
+  }
+
   componentWillReceiveProps(props) {
     this.setState({ questions: props.questions.data });
   }
@@ -26,7 +37,7 @@ class QnA extends React.Component {
     this.setState({ questionValue: event.target.value });
   }
 
-  async handleQuestionSubmit(event) {
+  handleQuestionSubmit(event) {
     event.preventDefault();
     const userId = sessionStorage.getItem('userId');
     this.props.postQuestion({ asked_by: userId, content: this.state.questionValue });
@@ -34,7 +45,7 @@ class QnA extends React.Component {
   }
 
   render() {
-    const list = sortDate(this.state.questions, true);
+    const questionsList = sortDate(this.state.questions, true);
     return (
       <div className="qnaBody">
         <div className="formContainer">
@@ -53,23 +64,40 @@ class QnA extends React.Component {
         </div>
         <div className="formLink">
           <div className="navLink">
-            <NavLink to="/" activeClassName="qnaActive">
+            <NavLink to="/qna" activeClassName="qnaActive">
               All questions
             </NavLink>
-            <NavLink to="/">Unanswered questions</NavLink>
+            <NavLink to="/qna/filtered">Unanswered questions</NavLink>
           </div>
         </div>
         <div className="formContainer">
-          {list.map(question => (
-            <QuestionItem
-              key={question._id}
-              question={question}
-              handleChangeReply={this.handleChangeReply}
-              handleReplySubmit={this.handleReplySubmit}
-              postReply={this.props.postReply}
-              loadQuestions={this.props.loadQuestions}
-            />
-          ))}
+          {this.props.location.pathname.includes('filtered')
+            ? questionsList
+              .filter(question => question.replies.length === 0)
+              .map(question => (
+                <QuestionItem
+                  key={question._id}
+                  question={question}
+                  deleteQuestion={this.props.deleteQuestion}
+                  handleChangeReply={this.handleChangeReply}
+                  deleteReply={this.props.deleteReply}
+                  handleReplySubmit={this.handleReplySubmit}
+                  postReply={this.props.postReply}
+                  loadQuestions={this.props.loadQuestions}
+                />
+              ))
+            : questionsList.map(question => (
+              <QuestionItem
+                key={question._id}
+                question={question}
+                deleteQuestion={this.props.deleteQuestion}
+                handleChangeReply={this.handleChangeReply}
+                deleteReply={this.props.deleteReply}
+                handleReplySubmit={this.handleReplySubmit}
+                postReply={this.props.postReply}
+                loadQuestions={this.props.loadQuestions}
+              />
+            ))}
         </div>
       </div>
     );
@@ -83,7 +111,9 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   postQuestion: data => dispatch(postQuestion(data)),
+  deleteQuestion: qId => dispatch(deleteQuestion(qId)),
   postReply: data => dispatch(postReply(data)),
+  deleteReply: data => dispatch(deleteReply(data)),
   loadQuestions: () => dispatch(loadQuestions()),
 });
 

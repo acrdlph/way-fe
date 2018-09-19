@@ -11,10 +11,8 @@ import { trackPageView } from '../util/google-analytics';
 import UserData from '../components/user-data';
 import WaitListItem from '../components/waitlist-item';
 import Infobox from '../components/infobox';
-import EmptyLocationMessage from '../components/empty-location-message';
 import { loadWaitlist } from '../stores/waitlistStore';
 import { transformMessages, notifyNewMessage } from '../stores/chatStore';
-import { loadQuestions } from '../stores/qnaStore';
 import QnA from './qna';
 import { loadUserData, isOnboarded } from '../stores/userStore';
 import { initWebSocketStore } from '../stores/webSocketStore';
@@ -83,7 +81,6 @@ class WaitList extends React.Component {
     document.title = 'People | CryptoGeeks';
 
     const contract = initContract(Blockgeeks);
-    this.props.loadQuestions();
     this.setState({ contract });
   }
 
@@ -237,7 +234,6 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   loadWaitlist: (userId, showQuestions) => dispatch(loadWaitlist(userId, showQuestions)),
   loadUserData: userId => dispatch(loadUserData(userId)),
-  loadQuestions: () => dispatch(loadQuestions()),
   loadChatParnerData: chatPartnerId => dispatch(loadChatPartnerData(chatPartnerId)),
 });
 

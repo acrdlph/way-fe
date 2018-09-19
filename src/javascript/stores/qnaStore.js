@@ -5,6 +5,8 @@ const types = {
   LOADED: 'QUESTION_LOADED',
   QPOSTED: 'QUESTION_POSTED',
   RPOSTED: 'REPLY_POSTED',
+  QDELETED: 'QUESTION_DELETED',
+  RDELETED: 'REPLY_DELETED',
 };
 
 const awaitFetch = async function awaitFetch(dispatch) {
@@ -68,6 +70,34 @@ export const postReply = data => (dispatch) => {
     }));
 };
 
+export const deleteQuestion = qId => (dispatch) => {
+  const endpoint = `api/question/${qId}`;
+  fetch(endpoint, {
+    method: 'DELETE',
+    headers: new Headers({
+      'content-type': 'application/json',
+    }),
+  }).then(() => dispatch({
+    type: types.QDELETED,
+    data: qId,
+  }));
+};
+
+export const deleteReply = data => (dispatch) => {
+  const endpoint = `api/question/${data.qId}/${data.rId}`;
+  fetch(endpoint, {
+    method: 'PUT',
+    headers: new Headers({
+      'content-type': 'application/json',
+    }),
+  })
+    .then(res => res.json())
+    .then(json => dispatch({
+      type: types.RDELETED,
+      data: json,
+    }));
+};
+
 const initialState = {
   loading: false,
   loaded: false,
@@ -98,9 +128,23 @@ const reducer = (state = initialState, action) => {
         ...state,
         data: [
           ...state.data.slice(0, state.data.findIndex(entry => entry._id === action.data[0]._id)),
-
           action.data[0],
           ...state.data.slice(state.data.findIndex(entry => entry._id === action.data[0]._id) + 1),
+        ],
+      };
+    case types.QDELETED:
+      return {
+        ...state,
+        data: state.data.filter(question => question._id !== action.data),
+      };
+    case types.RDELETED:
+      console.log(action, 'an action');
+      return {
+        ...state,
+        data: [
+          ...state.data.slice(0, state.data.findIndex(entry => entry._id === action.data._id)),
+          action.data,
+          ...state.data.slice(state.data.findIndex(entry => entry._id === action.data._id) + 1),
         ],
       };
 

@@ -1,32 +1,53 @@
 import React from 'react';
-import {
-  Button, Row, Form, FormGroup, Input,
-} from 'reactstrap';
+import { Row } from 'reactstrap';
 
-const ReplyItem = (props) => {
-  const { reply } = props;
-  const { replied_by, replied_at, repl_content } = reply;
-  return (
-    <div className="imgText">
-      <Row>
-        <div className="imgBox">
-          <img src="/assets/avatar-placeholder.png" />
-        </div>
-        <div className="nameUpdate">
-          <h6>{replied_by.name}</h6>
-          <p>{`answered ${replied_at} ago - 5 upvotes`}</p>
-        </div>
-      </Row>
+import returnDate from '../util/date';
 
-      <div className="question">
+class ReplyItem extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { isHovering: false };
+
+    this.handleMouseHover = this.handleMouseHover.bind(this);
+  }
+
+  handleMouseHover(show) {
+    this.setState({ isHovering: show });
+  }
+
+  render() {
+    const { reply, deleteReply, qId } = this.props;
+    const { replied_by, replied_at, repl_content } = reply;
+    const user = sessionStorage.getItem('userId');
+    return (
+      <div
+        onMouseEnter={() => this.handleMouseHover(true)}
+        onMouseLeave={() => this.handleMouseHover(false)}
+        className="imgText"
+      >
         <Row>
-          <p>{repl_content}</p>
+          <div className="imgBox">
+            <img src="/assets/avatar-placeholder.png" />
+          </div>
+          <div className="nameUpdate">
+            <h6>{replied_by[0].name}</h6>
+            {this.state.isHovering
+              && user === replied_by[0]._id && (
+                <div onClick={() => deleteReply({ qId, rId: reply._id })}>X</div>
+            )}
+            <p>{`answered ${returnDate(replied_at)} ago`}</p>
+          </div>
         </Row>
-        <img />
-        <h4>Upvote</h4>
+
+        <div className="question">
+          <Row>
+            <p>{repl_content}</p>
+          </Row>
+          <img />
+        </div>
       </div>
-    </div>
-  );
-};
+    );
+  }
+}
 
 export default ReplyItem;

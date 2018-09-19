@@ -47,6 +47,7 @@ class App extends React.Component {
           <Route exact path="/profile/:username" component={Profile} />
           <Route exact path="/signup" component={Signup} />
           <Route exact path="/qna" component={QnA} />
+          <Route exact path="/qna/filtered" component={QnA} />
           <Route exact path="/signup/:locationId" component={Signup} />
           <Route exact path="/reset-password" component={ResetPassword} />
           <Route exact path="/waitlist/" component={WaitList} />
