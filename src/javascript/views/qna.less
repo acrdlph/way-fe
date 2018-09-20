@@ -37,30 +37,36 @@
 .navLink {
   margin-top: 2em;
   display: flex;
-  justify-content: space-evenly;
-  flex-wrap: wrap;
+  justify-content: center;
+  flex-wrap: nowrap;
   padding: 0 3.6em;
-  @media (max-width: 500px) {
-    padding: 0 1em;
-    margin-right: 1em;
+  @media (max-width: 800px) {
+    padding: 0;
   }
 }
 
 .navLink a {
-  color: #6b8299 !important;
+  color: #6b8299;
   border-bottom: none;
+  padding-bottom: 2em;
+  margin-right: 2em;
+  margin-left: 2em;
+  @media (max-width: 450px) {
+    margin-right: 0.5em;
+    margin-left: 0.5em;
+  }
 }
 
 .navLink a:hover {
   text-decoration: none;
   border-bottom: 3px solid #0095b3;
-  color: #0095b3 !important;
+  color: #0095b3;
   padding-bottom: 1em;
 }
 
 .qnaActive {
   text-decoration: none;
-  color: #0095b3 !important;
+  color: #0095b3;
   border-bottom: 3px solid #0095b3;
   padding-bottom: 1.2em;
   @media (max-width: 635px) {
