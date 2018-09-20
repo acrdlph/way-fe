@@ -2,11 +2,10 @@ import React from 'react';
 import { connect } from 'react-redux';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
-import CircularProgress from 'material-ui/CircularProgress';
 import { trackPageView, trackEvent, events } from '../util/google-analytics';
 import InfoBox from '../components/infobox';
 import { login } from '../stores/accountStore';
-import { renderLocationInput, saveAndContinue } from '../util/location';
+import { saveAndContinue } from '../util/location';
 import './login.less';
 
 const calledFrom = 'login';
@@ -20,7 +19,6 @@ class Login extends React.Component {
     this.state = {
       loginName: '',
       password: '',
-      loginSuccessful: false,
     };
 
     this.login = this.login.bind(this);
@@ -35,7 +33,6 @@ class Login extends React.Component {
   componentWillReceiveProps(props) {
     if (props.account.wasLoginSuccessful && !this.props.account.wasLoginSuccessful) {
       sessionStorage.setItem('userId', props.account.userId);
-      this.setState({ loginSuccessful: true });
       trackEvent(events.USER_LOGGED_IN);
     }
   }
@@ -77,17 +74,9 @@ class Login extends React.Component {
           fullWidth
         />
 
-        <RaisedButton
-          label="Log In"
-          backgroundColor="white"
-          onClick={this.login}
-          fullWidth
-        />
+        <RaisedButton label="Log In" backgroundColor="white" onClick={this.login} fullWidth />
 
-        <InfoBox
-          text="Invalid username or password!"
-          visible={this.props.account.hasLoginFailed}
-        />
+        <InfoBox text="Invalid username or password!" visible={this.props.account.hasLoginFailed} />
 
         {/* <div className='login-reset-password'>
           Forgot password? <NavLink to='/reset-password'>Reset it!</NavLink>

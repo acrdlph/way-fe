@@ -4,12 +4,9 @@ import Slider from 'material-ui/Slider';
 import { List } from 'material-ui/List';
 import _ from 'lodash';
 import { trackPageView } from '../util/google-analytics';
-import UserData from '../components/user-data';
 import WaitListItem from '../components/waitlist-item';
-import Infobox from '../components/infobox';
 import { loadWaitlist } from '../stores/waitlistStore';
 import { notifyNewMessage } from '../stores/chatStore';
-import QnA from './qna';
 import { loadUserData, isOnboarded } from '../stores/userStore';
 import { initWebSocketStore } from '../stores/webSocketStore';
 import { loadChatPartnerData } from '../stores/chatPartnerStore';
@@ -78,11 +75,6 @@ class WaitList extends React.Component {
     this.setState({ contract });
   }
 
-  getContract() {
-    // const contract = initContract(Blockgeeks, this.state.contractAddress)
-    // this.setState({contract: contract})
-  }
-
   openChat(chatPartnerId) {
     const locationId = sessionStorage.getItem('locationId');
     this.props.history.push({
@@ -126,7 +118,7 @@ class WaitList extends React.Component {
         ? () => this.openChat(entry.id)
         : () => this.handleOpenModal();
 
-      const onEndorse = this.state.contract ? this.state.contract.endorse : null;
+      const onEndorse = this.state.contract && this.state.contract.endorse;
       list.push(
         <WaitListItem
           key={key}
@@ -160,65 +152,32 @@ class WaitList extends React.Component {
 
     return (
       <div>
-        {!this.props.waitlist.viewQuestions ? (
-          <div>
-            <UserData />
-            <Infobox
-              visible={!isUserOnboarded && this.state.showIncompleteProfileHint}
-              text="Enter your name and interests to start communicating with other geeks"
-            />
-            {Modal}
-            <div>
-              <ul className="signup-wait-dist signup-wait ">
-                <li className="signup-wait-for-li">
-                  <strong className="signup-wait-for">Distance</strong>
-                </li>
-                <li>
-                  <div className="signup-slider-distance">
-                    <Slider
-                      min={100}
-                      max={10000}
-                      step={10}
-                      defaultValue={5000}
-                      onChange={this.changeDistance}
-                    />
-                  </div>
-                </li>
-                <li className="title">
-                  <p className="signup-wait-for">
-                    {distance}
-                    {' '}
-meters
-                    {' '}
-                  </p>
-                </li>
-              </ul>
-            </div>
-            {/*
         <div>
-          <ul className="signup-wait-rep signup-wait">
-            <li className="signup-wait-for-li"><strong className="signup-wait-for">Reputation</strong></li>
-            <li>
-              <div className='signup-slider-reputation'>
-                <Slider
-                  min={100}
-                  max={10000}
-                  step={10}
-                  defaultValue={5000}
-                  onChange={this.changeReputation}
-                />
-              </div>
-            </li>
-            <li className="title"><p className="signup-wait-for">{reputation} GEEK</p></li>
-          </ul>
-        </div>
-*/}
-
-            <List>{list}</List>
+          {Modal}
+          <div>
+            <ul className="signup-wait-dist signup-wait ">
+              <li className="signup-wait-for-li">
+                <strong className="signup-wait-for">Distance</strong>
+              </li>
+              <li>
+                <div className="signup-slider-distance">
+                  <Slider
+                    min={100}
+                    max={10000}
+                    step={10}
+                    defaultValue={5000}
+                    onChange={this.changeDistance}
+                  />
+                </div>
+              </li>
+              <li className="title">
+                <p className="signup-wait-for">{`${distance || 5000} meters`}</p>
+              </li>
+            </ul>
           </div>
-        ) : (
-          <QnA />
-        )}
+
+          <List>{list}</List>
+        </div>
       </div>
     );
   }
@@ -234,7 +193,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  loadWaitlist: (userId, showQuestions) => dispatch(loadWaitlist(userId, showQuestions)),
+  loadWaitlist: userId => dispatch(loadWaitlist(userId)),
   showModal: () => dispatch(showIncompleteModal(true)),
   loadUserData: userId => dispatch(loadUserData(userId)),
   loadChatParnerData: chatPartnerId => dispatch(loadChatPartnerData(chatPartnerId)),

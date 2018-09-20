@@ -139,13 +139,7 @@ function clearLocation() {
   }
 }
 
-export async function saveAndContinue(
-  showLocationRequired,
-  showSearchBox,
-  history,
-  toggleDiv,
-  calledFrom,
-) {
+export async function saveAndContinue(showLocationRequired, showSearchBox, history, toggleDiv) {
   thePlace = await buildLocation(showSearchBox);
   if (!thePlace.airport) {
     showLocationRequired();

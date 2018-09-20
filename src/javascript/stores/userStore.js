@@ -7,7 +7,7 @@ const types = {
   LOADING: 'USER_LOADING',
   LOADED: 'USER_LOADED',
   UPDATED: 'USER_UPDATED',
-  PHOTO_RELOADED: 'USER_PHOTO_RELOADED'
+  PHOTO_RELOADED: 'USER_PHOTO_RELOADED',
 };
 
 export const isOnboarded = (user) => {
@@ -17,46 +17,34 @@ export const isOnboarded = (user) => {
   return isOnboarded;
 };
 
-export const editUserData = () => {
-  return {
-    type: types.EDITING
-  };
-};
+export const editUserData = () => ({
+  type: types.EDITING,
+});
 
-export const reloadProfileImage = (userId) => (dispatch) => {
-  const endpoint = 'api/users/' + userId + '/details';
+export const reloadProfileImage = userId => (dispatch) => {
+  const endpoint = `api/users/${userId}/details`;
   fetch(endpoint, {
-    headers: getAuthHeaders()
+    headers: getAuthHeaders(),
   })
-    .then((res) => handle401(res, dispatch))
-    .then((res) => res.json())
+    .then(res => handle401(res, dispatch))
+    .then(res => res.json())
     .then((data) => {
       const photo = data.photo;
       dispatch({
         type: types.PHOTO_RELOADED,
-        photo
+        photo,
       });
     });
-};
-
-export const loadUserDataWithBonusUrl = (userId) => {
-  const endpoint = 'api/users/' + userId + '/details?generate_url=true';
-  return loadUserDataGeneral(userId, endpoint);
-};
-
-export const loadUserData = (userId) => {
-  const endpoint = 'api/users/' + userId + '/details';
-  return loadUserDataGeneral(userId, endpoint);
 };
 
 export const loadUserDataGeneral = (userId, endpoint) => (dispatch) => {
   dispatch({ type: types.LOADING });
 
   fetch(endpoint, {
-    headers: getAuthHeaders()
+    headers: getAuthHeaders(),
   })
-    .then((res) => handle401(res, dispatch))
-    .then((res) => res.json())
+    .then(res => handle401(res, dispatch))
+    .then(res => res.json())
     .then((data) => {
       const user = {
         id: userId,
@@ -68,42 +56,51 @@ export const loadUserDataGeneral = (userId, endpoint) => (dispatch) => {
         username: data.username,
         interactionUrl: data.interaction_url,
         waytcoins: data.waytcoins,
-        endorsement: data.endorsement
+        endorsement: data.endorsement,
       };
       dispatch({
         type: types.LOADED,
-        data: user
+        data: user,
       });
     });
 };
 
+export const loadUserData = (userId) => {
+  const endpoint = `api/users/${userId}/details`;
+  return loadUserDataGeneral(userId, endpoint);
+};
+
+export const loadUserDataWithBonusUrl = (userId) => {
+  const endpoint = `api/users/${userId}/details?generate_url=true`;
+  return loadUserDataGeneral(userId, endpoint);
+};
+
 export const updateUserData = (userId, data) => (dispatch) => {
-  const endpoint = 'api/users/' + userId;
-  data['address'] = window.web3 ? window.web3.eth.accounts[0] : null;
+  const endpoint = `api/users/${userId}`;
+  data.address = window.web3 ? window.web3.eth.accounts[0] : null;
   const body = JSON.stringify(data);
   const headers = getAuthHeaders();
   headers.append('content-type', 'application/json');
   fetch(endpoint, {
     method: 'put',
     body,
-    headers: headers
+    headers,
   })
-    .then((res) => handle401(res, dispatch))
-    .then((res) => res.json())
+    .then(res => handle401(res, dispatch))
+    .then(res => res.json())
     .then((json) => {
       dispatch({
-        type: types.UPDATED
+        type: types.UPDATED,
       });
       dispatch(loadUserData(userId));
     });
 };
 
-
 const initialState = {
   loading: false,
   loaded: false,
   isEditable: false,
-  data: []
+  data: [],
 };
 
 const reducer = (state = initialState, action) => {
@@ -111,39 +108,39 @@ const reducer = (state = initialState, action) => {
     case types.LOADING:
       return {
         ...state,
-        loading: true
+        loading: true,
       };
     case types.LOADED:
       return {
         ...state,
         loading: false,
         loaded: true,
-        data: action.data
+        data: action.data,
       };
     case types.EDITING:
       return {
         ...state,
-        isEditable: true
+        isEditable: true,
       };
     case types.UPDATED:
       return {
         ...state,
-        isEditable: false
+        isEditable: false,
       };
     case types.PHOTO_RELOADED:
       return {
         ...state,
         data: {
           ...state.data,
-          photo: action.photo
-        }
+          photo: action.photo,
+        },
       };
 
     default:
       return state;
-  };
+  }
 };
 
 export default {
-  reducer
+  reducer,
 };
