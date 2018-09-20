@@ -10,7 +10,7 @@ const types = {
 };
 
 const awaitFetch = async function awaitFetch(dispatch) {
-  const endpoint = 'api/question';
+  const endpoint = 'http://localhost:3001/question';
   try {
     const result = await fetch(endpoint);
     const resJson = await result.json();
