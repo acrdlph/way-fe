@@ -19,7 +19,6 @@ const initialState = {
 };
 
 const reducer = (state = initialState, action) => {
-  console.log(state);
   switch (action.type) {
     case types.ONBOARD:
       return {

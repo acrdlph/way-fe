@@ -18,9 +18,7 @@ class Signup extends React.Component {
 
     const path = this.props.location.pathname;
     trackPageView(path);
-    const locationIdFromPath = _.get(this.props.match, 'params.locationId');
     // TODO make this validation using partner api
-    const isValidLocation = locationIdFromPath && _.includes(PARTNER_LOCATIONS, locationIdFromPath);
     this.showSearchBox = this.showSearchBox.bind(this);
     this.showLocationRequired = this.showLocationRequired.bind(this);
     this.toggleDiv = this.toggleDiv.bind(this);

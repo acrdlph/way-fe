@@ -6,7 +6,6 @@ import { notify, types as notificationTypes } from '../util/notification';
 const types = {
   LOADING: 'WAITLIST_LOADING',
   LOADED: 'WAITLIST_LOADED',
-  TOGGLE: 'TOGGLE_VIEW',
 };
 
 // let refresher = false;
@@ -21,10 +20,35 @@ const initialState = {
   loading: false,
   loaded: false,
   data: [],
-  viewQuestions: false,
 };
 
-const fetcher = (dispatch, userId, viewQuestions) => {
+const mapWaitListData = (data) => {
+  const onTheList = [];
+  _.each(data, (entry) => {
+    onTheList.push({
+      id: entry.id,
+      name: entry.name || entry.default_name || '',
+      interests: entry.interests || '',
+      photo: entry.photo,
+      timeLeft: entry.time_left,
+      address: entry.address,
+      balance: entry.address,
+      endorsement: entry.endorsement,
+      hasChat: entry.count > 0,
+      nonDeliveredChatCount: entry.non_delivered_count,
+      lastContact: entry.last_contact ? new Date(entry.last_contact).getTime() : 0,
+    });
+  });
+  // TODO: activate this filter as soon as we have more users
+  // const onboardedOnly = _.filter(onTheList, (user) => isOnboarded(user));
+  const onboardedOnlyWithHash = onTheList.map(user => ({
+    ...user,
+    hash: createHash(user),
+  }));
+  return onTheList;
+};
+
+const fetcher = (dispatch, userId) => {
   dispatch({ type: types.LOADING });
   const distance = sessionStorage.getItem('distance') || 5000;
   const endpoint = `api/users/${userId}?distance=${distance}`;
@@ -39,23 +63,17 @@ const fetcher = (dispatch, userId, viewQuestions) => {
       dispatch({
         type: types.LOADED,
         data: onTheListSorted,
-        viewQuestions,
       });
     });
 };
-export const loadWaitlist = (userId, viewQuestions) => (dispatch) => {
+export const loadWaitlist = userId => (dispatch) => {
   // this might not be optimal
   // updating individual waitlist items and reordering seems the best solution
-  fetcher(dispatch, userId, viewQuestions);
+  fetcher(dispatch, userId);
   // if (!refresher) {
   //   refresher = setInterval(() => { backgroundFetcher(dispatch, userId); }, 5000);
   // }
 };
-
-export const toggleThatView = (dispatch, viewQuestions) => ({
-  type: types.TOGGLE,
-  viewQuestions: !viewQuestions,
-});
 
 const createHash = (user) => {
   const { id, nonDeliveredChatCount } = user;
@@ -119,32 +137,6 @@ const isOnboarded = (user) => {
   return name.trim() !== '' && interests.trim() !== '';
 };
 
-const mapWaitListData = (data) => {
-  const onTheList = [];
-  _.each(data, (entry) => {
-    onTheList.push({
-      id: entry.id,
-      name: entry.name || entry.default_name || '',
-      interests: entry.interests || '',
-      photo: entry.photo,
-      timeLeft: entry.time_left,
-      address: entry.address,
-      balance: entry.address,
-      endorsement: entry.endorsement,
-      hasChat: entry.count > 0,
-      nonDeliveredChatCount: entry.non_delivered_count,
-      lastContact: entry.last_contact ? new Date(entry.last_contact).getTime() : 0,
-    });
-  });
-  // TODO: activate this filter as soon as we have more users
-  // const onboardedOnly = _.filter(onTheList, (user) => isOnboarded(user));
-  const onboardedOnlyWithHash = onTheList.map(user => ({
-    ...user,
-    hash: createHash(user),
-  }));
-  return onTheList;
-};
-
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     case types.LOADING:
@@ -152,19 +144,12 @@ const reducer = (state = initialState, action) => {
         loading: true,
         loaded: false,
         data: [],
-        viewQuestions: false,
       };
     case types.LOADED:
       return {
         loading: false,
         loaded: true,
         data: action.data,
-        viewQuestions: action.viewQuestions,
-      };
-    case types.TOGGLE:
-      return {
-        ...state,
-        viewQuestions: action.viewQuestions,
       };
     default:
       return state;
