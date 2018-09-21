@@ -2,6 +2,7 @@ import React from 'react';
 import { Row } from 'reactstrap';
 
 import returnDate from '../util/date';
+import './reply-item.less';
 
 class ReplyItem extends React.Component {
   constructor(props) {
@@ -25,24 +26,24 @@ class ReplyItem extends React.Component {
         onMouseLeave={() => this.handleMouseHover(false)}
         className="imgText"
       >
-        <Row>
+        <div className="imgNickname">
           <div className="imgBox">
             <img src="/assets/avatar-placeholder.png" />
           </div>
           <div className="nameUpdate">
-            <h6>{replied_by[0].name}</h6>
-            {this.state.isHovering
-              && user === replied_by[0]._id && (
-                <div onClick={() => deleteReply({ qId, rId: reply._id })}>X</div>
-            )}
+            <div className="titleWithX">
+              <h6>{replied_by[0].name}</h6>
+              {this.state.isHovering
+                && user === replied_by[0]._id && (
+              <div className="xhover" onClick={() => deleteReply({ qId, rId: reply._id })}>x</div>
+              )}
+            </div>
             <p>{`answered ${returnDate(replied_at)} ago`}</p>
           </div>
-        </Row>
+        </div>
 
         <div className="question">
-          <Row>
-            <p>{repl_content}</p>
-          </Row>
+          <p>{repl_content}</p>         
           <img />
         </div>
       </div>
