@@ -19,7 +19,7 @@ import './qna.less';
 class QnA extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { questionValue: '', questions: null };
+    this.state = { questionValue: '', questions: this.props.questions.data };
 
     this.handleChangeQuestion = this.handleChangeQuestion.bind(this);
     this.handleQuestionSubmit = this.handleQuestionSubmit.bind(this);
@@ -45,36 +45,7 @@ class QnA extends React.Component {
   }
 
   render() {
-    const custom_questions = [
-      {
-        _id: '5ba26df2bd7cbc29f8a3ffd2',
-        asked_by: {
-          _id: '5b6832c3bc24fa15f65b8f9a',
-          username: '1234',
-          name: 'Jean-Marc Denis',
-        },
-        content: 'zsefzsefsef',
-        asked_at: '2018-09-19T15:40:34.411Z',
-        upvotes: 0,
-        __v: 1,
-        replies: [
-          {
-            repl_content: 'zesfzesf',
-            replied_at: '2018-09-19T15:40:38.086Z',
-            repl_upvotes: 0,
-            _id: '5ba26df6bd7cbc29f8a3ffd3',
-            replied_by: [
-              {
-                _id: '5b6832c3bc24fa15f65b8f9a',
-                username: '1234',
-                name: 'Jean-Marc Denis',
-              },
-            ],
-          },
-        ],
-      },
-    ];
-    const questionsList = sortDate(custom_questions, true);
+    const questionsList = sortDate(this.state.questions, true);
     return (
       <div className="qnaBody">
         <div className="formContainer">
@@ -110,7 +81,6 @@ class QnA extends React.Component {
                   deleteQuestion={this.props.deleteQuestion}
                   handleChangeReply={this.handleChangeReply}
                   deleteReply={this.props.deleteReply}
-                  handleReplySubmit={this.handleReplySubmit}
                   postReply={this.props.postReply}
                   loadQuestions={this.props.loadQuestions}
                 />
@@ -122,7 +92,6 @@ class QnA extends React.Component {
                 deleteQuestion={this.props.deleteQuestion}
                 handleChangeReply={this.handleChangeReply}
                 deleteReply={this.props.deleteReply}
-                handleReplySubmit={this.handleReplySubmit}
                 postReply={this.props.postReply}
                 loadQuestions={this.props.loadQuestions}
               />
