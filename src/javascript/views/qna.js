@@ -81,7 +81,6 @@ class QnA extends React.Component {
                   deleteQuestion={this.props.deleteQuestion}
                   handleChangeReply={this.handleChangeReply}
                   deleteReply={this.props.deleteReply}
-                  handleReplySubmit={this.handleReplySubmit}
                   postReply={this.props.postReply}
                   loadQuestions={this.props.loadQuestions}
                 />
@@ -93,7 +92,6 @@ class QnA extends React.Component {
                 deleteQuestion={this.props.deleteQuestion}
                 handleChangeReply={this.handleChangeReply}
                 deleteReply={this.props.deleteReply}
-                handleReplySubmit={this.handleReplySubmit}
                 postReply={this.props.postReply}
                 loadQuestions={this.props.loadQuestions}
               />
