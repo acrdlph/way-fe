@@ -31,7 +31,7 @@ export default class Conversation extends React.Component {
   render() {
     const { user, partner, messages } = this.props;
     const bubbles = messages.map((msg) => {
-      const date = dateFormat(msg.createdAt, 'mmmm d yyyy / H:MM ');
+      const date = dateFormat(msg.createdAt, 'dS mmm yy , H:MM ');
       const otherPhoto = partner.photo;
       const style = {
         backgroundColor: msg.sender === user.id ? CHAT_BUBBLE_COLOR_LEFT : CHAT_BUBBLE_COLOR_RIGHT,
