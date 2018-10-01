@@ -151,7 +151,7 @@ class WaitList extends React.Component {
     //    );
 
     return (
-      <div>
+      <div className="waitListBody">
         <div>
           {Modal}
           <div>

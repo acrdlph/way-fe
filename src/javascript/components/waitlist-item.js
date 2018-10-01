@@ -3,6 +3,11 @@ import { NavLink } from 'react-router-dom';
 import { Row, Col } from 'react-bootstrap';
 import CommunicationChatBubble from 'material-ui/svg-icons/communication/chat-bubble';
 import Avatar from 'material-ui/Avatar';
+import Quote from 'material-ui/svg-icons/editor/format-quote';
+import Location from 'material-ui/svg-icons/maps/place';
+import Hand from 'material-ui/svg-icons/action/thumb-up';
+import Chat from 'material-ui/svg-icons/communication/chat-bubble-outline';
+import Friend from 'material-ui/svg-icons/social/people';
 import './waitlist-item.less';
 
 export default function WaitListItem(props) {
@@ -49,7 +54,7 @@ export default function WaitListItem(props) {
     <div className="waitlist-item-parent">
       <div className={`waitlist-item ${alreadyContactedClass}`}>
         <div className="waitlist-item-avatar">
-          <Avatar size={50} src={photo} />
+          <Avatar size={80} src={photo} />
         </div>
         <div className="waitlist-item-data">
           <p className="waitlist-item-data-name">{name}</p>
@@ -61,15 +66,10 @@ export default function WaitListItem(props) {
         </div>
         <div className="waitlist-item-unread">{hasUnreadMessagesClass}</div>
         <ul className="waitlist-item-actions">
-          <li>
-            <button type="button" onClick={props.onClick} className="waitlist-item-button blue">
-              Chat
-            </button>
-          </li>
-          <li>
+          <li className="endorseBox">
             <button
               type="button"
-              className="waitlist-item-button green"
+              className="waitlist-item-button"
               onClick={() => {
                 try {
                   onEndorse(
@@ -89,13 +89,33 @@ export default function WaitListItem(props) {
                 }
               }}
             >
-              {' Endorse '}
+              <Hand className="icons"/>{' Endorse '}
+            </button>
+          </li>
+          <li className="endorseBox">
+            <button type="button" onClick={props.onClick} className="waitlist-item-button">
+              <Chat className="chatFriend"/>
+            </button>
+          </li>
+          <li className="endorseBox">
+            <button type="button" onClick={props.onClick} className="waitlist-item-button">
+              <Friend className="chatFriend"/>
             </button>
           </li>
         </ul>
       </div>
-
-      <p className="waitlist-item-data-interests">{interests}</p>
+      <div className="text-location">
+        <div className="quoteText">
+          <Quote className="icons"/>
+          <p className="waitlist-item-data-interests">{interests}</p>
+        </div>
+        <div className="locationBox">
+          <Location className="icons"/>
+          <p className="locationText">Factory Berlin</p>
+          <p className="locationText">Cafe Goldshop</p>
+          <p className="locationText">Prenzlauer Berg</p>
+        </div>
+      </div>
     </div>
   );
 }

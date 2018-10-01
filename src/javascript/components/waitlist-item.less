@@ -1,10 +1,11 @@
 @import '../variables';
 
 .waitlist-item-parent {
-  border-bottom: 1px solid #d9d9d9;
-  margin-top: 30px;
-  padding-bottom: 30px;
-
+  background-color: #ffffff;
+  padding: 1.5em;
+  margin-bottom: 1.5em;
+  box-shadow: 0 1px 3px 0 rgba(33, 44, 48, 0.15);
+  border-radius: 4px;
 }
 
 .waitlist-item {
@@ -25,69 +26,69 @@
 }
 
 .waitlist-item-avatar {
-  flex: 0 0 50px;
   padding: 5px;
-};
+}
+
+.endorseBox {
+  margin: 0 .2em;
+}
 
 ul.waitlist-item-actions {
-  flex: 0 0 50px;
+  display: flex;
 }
 
 ul.waitlist-item-actions li {
   list-style-type: none;
-  float: right;
 }
 
 .waitlist-item-data {
   flex: 1;
-  padding-top: 4px;
+  margin-left: 1em;
 };
 
 .waitlist-item-data-interests {
   font-size: 14px;
+  margin-left: .3em;
+  font-family: Roboto;
+  font-size: 16px;
+  line-height: 1.5;
+  letter-spacing: normal;
+  color: #6b8299;
 };
 
 .waitlist-item-data-address {
-  font-size: 10px;
+  font-size: 16px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   max-width: 116px;
   margin-bottom: 0px;
+  color: #a3b3bf;
 }
 .waitlist-item-data-backing {
   font-size: 10px;
-  color: #39d872;
+  color: #a3b3bf;
 }
 
 .waitlist-item-data-name {
-  font-size: 0.9em;
-  color: @waitlist-blue;
+  font-size: 20px;
+  color: #212c30;
   margin: 0px;
 };
 
 
 .waitlist-item-button {
   border: none;
-  color: white;
-  text-align: center;
-  width: 110px;
-  text-decoration: none;
-  display: inline-block;
+  display: flex;
+  font-family: Roboto;
   font-size: 16px;
+  color: #6b8299;
+  border-radius: 24px;
+  padding: .5em 1em;
 }
 
-.waitlist-item-meta {
-  flex: 0 0 50px;
-};
-.waitlist-item-meta-timeleft {
-  font-size: 0.8em;
-  height: 20px;
-};
-.waitlist-item-meta-arrow {
-  float: right;
-  padding-right: 5px;
-  color: @waitlist-yellow;
+.waitlist-item-button:hover {
+  background-color: #f2f9fa;
 }
 
 .waitlist-item-table tr {
@@ -115,4 +116,42 @@ ul.waitlist-item-actions li {
 
 .table thead th {
   border-bottom: 1px solid white !important;
+}
+
+.text-location {
+  margin-left: 6.5em;
+  border-top: 1px solid rgba(150, 167, 187, 0.2);
+}
+
+.quoteText {
+  margin-top: 1em;
+}
+
+.quoteText,
+.locationBox {
+  display: flex;
+}
+
+.icons {
+  margin-right: .5em;
+  fill: #6b8299!important;
+}
+
+.chatFriend {
+  margin-right: 0;
+  fill: #6b8299!important;
+}
+
+.locationText {
+  border-radius: 16px;
+  border: solid 1px #c3cfd9;
+  padding: 0 0.5em;
+  margin: 0 .3em;
+  font-size: 14px;
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: 1.71;
+  letter-spacing: normal;
+  color: #6b8299;
 }
