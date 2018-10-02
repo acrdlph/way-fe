@@ -65,6 +65,11 @@ class Onboarding extends React.Component {
     this.toggleDiv = this.toggleDiv.bind(this);
   }
 
+  componentDidMount() {
+    // autofocus on username input 
+    this.inputUsername.focus();
+  }
+
   componentWillReceiveProps(props) {
     if (props.account.wasRegistrationSuccessful && !this.props.account.wasRegistrationSuccessful) {
       sessionStorage.setItem('userId', props.account.userId);
@@ -90,6 +95,29 @@ class Onboarding extends React.Component {
   toggleDiv() {
     const { show } = this.state;
     this.setState({ show: !show });
+  }
+
+  handleKeyPress = (target, event) => {
+    // move cursor to next input on enter 
+    if(event.key === 'Enter') {
+      switch (target) {
+        case 'inputUsername' :
+          this.inputEmail.focus();
+          break;
+        case 'inputEmail' :
+          this.inputPassword.focus();
+          break;
+        case 'inputPassword' :
+          this.inputPasswordConfirm.focus();
+          break;
+        case 'inputPasswordConfirm' :
+          // register user on enter
+          this.register();
+          break;
+        default :
+          this.inputUsername.focus();
+      }
+    }
   }
 
   changeEmail(event, email) {
@@ -163,6 +191,8 @@ class Onboarding extends React.Component {
         <TextField
           floatingLabelText="Username"
           defaultValue={name}
+          ref={(input) => {this.inputUsername = input}}
+          onKeyUp={this.handleKeyPress.bind(this, 'inputUsername')}
           onChange={this.changeUsername}
           fullWidth={true}
         />
@@ -171,6 +201,8 @@ class Onboarding extends React.Component {
 
         <TextField
           floatingLabelText="Email"
+          ref={(input) => {this.inputEmail = input}}
+          onKeyUp={this.handleKeyPress.bind(this, 'inputEmail')}
           onChange={this.changeEmail}
           fullWidth={true}
         />
@@ -178,6 +210,8 @@ class Onboarding extends React.Component {
         <TextField
           floatingLabelText="Password"
           type="Password"
+          ref={(input) => {this.inputPassword = input}}
+          onKeyUp={this.handleKeyPress.bind(this, 'inputPassword')}
           onChange={this.changePassword}
           fullWidth={true}
         />
@@ -185,6 +219,8 @@ class Onboarding extends React.Component {
         <TextField
           floatingLabelText="Password confirmation"
           type="Password"
+          ref={(input) => {this.inputPasswordConfirm = input}}
+          onKeyUp={this.handleKeyPress.bind(this, 'inputPasswordConfirm')}
           onChange={this.changePasswordConfirm}
           fullWidth={true}
         />

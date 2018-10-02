@@ -28,6 +28,8 @@ class Login extends React.Component {
 
   componentDidMount() {
     document.title = 'Login | CryptoGeeks';
+    // autofocus on username input 
+    this.inputUsername.focus();
   }
 
   componentWillReceiveProps(props) {
@@ -43,6 +45,23 @@ class Login extends React.Component {
 
   changePassword(event, password) {
     this.setState({ password });
+  }
+
+  handleKeyPress = (target, event) => {
+    // move cursor to next input on enter
+    if(event.key === 'Enter') {
+      switch (target) {
+        case 'inputUsername' :
+          this.inputPassword.focus();
+          break;
+        case 'inputPassword' :
+          // log user in on enter
+          this.login();
+          break;
+        default :
+          this.inputUsername.focus();
+      }
+    } 
   }
 
   login() {
@@ -61,6 +80,8 @@ class Login extends React.Component {
           id="username"
           className="username"
           floatingLabelText="Username or Email"
+          ref={(input) => {this.inputUsername = input}}
+          onKeyPress={this.handleKeyPress.bind(this, 'inputUsername')}
           onChange={this.changeLoginName}
           fullWidth
         />
@@ -70,11 +91,20 @@ class Login extends React.Component {
           className="password"
           floatingLabelText="Password"
           type="Password"
+          ref={(input) => {this.inputPassword = input}}
+          onKeyPress={this.handleKeyPress.bind(this, 'inputPassword')}
           onChange={this.changePassword}
           fullWidth
         />
 
-        <RaisedButton label="Log In" backgroundColor="white" onClick={this.login} fullWidth />
+        <RaisedButton 
+          label="Log In" 
+          backgroundColor="white" 
+          ref={(input) => {this.inputSubmit = input}}
+          onKeyPress={this.handleKeyPress.bind(this, 'inputSubmit')}
+          onClick={this.login} 
+          fullWidth 
+          />
 
         <InfoBox text="Invalid username or password!" visible={this.props.account.hasLoginFailed} />
 
