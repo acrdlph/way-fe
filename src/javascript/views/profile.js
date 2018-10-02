@@ -5,9 +5,11 @@ import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 import { Web3Provider } from 'react-web3';
 import { LineChart } from 'react-easy-chart';
-import { Grid, Row, Col } from 'react-bootstrap';
+import { Form, FormGroup, Input, Label, Button } from 'reactstrap';
 import Avatar from '../components/avatar';
 import { trackPageView } from '../util/google-analytics';
+import Bookmark from 'material-ui/svg-icons/action/bookmark';
+import Swap from 'material-ui/svg-icons/action/swap-horiz';
 import ImageSelection from '../components/image-selection-modal';
 import { showModal } from '../stores/profileImageStore';
 import {
@@ -242,11 +244,103 @@ class Profile extends React.Component {
     const curveData = [[{ x: 0, y: 0 }, { x: xAxis, y: yAxis }, { x: 10000, y: 1 }]];
 
     return (
+      <div className="container">
+        <div className="menuBox">
+          <NavLink to="/">Profile</NavLink>
+          <NavLink to="/">Amount</NavLink>
+          <NavLink to="/">Token</NavLink>
+          <NavLink to="/">Security</NavLink>
+          <NavLink to="/">Logout</NavLink>
+        </div>
+        <div className="profileContainer">
+          <div className="repGeekBox">
+            <div className="reputation">
+              <Bookmark color="#6b8299" className="bookmark" />
+              <div className="titleBox">
+                <h5>1047 Reputation</h5>
+                <p>earned from 32 people</p>
+              </div>
+            </div>
+            <span className="middleLine"></span>
+            <div className="geek">
+              <h4 className="geekG">G</h4>
+              <div className="titleBox">
+                <h5>0,00 GEEK</h5>
+                <p>worth 0.0000 ETH</p>
+              </div>
+            </div>
+          </div>
+          <div className="profileBox">
+            <h4>Profile</h4>
+            <Avatar src={photoUrl} onClick={this.onImageClick} />
+            {imageSelectionModal}
+            <Form>
+              <FormGroup>
+                <Label for="name">Name</Label>
+                <Input placeholder="with a placeholder" />
+              </FormGroup>
+              <FormGroup>
+                <Label for="incentive">Incentive</Label>
+                <Input placeholder="with a placeholder" />
+              </FormGroup>
+              <FormGroup>
+                <Label for="hangoutPlaces">Hangout places</Label>
+                <Input placeholder="with a placeholder" />
+              </FormGroup>
+            </Form>
+            <div className="btnBox">
+              <Button className="saveBtn">Save Changes</Button>
+            </div>
+          </div>
+          <div className="tokenBox">
+            <h4>Token</h4>
+            <div className="buySelContainer">
+              <div className="buySellBox">
+                <NavLink to="/">Buy</NavLink>
+                <NavLink to="/">Sell</NavLink>
+              </div>
+            </div>
+            <p>Buy GEEK token from this bonding curve to start curating the community.</p>
+            <Form className="swapBox">
+              <FormGroup>
+                <Label for="hangoutPlaces">Amount of Token</Label>
+                <Input type="number" placeholder="with a placeholder" />
+              </FormGroup>
+              <Swap color="#c3cfd9" className="swap" />
+              <FormGroup>
+                <Label for="hangoutPlaces">Price in ETH</Label>
+                <Input type="number" placeholder="with a placeholder" />
+              </FormGroup>
+            </Form>
+            <div className="buyBtnBox">
+              <Button className="buyBtn">Buy 100 GEEK on Testnet</Button>
+            </div>
+          </div>
+          <div className="accountBox">
+            <h4>Account</h4>
+            <Form>
+              <FormGroup>
+                <Label for="email">Email</Label>
+                <Input placeholder="with a placeholder" />
+              </FormGroup>
+              <FormGroup>
+                <Label for="username">Username</Label>
+                <Input placeholder="with a placeholder" />
+              </FormGroup>
+            </Form>
+            <div className="btnBox">
+              <Button className="saveBtn">Save Changes</Button>
+            </div>
+          </div>
+        </div>
+
+        {/*
       <Grid className="profile">
+      
         <NavLink to="/waitlist">
           <img className="logo-profile" src="assets/icon.png" />
         </NavLink>
-
+      
         <Row>
           <Col sm={12} md={2}>
             <Avatar src={photoUrl} onClick={this.onImageClick} displayPlus />
@@ -388,6 +482,8 @@ class Profile extends React.Component {
           )}
         </Row>
       </Grid>
+      */}
+      </div>
     );
   }
 }
