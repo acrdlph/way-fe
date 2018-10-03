@@ -52,46 +52,36 @@ class Signup extends React.Component {
 
   render() {
     return (
-      <div className="signup">
-        <div className="onboarding-logo">
-          <img alt="here is the logo" className="logo" src="assets/bglogo.png" />
+      <div className="signupContainer">
+        <div>
+          <div className="signupBox">
+            <div className="textBox">
+              <h3>Welcome to CryptoGeeks</h3>
+              <p>A token-curated community of trusted blockchain experts & entrepreneurs from Berlin.</p>        
+            </div>
+            <div className="loginBox">
+              {renderLocationInput(this.state.isSearchBoxVisible, this.state.showLocationRequiredHint)}
+              {this.state.show && CircularProgress()}
+              <Login
+                pathname={this.props.location.pathname}
+                onClick={saveAndContinue}
+                locationId={this.locationId}
+                showLocationRequired={this.showLocationRequired}
+                showSearchBox={this.showSearchBox}
+                history={this.props.history}
+                toggleDiv={this.toggleDiv}
+              />
+            </div>
+            <div className="termsBox">
+              <p>Dont have an account? Get started now</p>
+              <p>I forgot my password</p>
+            </div>
+          </div>
+          <div>
+            <p>By continuing, you agree to our Terms of Service, Privacy Policy & Cookie use.</p>
+            <p>Powered by Way Network · Legal Notice · Feedback</p>
+          </div> 
         </div>
-        <br />
-
-        <h3>
-          Trusted blockchain
-          {' '}
-          <br />
-          {' '}
-experts.
-        </h3>
-
-        {renderLocationInput(this.state.isSearchBoxVisible, this.state.showLocationRequiredHint)}
-        {this.state.show && CircularProgress()}
-
-        <Login
-          pathname={this.props.location.pathname}
-          onClick={saveAndContinue}
-          locationId={this.locationId}
-          showLocationRequired={this.showLocationRequired}
-          showSearchBox={this.showSearchBox}
-          history={this.props.history}
-          toggleDiv={this.toggleDiv}
-        />
-        <br />
-        <div className="raised-Btn">
-          <RaisedButton
-            className="Signup-btn"
-            label="Sign up"
-            backgroundColor="#43D676"
-            fullWidth
-            onClick={() => {
-              this.props.history.push('register');
-            }}
-          />
-        </div>
-        <TermsAndPolicy />
-        <Footer />
       </div>
     );
   }
