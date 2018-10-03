@@ -173,6 +173,12 @@ class Profile extends React.Component {
     console.log(e);
   }
 
+  handleKeyPress = (event) => {
+    if(event.key === 'Enter') {
+      this.inputInterest.focus();
+    }
+  }
+
   onLogout() {
     sessionStorage.clear();
     localStorage.clear();
@@ -258,6 +264,8 @@ class Profile extends React.Component {
               name="name"
               defaultValue={name}
               hintText="Name"
+              ref={(input) => {this.inputName = input}}
+              onKeyPress={this.handleKeyPress}
               onChange={this.onChanged}
               fullWidth
             />
@@ -265,6 +273,7 @@ class Profile extends React.Component {
               name="interests"
               defaultValue={interests}
               hintText="What are your incentives?"
+              ref={(input) => {this.inputInterest = input}}
               onChange={this.onChanged}
               fullWidth
             />
