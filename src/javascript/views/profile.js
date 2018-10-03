@@ -12,9 +12,7 @@ import Bookmark from 'material-ui/svg-icons/action/bookmark';
 import Swap from 'material-ui/svg-icons/action/swap-horiz';
 import ImageSelection from '../components/image-selection-modal';
 import { showModal } from '../stores/profileImageStore';
-import {
-  loadUserData, updateUserData, editUserData, isOnboarded,
-} from '../stores/userStore';
+import { loadUserData, updateUserData, editUserData, isOnboarded } from '../stores/userStore';
 import './profile.less';
 import Web3Component, { initContract, getWeb3, contractAddress } from '../components/Web3Component';
 import Blockgeeks from '../../abi/Blockgeeks.json';
@@ -69,11 +67,11 @@ class Profile extends React.Component {
     const ethereumAddress = window.web3 ? window.web3.eth.accounts[0] : null;
     ethereumAddress
       ? this.state.tokenContract.balanceOf(ethereumAddress, (err, data) => {
-        this.setState({
-          balance: data.toNumber() / multiplier,
-          metamaskConnected: true,
-        });
-      })
+          this.setState({
+            balance: data.toNumber() / multiplier,
+            metamaskConnected: true,
+          });
+        })
       : null;
     this._getTotalSupply();
   }
@@ -175,11 +173,11 @@ class Profile extends React.Component {
     console.log(e);
   }
 
-  handleKeyPress = (event) => {
-    if(event.key === 'Enter') {
+  handleKeyPress = event => {
+    if (event.key === 'Enter') {
       this.inputInterest.focus();
     }
-  }
+  };
 
   onLogout() {
     sessionStorage.clear();
@@ -209,9 +207,7 @@ class Profile extends React.Component {
       </NavLink>
     );
     const backButton = createBackButton('/waitlist');
-    const {
-      username, name, interests, photo, waytcoins, endorsement,
-    } = this.props;
+    const { username, name, interests, photo, waytcoins, endorsement } = this.props;
     const photoUrl = photo || 'assets/avatar-placeholder.png';
     const imageSelectionModal = this.props.showModal ? (
       <ImageSelection onUpload={this.refreshProfile} />
@@ -253,10 +249,11 @@ class Profile extends React.Component {
       <div className="container">
         <div className="menuBox">
           <NavLink to="/">Profile</NavLink>
-          <NavLink to="/">Amount</NavLink>
           <NavLink to="/">Token</NavLink>
-          <NavLink to="/">Security</NavLink>
-          <NavLink to="/">Logout</NavLink>
+          <NavLink to="/">Account</NavLink>
+          <div>{logoutButton}</div>
+          {/*<NavLink to="/">Security</NavLink>
+          <NavLink onClick={this.onLogout}>Logout</NavLink>*/}
         </div>
         <div className="profileContainer">
           <div className="repGeekBox">
@@ -267,7 +264,7 @@ class Profile extends React.Component {
                 <p>earned from 32 people</p>
               </div>
             </div>
-            <span className="middleLine"></span>
+            <span className="middleLine" />
             <div className="geek">
               <h4 className="geekG">G</h4>
               <div className="titleBox">
@@ -283,15 +280,16 @@ class Profile extends React.Component {
             <Form>
               <FormGroup>
                 <Label for="name">Name</Label>
-                <Input placeholder="with a placeholder" />
+                <Input placeholder="Insert your name" />
+                <p>We’re big fans of photos and real names here, so everyone knows who is who.</p>
               </FormGroup>
               <FormGroup>
                 <Label for="incentive">Incentive</Label>
-                <Input placeholder="with a placeholder" />
+                <Input placeholder="Let people know what you are up to & how they can help you" />
               </FormGroup>
               <FormGroup>
                 <Label for="hangoutPlaces">Hangout places</Label>
-                <Input placeholder="with a placeholder" />
+                <Input placeholder="eg. coworking place, restaurant, bar" />
               </FormGroup>
             </Form>
             <div className="btnBox">
@@ -321,6 +319,32 @@ class Profile extends React.Component {
             <div className="buyBtnBox">
               <Button className="buyBtn">Buy 100 GEEK on Testnet</Button>
             </div>
+            <div className="bondingCurve">
+              <LineChart
+                axes
+                axisLabels={{ x: 'Token Supply', y: 'Current Price' }}
+                data={curveData}
+                dataPoints
+                margin={{
+                  top: 30,
+                  right: 30,
+                  bottom: 50,
+                  left: 70,
+                }}
+                width={500}
+                height={400}
+                style={{ '.label': { fill: 'black' } }}
+              />
+            </div>
+            <div className="contractDetails">
+              <p>See contract details:</p>{' '}
+              <a
+                href="https://rinkeby.etherscan.io/address/0xbaa593e9c1f11bbcfa4725085211d764eec26592"
+                target="_blank"
+              >
+                0xbaa593e9c1f11bbcfa4725085211d764eec26592
+              </a>
+            </div>
           </div>
           <div className="accountBox">
             <h4>Account</h4>
@@ -339,159 +363,6 @@ class Profile extends React.Component {
             </div>
           </div>
         </div>
-
-        {/*
-      <Grid className="profile">
-      
-        <NavLink to="/waitlist">
-          <img className="logo-profile" src="assets/icon.png" />
-        </NavLink>
-      
-        <Row>
-          <Col sm={12} md={2}>
-            <Avatar src={photoUrl} onClick={this.onImageClick} displayPlus />
-            {imageSelectionModal}
-          </Col>
-
-          <Col sm={8} md={7}>
-            <TextField
-              name="name"
-              defaultValue={name}
-              hintText="Name"
-              ref={(input) => {this.inputName = input}}
-              onKeyPress={this.handleKeyPress}
-              onChange={this.onChanged}
-              fullWidth
-            />
-            <TextField
-              name="interests"
-              defaultValue={interests}
-              hintText="What are your incentives?"
-              ref={(input) => {this.inputInterest = input}}
-              onChange={this.onChanged}
-              fullWidth
-            />
-          </Col>
-
-          <Col sm={4} md={3} className="buttonBox">
-            <div className="profile-button profile-button-save">
-              <div>{logoutButton}</div>
-
-              <RaisedButton
-                className="save-button"
-                onClick={this.onSave}
-                backgroundColor="#00cf70"
-                label={this.props.isRegisteredUser ? 'Save' : 'Register'}
-              />
-            </div>
-          </Col>
-        </Row>
-
-        <Row className="info-row">
-          <Web3Provider>
-            <Web3Component />
-          </Web3Provider>
-          <Col lg={4} sm={12} className="user-info-profile">
-            <h3 className="username-profile">
-              <strong>{username}</strong>
-            </h3>
-            <Col sm={12}>
-              <div className="profile-eth-adress">
-                <h6 className="ethAddress">
-                  {' '}
-                  Your ETH-Address:
-                  <font size="1">
-                    {window.web3 && getWeb3().eth.accounts[0]}
-                    {' '}
-                  </font>
-                </h6>
-              </div>
-            </Col>
-            <Col sm={12}>
-              <Col>
-                Your GEEK balance:
-                {` ${this.state.balance}`}
-              </Col>
-              <Col>
-                Your GEEK reputation:
-                {` ${endorsement}`}
-              </Col>
-            </Col>
-          </Col>
-
-          {this.state.metamaskConnected && (
-            <Col lg={8} sm={12} className="profile-token-curve">
-              <Col className="info-text">
-                <h6>
-                  Live on the
-                  {' '}
-                  <u>
-                    <b>Rinkeby</b>
-                  </u>
-                  {' '}
-                  Testnet
-                </h6>
-                <p>Buy GEEK token from this bonding curve to start curating the community.</p>
-
-                <TextField
-                  className="tokenField"
-                  name="token_amount"
-                  hintText="GEEK token amount"
-                  onChange={this.onChanged}
-                  fullWidth={false}
-                />
-                <label>{this.state.priceToEther}</label>
-                <Col sm={12}>
-                  <RaisedButton
-                    className="get-price-button"
-                    onClick={this.getEtherPrice}
-                    backgroundColor="#00cf70"
-                    label="Get price (ETH)"
-                  />
-                  <RaisedButton
-                    className="get-price-button"
-                    onClick={this.onBuyHandler}
-                    backgroundColor="#00cf70"
-                    label="Buy"
-                  />
-                  <RaisedButton onClick={this.onSellHandler} backgroundColor="white" label="Sell" />
-                </Col>
-              </Col>
-
-              <Col className="info-graph">
-                <Col sm={12}>
-                  <LineChart
-                    axes
-                    axisLabels={{ x: 'Token Supply', y: 'Current Price' }}
-                    data={curveData}
-                    dataPoints
-                    margin={{
-                      top: 30,
-                      right: 30,
-                      bottom: 50,
-                      left: 70,
-                    }}
-                    width={500}
-                    height={400}
-                    style={{ '.label': { fill: 'black' } }}
-                  />
-                  <font size="1">
-                    Contract:
-                    {' '}
-                    <a
-                      href="https://rinkeby.etherscan.io/address/0xbaa593e9c1f11bbcfa4725085211d764eec26592"
-                      target="_blank"
-                    >
-                      0xbaa593e9c1f11bbcfa4725085211d764eec26592
-                    </a>
-                  </font>
-                </Col>
-              </Col>
-            </Col>
-          )}
-        </Row>
-      </Grid>
-      */}
       </div>
     );
   }
