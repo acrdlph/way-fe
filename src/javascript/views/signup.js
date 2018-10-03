@@ -79,7 +79,7 @@ experts.
           toggleDiv={this.toggleDiv}
         />
         <br />
-        <div className="raised-Btn container">
+        <div className="raised-Btn">
           <RaisedButton
             className="Signup-btn"
             label="Sign up"

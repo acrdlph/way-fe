@@ -247,10 +247,11 @@ class Profile extends React.Component {
       <div className="container">
         <div className="menuBox">
           <NavLink to="/">Profile</NavLink>
-          <NavLink to="/">Amount</NavLink>
           <NavLink to="/">Token</NavLink>
-          <NavLink to="/">Security</NavLink>
-          <NavLink to="/">Logout</NavLink>
+          <NavLink to="/">Account</NavLink>
+          <div>{logoutButton}</div>
+          {/*<NavLink to="/">Security</NavLink>
+          <NavLink>{logoutButton}</NavLink>*/}
         </div>
         <div className="profileContainer">
           <div className="repGeekBox">
@@ -277,15 +278,16 @@ class Profile extends React.Component {
             <Form>
               <FormGroup>
                 <Label for="name">Name</Label>
-                <Input placeholder="with a placeholder" />
+                <Input placeholder="Insert your name" />
+                <p>We’re big fans of photos and real names here, so everyone knows who is who.</p>
               </FormGroup>
               <FormGroup>
                 <Label for="incentive">Incentive</Label>
-                <Input placeholder="with a placeholder" />
+                <Input placeholder="Let people know what you are up to & how they can help you" />
               </FormGroup>
               <FormGroup>
                 <Label for="hangoutPlaces">Hangout places</Label>
-                <Input placeholder="with a placeholder" />
+                <Input placeholder="eg. coworking place, restaurant, bar" />
               </FormGroup>
             </Form>
             <div className="btnBox">
@@ -314,6 +316,33 @@ class Profile extends React.Component {
             </Form>
             <div className="buyBtnBox">
               <Button className="buyBtn">Buy 100 GEEK on Testnet</Button>
+            </div>
+            <div className="bondingCurve">
+              <LineChart
+                axes
+                axisLabels={{ x: 'Token Supply', y: 'Current Price' }}
+                data={curveData}
+                dataPoints
+                margin={{
+                  top: 30,
+                  right: 30,
+                  bottom: 50,
+                  left: 70,
+                }}
+                width={500}
+                height={400}
+                style={{ '.label': { fill: 'black' } }}
+              />
+            </div>
+            <div className="contractDetails">
+              <p>See contract details:</p> 
+                    {' '}
+              <a
+                href="https://rinkeby.etherscan.io/address/0xbaa593e9c1f11bbcfa4725085211d764eec26592"
+                target="_blank"
+              >
+                0xbaa593e9c1f11bbcfa4725085211d764eec26592
+                    </a>
             </div>
           </div>
           <div className="accountBox">

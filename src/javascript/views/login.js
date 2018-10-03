@@ -56,7 +56,7 @@ class Login extends React.Component {
 
   render() {
     return (
-      <div className="login container">
+      <div className="login">
         <TextField
           id="username"
           className="username"

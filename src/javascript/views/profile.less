@@ -165,6 +165,7 @@
   line-height: 1.4em;
   font-size: 2.5em;
   margin-right: .5em;
+  margin-top: 0;
 }
 
 .profileBox {
@@ -178,8 +179,15 @@
   box-shadow: 0 1px 3px 0 rgba(33, 44, 48, 0.15);
 }
 
+.profileBox p {
+  font-family: Roboto;
+  font-size: 14px;
+  color: #a3b3bf;
+}
+
 .avatar {
   margin-bottom: 1.5em;
+  margin-top: .8em;
 }
 
 .profileBox form,
@@ -194,7 +202,6 @@
 .swapBox label {
   font-size: 14px;
   color: #212c30;
-  font-weight: bold;
   font-weight: 500;
 }
 
@@ -216,12 +223,18 @@
 .accountBox input::placeholder,
 .swapBox input::placeholder {
   color: #a3b3bf;
+  font-family: Roboto;
   font-size: 16px;
 }
 
  h4 {
   font-size: 24px;
   text-align: center;
+  margin-top: .2em;
+}
+
+.accountBox h4 {
+  margin-bottom: 1.5em; 
 }
 
 .saveBtn {
@@ -263,7 +276,6 @@
 .buySelContainer {
   box-shadow: 0 1px 0 0 rgba(36, 43, 51, 0.1);
   top: 56px;
-  padding-top: 11px;
 }
 
 .buySellBox {
@@ -307,6 +319,7 @@
 
 .swap {
   align-self: center;
+  margin-top: 1em;
 }
 
 .buyBtnBox {
@@ -321,3 +334,29 @@
   border: none;
 }
 
+.bondingCurve {
+  display: flex;
+  justify-content: center;
+  margin-top: 1.5em;
+}
+
+.contractDetails {
+  display: flex;
+  justify-content: center;
+  margin-top: 1em;
+}
+
+.contractDetails p {
+  margin-left: .5em;
+  font-family: Roboto;
+  font-size: 14px;
+  margin-top: 0;
+  color: #a3b3bf;
+  margin-right: .5em;
+}
+
+.contractDetails a {
+  text-decoration: none;
+  color: #0095b3;
+  font-size: 14px;
+}
