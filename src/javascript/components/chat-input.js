@@ -39,7 +39,7 @@ export default class ChatInput extends React.Component {
           <TextField
             disabled={this.props.disabled}
             hintText="Message"
-            fullWidth="true"
+            fullWidth
             value={this.state.message}
             onChange={this.changeMessage}
             onKeyPress={this.onKeyPressInTextField}

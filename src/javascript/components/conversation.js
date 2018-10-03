@@ -8,7 +8,6 @@ const CHAT_BUBBLE_COLOR_LEFT = '#43D676';
 const CHAT_BUBBLE_COLOR_RIGHT = '#68A0CE';
 
 export default class Conversation extends React.Component {
-
   constructor(props) {
     super(props);
     this.scrollToBottom = this.scrollToBottom.bind(this);
@@ -17,58 +16,50 @@ export default class Conversation extends React.Component {
   scrollToBottom() {
     const scrollEnd = ReactDOM.findDOMNode(this).getElementsByClassName('chat-scroll-end');
     if (scrollEnd.length) {
-      scrollEnd[0].scrollIntoView({ behavior: "smooth" });
+      scrollEnd[0].scrollIntoView({ behavior: 'smooth' });
     }
   }
-  
+
   componentDidMount() {
     this.scrollToBottom();
   }
-  
+
   componentDidUpdate() {
     this.scrollToBottom();
   }
 
   render() {
-    const {user, partner, messages} = this.props;
-    const bubbles = messages.map(msg => {
-      const time = dateFormat(msg.createdAt, 'hh:MM');
+    const { user, partner, messages } = this.props;
+    const bubbles = messages.map((msg) => {
+      const date = dateFormat(msg.createdAt, 'dS mmm yy , H:MM ');
       const otherPhoto = partner.photo;
       const style = {
-        backgroundColor: msg.sender === user.id ? CHAT_BUBBLE_COLOR_LEFT : CHAT_BUBBLE_COLOR_RIGHT
+        backgroundColor: msg.sender === user.id ? CHAT_BUBBLE_COLOR_LEFT : CHAT_BUBBLE_COLOR_RIGHT,
       };
       let photo = 'assets/avatar-placeholder.png';
-      let date = dateFormat( 'dd.mm.yyyy' );
       let cssClass = 'left';
-      if(msg.sender === user.id) {
+      if (msg.sender === user.id) {
         cssClass = 'right';
-        if(user.photo) {
+        if (user.photo) {
           photo = user.photo;
         }
         name = user.name;
-      } else {
-        if(otherPhoto) {
-          photo = otherPhoto;
-        }
+      } else if (otherPhoto) {
+        photo = otherPhoto;
       }
-      const undeliveredMsgClass = msg.id ? '' : 'undelivered-msg-style'; 
+      const undeliveredMsgClass = msg.id ? '' : 'undelivered-msg-style';
 
       return (
-        <div key={msg.local_id} className='chat-item-wrapper'>
+        <div key={msg.local_id} className="chat-item-wrapper">
           <div className={`chat-item chat-item-${cssClass}`}>
             <div className={`avatar avatar-${cssClass}`}>
-              <Avatar
-                size={50}
-                src={photo}
-              />
+              <Avatar size={50} src={photo} />
             </div>
             <div className={`content content-${cssClass}`}>
               <div className={`bubble ${undeliveredMsgClass}`} style={style}>
                 {msg.message}
               </div>
-              <div className='meta-info'>
-                {date + " / " + time}
-              </div>
+              <div className="meta-info">{`${date}`}</div>
             </div>
           </div>
         </div>
@@ -76,11 +67,10 @@ export default class Conversation extends React.Component {
     });
 
     return (
-      <div className='chat'>
+      <div className="chat">
         {bubbles}
-        <div className="chat-scroll-end"/> 
+        <div className="chat-scroll-end" />
       </div>
     );
   }
-
 }
