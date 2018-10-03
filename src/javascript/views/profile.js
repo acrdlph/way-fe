@@ -5,14 +5,18 @@ import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 import { Web3Provider } from 'react-web3';
 import { LineChart } from 'react-easy-chart';
-import { Form, FormGroup, Input, Label, Button } from 'reactstrap';
-import Avatar from '../components/avatar';
-import { trackPageView } from '../util/google-analytics';
+import {
+  Form, FormGroup, Input, Label, Button,
+} from 'reactstrap';
 import Bookmark from 'material-ui/svg-icons/action/bookmark';
 import Swap from 'material-ui/svg-icons/action/swap-horiz';
+import Avatar from '../components/avatar';
+import { trackPageView } from '../util/google-analytics';
 import ImageSelection from '../components/image-selection-modal';
 import { showModal } from '../stores/profileImageStore';
-import { loadUserData, updateUserData, editUserData, isOnboarded } from '../stores/userStore';
+import {
+  loadUserData, updateUserData, editUserData, isOnboarded,
+} from '../stores/userStore';
 import './profile.less';
 import Web3Component, { initContract, getWeb3, contractAddress } from '../components/Web3Component';
 import Blockgeeks from '../../abi/Blockgeeks.json';
@@ -35,16 +39,16 @@ class Profile extends React.Component {
     this.onSave = this.onSave.bind(this);
     this.onBuyHandler = this.onBuyHandler.bind(this);
     this.onSellHandler = this.onSellHandler.bind(this);
-    this.onChanged = this.onChanged.bind(this);
+    this.handleInputChange = this.handleInputChange.bind(this);
     this.onImageClick = this.onImageClick.bind(this);
     this.refreshProfile = this.refreshProfile.bind(this);
     this.onLogout = this.onLogout.bind(this);
     this.getEtherPrice = this.getEtherPrice.bind(this);
     this.state = {
-      name: this.props.name,
-      email: this.props.email,
-      username: this.props.username,
-      interests: this.props.interests,
+      name: this.props.user.name,
+      email: this.props.user.email,
+      username: this.props.user.username,
+      interests: this.props.user.interests,
       balance: 0,
       endorsement: this.props.endorsement,
       address: window.web3 ? window.web3.eth.accounts[0] : null,
@@ -67,13 +71,14 @@ class Profile extends React.Component {
     const ethereumAddress = window.web3 ? window.web3.eth.accounts[0] : null;
     ethereumAddress
       ? this.state.tokenContract.balanceOf(ethereumAddress, (err, data) => {
-          this.setState({
-            balance: data.toNumber() / multiplier,
-            metamaskConnected: true,
-          });
-        })
+        this.setState({
+          balance: data.toNumber() / multiplier,
+          metamaskConnected: true,
+        });
+      })
       : null;
     this._getTotalSupply();
+    this.setState({ name: props.user.name, interests: props.user.interests });
   }
 
   refreshProfile() {
@@ -81,10 +86,10 @@ class Profile extends React.Component {
     this.props.loadUserData(userId);
   }
 
-  onChanged(e) {
-    const obj = {};
-    obj[e.target.name] = e.target.value;
-    this.setState(obj);
+  handleInputChange(event) {
+    const { target } = event;
+    const { value, name } = target;
+    this.setState({ [name]: value });
   }
 
   _getBuyPrice(tokenAmount) {
@@ -114,6 +119,7 @@ class Profile extends React.Component {
       },
       (error, data) => {
         this.setState({ totalSupply: data.toNumber() });
+        this.state, 'totalSupply';
       },
     );
   }
@@ -173,12 +179,6 @@ class Profile extends React.Component {
     console.log(e);
   }
 
-  handleKeyPress = event => {
-    if (event.key === 'Enter') {
-      this.inputInterest.focus();
-    }
-  };
-
   onLogout() {
     sessionStorage.clear();
     localStorage.clear();
@@ -207,7 +207,9 @@ class Profile extends React.Component {
       </NavLink>
     );
     const backButton = createBackButton('/waitlist');
-    const { username, name, interests, photo, waytcoins, endorsement } = this.props;
+    const {
+      username, name, interests, photo, waytcoins, endorsement,
+    } = this.props;
     const photoUrl = photo || 'assets/avatar-placeholder.png';
     const imageSelectionModal = this.props.showModal ? (
       <ImageSelection onUpload={this.refreshProfile} />
@@ -252,8 +254,8 @@ class Profile extends React.Component {
           <NavLink to="/">Token</NavLink>
           <NavLink to="/">Account</NavLink>
           <div>{logoutButton}</div>
-          {/*<NavLink to="/">Security</NavLink>
-          <NavLink onClick={this.onLogout}>Logout</NavLink>*/}
+          {/* <NavLink to="/">Security</NavLink>
+          <NavLink onClick={this.onLogout}>Logout</NavLink> */}
         </div>
         <div className="profileContainer">
           <div className="repGeekBox">
@@ -280,12 +282,21 @@ class Profile extends React.Component {
             <Form>
               <FormGroup>
                 <Label for="name">Name</Label>
-                <Input placeholder="Insert your name" />
+                <Input
+                  name="name"
+                  placeholder="Insert your name"
+                  value={this.state.name}
+                  onChange={this.handleInputChange}
+                />
                 <p>We’re big fans of photos and real names here, so everyone knows who is who.</p>
               </FormGroup>
               <FormGroup>
                 <Label for="incentive">Incentive</Label>
-                <Input placeholder="Let people know what you are up to & how they can help you" />
+                <Input
+                  placeholder="Let people know what you are up to & how they can help you"
+                  value={this.state.interests}
+                  onChange={this.handleInputChange}
+                />
               </FormGroup>
               <FormGroup>
                 <Label for="hangoutPlaces">Hangout places</Label>
@@ -319,25 +330,28 @@ class Profile extends React.Component {
             <div className="buyBtnBox">
               <Button className="buyBtn">Buy 100 GEEK on Testnet</Button>
             </div>
-            <div className="bondingCurve">
-              <LineChart
-                axes
-                axisLabels={{ x: 'Token Supply', y: 'Current Price' }}
-                data={curveData}
-                dataPoints
-                margin={{
-                  top: 30,
-                  right: 30,
-                  bottom: 50,
-                  left: 70,
-                }}
-                width={500}
-                height={400}
-                style={{ '.label': { fill: 'black' } }}
-              />
-            </div>
+            {this.state.metamaskConnected && (
+              <div className="bondingCurve">
+                <LineChart
+                  axes
+                  axisLabels={{ x: 'Token Supply', y: 'Current Price' }}
+                  data={curveData}
+                  dataPoints
+                  margin={{
+                    top: 30,
+                    right: 30,
+                    bottom: 50,
+                    left: 70,
+                  }}
+                  width={500}
+                  height={400}
+                  style={{ '.label': { fill: 'black' } }}
+                />
+              </div>
+            )}
             <div className="contractDetails">
-              <p>See contract details:</p>{' '}
+              <p>See contract details:</p>
+              {' '}
               <a
                 href="https://rinkeby.etherscan.io/address/0xbaa593e9c1f11bbcfa4725085211d764eec26592"
                 target="_blank"
@@ -368,7 +382,7 @@ class Profile extends React.Component {
   }
 }
 const mapStateToProps = state => ({
-  ...state.user.data,
+  user: state.user.data,
   isRegisteredUser: !!state.user.data.username,
   showModal: state.profileImage.showModal,
 });
