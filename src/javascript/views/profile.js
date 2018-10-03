@@ -1,7 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { NavLink } from 'react-router-dom';
-import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 import { Web3Provider } from 'react-web3';
 import { LineChart } from 'react-easy-chart';
@@ -78,12 +77,30 @@ class Profile extends React.Component {
       })
       : null;
     this._getTotalSupply();
-    this.setState({ name: props.user.name, interests: props.user.interests });
+    this.setState({
+      name: props.user.name,
+      interests: props.user.interests,
+      email: props.user.email,
+      username: props.user.username,
+      endorsement: props.user.endorsement,
+    });
   }
 
-  refreshProfile() {
+  onSave(event) {
     const userId = sessionStorage.getItem('userId');
-    this.props.loadUserData(userId);
+    let data;
+    if (event.target.name === 'nameInterest') {
+      data = {
+        name: this.state.name,
+        interests: this.state.interests,
+      };
+    } else if (event.target.name === 'emailUsername') {
+      data = {
+        email: this.state.email,
+        username: this.state.username,
+      };
+    }
+    this.props.updateUserData(userId, data);
   }
 
   handleInputChange(event) {
@@ -92,40 +109,41 @@ class Profile extends React.Component {
     this.setState({ [name]: value });
   }
 
+  refreshProfile() {
+    const userId = sessionStorage.getItem('userId');
+    this.props.loadUserData(userId);
+  }
+
   _getBuyPrice(tokenAmount) {
     const getBuyPrice = this.state.tokenContract ? this.state.tokenContract.getBuyPrice : null;
-
-    getBuyPrice(
-      tokenAmount * 10 ** 18,
-      {
-        from: window.web3.eth.accounts ? window.web3.eth.accounts[0] : null,
-        gas: 300000,
-        value: 0,
-      },
-      (error, data) => {
-        this.setState({ priceToEther: web3.fromWei(data.toNumber(), 'ether') });
-      },
-    );
+    window.web3
+      && getBuyPrice(
+        tokenAmount * 10 ** 18,
+        {
+          from: window.web3.eth.accounts ? window.web3.eth.accounts[0] : null,
+          gas: 300000,
+          value: 0,
+        },
+        (error, data) => {
+          this.setState({ priceToEther: web3.fromWei(data.toNumber(), 'ether') });
+        },
+      );
   }
 
   _getTotalSupply() {
     const getTotalSupply = this.state.tokenContract ? this.state.tokenContract.totalSupply : null;
-
-    getTotalSupply(
-      {
-        from: window.web3.eth.accounts ? window.web3.eth.accounts[0] : null,
-        gas: 300000,
-        value: 0,
-      },
-      (error, data) => {
-        this.setState({ totalSupply: data.toNumber() });
-        this.state, 'totalSupply';
-      },
-    );
-  }
-
-  getEtherPrice(e) {
-    this._getBuyPrice(this.state.token_amount ? this.state.token_amount : 0);
+    window.web3
+      && getTotalSupply(
+        {
+          from: window.web3.eth.accounts ? window.web3.eth.accounts[0] : null,
+          gas: 300000,
+          value: 0,
+        },
+        (error, data) => {
+          this.setState({ totalSupply: data.toNumber() });
+          this.state, 'totalSupply';
+        },
+      );
   }
 
   onBuyHandler(e) {
@@ -148,6 +166,10 @@ class Profile extends React.Component {
     } catch (error) {
       alert(error, 'Metamask is not connected');
     }
+  }
+
+  getEtherPrice(e) {
+    this._getBuyPrice(this.state.token_amount ? this.state.token_amount : 0);
   }
 
   onSellHandler(e) {
@@ -184,20 +206,6 @@ class Profile extends React.Component {
     localStorage.clear();
     this.props.history.push('/');
     location.reload();
-  }
-
-  onSave(e) {
-    // this for test Save button
-    this.props.history.push('/waitlist');
-    if (!this.props.isRegisteredUser) {
-      this.props.history.push('/waitlist');
-    }
-    const userId = sessionStorage.getItem('userId');
-    const data = {
-      name: this.state.name,
-      interests: this.state.interests,
-    };
-    this.props.updateUserData(userId, data);
   }
 
   render() {
@@ -262,16 +270,24 @@ class Profile extends React.Component {
             <div className="reputation">
               <Bookmark color="#6b8299" className="bookmark" />
               <div className="titleBox">
-                <h5>1047 Reputation</h5>
-                <p>earned from 32 people</p>
+                <h5>
+                  {this.state.endorsement}
+                  {' '}
+Reputation
+                </h5>
+                {/* <p>earned from 32 people</p> */}
               </div>
             </div>
             <span className="middleLine" />
             <div className="geek">
               <h4 className="geekG">G</h4>
               <div className="titleBox">
-                <h5>0,00 GEEK</h5>
-                <p>worth 0.0000 ETH</p>
+                <h5>
+                  {this.state.balance}
+                  {' '}
+GEEK
+                </h5>
+                {/* <p>worth 0.0000 ETH</p> */}
               </div>
             </div>
           </div>
@@ -293,6 +309,7 @@ class Profile extends React.Component {
               <FormGroup>
                 <Label for="incentive">Incentive</Label>
                 <Input
+                  name="interests"
                   placeholder="Let people know what you are up to & how they can help you"
                   value={this.state.interests}
                   onChange={this.handleInputChange}
@@ -304,76 +321,88 @@ class Profile extends React.Component {
               </FormGroup>
             </Form>
             <div className="btnBox">
-              <Button className="saveBtn">Save Changes</Button>
+              <Button name="nameInterest" onClick={this.onSave} className="saveBtn">
+                Save Changes
+              </Button>
             </div>
           </div>
           <div className="tokenBox">
             <h4>Token</h4>
-            <div className="buySelContainer">
-              <div className="buySellBox">
-                <NavLink to="/">Buy</NavLink>
-                <NavLink to="/">Sell</NavLink>
+            {this.state.metamaskConnected ? (
+              <div>
+                <div className="buySelContainer">
+                  <div className="buySellBox">
+                    <NavLink to="/">Buy</NavLink>
+                    <NavLink to="/">Sell</NavLink>
+                  </div>
+                </div>
+                <p>Buy GEEK token from this bonding curve to start curating the community.</p>
+                <Form className="swapBox">
+                  <FormGroup>
+                    <Label for="hangoutPlaces">Amount of Token</Label>
+                    <Input type="number" placeholder="with a placeholder" />
+                  </FormGroup>
+                  <Swap color="#c3cfd9" className="swap" />
+                  <FormGroup>
+                    <Label for="hangoutPlaces">Price in ETH</Label>
+                    <Input type="number" placeholder="with a placeholder" />
+                  </FormGroup>
+                </Form>
+                <div className="buyBtnBox">
+                  <Button className="buyBtn">Buy 100 GEEK on Testnet</Button>
+                </div>
+                <div className="bondingCurve">
+                  <LineChart
+                    axes
+                    axisLabels={{ x: 'Token Supply', y: 'Current Price' }}
+                    data={curveData}
+                    dataPoints
+                    margin={{
+                      top: 30,
+                      right: 30,
+                      bottom: 50,
+                      left: 70,
+                    }}
+                    width={500}
+                    height={400}
+                    style={{ '.label': { fill: 'black' } }}
+                  />
+                </div>
+                <div className="contractDetails">
+                  <p>See contract details:</p>
+                  {' '}
+                  <a
+                    href="https://rinkeby.etherscan.io/address/0xbaa593e9c1f11bbcfa4725085211d764eec26592"
+                    target="_blank"
+                  >
+                    0xbaa593e9c1f11bbcfa4725085211d764eec26592
+                  </a>
+                </div>
               </div>
-            </div>
-            <p>Buy GEEK token from this bonding curve to start curating the community.</p>
-            <Form className="swapBox">
-              <FormGroup>
-                <Label for="hangoutPlaces">Amount of Token</Label>
-                <Input type="number" placeholder="with a placeholder" />
-              </FormGroup>
-              <Swap color="#c3cfd9" className="swap" />
-              <FormGroup>
-                <Label for="hangoutPlaces">Price in ETH</Label>
-                <Input type="number" placeholder="with a placeholder" />
-              </FormGroup>
-            </Form>
-            <div className="buyBtnBox">
-              <Button className="buyBtn">Buy 100 GEEK on Testnet</Button>
-            </div>
-            {this.state.metamaskConnected && (
-              <div className="bondingCurve">
-                <LineChart
-                  axes
-                  axisLabels={{ x: 'Token Supply', y: 'Current Price' }}
-                  data={curveData}
-                  dataPoints
-                  margin={{
-                    top: 30,
-                    right: 30,
-                    bottom: 50,
-                    left: 70,
-                  }}
-                  width={500}
-                  height={400}
-                  style={{ '.label': { fill: 'black' } }}
-                />
-              </div>
+            ) : (
+              <h5>Please connect to metamask to enjoy blabla</h5>
             )}
-            <div className="contractDetails">
-              <p>See contract details:</p>
-              {' '}
-              <a
-                href="https://rinkeby.etherscan.io/address/0xbaa593e9c1f11bbcfa4725085211d764eec26592"
-                target="_blank"
-              >
-                0xbaa593e9c1f11bbcfa4725085211d764eec26592
-              </a>
-            </div>
           </div>
           <div className="accountBox">
             <h4>Account</h4>
             <Form>
               <FormGroup>
                 <Label for="email">Email</Label>
-                <Input placeholder="with a placeholder" />
+                <Input name="email" value={this.state.email} onChange={this.handleInputChange} />
               </FormGroup>
               <FormGroup>
                 <Label for="username">Username</Label>
-                <Input placeholder="with a placeholder" />
+                <Input
+                  name="username"
+                  value={this.state.username}
+                  onChange={this.handleInputChange}
+                />
               </FormGroup>
             </Form>
             <div className="btnBox">
-              <Button className="saveBtn">Save Changes</Button>
+              <Button name="emailUsername" onClick={this.onSave} className="saveBtn">
+                Save Changes
+              </Button>
             </div>
           </div>
         </div>
