@@ -1,98 +1,80 @@
 @import '../variables';
 
-.signup {
-  padding-top: 4px;
-  text-align: center;
+.signupContainer {
   display: flex;
-  flex-direction: column;
+  justify-content: center;
 }
 
-.signup-selection-icon {
-  height: 100px;
-  margin: 5px;
+.signupBox {
+  width: 496px;
+  height: auto;
+  padding: 3em;
+  border-radius: 4px;
+  background-color: #ffffff;
+  box-shadow: 0 1px 3px 0 rgba(33, 44, 48, 0.15);
 }
 
-.onboarding-logo {
+.textBox {
+  font-family: Roboto;
+  font-size: 16px;
+  line-height: 1.5;
+  color: #6b8299;
+}
+
+.textBox h3 {
+  font-family: Roboto;
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 1.33;
+  color: #212c30;
+}
+
+.termsBox {
+  width: 496px;
+  height: auto;
+  padding: 3em;
+}
+
+.newAccountBox {
+  border-top: 1px solid rgba(150, 167, 187, 0.2);
+  padding-top: 1.5em;
+}
+
+.newAccountBox p {
+  font-family: Roboto;
+  font-size: 14px;
+  line-height: 2;
+  margin-bottom: 0;
+  color: #6b8299;
+}
+
+.newAccountBox a {
+  font-weight: 600;
+  color: #0095b3;
+  text-decoration: none;
+}
+
+.termsBox p {
+  font-family: Roboto;
+  font-size: 12px;
   text-align: center;
-}
-.onboarding-logo img {
-  width: 24%;
-}
-@media only screen
-  and (min-device-width: 320px)
-  and (max-device-width: 480px)
-  and (-webkit-min-device-pixel-ratio: 2) {
-    .onboarding-logo img {
-      width: 60%;
-    }
+  color: #6b8299;
+  margin-bottom: 0;
 }
 
-.signup-slider-distance {
-  width: 200px;
-  margin: 0 auto;
+.termsBox a {
+  font-family: Roboto;
+  font-size: 12px;
+  line-height: 1.67;
+  color: #6b8299;
+  text-decoration: none;
 }
 
-.signup-slider-reputation {
-  width: 200px;
-  margin: 0 auto;
-}
-
-.signup-im-here {
-  font-size: 10px;
-}
-
-.signup-wait-for {
-  font-size: 10px;
-  padding-top: 2px;
-}
-
-.signup-wait {
-  display: flex;
-  padding: 0px;
-}
-
-.signup-wait li.title {
-  margin-top: 20px;
-  padding-left: 10px;
-}
-.signup-wait-for-li {
-  margin-top: 20px;
-  padding-right: 20px;
-}
-
-.signup-wait li {
-  float: left;
-  list-style: none;
-  max-height: 11px;
-}
-
-.signup-wait-for-minutes {
-  font-size: 15px;
-  padding-top: 3px;
-  font-weight: 500;
-  color: #807b7b;
-}
-
-.signup-location-input-style {
-  width: 200px;
-  height: 45px;
-  font-size: 20px;
-  font-weight: 500;
-  margin: 0 auto;
-  text-align: center;
-  vertical-align: middle;
-}
-
-
-.Signup-btn {
-  border: #43d676;
-  background: white !important;
-  position: relative;
-  text-align: left;
-  padding: 0px
-}
-
-.raised-Btn {
-  max-width: 350px;
-  margin-left: 26em;
+.arrow {
+  border: solid 2px #0095b3;
+  border-width: 0 3px 3px 0;
+  display: inline-block;
+  padding: 3px;
+  transform: rotate(-45deg);
+    -webkit-transform: rotate(-45deg);
 }

@@ -9,6 +9,7 @@ import { PARTNER_LOCATIONS } from '../util/constants';
 import { loadPartnerData } from '../stores/partnerStore';
 import Footer from '../components/footer';
 import Login from './login';
+//import Logo from './logoSignup.png';
 import { renderLocationInput, saveAndContinue } from '../util/location';
 import './signup.less';
 
@@ -52,46 +53,36 @@ class Signup extends React.Component {
 
   render() {
     return (
-      <div className="signup">
-        <div className="onboarding-logo">
-          <img alt="here is the logo" className="logo" src="assets/bglogo.png" />
+      <div className="signupContainer">
+        <div>
+          <div className="signupBox">
+            <div className="textBox">
+              <h3>Welcome to CryptoGeeks</h3>
+              <p>A token-curated community of trusted blockchain experts & entrepreneurs from Berlin.</p>        
+            </div>
+            <div className="loginBox">
+              {renderLocationInput(this.state.isSearchBoxVisible, this.state.showLocationRequiredHint)}
+              {this.state.show && CircularProgress()}
+              <Login
+                pathname={this.props.location.pathname}
+                onClick={saveAndContinue}
+                locationId={this.locationId}
+                showLocationRequired={this.showLocationRequired}
+                showSearchBox={this.showSearchBox}
+                history={this.props.history}
+                toggleDiv={this.toggleDiv}
+              />
+            </div>
+            <div className="newAccountBox">
+              <p>Dont have an account? <a href="">Get started now</a> <i class="arrow"></i></p>
+              <p><a href="">I forgot my password</a> <i class="arrow"></i></p>
+            </div>
+          </div>
+          <div className="termsBox">
+            <p>By continuing, you agree to our <a href="">Terms of Service, Privacy Policy</a> & <a href="">Cookie use.</a></p>
+            <p><a href="">Powered by Way Network · Legal Notice · Feedback</a></p>
+          </div> 
         </div>
-        <br />
-
-        <h3>
-          Trusted blockchain
-          {' '}
-          <br />
-          {' '}
-experts.
-        </h3>
-
-        {renderLocationInput(this.state.isSearchBoxVisible, this.state.showLocationRequiredHint)}
-        {this.state.show && CircularProgress()}
-
-        <Login
-          pathname={this.props.location.pathname}
-          onClick={saveAndContinue}
-          locationId={this.locationId}
-          showLocationRequired={this.showLocationRequired}
-          showSearchBox={this.showSearchBox}
-          history={this.props.history}
-          toggleDiv={this.toggleDiv}
-        />
-        <br />
-        <div className="raised-Btn">
-          <RaisedButton
-            className="Signup-btn"
-            label="Sign up"
-            backgroundColor="#43D676"
-            fullWidth
-            onClick={() => {
-              this.props.history.push('register');
-            }}
-          />
-        </div>
-        <TermsAndPolicy />
-        <Footer />
       </div>
     );
   }
