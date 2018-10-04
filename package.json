@@ -74,6 +74,7 @@
     "react-dom": "16.0.0",
     "react-easy-chart": "^1.0.0",
     "react-ga": "2.3.5",
+    "react-geosuggest": "^2.8.0",
     "react-modal": "^3.1.4",
     "react-native-code-push": "^5.3.2",
     "react-notify-toast": "^0.4.0",
