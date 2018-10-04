@@ -1,4 +1,5 @@
 import React from 'react';
+import Avatar from 'material-ui/Avatar';
 import { Row } from 'reactstrap';
 
 import returnDate from '../util/date';
@@ -20,6 +21,9 @@ class ReplyItem extends React.Component {
     const { reply, deleteReply, qId } = this.props;
     const { replied_by, replied_at, repl_content } = reply;
     const user = sessionStorage.getItem('userId');
+    if (!replied_by[0].photo) {
+      replied_by[0].photo = 'assets/avatar-placeholder.png';
+    }
     return (
       <div
         onMouseEnter={() => this.handleMouseHover(true)}
@@ -28,7 +32,7 @@ class ReplyItem extends React.Component {
       >
         <div className="imgNickname">
           <div className="imgBox">
-            <img src="/assets/avatar-placeholder.png" />
+            <Avatar size={50} src={replied_by[0].photo} />
           </div>
           <div className="nameUpdate">
             <div className="titleWithX">
