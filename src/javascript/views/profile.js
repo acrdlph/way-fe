@@ -19,6 +19,7 @@ import {
 import './profile.less';
 import Web3Component, { initContract, getWeb3, contractAddress } from '../components/Web3Component';
 import Blockgeeks from '../../abi/Blockgeeks.json';
+import Geosuggest from 'react-geosuggest';
 
 const multiplier = 10 ** 18;
 
@@ -324,7 +325,12 @@ GEEK
               </FormGroup>
               <FormGroup>
                 <Label for="hangoutPlaces">Hangout places</Label>
-                <Input placeholder="eg. coworking place, restaurant, bar" />
+                <Geosuggest
+                  ref={el=>this._geoSuggest=el}
+                  placeholder="eg. coworking place, restaurant, bar"
+                  onSuggestSelect={this.onSuggestSelect}
+                  location={new google.maps.LatLng(52.5200, 13.4050)}
+                  radius="10000" />
               </FormGroup>
             </Form>
             <div className="btnBox">
