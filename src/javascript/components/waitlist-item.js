@@ -38,7 +38,7 @@ export default function WaitListItem(props) {
 
   let alreadyContactedClass = '';
   if (lastContact > 0) {
-    alreadyContactedClass = 'waitlist-item-already-contacted';
+    alreadyContactedClass = 'waitlist-item-avatar-contacted';
   }
   let hasUnreadMessagesClass = '';
   if (lastContact > 0 && nonDeliveredChatCount > 0) {
@@ -52,8 +52,8 @@ export default function WaitListItem(props) {
 
   return (
     <div className="waitlist-item-parent">
-      <div className={`waitlist-item ${alreadyContactedClass}`}>
-        <div className="waitlist-item-avatar">
+      <div className="waitlist-item">
+        <div className={`waitlist-item-avatar ${alreadyContactedClass}`}>
           <Avatar size={80} src={photo} />
         </div>
         <div className="waitlist-item-data">
