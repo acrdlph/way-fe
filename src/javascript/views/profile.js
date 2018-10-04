@@ -54,11 +54,13 @@ class Profile extends React.Component {
       tokenContract: initContract(Blockgeeks),
       priceToEther: null,
       metamaskConnected: false,
+      token_amount: 100,
     };
   }
 
   componentDidMount() {
     document.title = 'Profile | CryptoGeeks';
+    this.getEtherPrice();
   }
 
   componentWillReceiveProps(props) {
@@ -84,6 +86,11 @@ class Profile extends React.Component {
       username: props.user.username,
       endorsement: props.user.endorsement,
     });
+    window.web3 && console.log(web3.version.network);
+  }
+
+  componentDidUpdate() {
+    window.web3 && this.getEtherPrice();
   }
 
   onSave(event) {
@@ -101,12 +108,6 @@ class Profile extends React.Component {
       };
     }
     this.props.updateUserData(userId, data);
-  }
-
-  handleInputChange(event) {
-    const { target } = event;
-    const { value, name } = target;
-    this.setState({ [name]: value });
   }
 
   refreshProfile() {
@@ -170,6 +171,12 @@ class Profile extends React.Component {
 
   getEtherPrice(e) {
     this._getBuyPrice(this.state.token_amount ? this.state.token_amount : 0);
+  }
+
+  handleInputChange(event) {
+    const { target } = event;
+    const { value, name } = target;
+    this.setState({ [name]: value });
   }
 
   onSellHandler(e) {
@@ -340,16 +347,23 @@ GEEK
                 <Form className="swapBox">
                   <FormGroup>
                     <Label for="hangoutPlaces">Amount of Token</Label>
-                    <Input type="number" placeholder="with a placeholder" />
+                    <Input
+                      name="token_amount"
+                      type="number"
+                      value={this.state.token_amount}
+                      onChange={this.handleInputChange}
+                    />
                   </FormGroup>
                   <Swap color="#c3cfd9" className="swap" />
                   <FormGroup>
                     <Label for="hangoutPlaces">Price in ETH</Label>
-                    <Input type="number" placeholder="with a placeholder" />
+                    <Input type="number" value={this.state.priceToEther} />
                   </FormGroup>
                 </Form>
                 <div className="buyBtnBox">
-                  <Button className="buyBtn">Buy 100 GEEK on Testnet</Button>
+                  <Button className="buyBtn">
+                    {`Buy ${this.state.token_amount} GEEK on Testnet`}
+                  </Button>
                 </div>
                 <div className="bondingCurve">
                   <LineChart
