@@ -52,6 +52,7 @@ export const loadUserDataGeneral = (userId, endpoint) => (dispatch) => {
         waitingTime: data.waiting_time,
         photo: data.photo,
         name: data.name,
+        email: data.email,
         interests: data.interests,
         username: data.username,
         interactionUrl: data.interaction_url,
