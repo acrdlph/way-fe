@@ -77,39 +77,39 @@ class Login extends React.Component {
   render() {
     return (
       <div className="login">
-      <Form>
-        <FormGroup>
-          <Input
-            id="username"
-            className="username"
-            floatingLabelText="Username or Email"
-            ref={(input) => {this.inputUsername = input}}
-            onKeyPress={this.handleKeyPress.bind(this, 'inputUsername')}
-            onChange={this.changeLoginName}
-            fullWidth
-          />
+        <Form>
+          <FormGroup>
+            <Input
+              className="username"
+              placeholder="Username"
+              floatingLabelText="Username or Email"
+              ref={(input) => {this.inputUsername = input}}
+              onKeyPress={this.handleKeyPress.bind(this, 'inputUsername')}
+              onChange={this.changeLoginName}
+              fullWidth
+            />
 
-          <Input
-            id="password"
-            className="password"
-            floatingLabelText="Password"
-            type="Password"
-            ref={(input) => {this.inputPassword = input}}
-            onKeyPress={this.handleKeyPress.bind(this, 'inputPassword')}
-            onChange={this.changePassword}
-            fullWidth
-          />
-          </FormGroup>
-        </Form>
+            <Input
+              className="password"
+              placeholder="Password"
+              floatingLabelText="Password"
+              type="Password"
+              ref={(input) => {this.inputPassword = input}}
+              onKeyPress={this.handleKeyPress.bind(this, 'inputPassword')}
+              onChange={this.changePassword}
+              fullWidth
+            />
+            </FormGroup>
+          </Form>
 
-        <Button
-          ref={(input) => { this.inputSubmit = input }}
-          onKeyPress={this.handleKeyPress.bind(this, 'inputSubmit')}
-          onClick={this.login}
-          fullWidth >Sign in
-          </Button>
+          <Button
+            ref={(input) => { this.inputSubmit = input }}
+            onKeyPress={this.handleKeyPress.bind(this, 'inputSubmit')}
+            onClick={this.login}
+            fullWidth >Sign in
+            </Button>
 
-        <InfoBox text="Invalid username or password!" visible={this.props.account.hasLoginFailed} />
+            <InfoBox text="Invalid username or password!" visible={this.props.account.hasLoginFailed} />
 
         {/* <div className='login-reset-password'>
           Forgot password? <NavLink to='/reset-password'>Reset it!</NavLink>

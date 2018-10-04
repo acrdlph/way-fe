@@ -9,6 +9,7 @@ import { PARTNER_LOCATIONS } from '../util/constants';
 import { loadPartnerData } from '../stores/partnerStore';
 import Footer from '../components/footer';
 import Login from './login';
+//import Logo from './logoSignup.png';
 import { renderLocationInput, saveAndContinue } from '../util/location';
 import './signup.less';
 
@@ -72,14 +73,14 @@ class Signup extends React.Component {
                 toggleDiv={this.toggleDiv}
               />
             </div>
-            <div className="termsBox">
-              <p>Dont have an account? Get started now</p>
-              <p>I forgot my password</p>
+            <div className="newAccountBox">
+              <p>Dont have an account? <a href="">Get started now</a> <i class="arrow"></i></p>
+              <p><a href="">I forgot my password</a> <i class="arrow"></i></p>
             </div>
           </div>
-          <div>
-            <p>By continuing, you agree to our Terms of Service, Privacy Policy & Cookie use.</p>
-            <p>Powered by Way Network · Legal Notice · Feedback</p>
+          <div className="termsBox">
+            <p>By continuing, you agree to our <a href="">Terms of Service, Privacy Policy</a> & <a href="">Cookie use.</a></p>
+            <p><a href="">Powered by Way Network · Legal Notice · Feedback</a></p>
           </div> 
         </div>
       </div>

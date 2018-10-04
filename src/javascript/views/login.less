@@ -2,8 +2,16 @@
   width: 400px;
   height: 48px;
   border-radius: 4px;
-  border: solid 2px #0095b3;
+  border: solid 2px #c3cfd9;
   margin-bottom: 0.7em;
+}
+
+.login input::placeholder {
+  color: #c3cfd9;
+}
+
+.login input:focus {
+  border-color: #0095b3;
 }
 
 .login Button {
@@ -14,4 +22,13 @@
   border-radius: 24px;
   background-color: #0095b3;
   border: none;
+}
+
+.login Button:hover {
+  background-color: #0095b3;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:focus {
+  -webkit-box-shadow: 0 0 0px 1000px #ffffff inset;
 }
