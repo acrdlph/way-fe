@@ -472,6 +472,13 @@ GEEK
                 />
               </FormGroup>
             </Form>
+            <div className="alertRedBox">
+              <Bookmark color="#6b8299" className="bookmark" />
+              <div>
+                <h5>No ETH address connected</h5>
+                <p>Please make sure your Ethereum client is connected.</p>
+              </div>
+            </div>
             <div className="btnBox">
               <Button name="emailUsername" onClick={this.onSave} className="saveBtn">
                 Save Changes
