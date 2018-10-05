@@ -270,14 +270,7 @@ class Profile extends React.Component {
       <ImageSelection onUpload={this.refreshProfile} />
     ) : null;
     const logoutButton = this.props.isRegisteredUser ? (
-      <div className="profile-button profile-button-logout">
-        <RaisedButton
-          onClick={this.onLogout}
-          buttonStyle={{ border: ' 1px solid darkred' }}
-          backgroundColor="white"
-          label="logout"
-        />
-      </div>
+        <a onClick={this.onLogout} className="logoutButton">Logout</a>
     ) : null;
 
     const xAxis = this.state.totalSupply / multiplier;
@@ -290,7 +283,7 @@ class Profile extends React.Component {
           <NavLink to="/">Profile</NavLink>
           <NavLink to="/">Token</NavLink>
           <NavLink to="/">Account</NavLink>
-          <div>{logoutButton}</div>
+          {logoutButton}
           {/* <NavLink to="/">Security</NavLink>
           <NavLink onClick={this.onLogout}>Logout</NavLink> */}
         </div>
