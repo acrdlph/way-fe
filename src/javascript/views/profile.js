@@ -59,7 +59,7 @@ class Profile extends React.Component {
       tokenContract: initContract(Blockgeeks),
       priceToEther: null,
       priceToEtherSell: null,
-      metamaskConnected: false,
+      metamaskConnected: null,
       token_amount: 100,
       showBuy: true,
     };
@@ -68,6 +68,9 @@ class Profile extends React.Component {
   componentDidMount() {
     document.title = 'Profile | CryptoGeeks';
     this.getEtherPrice();
+    web3.currentProvider.publicConfigStore.on('update', () => this.setState({
+      metamaskConnected: web3.currentProvider.publicConfigStore._state.selectedAddress,
+    }));
   }
 
   componentWillReceiveProps(props) {
@@ -270,7 +273,9 @@ class Profile extends React.Component {
       <ImageSelection onUpload={this.refreshProfile} />
     ) : null;
     const logoutButton = this.props.isRegisteredUser ? (
-        <a onClick={this.onLogout} className="logoutButton">Logout</a>
+      <a onClick={this.onLogout} className="logoutButton">
+        Logout
+      </a>
     ) : null;
 
     const xAxis = this.state.totalSupply / multiplier;
@@ -365,6 +370,7 @@ GEEK
           </div>
           <div className="tokenBox">
             <h4>Token</h4>
+            {console.log(this.state.metamaskConnected)}
             {this.state.metamaskConnected ? (
               <div>
                 <div className="buySelContainer">
@@ -453,7 +459,13 @@ GEEK
                 </div>
               </div>
             ) : (
-              <h5>Please connect to metamask to enjoy blabla</h5>
+              <div className="alertRedBox">
+                <Bookmark color="#6b8299" className="bookmark" />
+                <div>
+                  <h5>No ETH address connected</h5>
+                  <p>Please make sure your Ethereum client is connected.</p>
+                </div>
+              </div>
             )}
           </div>
           <div className="accountBox">
@@ -472,13 +484,6 @@ GEEK
                 />
               </FormGroup>
             </Form>
-            <div className="alertRedBox">
-              <Bookmark color="#6b8299" className="bookmark" />
-              <div>
-                <h5>No ETH address connected</h5>
-                <p>Please make sure your Ethereum client is connected.</p>
-              </div>
-            </div>
             <div className="btnBox">
               <Button name="emailUsername" onClick={this.onSave} className="saveBtn">
                 Save Changes
