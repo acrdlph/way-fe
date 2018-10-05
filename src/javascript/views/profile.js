@@ -364,7 +364,10 @@ GEEK
             </div>
           </div>
           <div className="tokenBox">
-            <h4>Token</h4>
+            <div className="tokenLive">
+              <h4>Token</h4>
+              <p><span class="dot"></span> Live on the <b>Rinkeby Testnet</b></p>
+            </div>
             {this.state.metamaskConnected ? (
               <div>
                 <div className="buySelContainer">
