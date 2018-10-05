@@ -29,7 +29,7 @@ class Login extends React.Component {
 
   componentDidMount() {
     document.title = 'Login | CryptoGeeks';
-    // autofocus on username input 
+    // autofocus on username input
     this.inputUsername.focus();
   }
 
@@ -40,37 +40,36 @@ class Login extends React.Component {
     }
   }
 
-  changeLoginName(event, loginName) {
-    this.setState({ loginName });
+  changeLoginName(event) {
+    this.setState({ loginName: event.target.value });
   }
 
-  changePassword(event, password) {
-    this.setState({ password });
+  changePassword(event) {
+    this.setState({ password: event.target.value });
   }
 
   handleKeyPress = (target, event) => {
     // move cursor to next input on enter
-    if(event.key === 'Enter') {
+    if (event.key === 'Enter') {
       switch (target) {
-        case 'inputUsername' :
+        case 'inputUsername':
           this.inputPassword.focus();
           break;
-        case 'inputPassword' :
+        case 'inputPassword':
           // log user in on enter
           this.login();
           break;
-        default :
+        default:
           this.inputUsername.focus();
       }
-    } 
-  }
+    }
+  };
 
   login() {
     const { loginName, password } = this.state;
+    console.log(loginName, password);
     this.props.login(loginName, password);
-    const {
-      showLocationRequired, showSearchBox, history, toggleDiv,
-    } = this.props;
+    const { showLocationRequired, showSearchBox, history, toggleDiv } = this.props;
     saveAndContinue(showLocationRequired, showSearchBox, history, toggleDiv, calledFrom);
   }
 
@@ -83,7 +82,9 @@ class Login extends React.Component {
               className="username"
               placeholder="Username"
               floatingLabelText="Username or Email"
-              ref={(input) => {this.inputUsername = input}}
+              ref={input => {
+                this.inputUsername = input;
+              }}
               onKeyPress={this.handleKeyPress.bind(this, 'inputUsername')}
               onChange={this.changeLoginName}
               fullWidth
@@ -94,22 +95,28 @@ class Login extends React.Component {
               placeholder="Password"
               floatingLabelText="Password"
               type="Password"
-              ref={(input) => {this.inputPassword = input}}
+              ref={input => {
+                this.inputPassword = input;
+              }}
               onKeyPress={this.handleKeyPress.bind(this, 'inputPassword')}
               onChange={this.changePassword}
               fullWidth
             />
-            </FormGroup>
-          </Form>
+          </FormGroup>
+        </Form>
 
-          <Button
-            ref={(input) => { this.inputSubmit = input }}
-            onKeyPress={this.handleKeyPress.bind(this, 'inputSubmit')}
-            onClick={this.login}
-            fullWidth >Sign in
-            </Button>
+        <Button
+          ref={input => {
+            this.inputSubmit = input;
+          }}
+          onKeyPress={this.handleKeyPress.bind(this, 'inputSubmit')}
+          onClick={this.login}
+          fullWidth
+        >
+          Sign in
+        </Button>
 
-            <InfoBox text="Invalid username or password!" visible={this.props.account.hasLoginFailed} />
+        <InfoBox text="Invalid username or password!" visible={this.props.account.hasLoginFailed} />
 
         {/* <div className='login-reset-password'>
           Forgot password? <NavLink to='/reset-password'>Reset it!</NavLink>
