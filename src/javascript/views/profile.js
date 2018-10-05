@@ -44,7 +44,6 @@ class Profile extends React.Component {
     this.onImageClick = this.onImageClick.bind(this);
     this.onLogout = this.onLogout.bind(this);
     this.getEtherPrice = this.getEtherPrice.bind(this);
-    // this.getEtherPriceSell = this.getEtherPriceSell.bind(this);
     this.onSuggestSelect = this.onSuggestSelect.bind(this);
     this.handleDeletePlace = this.handleDeletePlace.bind(this);
     this.changeTokenView = this.changeTokenView.bind(this);
@@ -96,10 +95,6 @@ class Profile extends React.Component {
       hangoutPlaces: props.user.hangoutPlaces,
     });
     window.web3 && console.log(web3.version.network);
-  }
-
-  componentDidUpdate() {
-    this.getEtherPrice();
   }
 
   onSave(event) {
@@ -213,13 +208,11 @@ class Profile extends React.Component {
     this._getSellReward(this.state.token_amount ? this.state.token_amount : 0);
   }
 
-  // getEtherPriceSell(e) {
-  // }
-
   handleInputChange(event) {
     const { target } = event;
     const { value, name } = target;
     this.setState({ [name]: value });
+    setTimeout(() => this.getEtherPrice(), 10);
   }
 
   changeTokenView(showBuy) {
