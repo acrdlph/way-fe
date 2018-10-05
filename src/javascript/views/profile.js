@@ -2,13 +2,14 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import RaisedButton from 'material-ui/RaisedButton';
-import { Web3Provider } from 'react-web3';
 import { LineChart } from 'react-easy-chart';
 import {
   Form, FormGroup, Input, Label, Button,
 } from 'reactstrap';
 import Bookmark from 'material-ui/svg-icons/action/bookmark';
 import Swap from 'material-ui/svg-icons/action/swap-horiz';
+import Geosuggest from 'react-geosuggest';
+import shortid from 'shortid';
 import Avatar from '../components/avatar';
 import { trackPageView } from '../util/google-analytics';
 import ImageSelection from '../components/image-selection-modal';
@@ -19,7 +20,7 @@ import {
 import './profile.less';
 import Web3Component, { initContract, getWeb3, contractAddress } from '../components/Web3Component';
 import Blockgeeks from '../../abi/Blockgeeks.json';
-import Geosuggest from 'react-geosuggest';
+import HangoutPlace from '../components/hangoutPlace';
 
 const multiplier = 10 ** 18;
 
@@ -41,21 +42,26 @@ class Profile extends React.Component {
     this.onSellHandler = this.onSellHandler.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
     this.onImageClick = this.onImageClick.bind(this);
-    this.refreshProfile = this.refreshProfile.bind(this);
     this.onLogout = this.onLogout.bind(this);
     this.getEtherPrice = this.getEtherPrice.bind(this);
+    this.onSuggestSelect = this.onSuggestSelect.bind(this);
+    this.handleDeletePlace = this.handleDeletePlace.bind(this);
+    this.changeTokenView = this.changeTokenView.bind(this);
     this.state = {
       name: this.props.user.name,
       email: this.props.user.email,
       username: this.props.user.username,
       interests: this.props.user.interests,
+      hangoutPlaces: [],
       balance: 0,
       endorsement: this.props.endorsement,
       address: window.web3 ? window.web3.eth.accounts[0] : null,
       tokenContract: initContract(Blockgeeks),
       priceToEther: null,
+      priceToEtherSell: null,
       metamaskConnected: false,
       token_amount: 100,
+      showBuy: true,
     };
   }
 
@@ -86,12 +92,9 @@ class Profile extends React.Component {
       email: props.user.email,
       username: props.user.username,
       endorsement: props.user.endorsement,
+      hangoutPlaces: props.user.hangoutPlaces,
     });
     window.web3 && console.log(web3.version.network);
-  }
-
-  componentDidUpdate() {
-    window.web3 && this.getEtherPrice();
   }
 
   onSave(event) {
@@ -101,6 +104,7 @@ class Profile extends React.Component {
       data = {
         name: this.state.name,
         interests: this.state.interests,
+        hangoutPlaces: this.state.hangoutPlaces,
       };
     } else if (event.target.name === 'emailUsername') {
       data = {
@@ -111,9 +115,22 @@ class Profile extends React.Component {
     this.props.updateUserData(userId, data);
   }
 
-  refreshProfile() {
-    const userId = sessionStorage.getItem('userId');
-    this.props.loadUserData(userId);
+  onSuggestSelect(suggest) {
+    suggest !== undefined
+      && this.setState({
+        hangoutPlaces: [
+          ...this.state.hangoutPlaces,
+          {
+            place: suggest.label.replace(/\,.*/, ''),
+            id: shortid.generate(),
+          },
+        ],
+      });
+    this._geoSuggest.clear();
+  }
+
+  handleDeletePlace(id) {
+    this.setState({ hangoutPlaces: this.state.hangoutPlaces.filter(place => place.id !== id) });
   }
 
   _getBuyPrice(tokenAmount) {
@@ -128,6 +145,22 @@ class Profile extends React.Component {
         },
         (error, data) => {
           this.setState({ priceToEther: web3.fromWei(data.toNumber(), 'ether') });
+        },
+      );
+  }
+
+  _getSellReward(tokenAmount) {
+    const getSellReward = this.state.tokenContract ? this.state.tokenContract.getSellReward : null;
+    window.web3
+      && getSellReward(
+        tokenAmount * 10 ** 18,
+        {
+          from: window.web3.eth.accounts ? window.web3.eth.accounts[0] : null,
+          gas: 300000,
+          value: 0,
+        },
+        (error, data) => {
+          this.setState({ priceToEtherSell: web3.fromWei(data.toNumber(), 'ether') });
         },
       );
   }
@@ -172,12 +205,18 @@ class Profile extends React.Component {
 
   getEtherPrice(e) {
     this._getBuyPrice(this.state.token_amount ? this.state.token_amount : 0);
+    this._getSellReward(this.state.token_amount ? this.state.token_amount : 0);
   }
 
   handleInputChange(event) {
     const { target } = event;
     const { value, name } = target;
     this.setState({ [name]: value });
+    setTimeout(() => this.getEtherPrice(), 10);
+  }
+
+  changeTokenView(showBuy) {
+    this.setState({ showBuy });
   }
 
   onSellHandler(e) {
@@ -241,24 +280,6 @@ class Profile extends React.Component {
       </div>
     ) : null;
 
-    const balance = (
-      <div>
-        <NavLink to="/challenge">
-          <span className="profile-waytcoin-symbol">
-            <img src="/assets/waytcoin-symbol.png" />
-          </span>
-        </NavLink>
-        {waytcoins}
-      </div>
-    );
-    const backing = (
-      <div>
-        <span className="profile-waytcoin-symbol">
-          <img src="/assets/waytcoin-symbol.png" />
-        </span>
-        {waytcoins}
-      </div>
-    );
     const xAxis = this.state.totalSupply / multiplier;
     const yAxis = 0.0001 * xAxis;
     const curveData = [[{ x: 0, y: 0 }, { x: xAxis, y: yAxis }, { x: 10000, y: 1 }]];
@@ -326,12 +347,22 @@ GEEK
               <FormGroup>
                 <Label for="hangoutPlaces">Hangout places</Label>
                 <Geosuggest
-                  ref={el=>this._geoSuggest=el}
+                  ref={el => (this._geoSuggest = el)}
                   placeholder="eg. coworking place, restaurant, bar"
                   onSuggestSelect={this.onSuggestSelect}
-                  location={new google.maps.LatLng(52.5200, 13.4050)}
-                  radius="10000" />
+                  location={new google.maps.LatLng(52.52, 13.405)}
+                  radius="10000"
+                />
               </FormGroup>
+              {this.state.hangoutPlaces
+                && this.state.hangoutPlaces.map(place => (
+                  <HangoutPlace
+                    key={place.id}
+                    hangoutPlace={place.place}
+                    handleClick={this.handleDeletePlace}
+                    id={place.id}
+                  />
+                ))}
             </Form>
             <div className="btnBox">
               <Button name="nameInterest" onClick={this.onSave} className="saveBtn">
@@ -345,32 +376,61 @@ GEEK
               <div>
                 <div className="buySelContainer">
                   <div className="buySellBox">
-                    <NavLink to="/">Buy</NavLink>
-                    <NavLink to="/">Sell</NavLink>
+                    <span onClick={() => this.changeTokenView(true)}>Buy</span>
+                    <span onClick={() => this.changeTokenView(false)}>Sell</span>
                   </div>
                 </div>
-                <p>Buy GEEK token from this bonding curve to start curating the community.</p>
-                <Form className="swapBox">
-                  <FormGroup>
-                    <Label for="hangoutPlaces">Amount of Token</Label>
-                    <Input
-                      name="token_amount"
-                      type="number"
-                      value={this.state.token_amount}
-                      onChange={this.handleInputChange}
-                    />
-                  </FormGroup>
-                  <Swap color="#c3cfd9" className="swap" />
-                  <FormGroup>
-                    <Label for="hangoutPlaces">Price in ETH</Label>
-                    <Input type="number" value={this.state.priceToEther} />
-                  </FormGroup>
-                </Form>
-                <div className="buyBtnBox">
-                  <Button className="buyBtn">
-                    {`Buy ${this.state.token_amount} GEEK on Testnet`}
-                  </Button>
-                </div>
+                {this.state.showBuy ? (
+                  <div>
+                    <p>Buy GEEK token from this bonding curve to start curating the community.</p>
+                    <Form className="swapBox">
+                      <FormGroup>
+                        <Label for="hangoutPlaces">Amount of Token</Label>
+                        <Input
+                          name="token_amount"
+                          type="number"
+                          value={this.state.token_amount}
+                          onChange={this.handleInputChange}
+                        />
+                      </FormGroup>
+                      <Swap color="#c3cfd9" className="swap" />
+                      <FormGroup>
+                        <Label for="hangoutPlaces">Price in ETH</Label>
+                        <Input type="number" value={this.state.priceToEther} />
+                      </FormGroup>
+                    </Form>
+                    <div className="buyBtnBox">
+                      <Button className="buyBtn">
+                        {`Buy ${this.state.token_amount} GEEK on Testnet`}
+                      </Button>
+                    </div>
+                  </div>
+                ) : (
+                  <div>
+                    <p>Sell your GEEK token and get money yo.</p>
+                    <Form className="swapBox">
+                      <FormGroup>
+                        <Label for="hangoutPlaces">Amount of Token</Label>
+                        <Input
+                          name="token_amount"
+                          type="number"
+                          value={this.state.token_amount}
+                          onChange={this.handleInputChange}
+                        />
+                      </FormGroup>
+                      <Swap color="#c3cfd9" className="swap" />
+                      <FormGroup>
+                        <Label for="hangoutPlaces">Price in ETH</Label>
+                        <Input type="number" value={this.state.priceToEtherSell} />
+                      </FormGroup>
+                    </Form>
+                    <div className="buyBtnBox">
+                      <Button className="buyBtn">
+                        {`Sell ${this.state.token_amount} GEEK on Testnet`}
+                      </Button>
+                    </div>
+                  </div>
+                )}
                 <div className="bondingCurve">
                   <LineChart
                     axes

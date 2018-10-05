@@ -54,6 +54,7 @@ export const loadUserDataGeneral = (userId, endpoint) => (dispatch) => {
         name: data.name,
         email: data.email,
         interests: data.interests,
+        hangoutPlaces: data.hangoutPlaces,
         username: data.username,
         interactionUrl: data.interaction_url,
         waytcoins: data.waytcoins,
