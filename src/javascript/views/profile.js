@@ -97,7 +97,6 @@ class Profile extends React.Component {
       endorsement: props.user.endorsement,
       hangoutPlaces: props.user.hangoutPlaces,
     });
-    window.web3 && console.log(web3.version.network);
   }
 
   onSave(event) {
@@ -369,8 +368,25 @@ GEEK
             </div>
           </div>
           <div className="tokenBox">
-            <h4>Token</h4>
-            {console.log(this.state.metamaskConnected)}
+            <div className="tokenLive">
+              <h4>Token</h4>
+              {this.state.metamaskConnected
+                && (web3.version.network === '4' ? (
+                  <p>
+                    <span className="greendot" />
+                    {' '}
+Live on the
+                    <b> Rinkeby Testnet</b>
+                  </p>
+                ) : (
+                  <p>
+                    <span className="reddot" />
+                    {' '}
+Please connect to the
+                    <b> Rinkeby Testnet</b>
+                  </p>
+                ))}
+            </div>
             {this.state.metamaskConnected ? (
               <div>
                 <div className="buySelContainer">
