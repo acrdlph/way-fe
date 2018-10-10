@@ -65,6 +65,7 @@ class Onboarding extends React.Component {
     this.showSearchBox = this.showSearchBox.bind(this);
     this.showLocationRequired = this.showLocationRequired.bind(this);
     this.toggleDiv = this.toggleDiv.bind(this);
+    this.goToLogin = this.goToLogin.bind(this);
   }
 
   componentDidMount() {
@@ -92,6 +93,10 @@ class Onboarding extends React.Component {
 
   showLocationRequired() {
     this.setState({ showLocationRequiredHint: true });
+  }
+
+  goToLogin() {
+    this.props.history.push('/signup');
   }
 
   toggleDiv() {
@@ -187,7 +192,7 @@ class Onboarding extends React.Component {
       <div className="registrationContainer">
         <div className="registrationBox">
           <div className="arrowBox">
-            <Arrow />
+            <Arrow onClick={this.goToLogin} />
           </div>
           <div className="textBox">
             <h3>Get started</h3>
@@ -243,7 +248,7 @@ class Onboarding extends React.Component {
               disabled={isRegistrationButtonDisabled}
             >Get Started</Button>
             <div className="signinBox">
-              <p>Already have an account? <a onClick={this.goToSignup}>Sign in to CryptoGeeks <i class="arrow" /></a></p>
+              <p>Already have an account? <a onClick={this.goToLogin}>Sign in to CryptoGeeks <i class="arrow" /></a></p>
             </div>
           </div>
         </div>
