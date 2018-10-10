@@ -2,6 +2,8 @@ import React from 'react';
 import {connect} from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import TextField from 'material-ui/TextField';
+import { Form, FormGroup, Input, Button } from 'reactstrap';
+import Arrow from 'material-ui/svg-icons/hardware/keyboard-backspace';
 import RaisedButton from 'material-ui/RaisedButton';
 import {trackPageView} from '../util/google-analytics';
 import TermsAndPolicy from '../components/terms-and-policy';
@@ -21,10 +23,15 @@ class ResetPassword extends React.Component {
     };
     this.changeLogin = this.changeLogin.bind(this);
     this.resetPassword = this.resetPassword.bind(this);
+    this.goToLogin = this.goToLogin.bind(this);
   }
 
   changeLogin(event, login) {
     this.setState({login});
+  }
+
+  goToLogin() {
+    this.props.history.push('/signup');
   }
 
   resetPassword() {
@@ -35,28 +42,31 @@ class ResetPassword extends React.Component {
 
   render() {
     return (
-      <div className='resetpw container'>
-
-        <div className='resetpw-header'>
-          Reset password
+      <div className="resetContainer">
+        <div className="resetBox">
+          <div className="arrowResetBox">
+            <Arrow onClick={this.goToLogin} />
+          </div>
+          <div className="textResetBox">
+            <h3>Reset your password</h3>
+            <p>Type in below the email address associated with your CryptoGeeks account to reset your forgotten password.</p>
+          </div>
+          <Form>
+            <FormGroup>
+              <Input
+                placeholder="Email"
+                onChange={this.changeLogin}
+              />
+             </FormGroup>
+          </Form>
+          <Button
+            onClick={this.resetPassword}
+          >Continue</Button>
         </div>
-
-        <div className='resetpw-info'>
-          Enter your Username or Email address. We will send you a link to reset your password.
+        <div className="termsBox">
+          <p>By continuing, you agree to our <a href="">Terms of Service, Privacy Policy</a> & <a href="">Cookie use.</a></p>
+          <p><a href="">Powered by Way Network · Legal Notice · Feedback</a></p>
         </div>
-
-        <TextField
-          floatingLabelText="Username or Email"
-          onChange={this.changeLogin}
-          fullWidth={true}
-        />
-
-        <RaisedButton
-          label="Reset Password"
-          backgroundColor='#68a0ce'
-          onClick={this.resetPassword}
-          fullWidth={true}
-        />
       </div>
     );
   }
