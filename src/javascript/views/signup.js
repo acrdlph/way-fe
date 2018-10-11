@@ -9,7 +9,6 @@ import { PARTNER_LOCATIONS } from '../util/constants';
 import { loadPartnerData } from '../stores/partnerStore';
 import Footer from '../components/footer';
 import Login from './login';
-//import Logo from './logoSignup.png';
 import { renderLocationInput, saveAndContinue } from '../util/location';
 import './signup.less';
 
@@ -23,6 +22,8 @@ class Signup extends React.Component {
     this.showSearchBox = this.showSearchBox.bind(this);
     this.showLocationRequired = this.showLocationRequired.bind(this);
     this.toggleDiv = this.toggleDiv.bind(this);
+    this.goToSignup = this.goToSignup.bind(this);
+    this.resetPassword = this.resetPassword.bind(this);
     const userId = sessionStorage.getItem('userId');
     const locationId = sessionStorage.getItem('locationId');
     if (userId && !props.user) {
@@ -46,6 +47,14 @@ class Signup extends React.Component {
     this.setState({ showLocationRequiredHint: true });
   }
 
+  goToSignup() {
+    this.props.history.push('/register');
+  }
+
+  resetPassword() {
+    this.props.history.push('/reset-password');
+  }
+
   toggleDiv() {
     const { show } = this.state;
     this.setState({ show: !show });
@@ -55,6 +64,9 @@ class Signup extends React.Component {
     return (
       <div className="signupContainer">
         <div>
+          <div className="logoBox">
+            <img src="assets/logoSignup.png" />
+          </div>
           <div className="signupBox">
             <div className="textBox">
               <h3>Welcome to CryptoGeeks</h3>
@@ -74,8 +86,8 @@ class Signup extends React.Component {
               />
             </div>
             <div className="newAccountBox">
-              <p>Dont have an account? <a href="">Get started now</a> <i class="arrow"></i></p>
-              <p><a href="">I forgot my password</a> <i class="arrow"></i></p>
+              <p>Dont have an account? <a onClick={this.goToSignup}>Get started now <i class="arrow" /></a></p>
+              <p><a onClick={this.resetPassword}>I forgot my password <i class="arrow" /></a></p>
             </div>
           </div>
           <div className="termsBox">
