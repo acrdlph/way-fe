@@ -7,12 +7,12 @@ import { trackPageView } from '../util/google-analytics';
 import WaitListItem from '../components/waitlist-item';
 import { loadWaitlist } from '../stores/waitlistStore';
 import { notifyNewMessage } from '../stores/chatStore';
-import { loadUserData, isOnboarded } from '../stores/userStore';
+import { loadUserData, isOnboarded, updateUserData } from '../stores/userStore';
 import { initWebSocketStore } from '../stores/webSocketStore';
 import { loadChatPartnerData } from '../stores/chatPartnerStore';
 import { requestPermissionForNotifications } from '../util/notification';
 import './waitlist.less';
-import Web3Component, { initContract, getWeb3 } from '../components/Web3Component';
+import { initContract } from '../components/Web3Component';
 import Blockgeeks from '../../abi/Blockgeeks.json';
 import { showIncompleteModal } from '../stores/modalStore';
 import GenericModal from '../components/Modal';
@@ -91,6 +91,8 @@ class WaitList extends React.Component {
     const roundedValue = Math.floor(value);
     sessionStorage.setItem('distance', roundedValue);
     const userId = sessionStorage.getItem('userId');
+    const data = { distance: roundedValue };
+    setTimeout(this.props.updateUserData(userId, data), 2000);
     this.props.loadWaitlist(userId, this.props.waitlist.showQuestions);
     this.setState({
       distance: roundedValue,
@@ -125,7 +127,6 @@ class WaitList extends React.Component {
           interests={entry.interests}
           photo={entry.photo}
           name={entry.name}
-          timeLeft={entry.timeLeft}
           hasChat={entry.hasChat}
           nonDeliveredChatCount={entry.nonDeliveredChatCount}
           lastContact={entry.lastContact}
@@ -196,6 +197,7 @@ const mapDispatchToProps = dispatch => ({
   loadWaitlist: userId => dispatch(loadWaitlist(userId)),
   showModal: () => dispatch(showIncompleteModal(true)),
   loadUserData: userId => dispatch(loadUserData(userId)),
+  updateUserData: (userId, data) => dispatch(updateUserData(userId, data)),
   loadChatParnerData: chatPartnerId => dispatch(loadChatPartnerData(chatPartnerId)),
 });
 

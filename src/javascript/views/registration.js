@@ -11,8 +11,7 @@ import CircularProgress from '../components/circularProgress';
 import { renderLocationInput, saveAndContinue } from '../util/location';
 import './registration.less';
 
-
-const validateUsername = (username) => {
+const validateUsername = username => {
   if (username && username.trim().length > 2) {
     // TODO: implement real validation
     return true;
@@ -21,7 +20,7 @@ const validateUsername = (username) => {
 };
 const calledFrom = 'signup';
 
-const validateEmailAddress = (email) => {
+const validateEmailAddress = email => {
   if (email && email.trim().length > 4) {
     // src: https://stackoverflow.com/questions/46155/how-to-validate-email-address-in-javascript
     const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -30,7 +29,7 @@ const validateEmailAddress = (email) => {
   return false;
 };
 
-const validatePassword = (password) => {
+const validatePassword = password => {
   if (password && password.trim().length > 3) {
     // TODO: implement real validation
     return true;
@@ -39,7 +38,6 @@ const validatePassword = (password) => {
 };
 
 class Onboarding extends React.Component {
-
   constructor(props) {
     super(props);
     const path = this.props.location.pathname;
@@ -66,7 +64,7 @@ class Onboarding extends React.Component {
   }
 
   componentDidMount() {
-    // autofocus on username input 
+    // autofocus on username input
     this.inputUsername.focus();
   }
 
@@ -80,7 +78,13 @@ class Onboarding extends React.Component {
       if (interactionCode) {
         this.props.confirmInteraction(interactionCode, props.account.userId);
       }
-      saveAndContinue(this.showLocationRequired, this.showSearchBox, this.props.history, this.toggleDiv, calledFrom);
+      saveAndContinue(
+        this.showLocationRequired,
+        this.showSearchBox,
+        this.props.history,
+        this.toggleDiv,
+        calledFrom,
+      );
     }
   }
 
@@ -98,27 +102,27 @@ class Onboarding extends React.Component {
   }
 
   handleKeyPress = (target, event) => {
-    // move cursor to next input on enter 
-    if(event.key === 'Enter') {
+    // move cursor to next input on enter
+    if (event.key === 'Enter') {
       switch (target) {
-        case 'inputUsername' :
+        case 'inputUsername':
           this.inputEmail.focus();
           break;
-        case 'inputEmail' :
+        case 'inputEmail':
           this.inputPassword.focus();
           break;
-        case 'inputPassword' :
+        case 'inputPassword':
           this.inputPasswordConfirm.focus();
           break;
-        case 'inputPasswordConfirm' :
+        case 'inputPasswordConfirm':
           // register user on enter
           this.register();
           break;
-        default :
+        default:
           this.inputUsername.focus();
       }
     }
-  }
+  };
 
   changeEmail(event, email) {
     this.setState({ email });
@@ -138,29 +142,24 @@ class Onboarding extends React.Component {
   }
 
   register() {
-    const {
-      username,
-      email,
-      password,
-      passwordConfirm
-    } = this.state;
+    const { username, email, password, passwordConfirm } = this.state;
     const { isAvailable } = this.props.account;
 
     if (!validateUsername(username)) {
       this.setState({
-        errorText: 'Username too short!'
+        errorText: 'Username too short!',
       });
     } else if (!validateEmailAddress(email)) {
       this.setState({
-        errorText: 'Please enter a valid email address!'
+        errorText: 'Please enter a valid email address!',
       });
-    } else if (!validatePassword(password) || (password !== passwordConfirm)) {
+    } else if (!validatePassword(password) || password !== passwordConfirm) {
       this.setState({
-        errorText: 'Password has to be at least 4 characters long!'
+        errorText: 'Password has to be at least 4 characters long!',
       });
     } else {
       this.setState({
-        errorText: null
+        errorText: null,
       });
       if (isAvailable) {
         const data = {
@@ -169,7 +168,15 @@ class Onboarding extends React.Component {
           email,
           password,
         };
-        this.props.account.wasRegistrationSuccessful ? saveAndContinue(this.showLocationRequired, this.showSearchBox, this.props.history, this.toggleDiv, calledFrom) : this.props.registerAccount(data);
+        this.props.account.wasRegistrationSuccessful
+          ? saveAndContinue(
+              this.showLocationRequired,
+              this.showSearchBox,
+              this.props.history,
+              this.toggleDiv,
+              calledFrom,
+            )
+          : this.props.registerAccount(data);
       }
     }
   }
@@ -182,35 +189,44 @@ class Onboarding extends React.Component {
     const isRegistrationButtonDisabled = isRegisteringAccount;
 
     return (
-      <div className='registration container'>
-
-        <div className='registration-header'>
-          Sign up
-        </div>
+      <div className="registration container">
+        <div className="registration-header">Sign up</div>
 
         <TextField
           floatingLabelText="Username"
+          className="independent"
           defaultValue={name}
-          ref={(input) => {this.inputUsername = input}}
+          ref={input => {
+            this.inputUsername = input;
+          }}
           onKeyUp={this.handleKeyPress.bind(this, 'inputUsername')}
           onChange={this.changeUsername}
           fullWidth={true}
         />
 
-        <InfoBox visible={isUsernameTaken} text='The selected username is already taken!' />
+        <InfoBox visible={isUsernameTaken} text="The selected username is already taken!" />
 
         <TextField
           floatingLabelText="Email"
-          ref={(input) => {this.inputEmail = input}}
+          className="independent"
+          ref={input => {
+            this.inputEmail = input;
+          }}
           onKeyUp={this.handleKeyPress.bind(this, 'inputEmail')}
           onChange={this.changeEmail}
           fullWidth={true}
         />
-        <InfoBox text={"This email is already in use"} visible={this.props.account.hasRegisteringFailed}/>
+        <InfoBox
+          text={'This email is already in use'}
+          visible={this.props.account.hasRegisteringFailed}
+        />
         <TextField
           floatingLabelText="Password"
+          className="independent"
           type="Password"
-          ref={(input) => {this.inputPassword = input}}
+          ref={input => {
+            this.inputPassword = input;
+          }}
           onKeyUp={this.handleKeyPress.bind(this, 'inputPassword')}
           onChange={this.changePassword}
           fullWidth={true}
@@ -219,17 +235,20 @@ class Onboarding extends React.Component {
         <TextField
           floatingLabelText="Password confirmation"
           type="Password"
-          ref={(input) => {this.inputPasswordConfirm = input}}
+          className="independent"
+          ref={input => {
+            this.inputPasswordConfirm = input;
+          }}
           onKeyUp={this.handleKeyPress.bind(this, 'inputPasswordConfirm')}
           onChange={this.changePasswordConfirm}
           fullWidth={true}
         />
         {renderLocationInput(this.state.isSearchBoxVisible, this.state.showLocationRequiredHint)}
-        { this.state.show && CircularProgress() }
+        {this.state.show && CircularProgress()}
 
         <RaisedButton
           label="OK"
-          backgroundColor='#43d676'
+          backgroundColor="#43d676"
           onClick={this.register}
           fullWidth={true}
           disabled={isRegistrationButtonDisabled}
@@ -242,20 +261,24 @@ class Onboarding extends React.Component {
   }
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
   account: state.account,
-  name: state.user.data.name
+  name: state.user.data.name,
 });
 
 const mapDispatchToProps = dispatch => ({
-  checkUsernameAvailability: (username) => dispatch(checkUsernameAvailability(username)),
-  registerAccount: (data) => dispatch(registerAccount(data)),
-  confirmInteraction: (confirmationCode, confirmorId) => dispatch(
-    interactionConfirmationStore.actions.send({
-      confirmationCode,
-      confirmorId
-    })
-  )
+  checkUsernameAvailability: username => dispatch(checkUsernameAvailability(username)),
+  registerAccount: data => dispatch(registerAccount(data)),
+  confirmInteraction: (confirmationCode, confirmorId) =>
+    dispatch(
+      interactionConfirmationStore.actions.send({
+        confirmationCode,
+        confirmorId,
+      }),
+    ),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Onboarding);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(Onboarding);

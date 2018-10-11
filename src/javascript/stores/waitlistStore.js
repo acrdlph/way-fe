@@ -30,7 +30,6 @@ const mapWaitListData = (data) => {
       name: entry.name || entry.default_name || '',
       interests: entry.interests || '',
       photo: entry.photo,
-      timeLeft: entry.time_left,
       address: entry.address,
       balance: entry.address,
       endorsement: entry.endorsement,

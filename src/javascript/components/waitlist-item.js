@@ -1,6 +1,4 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
-import { Row, Col } from 'react-bootstrap';
 import CommunicationChatBubble from 'material-ui/svg-icons/communication/chat-bubble';
 import Avatar from 'material-ui/Avatar';
 import Quote from 'material-ui/svg-icons/editor/format-quote';
@@ -89,28 +87,29 @@ export default function WaitListItem(props) {
                 }
               }}
             >
-              <Hand className="icons"/>{' Endorse '}
+              <Hand className="icons" />
+              {' Endorse '}
             </button>
           </li>
           <li className="endorseBox">
             <button type="button" onClick={props.onClick} className="waitlist-item-button">
-              <Chat className="chatFriend"/>
+              <Chat className="chatFriend" />
             </button>
           </li>
           <li className="endorseBox">
             <button type="button" onClick={props.onClick} className="waitlist-item-button">
-              <Friend className="chatFriend"/>
+              <Friend className="chatFriend" />
             </button>
           </li>
         </ul>
       </div>
       <div className="text-location">
         <div className="quoteText">
-          <Quote className="icons"/>
+          <Quote className="icons" />
           <p className="waitlist-item-data-interests">{interests}</p>
         </div>
         <div className="locationBox">
-          <Location className="icons"/>
+          <Location className="icons" />
           <p className="locationText">Factory Berlin</p>
           <p className="locationText">Cafe Goldshop</p>
           <p className="locationText">Prenzlauer Berg</p>

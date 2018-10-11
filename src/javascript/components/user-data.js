@@ -1,30 +1,29 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import fetch from 'isomorphic-fetch';
 import { Row, Col } from 'react-bootstrap';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
-import Avatar from './avatar';
 import { NavLink } from 'react-router-dom';
+import Avatar from './avatar';
 import InfoBox from './infobox';
-import WaitListItem from '../components/waitlist-item';
+import WaitListItem from './waitlist-item';
 import { trackEvent, events } from '../util/google-analytics';
-import { loadUserData, updateUserData, editUserData, isOnboarded } from '../stores/userStore';
+import {
+  loadUserData, updateUserData, editUserData, isOnboarded,
+} from '../stores/userStore';
 import { isLoggedIn } from '../stores/accountStore';
 import { showModal } from '../stores/profileImageStore';
 import ImageSelection from './image-selection-modal';
 import './user-data.less';
 import { Web3Provider } from 'react-web3';
-import Web3Component, { initContract } from '../components/Web3Component';
-
+import Web3Component, { initContract } from './Web3Component';
 
 class UserData extends React.Component {
-
   constructor(props) {
     super(props);
     this.state = {
       name: '',
-      interests: ''
+      interests: '',
     };
     this.changeInterests = this.changeInterests.bind(this);
     this.changeName = this.changeName.bind(this);
@@ -54,7 +53,7 @@ class UserData extends React.Component {
     const userId = sessionStorage.getItem('userId');
     const data = {
       name: this.state.name,
-      interests: this.state.interests
+      interests: this.state.interests,
     };
     this.props.updateUserData(userId, data);
     trackEvent(events.USER_CHANGED_PROFILE_DATA);
@@ -68,80 +67,85 @@ class UserData extends React.Component {
   render() {
     const { user, isUserOnboarded, address } = this.props;
     if (user.loading) {
-      return (<div>loading...</div>);
+      return <div>loading...</div>;
     }
-    const imageSelectionModal = this.props.showModal ?
-      <ImageSelection onUpload={this.refreshProfile} /> : null;
+    const imageSelectionModal = this.props.showModal ? (
+      <ImageSelection onUpload={this.refreshProfile} />
+    ) : null;
     const name = _.get(user, 'data.name', '');
     const interests = _.get(user, 'data.interests', '');
     const endorsement = _.get(user, 'data.endorsement', '');
     const photo = _.get(user, 'data.photo', 'assets/avatar-placeholder.png');
     const registerText = (
-      <span>Register <NavLink to='/register'>here</NavLink> to retain your GEEK status</span>
+      <span>
+        Register
+        {' '}
+        <NavLink to="/register">here</NavLink>
+        {' '}
+to retain your GEEK status
+      </span>
     );
 
     return !isUserOnboarded || this.props.user.isEditable ? (
-
-      <div className='userdata'>
-
+      <div className="userdata">
         <Row>
-          <Col className='col-xs-12 col-lg-12'>
-            <Avatar
-              onClick={this.selectImage}
-              size={100}
-              src={photo}
-              displayPlus={true}
-            />
+          <Col className="col-xs-12 col-lg-12">
+            <Avatar onClick={this.selectImage} size={100} src={photo} displayPlus />
             {imageSelectionModal}
           </Col>
-          <Col className='col-xs-12 col-lg-12 name-inputfield'>
-            <TextField
-              defaultValue={name}
-              hintText="Name"
-              onChange={this.changeName}
-              fullWidth={true}
-            />
+          <Col className="col-xs-12 col-lg-12 name-inputfield">
+            <TextField defaultValue={name} hintText="Name" onChange={this.changeName} fullWidth />
           </Col>
-          <Col className='col-xs-12 col-lg-12 description-inputfield'>
+          <Col className="col-xs-12 col-lg-12 description-inputfield">
             <TextField
               defaultValue={interests}
               hintText="What are your incentives?"
               onChange={this.changeInterests}
-              fullWidth={true}
+              fullWidth
             />
           </Col>
-          <Col className='col-xs-12 col-lg-12 userdata-confirm-button'>
+          <Col className="col-xs-12 col-lg-12 userdata-confirm-button">
             <RaisedButton
               label="OK"
-              backgroundColor='#43d676'
+              backgroundColor="#43d676"
               onClick={this.saveAndContinue}
               onClick={this.saveProfile}
-              fullWidth={true}
+              fullWidth
             />
           </Col>
         </Row>
       </div>
     ) : (
-        <div>
-          <InfoBox visible={!isLoggedIn()} text={registerText} />
-          <WaitListItem endorsement={endorsement} photo={photo} interests={interests} name={name} address={address} onClick={this.setEditable} isActionVisible={false} />
-        </div>
-      );
+      <div>
+        <InfoBox visible={!isLoggedIn()} text={registerText} />
+        <WaitListItem
+          endorsement={endorsement}
+          photo={photo}
+          interests={interests}
+          name={name}
+          address={address}
+          onClick={this.setEditable}
+          isActionVisible={false}
+        />
+      </div>
+    );
   }
 }
 
-
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
   user: state.user,
   isUserOnboarded: isOnboarded(state.user),
-  showModal: state.profileImage.showModal
+  showModal: state.profileImage.showModal,
 });
 
 const mapDispatchToProps = dispatch => ({
   editUserData: () => dispatch(editUserData()),
-  loadUserData: (userId) => dispatch(loadUserData(userId)),
+  loadUserData: userId => dispatch(loadUserData(userId)),
   updateUserData: (userId, data) => dispatch(updateUserData(userId, data)),
-  openModal: () => dispatch(showModal(true))
+  openModal: () => dispatch(showModal(true)),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(UserData);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(UserData);
