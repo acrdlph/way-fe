@@ -93,7 +93,7 @@ class WaitList extends React.Component {
     const userId = sessionStorage.getItem('userId');
     const data = { distance: roundedValue };
     setTimeout(this.props.updateUserData(userId, data), 2000);
-    this.props.loadWaitlist(userId, this.props.waitlist.showQuestions);
+    this.props.loadWaitlist(userId);
     this.setState({
       distance: roundedValue,
     });

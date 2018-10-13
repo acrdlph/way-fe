@@ -51,6 +51,7 @@ const fetcher = (dispatch, userId) => {
   dispatch({ type: types.LOADING });
   const distance = sessionStorage.getItem('distance') || 5000;
   const endpoint = `api/users/${userId}?distance=${distance}`;
+  console.log(endpoint, 'what it is');
   fetch(endpoint, {
     headers: getAuthHeaders(),
   })
