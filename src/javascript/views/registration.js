@@ -5,6 +5,8 @@ import RaisedButton from 'material-ui/RaisedButton';
 import { checkUsernameAvailability, registerAccount } from '../stores/accountStore';
 import interactionConfirmationStore from '../stores/interactionConfirmationStore';
 import { trackPageView, trackEvent, events } from '../util/google-analytics';
+import { Form, FormGroup, Input, Button } from 'reactstrap';
+import Arrow from 'material-ui/svg-icons/hardware/keyboard-backspace';
 import TermsAndPolicy from '../components/terms-and-policy';
 import InfoBox from '../components/infobox';
 import CircularProgress from '../components/circularProgress';
@@ -61,6 +63,7 @@ class Onboarding extends React.Component {
     this.showSearchBox = this.showSearchBox.bind(this);
     this.showLocationRequired = this.showLocationRequired.bind(this);
     this.toggleDiv = this.toggleDiv.bind(this);
+    this.goToLogin = this.goToLogin.bind(this);
   }
 
   componentDidMount() {
@@ -94,6 +97,10 @@ class Onboarding extends React.Component {
 
   showLocationRequired() {
     this.setState({ showLocationRequiredHint: true });
+  }
+
+  goToLogin() {
+    this.props.history.push('/signup');
   }
 
   toggleDiv() {
@@ -189,73 +196,102 @@ class Onboarding extends React.Component {
     const isRegistrationButtonDisabled = isRegisteringAccount;
 
     return (
-      <div className="registration container">
-        <div className="registration-header">Sign up</div>
+      <div className="registrationContainer">
+        <div className="registrationBox">
+          <div className="arrowBox">
+            <Arrow onClick={this.goToLogin} />
+          </div>
+          <div className="textBox">
+            <h3>Get started</h3>
+            <p>
+              You are one step away from the community of trusted blockchain experts & entrepreneurs
+              from Berlin.
+            </p>
+          </div>
+          <div className="recoverBox">
+            <Form>
+              <FormGroup>
+                <Input
+                  placeholder="Username"
+                  defaultValue={name}
+                  ref={input => {
+                    this.inputUsername = input;
+                  }}
+                  onKeyUp={this.handleKeyPress.bind(this, 'inputUsername')}
+                  onChange={this.changeUsername}
+                  fullWidth={true}
+                />
+                <InfoBox visible={isUsernameTaken} text="The selected username is already taken!" />
 
-        <TextField
-          floatingLabelText="Username"
-          className="independent"
-          defaultValue={name}
-          ref={input => {
-            this.inputUsername = input;
-          }}
-          onKeyUp={this.handleKeyPress.bind(this, 'inputUsername')}
-          onChange={this.changeUsername}
-          fullWidth={true}
-        />
+                <Input
+                  placeholder="Email"
+                  ref={input => {
+                    this.inputEmail = input;
+                  }}
+                  onKeyUp={this.handleKeyPress.bind(this, 'inputEmail')}
+                  onChange={this.changeEmail}
+                  fullWidth={true}
+                />
+                <InfoBox
+                  text={'This email is already in use'}
+                  visible={this.props.account.hasRegisteringFailed}
+                />
 
-        <InfoBox visible={isUsernameTaken} text="The selected username is already taken!" />
+                <Input
+                  placeholder="Password"
+                  type="Password"
+                  ref={input => {
+                    this.inputPassword = input;
+                  }}
+                  onKeyUp={this.handleKeyPress.bind(this, 'inputPassword')}
+                  onChange={this.changePassword}
+                  fullWidth={true}
+                />
 
-        <TextField
-          floatingLabelText="Email"
-          className="independent"
-          ref={input => {
-            this.inputEmail = input;
-          }}
-          onKeyUp={this.handleKeyPress.bind(this, 'inputEmail')}
-          onChange={this.changeEmail}
-          fullWidth={true}
-        />
-        <InfoBox
-          text={'This email is already in use'}
-          visible={this.props.account.hasRegisteringFailed}
-        />
-        <TextField
-          floatingLabelText="Password"
-          className="independent"
-          type="Password"
-          ref={input => {
-            this.inputPassword = input;
-          }}
-          onKeyUp={this.handleKeyPress.bind(this, 'inputPassword')}
-          onChange={this.changePassword}
-          fullWidth={true}
-        />
-
-        <TextField
-          floatingLabelText="Password confirmation"
-          type="Password"
-          className="independent"
-          ref={input => {
-            this.inputPasswordConfirm = input;
-          }}
-          onKeyUp={this.handleKeyPress.bind(this, 'inputPasswordConfirm')}
-          onChange={this.changePasswordConfirm}
-          fullWidth={true}
-        />
-        {renderLocationInput(this.state.isSearchBoxVisible, this.state.showLocationRequiredHint)}
-        {this.state.show && CircularProgress()}
-
-        <RaisedButton
-          label="OK"
-          backgroundColor="#43d676"
-          onClick={this.register}
-          fullWidth={true}
-          disabled={isRegistrationButtonDisabled}
-        />
-
-        <InfoBox text={errorText} visible={!!errorText} />
-        <TermsAndPolicy />
+                <Input
+                  placeholder="Password confirmation"
+                  type="Password"
+                  ref={input => {
+                    this.inputPasswordConfirm = input;
+                  }}
+                  onKeyUp={this.handleKeyPress.bind(this, 'inputPasswordConfirm')}
+                  onChange={this.changePasswordConfirm}
+                  fullWidth={true}
+                />
+                {renderLocationInput(
+                  this.state.isSearchBoxVisible,
+                  this.state.showLocationRequiredHint,
+                )}
+                {this.state.show && CircularProgress()}
+              </FormGroup>
+            </Form>
+            <Button
+              backgroundColor="#43d676"
+              onClick={this.register}
+              fullWidth={true}
+              disabled={isRegistrationButtonDisabled}
+            >
+              Get Started
+            </Button>
+            <div className="signinBox">
+              <p>
+                Already have an account?{' '}
+                <a onClick={this.goToLogin}>
+                  Sign in to CryptoGeeks <i class="arrow" />
+                </a>
+              </p>
+            </div>
+          </div>
+        </div>
+        <div className="termsBox">
+          <p>
+            By continuing, you agree to our <a href="">Terms of Service, Privacy Policy</a> &{' '}
+            <a href="">Cookie use.</a>
+          </p>
+          <p>
+            <a href="">Powered by Way Network · Legal Notice · Feedback</a>
+          </p>
+        </div>
       </div>
     );
   }
