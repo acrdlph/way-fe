@@ -59,6 +59,7 @@ export const loadUserDataGeneral = (userId, endpoint) => (dispatch) => {
         interactionUrl: data.interaction_url,
         waytcoins: data.waytcoins,
         endorsement: data.endorsement,
+        distance: data.distance,
       };
       dispatch({
         type: types.LOADED,

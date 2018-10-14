@@ -10,7 +10,7 @@ const types = {
   ACCOUNT_LOGIN_PENDING: 'ACCOUNT_LOGIN_PENDING',
   ACCOUNT_LOGIN_PASSED: 'ACCOUNT_LOGIN_PASSED',
   ACCOUNT_LOGIN_FAILED: 'ACCOUNT_LOGIN_FAILED',
-  ACCOUNT_LOGOUT: 'ACCOUNT_LOGOUT'
+  ACCOUNT_LOGOUT: 'ACCOUNT_LOGOUT',
 };
 
 export const isLoggedIn = () => {
@@ -23,7 +23,7 @@ export const isLoggedIn = () => {
   return loggedIn;
 };
 
-export const registerAccount = (data) => (dispatch) => {
+export const registerAccount = data => (dispatch) => {
   dispatch({
     type: types.ACCOUNT_REGISTER_PENDING,
   });
@@ -33,57 +33,57 @@ export const registerAccount = (data) => (dispatch) => {
     method: 'post',
     body,
     headers: new Headers({
-      'content-type': 'application/json'
+      'content-type': 'application/json',
+    }),
+  })
+    .then((res) => {
+      if (res.status < 200 || res.status > 299) {
+        throw new Error('Something went wrong!');
+      }
+      return res.json();
     })
-  })
-  .then((res) => {
-    if (res.status < 200 || res.status > 299) {
-      throw new Error("Something went wrong!");
-    }
-    return res.json();
-  })
-  .then((data) => {
-    sessionStorage.setItem('token', data.token);
-    sessionStorage.setItem('username', data.username);
-    dispatch({
-      type: types.ACCOUNT_REGISTER_PASSED,
-      data
+    .then((data) => {
+      sessionStorage.setItem('token', data.token);
+      sessionStorage.setItem('username', data.username);
+      dispatch({
+        type: types.ACCOUNT_REGISTER_PASSED,
+        data,
+      });
+      dispatch({
+        type: types.ACCOUNT_LOGIN_PASSED,
+        userId: data.id,
+      });
+    })
+    .catch((error) => {
+      dispatch({
+        type: types.ACCOUNT_REGISTER_FAILED,
+      });
     });
-    dispatch({
-      type: types.ACCOUNT_LOGIN_PASSED,
-      userId: data.id
-    });
-  })
-  .catch(error => {
-    dispatch({
-      type: types.ACCOUNT_REGISTER_FAILED
-    });
-  });
 };
 
-export const checkUsernameAvailability = (username) => (dispatch) => {
+export const checkUsernameAvailability = username => (dispatch) => {
   dispatch({
     type: types.ACCOUNT_AVAILABILITY_CHECK_PENDING,
   });
-  const endpoint = 'api/accounts/checkname/' + username;
+  const endpoint = `api/accounts/checkname/${username}`;
   fetch(endpoint)
-  .then((res) => res.json())
-  .then((data) => {
-    if(data.exists === true) {
+    .then(res => res.json())
+    .then((data) => {
+      if (data.exists === true) {
+        dispatch({
+          type: types.ACCOUNT_AVAILABILITY_CHECK_FAILED,
+        });
+      } else {
+        dispatch({
+          type: types.ACCOUNT_AVAILABILITY_CHECK_PASSED,
+        });
+      }
+    })
+    .catch((error) => {
       dispatch({
         type: types.ACCOUNT_AVAILABILITY_CHECK_FAILED,
       });
-    } else {
-      dispatch({
-        type: types.ACCOUNT_AVAILABILITY_CHECK_PASSED,
-      });
-    }
-  })
-  .catch(error => {
-    dispatch({
-      type: types.ACCOUNT_AVAILABILITY_CHECK_FAILED
     });
-  });
 };
 
 export const login = (loginname, password) => (dispatch) => {
@@ -93,36 +93,37 @@ export const login = (loginname, password) => (dispatch) => {
   const endpoint = 'api/accounts/login';
   const body = JSON.stringify({
     loginname,
-    password
+    password,
   });
   fetch(endpoint, {
     method: 'post',
     body,
     headers: new Headers({
-      'content-type': 'application/json'
+      'content-type': 'application/json',
+    }),
+  })
+    .then((res) => {
+      if (res.status < 200 || res.status > 299) {
+        throw new Error('Something went wrong!');
+      }
+      return res.json();
     })
-  })
-  .then((res) => {
-    if (res.status < 200 || res.status > 299) {
-      throw new Error("Something went wrong!");
-    }
-    return res.json();
-  })
-  .then((data) => {
-    sessionStorage.setItem('token', data.token);
-    sessionStorage.setItem('username', data.username);
-    dispatch({
-      type: types.ACCOUNT_LOGIN_PASSED,
-      userId: data.id
+    .then((data) => {
+      sessionStorage.setItem('token', data.token);
+      sessionStorage.setItem('username', data.username);
+      sessionStorage.setItem('distance', data.distance);
+      console.log(data);
+      dispatch({
+        type: types.ACCOUNT_LOGIN_PASSED,
+        userId: data.id,
+      });
+    })
+    .catch((error) => {
+      dispatch({
+        type: types.ACCOUNT_LOGIN_FAILED,
+      });
     });
-  })
-  .catch(error => {
-    dispatch({
-      type: types.ACCOUNT_LOGIN_FAILED
-    });
-  });
 };
-
 
 const initialState = {
   userId: null,
@@ -134,10 +135,9 @@ const initialState = {
   wasRegistrationSuccessful: null,
   hasRegisteringFailed: false,
 
-
   isLoginPending: false,
   wasLoginSuccessful: null,
-  hasLoginFailed: false
+  hasLoginFailed: false,
 };
 
 const reducer = (state = initialState, action) => {
@@ -146,40 +146,40 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         isCheckingAvailability: true,
-        isAvailable: null
+        isAvailable: null,
       };
     case types.ACCOUNT_AVAILABILITY_CHECK_PASSED:
       return {
         ...state,
         isCheckingAvailability: false,
-        isAvailable: true
+        isAvailable: true,
       };
     case types.ACCOUNT_AVAILABILITY_CHECK_FAILED:
       return {
         ...state,
         isCheckingAvailability: false,
-        isAvailable: false
+        isAvailable: false,
       };
 
     case types.ACCOUNT_REGISTER_PENDING:
       return {
         ...state,
         isRegisteringAccount: true,
-        wasRegistrationSuccessful: null
+        wasRegistrationSuccessful: null,
       };
     case types.ACCOUNT_REGISTER_PASSED:
       return {
         ...state,
         userId: action.data.id,
         isRegisteringAccount: false,
-        wasRegistrationSuccessful: true
+        wasRegistrationSuccessful: true,
       };
     case types.ACCOUNT_REGISTER_FAILED:
       return {
         ...state,
         isRegisteringAccount: false,
         wasRegistrationSuccessful: false,
-        hasRegisteringFailed: true
+        hasRegisteringFailed: true,
       };
 
     case types.ACCOUNT_LOGIN_PENDING:
@@ -187,7 +187,7 @@ const reducer = (state = initialState, action) => {
         ...state,
         isLoginPending: true,
         wasLoginSuccessful: null,
-        hasLoginFailed: false
+        hasLoginFailed: false,
       };
     case types.ACCOUNT_LOGIN_PASSED:
       return {
@@ -195,14 +195,14 @@ const reducer = (state = initialState, action) => {
         userId: action.userId,
         isLoginPending: false,
         wasLoginSuccessful: true,
-        hasLoginFailed: false
+        hasLoginFailed: false,
       };
     case types.ACCOUNT_LOGIN_FAILED:
       return {
         ...state,
         isLoginPending: false,
         wasLoginSuccessful: false,
-        hasLoginFailed: true
+        hasLoginFailed: true,
       };
     case types.ACCOUNT_LOGOUT:
       return {
@@ -210,14 +210,14 @@ const reducer = (state = initialState, action) => {
         userId: null,
         isLoginPending: false,
         wasLoginSuccessful: null,
-        hasLoginFailed: false
+        hasLoginFailed: false,
       };
 
     default:
       return state;
-  };
+  }
 };
 
 export default {
-  reducer
+  reducer,
 };
