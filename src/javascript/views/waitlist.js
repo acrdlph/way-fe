@@ -51,15 +51,14 @@ class WaitList extends React.Component {
       showIncompleteProfileHint: false,
       contractAddress: '0xbaa593e9c1f11bbcfa4725085211d764eec26592',
       showNotification: false,
+      distance: sessionStorage.getItem('distance'),
     };
     this.openChat = this.openChat.bind(this);
 
     if (FEATURE_NOTIFICATIONS) {
       requestPermissionForNotifications();
     }
-
     this.setState({
-      distance: 5000,
       reputation: 100,
       contract: null,
     });
@@ -72,7 +71,7 @@ class WaitList extends React.Component {
     document.title = 'People | CryptoGeeks';
 
     const contract = initContract(Blockgeeks);
-    this.setState({ contract });
+    this.setState({ contract, distance: this.props.user.distance });
   }
 
   openChat(chatPartnerId) {
@@ -87,7 +86,6 @@ class WaitList extends React.Component {
   }
 
   changeDistance(event, value) {
-    // @TODO: store distance in backend
     const roundedValue = Math.floor(value);
     sessionStorage.setItem('distance', roundedValue);
     const userId = sessionStorage.getItem('userId');
@@ -133,6 +131,7 @@ class WaitList extends React.Component {
           onClick={onClick}
           onEndorse={onEndorse}
           address={entry.address}
+          hangoutPlaces={entry.hangoutPlaces}
           endorsement={entry.endorsement}
           balance={entry.balance}
         />,
@@ -166,13 +165,17 @@ class WaitList extends React.Component {
                     min={100}
                     max={10000}
                     step={10}
-                    defaultValue={5000}
+                    defaultValue={distance !== 'undefined' ? distance : 5000}
                     onChange={this.changeDistance}
                   />
                 </div>
               </li>
               <li className="title">
-                <p className="signup-wait-for">{`${distance || 5000} meters`}</p>
+                <p className="signup-wait-for">
+                  {sessionStorage.getItem('distance') !== 'undefined'
+                    ? `${sessionStorage.getItem('distance')} meters`
+                    : '5000 meters'}
+                </p>
               </li>
             </ul>
           </div>

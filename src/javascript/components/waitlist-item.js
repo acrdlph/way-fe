@@ -18,6 +18,7 @@ export default function WaitListItem(props) {
     nonDeliveredChatCount,
     lastContact,
     onClick,
+    hangoutPlaces,
     onEndorse,
     address,
     endorsement,
@@ -109,10 +110,12 @@ export default function WaitListItem(props) {
           <p className="waitlist-item-data-interests">{interests}</p>
         </div>
         <div className="locationBox">
-          <Location className="icons" />
-          <p className="locationText">Factory Berlin</p>
-          <p className="locationText">Cafe Goldshop</p>
-          <p className="locationText">Prenzlauer Berg</p>
+          {hangoutPlaces.length !== 0 && <Location className="icons" />}
+          {hangoutPlaces.map(place => (
+            <p key={place.id} className="locationText">
+              {place.place}
+            </p>
+          ))}
         </div>
       </div>
     </div>

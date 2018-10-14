@@ -2,18 +2,21 @@ import React from 'react';
 import { connect } from 'react-redux';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
+import {
+  Form, FormGroup, Input, Button,
+} from 'reactstrap';
+import Arrow from 'material-ui/svg-icons/hardware/keyboard-backspace';
 import { checkUsernameAvailability, registerAccount } from '../stores/accountStore';
 import interactionConfirmationStore from '../stores/interactionConfirmationStore';
 import { trackPageView, trackEvent, events } from '../util/google-analytics';
-import { Form, FormGroup, Input, Button } from 'reactstrap';
-import Arrow from 'material-ui/svg-icons/hardware/keyboard-backspace';
 import TermsAndPolicy from '../components/terms-and-policy';
 import InfoBox from '../components/infobox';
 import CircularProgress from '../components/circularProgress';
 import { renderLocationInput, saveAndContinue } from '../util/location';
 import './registration.less';
 
-const validateUsername = username => {
+const validateUsername = (username) => {
+  console.log(username, 'skaeo');
   if (username && username.trim().length > 2) {
     // TODO: implement real validation
     return true;
@@ -22,7 +25,7 @@ const validateUsername = username => {
 };
 const calledFrom = 'signup';
 
-const validateEmailAddress = email => {
+const validateEmailAddress = (email) => {
   if (email && email.trim().length > 4) {
     // src: https://stackoverflow.com/questions/46155/how-to-validate-email-address-in-javascript
     const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -31,7 +34,7 @@ const validateEmailAddress = email => {
   return false;
 };
 
-const validatePassword = password => {
+const validatePassword = (password) => {
   if (password && password.trim().length > 3) {
     // TODO: implement real validation
     return true;
@@ -63,6 +66,7 @@ class Onboarding extends React.Component {
     this.showSearchBox = this.showSearchBox.bind(this);
     this.showLocationRequired = this.showLocationRequired.bind(this);
     this.toggleDiv = this.toggleDiv.bind(this);
+    this.handleInputChange = this.handleInputChange.bind(this);
     this.goToLogin = this.goToLogin.bind(this);
   }
 
@@ -74,6 +78,7 @@ class Onboarding extends React.Component {
   componentWillReceiveProps(props) {
     if (props.account.wasRegistrationSuccessful && !this.props.account.wasRegistrationSuccessful) {
       sessionStorage.setItem('userId', props.account.userId);
+      sessionStorage.setItem('distance', 5000);
       trackEvent(events.USER_REGISTERED_ACCOUNT);
 
       // confirm interaction (for users who joined via waytcoin challenge)
@@ -131,25 +136,17 @@ class Onboarding extends React.Component {
     }
   };
 
-  changeEmail(event, email) {
-    this.setState({ email });
-  }
-
-  changePassword(event, password) {
-    this.setState({ password });
-  }
-
-  changePasswordConfirm(event, passwordConfirm) {
-    this.setState({ passwordConfirm });
-  }
-
-  changeUsername(event, username) {
-    this.setState({ username });
-    this.props.checkUsernameAvailability(username);
+  handleInputChange(event) {
+    const { target } = event;
+    const { value, name } = target;
+    name === 'username' && this.props.checkUsernameAvailability(value);
+    this.setState({ [name]: value });
   }
 
   register() {
-    const { username, email, password, passwordConfirm } = this.state;
+    const {
+      username, email, password, passwordConfirm,
+    } = this.state;
     const { isAvailable } = this.props.account;
 
     if (!validateUsername(username)) {
@@ -177,12 +174,12 @@ class Onboarding extends React.Component {
         };
         this.props.account.wasRegistrationSuccessful
           ? saveAndContinue(
-              this.showLocationRequired,
-              this.showSearchBox,
-              this.props.history,
-              this.toggleDiv,
-              calledFrom,
-            )
+            this.showLocationRequired,
+            this.showSearchBox,
+            this.props.history,
+            this.toggleDiv,
+            calledFrom,
+          )
           : this.props.registerAccount(data);
       }
     }
@@ -213,50 +210,53 @@ class Onboarding extends React.Component {
               <FormGroup>
                 <Input
                   placeholder="Username"
-                  defaultValue={name}
-                  ref={input => {
+                  name="username"
+                  ref={(input) => {
                     this.inputUsername = input;
                   }}
                   onKeyUp={this.handleKeyPress.bind(this, 'inputUsername')}
-                  onChange={this.changeUsername}
-                  fullWidth={true}
+                  onChange={this.handleInputChange}
+                  fullWidth
                 />
                 <InfoBox visible={isUsernameTaken} text="The selected username is already taken!" />
 
                 <Input
+                  name="email"
                   placeholder="Email"
-                  ref={input => {
+                  ref={(input) => {
                     this.inputEmail = input;
                   }}
                   onKeyUp={this.handleKeyPress.bind(this, 'inputEmail')}
-                  onChange={this.changeEmail}
-                  fullWidth={true}
+                  onChange={this.handleInputChange}
+                  fullWidth
                 />
                 <InfoBox
-                  text={'This email is already in use'}
+                  text="This email is already in use"
                   visible={this.props.account.hasRegisteringFailed}
                 />
 
                 <Input
+                  name="password"
                   placeholder="Password"
                   type="Password"
-                  ref={input => {
+                  ref={(input) => {
                     this.inputPassword = input;
                   }}
                   onKeyUp={this.handleKeyPress.bind(this, 'inputPassword')}
-                  onChange={this.changePassword}
-                  fullWidth={true}
+                  onChange={this.handleInputChange}
+                  fullWidth
                 />
 
                 <Input
+                  name="passwordConfirm"
                   placeholder="Password confirmation"
                   type="Password"
-                  ref={input => {
+                  ref={(input) => {
                     this.inputPasswordConfirm = input;
                   }}
                   onKeyUp={this.handleKeyPress.bind(this, 'inputPasswordConfirm')}
-                  onChange={this.changePasswordConfirm}
-                  fullWidth={true}
+                  onChange={this.handleInputChange}
+                  fullWidth
                 />
                 {renderLocationInput(
                   this.state.isSearchBoxVisible,
@@ -268,16 +268,19 @@ class Onboarding extends React.Component {
             <Button
               backgroundColor="#43d676"
               onClick={this.register}
-              fullWidth={true}
+              fullWidth
               disabled={isRegistrationButtonDisabled}
             >
               Get Started
             </Button>
             <div className="signinBox">
               <p>
-                Already have an account?{' '}
+                Already have an account?
+                {' '}
                 <a onClick={this.goToLogin}>
-                  Sign in to CryptoGeeks <i class="arrow" />
+                  Sign in to CryptoGeeks
+                  {' '}
+                  <i className="arrow" />
                 </a>
               </p>
             </div>
@@ -285,7 +288,12 @@ class Onboarding extends React.Component {
         </div>
         <div className="termsBox">
           <p>
-            By continuing, you agree to our <a href="">Terms of Service, Privacy Policy</a> &{' '}
+            By continuing, you agree to our
+            {' '}
+            <a href="">Terms of Service, Privacy Policy</a>
+            {' '}
+&
+            {' '}
             <a href="">Cookie use.</a>
           </p>
           <p>
@@ -305,13 +313,12 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   checkUsernameAvailability: username => dispatch(checkUsernameAvailability(username)),
   registerAccount: data => dispatch(registerAccount(data)),
-  confirmInteraction: (confirmationCode, confirmorId) =>
-    dispatch(
-      interactionConfirmationStore.actions.send({
-        confirmationCode,
-        confirmorId,
-      }),
-    ),
+  confirmInteraction: (confirmationCode, confirmorId) => dispatch(
+    interactionConfirmationStore.actions.send({
+      confirmationCode,
+      confirmorId,
+    }),
+  ),
 });
 
 export default connect(

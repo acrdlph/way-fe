@@ -33,6 +33,7 @@ const mapWaitListData = (data) => {
       address: entry.address,
       balance: entry.address,
       endorsement: entry.endorsement,
+      hangoutPlaces: entry.hangoutPlaces,
       hasChat: entry.count > 0,
       nonDeliveredChatCount: entry.non_delivered_count,
       lastContact: entry.last_contact ? new Date(entry.last_contact).getTime() : 0,
@@ -51,7 +52,6 @@ const fetcher = (dispatch, userId) => {
   dispatch({ type: types.LOADING });
   const distance = sessionStorage.getItem('distance') || 5000;
   const endpoint = `api/users/${userId}?distance=${distance}`;
-  console.log(endpoint, 'what it is');
   fetch(endpoint, {
     headers: getAuthHeaders(),
   })
