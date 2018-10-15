@@ -23,6 +23,7 @@ class Signup extends React.Component {
     this.showLocationRequired = this.showLocationRequired.bind(this);
     this.toggleDiv = this.toggleDiv.bind(this);
     this.goToSignup = this.goToSignup.bind(this);
+    this.goToFeedback = this.goToFeedback.bind(this);
     this.resetPassword = this.resetPassword.bind(this);
     const userId = sessionStorage.getItem('userId');
     const locationId = sessionStorage.getItem('locationId');
@@ -51,6 +52,10 @@ class Signup extends React.Component {
     this.props.history.push('/register');
   }
 
+  goToFeedback() {
+    this.props.history.push('/feedback');
+  }
+
   resetPassword() {
     this.props.history.push('/reset-password');
   }
@@ -70,10 +75,15 @@ class Signup extends React.Component {
           <div className="signupBox">
             <div className="textBox">
               <h3>Welcome to CryptoGeeks</h3>
-              <p>A token-curated community of trusted blockchain experts & entrepreneurs from Berlin.</p>        
+              <p>
+                A token-curated community of trusted blockchain experts & entrepreneurs from Berlin.
+              </p>
             </div>
             <div className="loginBox">
-              {renderLocationInput(this.state.isSearchBoxVisible, this.state.showLocationRequiredHint)}
+              {renderLocationInput(
+                this.state.isSearchBoxVisible,
+                this.state.showLocationRequiredHint,
+              )}
               {this.state.show && CircularProgress()}
               <Login
                 pathname={this.props.location.pathname}
@@ -86,14 +96,76 @@ class Signup extends React.Component {
               />
             </div>
             <div className="newAccountBox">
-              <p>Dont have an account? <a onClick={this.goToSignup}>Get started now <i class="arrow" /></a></p>
-              <p><a onClick={this.resetPassword}>I forgot my password <i class="arrow" /></a></p>
+              <p>
+                Dont have an account?
+                {' '}
+                <a onClick={this.goToSignup}>
+                  Get started now
+                  {' '}
+                  <i className="arrow" />
+                </a>
+              </p>
+              {/* <p>
+                <a onClick={this.resetPassword}>
+                  I forgot my password
+                  {' '}
+                  <i className="arrow" />
+                </a>
+              </p> */}
             </div>
           </div>
           <div className="termsBox">
-            <p>By continuing, you agree to our <a href="">Terms of Service, Privacy Policy</a> & <a href="">Cookie use.</a></p>
-            <p><a href="">Powered by Way Network · Legal Notice · Feedback</a></p>
-          </div> 
+            <p>
+              By continuing, you agree to our
+              {' '}
+              {
+                <a
+                  href="https://drive.google.com/file/d/1qmGuCI59X8EW-pDcvRhMDCZaa1D4_nGd/view?usp=sharing"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Terms of Service
+                </a>
+              }
+              ,
+              {' '}
+              {
+                <a
+                  href="https://drive.google.com/file/d/1WjTFH8rs3GjA3DQlNOr6uvBCyUIhBNCS/view?usp=sharing"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Privacy Policy
+                </a>
+              }
+              {' '}
+              &
+              {' '}
+              <a
+                href="https://drive.google.com/file/d/13TAmIv_EXfVHHkV9W3fY8AKr7hadcupf/view?usp=sharing"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Cookie use.
+              </a>
+            </p>
+            <p>
+              Powered by
+              {' '}
+              <a href="https://www.way.network/" target="_blank" rel="noopener noreferrer">
+                Way Network
+                {' '}
+              </a>
+              {/* · Legal Notice */}
+              {' '}
+·
+              <a onClick={this.goToFeedback} className="feedback-handler">
+                {' '}
+                Feedback
+                {' '}
+              </a>
+            </p>
+          </div>
         </div>
       </div>
     );

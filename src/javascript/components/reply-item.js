@@ -1,6 +1,5 @@
 import React from 'react';
 import Avatar from 'material-ui/Avatar';
-import { Row } from 'reactstrap';
 
 import returnDate from '../util/date';
 import './reply-item.less';

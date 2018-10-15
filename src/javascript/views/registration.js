@@ -59,10 +59,6 @@ class Onboarding extends React.Component {
     };
 
     this.register = this.register.bind(this);
-    this.changeEmail = this.changeEmail.bind(this);
-    this.changePassword = this.changePassword.bind(this);
-    this.changePasswordConfirm = this.changePasswordConfirm.bind(this);
-    this.changeUsername = this.changeUsername.bind(this);
     this.showSearchBox = this.showSearchBox.bind(this);
     this.showLocationRequired = this.showLocationRequired.bind(this);
     this.toggleDiv = this.toggleDiv.bind(this);

@@ -55,11 +55,11 @@ class QnA extends React.Component {
                 type="textarea"
                 onChange={this.handleChangeQuestion}
                 name="text"
-                placeholder="What is your question to the Crypto Geeks community?"
+                placeholder="Share your ideas, questions and upcoming events…"
                 value={this.state.questionValue}
               />
             </FormGroup>
-            <Button className="questionBtn">Ask a question</Button>
+            <Button className="questionBtn">Post</Button>
           </Form>
         </div>
         <div className="formLink">

@@ -5,7 +5,7 @@ import MaterialUiAvatar from 'material-ui/Avatar';
 import { PAGES_WITH_HEADER } from '../util/constants';
 import { extractLocationName } from './location-header';
 import ChatHeader from './chat-header';
-import { showOnBoardingModal } from '../stores/modalStore';
+import { showOnBoardingModal, showIncompleteModal } from '../stores/modalStore';
 import GenericModal from './Modal';
 import onBoardingContent from './onBoardingModalContent';
 import './header.less';
@@ -20,10 +20,15 @@ class Header extends React.Component {
   constructor(props) {
     super(props);
     this.openTheModal = this.openTheModal.bind(this);
+    this.handleNavClick = this.handleNavClick.bind(this);
   }
 
   openTheModal() {
     this.props.showModal();
+  }
+
+  handleNavClick() {
+    this.props.showIncModal();
   }
 
   render() {
@@ -57,7 +62,7 @@ class Header extends React.Component {
 
     const profileIcon = iconHide => (
       <div className={iconHide ? 'header-profileicon-hidden' : 'header-profileicon'}>
-        <NavLink to="/profile">
+        <NavLink to="/profile" onClick={this.handleNavClick}>
           <MaterialUiAvatar size={35} src={photo} />
           <span className="header-profileicon-username">{username || name}</span>
         </NavLink>
@@ -67,7 +72,9 @@ class Header extends React.Component {
     const listOrQuestion = (
       <div className="listOrQuestion">
         <NavLink to="/waitlist">Geek List</NavLink>
-        <NavLink to="/qna">Ask a Question?</NavLink>
+        <NavLink to="/qna" onClick={this.handleNavClick}>
+          Local Discussions
+        </NavLink>
       </div>
     );
 
@@ -122,6 +129,7 @@ const mapStateToProps = state => ({
 });
 const mapDispatchToProps = dispatch => ({
   showModal: () => dispatch(showOnBoardingModal(true)),
+  showIncModal: () => dispatch(showIncompleteModal(false)),
 });
 export default connect(
   mapStateToProps,

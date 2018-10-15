@@ -76,7 +76,9 @@ class QuestionItem extends React.Component {
                   type="textarea"
                   onChange={this.handleChangeReply}
                   name="text"
-                  placeholder="You wanna answer to that motherfucker^?"
+                  placeholder={
+                    replies.length === 0 ? 'Be the first to reply...' : 'Any thoughts on that?'
+                  }
                   value={this.state.replyValue}
                 />
               </Form>
