@@ -512,7 +512,6 @@ Please connect to the
                   value={this.state.username}
                   onChange={this.handleInputChange}
                 />
-                <p>Right now you have to stick with that one, sorry.</p>
               </FormGroup>
             </Form>
             <div className="btnBox">
