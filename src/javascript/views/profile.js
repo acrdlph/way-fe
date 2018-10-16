@@ -506,6 +506,8 @@ Please connect to the
               <FormGroup>
                 <Label for="username">Username</Label>
                 <Input
+                  className="disabledInput"
+                  disabled
                   name="username"
                   value={this.state.username}
                   onChange={this.handleInputChange}
