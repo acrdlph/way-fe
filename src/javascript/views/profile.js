@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { NavLink } from 'react-router-dom';
+import { NavHashLink } from 'react-router-hash-link';
 import RaisedButton from 'material-ui/RaisedButton';
 import { LineChart } from 'react-easy-chart';
 import {
@@ -288,9 +289,15 @@ class Profile extends React.Component {
     return (
       <div className="accountContainer">
         <div className="menuBox">
-          <NavLink to="/">Profile</NavLink>
-          <NavLink to="/">Token</NavLink>
-          <NavLink to="/">Account</NavLink>
+          <NavHashLink smooth to={`/profile/${sessionStorage.getItem('userId')}#profile`}>
+            Profile
+          </NavHashLink>
+          <NavHashLink smooth to={`/profile/${sessionStorage.getItem('userId')}#token`}>
+            Token
+          </NavHashLink>
+          <NavHashLink smooth to={`/profile/${sessionStorage.getItem('userId')}#account`}>
+            Account
+          </NavHashLink>
           {logoutButton}
           {/* <NavLink to="/">Security</NavLink>
           <NavLink onClick={this.onLogout}>Logout</NavLink> */}
@@ -325,7 +332,7 @@ GEEK
             <h4>Profile</h4>
             <Avatar src={photoUrl} onClick={this.onImageClick} />
             {imageSelectionModal}
-            <Form>
+            <Form id="profile">
               <FormGroup>
                 <Label for="name">Name</Label>
                 <Input
@@ -372,7 +379,7 @@ GEEK
               </Button>
             </div>
           </div>
-          <div className="tokenBox">
+          <div className="tokenBox" id="token">
             <div className="tokenLive">
               <h4>Token</h4>
               {this.state.metamaskConnected
@@ -489,7 +496,7 @@ Please connect to the
               </div>
             )}
           </div>
-          <div className="accountBox">
+          <div className="accountBox" id="account">
             <h4>Account</h4>
             <Form>
               <FormGroup>

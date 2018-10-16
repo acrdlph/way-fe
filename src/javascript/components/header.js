@@ -62,7 +62,11 @@ class Header extends React.Component {
 
     const profileIcon = iconHide => (
       <div className={iconHide ? 'header-profileicon-hidden' : 'header-profileicon'}>
-        <NavLink to="/profile" onClick={this.handleNavClick}>
+        <NavLink
+          to="/profile"
+          activeStyle={{ borderBottom: 'solid 3px #0095b3', paddingBottom: '20px' }}
+          onClick={this.handleNavClick}
+        >
           <MaterialUiAvatar size={35} src={photo} />
           <span className="header-profileicon-username">{username || name}</span>
         </NavLink>
@@ -71,8 +75,18 @@ class Header extends React.Component {
 
     const listOrQuestion = (
       <div className="listOrQuestion">
-        <NavLink to="/waitlist">Geek List</NavLink>
-        <NavLink to="/qna" onClick={this.handleNavClick}>
+        <NavLink
+          to="/waitlist"
+          activeStyle={{ borderBottom: 'solid 3px #0095b3', paddingBottom: '1em' }}
+        >
+          Geek List
+        </NavLink>
+        <NavLink
+          exact
+          to="/qna"
+          activeStyle={{ borderBottom: 'solid 3px #0095b3', paddingBottom: '1em' }}
+          onClick={this.handleNavClick}
+        >
           Local Discussions
         </NavLink>
       </div>
