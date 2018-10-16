@@ -97,11 +97,11 @@ export default function WaitListItem(props) {
               <Chat className="chatFriend" />
             </button>
           </li>
-          <li className="endorseBox">
+          {/* <li className="endorseBox">
             <button type="button" onClick={props.onClick} className="waitlist-item-button">
               <Friend className="chatFriend" />
             </button>
-          </li>
+          </li> */}
         </ul>
       </div>
       <div className="text-location">

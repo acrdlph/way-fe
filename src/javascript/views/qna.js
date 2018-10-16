@@ -64,10 +64,20 @@ class QnA extends React.Component {
         </div>
         <div className="formLink">
           <div className="navLink">
-            <NavLink to="/qna" activeClassName="qnaActive">
+            <NavLink
+              exact
+              to="/qna"
+              activeStyle={{ borderBottom: 'solid 3px #0095b3', paddingBottom: '1em' }}
+            >
               All questions
             </NavLink>
-            <NavLink to="/qna/filtered">Unanswered questions</NavLink>
+            <NavLink
+              exact
+              to="/qna/filtered"
+              activeStyle={{ borderBottom: 'solid 3px #0095b3', paddingBottom: '1em' }}
+            >
+              Unanswered questions
+            </NavLink>
           </div>
         </div>
         <div className="formContainer">
