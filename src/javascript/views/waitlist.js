@@ -152,36 +152,25 @@ class WaitList extends React.Component {
 
     return (
       <div className="waitListBody">
-        <div>
+        <div className="distanceBox">
           {Modal}
-          <div>
-            <ul className="signup-wait-dist signup-wait ">
-              <li className="signup-wait-for-li">
-                <strong className="signup-wait-for">Distance</strong>
-              </li>
-              <li>
-                <div className="signup-slider-distance">
-                  <Slider
-                    min={100}
-                    max={10000}
-                    step={10}
-                    defaultValue={distance !== 'undefined' ? distance : 5000}
-                    onChange={this.changeDistance}
-                  />
-                </div>
-              </li>
-              <li className="title">
-                <p className="signup-wait-for">
-                  {sessionStorage.getItem('distance') !== 'undefined'
-                    ? `${sessionStorage.getItem('distance')} meters`
-                    : '5000 meters'}
-                </p>
-              </li>
-            </ul>
+          <div className="distanceText">
+            <h5>Distance</h5>
+            <p>See and be seen within {sessionStorage.getItem('distance') !== 'undefined'
+              ? `${sessionStorage.getItem('distance')} meters`
+              : '5000 meters'} of your current location.</p>
           </div>
-
-          <List>{list}</List>
+          <div className="sliderBox">
+              <Slider
+                min={100}
+                max={10000}
+                step={10}
+                defaultValue={distance !== 'undefined' ? distance : 5000}
+                onChange={this.changeDistance}
+              />
+          </div>
         </div>
+        <List >{list}</List>
       </div>
     );
   }
