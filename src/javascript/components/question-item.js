@@ -69,7 +69,7 @@ class QuestionItem extends React.Component {
         <div className="answerBtn" />
         <div className="replyContainer">
           <Row>
-            <Col xs="10" sm="0" md="0" lg="0">
+            <Col xs="9" sm="0" md="0" lg="0">
               <Form className="answerBox">
                 <Input
                   className="answerInput"
@@ -83,7 +83,7 @@ class QuestionItem extends React.Component {
                 />
               </Form>
             </Col>
-            <Col xs="2" sm="1" md="1" lg="1">
+            <Col xs="3" sm="1" md="1" lg="1">
               <Button onClick={e => this.handleReplySubmit(e, _id)} className="replyBtn">
                 Reply
               </Button>
