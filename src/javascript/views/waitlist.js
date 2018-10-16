@@ -161,13 +161,13 @@ class WaitList extends React.Component {
               : '5000 meters'} of your current location.</p>
           </div>
           <div className="sliderBox">
-            <Slider
-              min={100}
-              max={10000}
-              step={10}
-              defaultValue={distance !== 'undefined' ? distance : 5000}
-              onChange={this.changeDistance}
-            />
+              <Slider
+                min={100}
+                max={10000}
+                step={10}
+                defaultValue={distance !== 'undefined' ? distance : 5000}
+                onChange={this.changeDistance}
+              />
           </div>
         </div>
         <List >{list}</List>
