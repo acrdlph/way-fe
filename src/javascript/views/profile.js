@@ -382,6 +382,7 @@ GEEK
           <div className="tokenBox" id="token">
             <div className="tokenLive">
               <h4>Token</h4>
+              <div className="metaMast">
               {this.state.metamaskConnected
                 && (web3.version.network === '4' ? (
                   <p>
@@ -398,6 +399,7 @@ Please connect to the
                     <b> Rinkeby Testnet</b>
                   </p>
                 ))}
+              </div>
             </div>
             {this.state.metamaskConnected ? (
               <div>
