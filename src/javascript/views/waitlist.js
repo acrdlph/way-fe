@@ -123,6 +123,7 @@ class WaitList extends React.Component {
         <WaitListItem
           key={key}
           interests={entry.interests}
+          id={entry.id}
           photo={entry.photo}
           name={entry.name}
           hasChat={entry.hasChat}
@@ -156,21 +157,27 @@ class WaitList extends React.Component {
           {Modal}
           <div className="distanceText">
             <h5>Distance</h5>
-            <p>See and be seen within {sessionStorage.getItem('distance') !== 'undefined'
-              ? `${sessionStorage.getItem('distance')} meters`
-              : '5000 meters'} of your current location.</p>
+            <p>
+              See and be seen within
+              {' '}
+              {sessionStorage.getItem('distance') !== 'undefined'
+                ? `${sessionStorage.getItem('distance')} meters`
+                : '5000 meters'}
+              {' '}
+              of your current location.
+            </p>
           </div>
           <div className="sliderBox">
-              <Slider
-                min={100}
-                max={10000}
-                step={10}
-                defaultValue={distance !== 'undefined' ? distance : 5000}
-                onChange={this.changeDistance}
-              />
+            <Slider
+              min={100}
+              max={10000}
+              step={10}
+              defaultValue={distance !== 'undefined' ? distance : 5000}
+              onChange={this.changeDistance}
+            />
           </div>
         </div>
-        <List >{list}</List>
+        <List>{list}</List>
       </div>
     );
   }
