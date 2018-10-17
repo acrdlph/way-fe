@@ -13,7 +13,6 @@ export default function WaitListItem(props) {
     interests,
     name,
     photo,
-    timeLeft,
     hasChat,
     nonDeliveredChatCount,
     lastContact,
@@ -23,6 +22,7 @@ export default function WaitListItem(props) {
     address,
     endorsement,
     balance,
+    id,
   } = props;
 
   if (interests.trim() === '') {
@@ -64,45 +64,49 @@ export default function WaitListItem(props) {
           </p>
         </div>
         <div className="waitlist-item-unread">{hasUnreadMessagesClass}</div>
-        <ul className="waitlist-item-actions">
-          <li className="endorseBox">
-            <button
-              type="button"
-              className="waitlist-item-button"
-              onClick={() => {
-                try {
-                  onEndorse(
-                    address,
-                    {
-                      from: window.web3.eth.accounts ? window.web3.eth.accounts[0] : null,
-                      gas: 300000,
-                      value: web3.toWei(0, 'ether'),
-                    },
-                    (error, result) => {
-                      console.log(result);
-                      console.log(error);
-                    },
-                  );
-                } catch (error) {
-                  alert('Metamask is not connected');
-                }
-              }}
-            >
-              <Hand className="icons" />
-              {' Endorse '}
-            </button>
-          </li>
-          <li className="endorseBox">
-            <button type="button" onClick={props.onClick} className="waitlist-item-button">
-              <Chat className="chatFriend" />
-            </button>
-          </li>
-          {/* <li className="endorseBox">
-            <button type="button" onClick={props.onClick} className="waitlist-item-button">
-              <Friend className="chatFriend" />
-            </button>
-          </li> */}
-        </ul>
+        {id !== sessionStorage.getItem('userId') && (
+          <ul className="waitlist-item-actions">
+            <li className="endorseBox">
+              <button
+                type="button"
+                className="waitlist-item-button"
+                onClick={() => {
+                  try {
+                    onEndorse(
+                      address,
+                      {
+                        from: window.web3.eth.accounts ? window.web3.eth.accounts[0] : null,
+                        gas: 300000,
+                        value: web3.toWei(0, 'ether'),
+                      },
+                      (error, result) => {
+                        console.log(result);
+                        console.log(error);
+                      },
+                    );
+                  } catch (error) {
+                    alert('Metamask is not connected');
+                  }
+                }}
+              >
+                <Hand className="icons" />
+                {' Endorse '}
+              </button>
+            </li>
+            <li className="endorseBox">
+              <button type="button" onClick={props.onClick} className="waitlist-item-button">
+                <Chat className="chatFriend" />
+              </button>
+            </li>
+            {/*
+            <li className="endorseBox">
+              <button type="button" onClick={props.onClick} className="waitlist-item-button">
+                <Friend className="chatFriend" />
+              </button>
+            </li>
+            */}
+          </ul>
+        )}
       </div>
       <div className="text-location">
         <div className="quoteText">
