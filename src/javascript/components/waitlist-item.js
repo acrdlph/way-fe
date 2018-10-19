@@ -114,7 +114,7 @@ export default function WaitListItem(props) {
           <p className="waitlist-item-data-interests">{interests}</p>
         </div>
         <div className="locationBox">
-          {hangoutPlaces.length !== 0 && <Location className="icons" />}
+          {hangoutPlaces && hangoutPlaces.length !== 0 && <Location className="icons" />}
           {hangoutPlaces.map(place => (
             <p key={place.id} className="locationText">
               {place.place}

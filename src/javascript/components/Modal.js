@@ -13,8 +13,8 @@ const customStyles = {
     bottom: 'auto',
     marginRight: '-50%',
     transform: 'translate(-50%, -50%)',
-    zIndex: 15,
   },
+  overlay: { zIndex: 10 },
 };
 
 class GenericModal extends React.Component {
