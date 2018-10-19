@@ -57,24 +57,27 @@ class Header extends React.Component {
     if (isInFeedback || isInLegalNotice) {
       backButton = createBackButton('/');
     }
+    const isInSignup = this.props.location.pathname.includes('register');
 
     const Modal = this.props.showOnBoardingModal && <GenericModal content={onBoardingContent} />;
 
     const profileIcon = iconHide => (
-      <div className={iconHide ? 'header-profileicon-hidden' : 'header-profileicon'}>
-        <NavLink
-          to="/profile"
-          activeStyle={{ borderBottom: 'solid 3px #0095b3', paddingBottom: '20px' }}
-          onClick={this.handleNavClick}
-        >
-          <MaterialUiAvatar size={35} src={photo} />
-          <span className="header-profileicon-username">{username || name}</span>
-        </NavLink>
+      <div className={iconHide ? 'borderLine-hidden' : 'borderLine'}>
+        <div className="header-profileicon">
+          <NavLink
+            to="/profile"
+            activeStyle={{ borderBottom: 'solid 3px #0095b3', paddingBottom: '20px' }}
+            onClick={this.handleNavClick}
+          >
+            <MaterialUiAvatar size={35} src={photo} />
+            <span className="header-profileicon-username">{username || name}</span>
+          </NavLink>
+        </div>
       </div>
     );
 
     const listOrQuestion = (
-      <div className="listOrQuestion">
+      <div className={isInSignup || isInFeedback ? 'listOrQuestion-hidden' : 'listOrQuestion'}>
         <NavLink
           to="/waitlist"
           activeStyle={{ borderBottom: 'solid 3px #0095b3', paddingBottom: '1em' }}
@@ -119,9 +122,10 @@ class Header extends React.Component {
         </div>
         <div className="listQuestion">{listOrQuestion}</div>
         <div className="markProfile">
-          <div className="borderLine">
-            {pathname === '/register' ? profileIcon(true) : profileIcon(false)}
-          </div>
+          {pathname === '/register' || pathname === '/feedback'
+            ? profileIcon(true)
+            : profileIcon(false)}
+
           <div>
             {Modal}
             {questionMarkIcon}

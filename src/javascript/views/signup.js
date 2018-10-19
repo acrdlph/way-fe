@@ -5,6 +5,7 @@ import _ from 'lodash';
 import TermsAndPolicy from '../components/terms-and-policy';
 import { trackPageView } from '../util/google-analytics';
 import CircularProgress from '../components/circularProgress';
+import TermBox from '../components/termBox';
 import { PARTNER_LOCATIONS } from '../util/constants';
 import { loadPartnerData } from '../stores/partnerStore';
 import Footer from '../components/footer';
@@ -113,59 +114,9 @@ class Signup extends React.Component {
                 </a>
               </p> */}
             </div>
+            {console.log(this.props.history, 'th se')}
           </div>
-          <div className="termsBox">
-            <p>
-              By continuing, you agree to our
-              {' '}
-              {
-                <a
-                  href="https://drive.google.com/file/d/1qmGuCI59X8EW-pDcvRhMDCZaa1D4_nGd/view?usp=sharing"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  Terms of Service
-                </a>
-              }
-              ,
-              {' '}
-              {
-                <a
-                  href="https://drive.google.com/file/d/1WjTFH8rs3GjA3DQlNOr6uvBCyUIhBNCS/view?usp=sharing"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  Privacy Policy
-                </a>
-              }
-              {' '}
-              &
-              {' '}
-              <a
-                href="https://drive.google.com/file/d/13TAmIv_EXfVHHkV9W3fY8AKr7hadcupf/view?usp=sharing"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Cookie use.
-              </a>
-            </p>
-            <p>
-              Powered by
-              {' '}
-              <a href="https://www.way.network/" target="_blank" rel="noopener noreferrer">
-                Way Network
-                {' '}
-              </a>
-              {/* · Legal Notice */}
-              {' '}
-·
-              <a onClick={this.goToFeedback} className="feedback-handler">
-                {' '}
-                Feedback
-                {' '}
-              </a>
-            </p>
-          </div>
+          <TermBox goToFeedback={this.goToFeedback} history={this.props.history} />
         </div>
       </div>
     );
