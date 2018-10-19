@@ -155,10 +155,6 @@
   color: #a3b3bf;
 }
 
-.disabledInput:before {
-  
-}
-
 .profileBox input:focus,
 .accountBox input:focus,
 .swapBox input:focus {
@@ -210,8 +206,18 @@ h4 {
   box-shadow: 0 1px 3px 0 rgba(33, 44, 48, 0.15);
 }
 
-.accountBox form-control {
+.inputIcon {
+  display: flex;
+}
 
+.inputIcon input {
+  padding-left: 34px;
+}
+
+.inputIcon svg {
+  position: absolute;
+  margin-top: .4em;
+  margin-left: .5em;
 }
 
 .tokenBox {

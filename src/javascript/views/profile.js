@@ -7,6 +7,7 @@ import { LineChart } from 'react-easy-chart';
 import {
   Form, FormGroup, Input, Label, Button,
 } from 'reactstrap';
+import Lock from 'material-ui/svg-icons/action/lock';
 import Bookmark from 'material-ui/svg-icons/action/bookmark';
 import Swap from 'material-ui/svg-icons/action/swap-horiz';
 import Geosuggest from 'react-geosuggest';
@@ -507,13 +508,16 @@ Please connect to the
               </FormGroup>
               <FormGroup>
                 <Label for="username">Username</Label>
-                <Input
-                  className="disabledInput"
-                  disabled
-                  name="username"
-                  value={this.state.username}
-                  onChange={this.handleInputChange}
-                />
+                <div className="inputIcon">
+                  <Lock />
+                  <Input
+                    className="disabledInput"
+                    disabled
+                    name="username"
+                    value={this.state.username}
+                    onChange={this.handleInputChange}
+                  />
+                </div>
               </FormGroup>
             </Form>
             <div className="btnBox">
