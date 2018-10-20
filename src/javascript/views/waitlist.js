@@ -74,6 +74,11 @@ class WaitList extends React.Component {
     this.setState({ contract, distance: this.props.user.distance });
   }
 
+  componentWillUnmount() {
+    sessionStorage.getItem('scrollPosition') !== 'toTop'
+      && sessionStorage.setItem('scrollPosition', window.pageYOffset);
+  }
+
   openChat(chatPartnerId) {
     const locationId = sessionStorage.getItem('locationId');
     this.props.history.push({

@@ -80,6 +80,7 @@ class Header extends React.Component {
       <div className={isInSignup || isInFeedback ? 'listOrQuestion-hidden' : 'listOrQuestion'}>
         <NavLink
           to="/waitlist"
+          onClick={() => sessionStorage.setItem('scrollPosition', 0)}
           activeStyle={{ borderBottom: 'solid 3px #0095b3', paddingBottom: '1em' }}
         >
           Geek List
@@ -115,7 +116,10 @@ class Header extends React.Component {
         <div className="logo">
           <div className="header-back-button">{backButton}</div>
           <div className="header-logo">
-            <NavLink to="/waitlist">
+            <NavLink
+              to="/waitlist"
+              onClick={() => sessionStorage.setItem('scrollPosition', 'toTop')}
+            >
               <img src="assets/bglogo.png" />
             </NavLink>
           </div>
