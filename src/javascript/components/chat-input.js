@@ -7,15 +7,11 @@ export default class ChatInput extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      message: '',
+      message: ''
     };
     this.changeMessage = this.changeMessage.bind(this);
     this.onKeyPressInTextField = this.onKeyPressInTextField.bind(this);
     this.sendMessage = this.sendMessage.bind(this);
-  }
-
-  changeMessage(event, message) {
-    this.setState({ message });
   }
 
   onKeyPressInTextField(event) {
@@ -23,6 +19,10 @@ export default class ChatInput extends React.Component {
       this.sendMessage();
       event.preventDefault();
     }
+  }
+
+  changeMessage(event, message) {
+    this.setState({ message });
   }
 
   sendMessage() {
@@ -43,6 +43,9 @@ export default class ChatInput extends React.Component {
             value={this.state.message}
             onChange={this.changeMessage}
             onKeyPress={this.onKeyPressInTextField}
+            multiLine
+            rowsMax={3}
+            autoFocus
           />
         </div>
         <div className="chat-input-button">
