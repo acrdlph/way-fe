@@ -293,7 +293,16 @@ class Profile extends React.Component {
           <NavHashLink smooth to={`/profile/${sessionStorage.getItem('userId')}#profile`}>
             Profile
           </NavHashLink>
-          <NavHashLink smooth to={`/profile/${sessionStorage.getItem('userId')}#token`}>
+          <NavHashLink
+            to={`/profile/${sessionStorage.getItem('userId')}#token`}
+            scroll={(el) => {
+              window.scrollTo({
+                top: 750,
+                behavior: 'smooth',
+              });
+              console.log(el, 'hah');
+            }}
+          >
             Token
           </NavHashLink>
           <NavHashLink smooth to={`/profile/${sessionStorage.getItem('userId')}#account`}>
@@ -384,22 +393,22 @@ GEEK
             <div className="tokenLive">
               <h4>Token</h4>
               <div className="metaMast">
-              {this.state.metamaskConnected
-                && (web3.version.network === '4' ? (
-                  <p>
-                    <span className="greendot" />
-                    {' '}
+                {this.state.metamaskConnected
+                  && (web3.version.network === '4' ? (
+                    <p>
+                      <span className="greendot" />
+                      {' '}
 Live on the
-                    <b> Rinkeby Testnet</b>
-                  </p>
-                ) : (
-                  <p>
-                    <span className="reddot" />
-                    {' '}
+                      <b> Rinkeby Testnet</b>
+                    </p>
+                  ) : (
+                    <p>
+                      <span className="reddot" />
+                      {' '}
 Please connect to the
-                    <b> Rinkeby Testnet</b>
-                  </p>
-                ))}
+                      <b> Rinkeby Testnet</b>
+                    </p>
+                  ))}
               </div>
             </div>
             {this.state.metamaskConnected ? (
