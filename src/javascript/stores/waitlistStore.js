@@ -146,6 +146,9 @@ const reducer = (state = initialState, action) => {
         data: [],
       };
     case types.LOADED:
+      console.log(sessionStorage.getItem('scrollPosition'));
+      sessionStorage.getItem('scrollPosition')
+        && window.scrollTo(0, sessionStorage.getItem('scrollPosition'));
       return {
         loading: false,
         loaded: true,
