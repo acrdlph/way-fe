@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="42" height="38" viewBox="0 0 42 38">
+    <g fill="none" fill-rule="evenodd">
+        <text fill="#242B33" font-family="DINCondensed-Bold, DIN Condensed" font-size="33.75" font-style="condensed" font-weight="bold">
+            <tspan x="7.5" y="26.25">CG</tspan>
+        </text>
+        <path fill="#0095B3" fill-rule="nonzero" d="M3.5 3.5V14H0V0h8v3.5zM38.5 34.5V24H42v14h-8v-3.5z"/>
+    </g>
+</svg>

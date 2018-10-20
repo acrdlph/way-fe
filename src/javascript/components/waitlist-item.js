@@ -1,11 +1,6 @@
 import React from 'react';
 import CommunicationChatBubble from 'material-ui/svg-icons/communication/chat-bubble';
-import Avatar from 'material-ui/Avatar';
-import Quote from 'material-ui/svg-icons/editor/format-quote';
-import Location from 'material-ui/svg-icons/maps/place';
-import Hand from 'material-ui/svg-icons/action/thumb-up';
-import Chat from 'material-ui/svg-icons/communication/chat-bubble-outline';
-import Friend from 'material-ui/svg-icons/social/people';
+import Avatar from '@material-ui/core/Avatar';
 import './waitlist-item.less';
 
 export default function WaitListItem(props) {
@@ -89,19 +84,19 @@ export default function WaitListItem(props) {
                   }
                 }}
               >
-                <Hand className="icons" />
+                <img src="assets/32-icon-endorse.svg" className="icons" />
                 {' Endorse '}
               </button>
             </li>
             <li className="endorseBox">
               <button type="button" onClick={props.onClick} className="waitlist-item-button">
-                <Chat className="chatFriend" />
+                <img src="assets/32-icon-chat.svg" className="icons" />
               </button>
             </li>
             {/*
             <li className="endorseBox">
               <button type="button" onClick={props.onClick} className="waitlist-item-button">
-                <Friend className="chatFriend" />
+              <img src="assets/32-icon-meet.svg" className="icons" />
               </button>
             </li>
             */}
@@ -110,11 +105,12 @@ export default function WaitListItem(props) {
       </div>
       <div className="text-location">
         <div className="quoteText">
-          <Quote className="icons" />
+          <img src="assets/24-icon-incentive.svg" className="icons" />
           <p className="waitlist-item-data-interests">{interests}</p>
         </div>
         <div className="locationBox">
-          {hangoutPlaces && hangoutPlaces.length !== 0 && <Location className="icons" />}
+          {hangoutPlaces
+            && hangoutPlaces.length !== 0 && <img src="assets/24-icon-spots.svg" className="icons" />}
           {hangoutPlaces.map(place => (
             <p key={place.id} className="locationText">
               {place.place}

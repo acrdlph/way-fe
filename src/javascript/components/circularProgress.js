@@ -1,7 +1,7 @@
 import React from 'react';
-import RefreshIndicator from 'material-ui/RefreshIndicator';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
-export default function CircularProgress() {
+export default function RefreshIndicator() {
   const style = {
     container: {
       position: 'relative',
@@ -14,14 +14,7 @@ export default function CircularProgress() {
   return (
     <div>
       <div style={style.container}>
-        <RefreshIndicator
-          size={40}
-          left={10}
-          top={0}
-          loadingColor="#3ab966"
-          status="loading"
-          style={style.refresh}
-        />
+        <CircularProgress status="loading" style={style.refresh} />
       </div>
     </div>
   );

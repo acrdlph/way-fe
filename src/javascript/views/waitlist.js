@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import Slider from 'material-ui/Slider';
-import { List } from 'material-ui/List';
+import Slider from '@material-ui/lab/Slider';
+import List from '@material-ui/core/List';
 import _ from 'lodash';
 import { trackPageView } from '../util/google-analytics';
 import WaitListItem from '../components/waitlist-item';
@@ -177,7 +177,7 @@ class WaitList extends React.Component {
               min={100}
               max={10000}
               step={10}
-              defaultValue={distance !== 'undefined' ? distance : 5000}
+              value={distance !== 'undefined' ? distance : 5000}
               onChange={this.changeDistance}
             />
           </div>

@@ -2,17 +2,13 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import { NavHashLink } from 'react-router-hash-link';
-import RaisedButton from 'material-ui/RaisedButton';
 import { LineChart } from 'react-easy-chart';
 import {
   Form, FormGroup, Input, Label, Button,
 } from 'reactstrap';
-import Lock from 'material-ui/svg-icons/action/lock';
-import Bookmark from 'material-ui/svg-icons/action/bookmark';
-import Swap from 'material-ui/svg-icons/action/swap-horiz';
 import Geosuggest from 'react-geosuggest';
 import shortid from 'shortid';
-import Avatar from '../components/avatar';
+import Avatar from '@material-ui/core/Avatar';
 import { trackPageView } from '../util/google-analytics';
 import ImageSelection from '../components/image-selection-modal';
 import { showModal } from '../stores/profileImageStore';
@@ -315,7 +311,7 @@ class Profile extends React.Component {
         <div className="profileContainer">
           <div className="repGeekBox">
             <div className="reputation">
-              <Bookmark color="#6b8299" className="bookmark" />
+              <img src="assets/48-icon-reputation.svg" color="#6b8299" className="bookmark" />
               <div className="titleBox">
                 <h5>
                   {this.state.endorsement}
@@ -327,7 +323,7 @@ Reputation
             </div>
             <span className="middleLine" />
             <div className="geek">
-              <h4 className="geekG">G</h4>
+              <img src="assets/48-icon-token.svg" />
               <div className="titleBox">
                 <h5>
                   {this.state.balance}
@@ -432,7 +428,7 @@ Please connect to the
                           onChange={this.handleInputChange}
                         />
                       </FormGroup>
-                      <Swap color="#c3cfd9" className="swap" />
+                      <img src="assets/20-icon-lock_2.svg" color="#c3cfd9" className="swap" />
                       <FormGroup>
                         <Label for="hangoutPlaces">Price in ETH</Label>
                         <Input type="number" value={this.state.priceToEther} />
@@ -457,7 +453,7 @@ Please connect to the
                           onChange={this.handleInputChange}
                         />
                       </FormGroup>
-                      <Swap color="#c3cfd9" className="swap" />
+                      <img src="assets/20-icon-lock.svg" color="#c3cfd9" className="swap" />
                       <FormGroup>
                         <Label for="hangoutPlaces">Price in ETH</Label>
                         <Input type="number" value={this.state.priceToEtherSell} />
@@ -500,7 +496,7 @@ Please connect to the
               </div>
             ) : (
               <div className="alertRedBox">
-                <Bookmark color="#6b8299" className="bookmark" />
+                <img src="assets/48-icon-reputation.svg" color="#6b8299" className="bookmark" />
                 <div>
                   <h5>No ETH address connected</h5>
                   <p>Please make sure your Ethereum client is connected.</p>
@@ -518,7 +514,7 @@ Please connect to the
               <FormGroup>
                 <Label for="username">Username</Label>
                 <div className="inputIcon">
-                  <Lock />
+                  <img src="assets/20-icon-lock.svg" />
                   <Input
                     className="disabledInput"
                     disabled

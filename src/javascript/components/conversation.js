@@ -1,7 +1,7 @@
 import React from 'react';
 import dateFormat from 'dateformat';
 import ReactDOM from 'react-dom';
-import Avatar from 'material-ui/Avatar';
+import { Avatar } from '@material-ui/core';
 import './conversation.less';
 
 const CHAT_BUBBLE_COLOR_LEFT = '#43D676';
