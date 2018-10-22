@@ -11,7 +11,7 @@ const createBackButton = to => (
 export default class ChatHeader extends React.Component {
   render() {
     const backButton = createBackButton('/waitlist');
-    const photo = 'assets/avatar-placeholder.png';
+    const photo = 'assets/32-icon-avatar.svg';
 
     const { chatPartner } = this.props;
     const profileIcon = (

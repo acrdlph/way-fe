@@ -27,7 +27,7 @@ export default function WaitListItem(props) {
     name = 'No name specified';
   }
   if (!photo) {
-    photo = 'assets/avatar-placeholder.png';
+    photo = 'assets/32-icon-avatar.svg';
   }
 
   let alreadyContactedClass = '';

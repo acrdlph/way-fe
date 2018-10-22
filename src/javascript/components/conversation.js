@@ -36,7 +36,7 @@ export default class Conversation extends React.Component {
       const style = {
         backgroundColor: msg.sender === user.id ? CHAT_BUBBLE_COLOR_LEFT : CHAT_BUBBLE_COLOR_RIGHT,
       };
-      let photo = 'assets/avatar-placeholder.png';
+      let photo = 'assets/32-icon-avatar.svg';
       let cssClass = 'left';
       if (msg.sender === user.id) {
         cssClass = 'right';

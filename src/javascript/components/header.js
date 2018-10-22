@@ -86,7 +86,6 @@ class Header extends React.Component {
           Geek List
         </NavLink>
         <NavLink
-          exact
           to="/qna"
           activeStyle={{ borderBottom: 'solid 3px #0095b3', paddingBottom: '1em' }}
           onClick={this.handleNavClick}
@@ -120,7 +119,7 @@ class Header extends React.Component {
               to="/waitlist"
               onClick={() => sessionStorage.setItem('scrollPosition', 'toTop')}
             >
-              <img src="assets/bglogo.png" />
+              <img src="assets/cg-logo.svg" />
             </NavLink>
           </div>
         </div>
@@ -143,7 +142,7 @@ class Header extends React.Component {
 const mapStateToProps = state => ({
   username: _.get(state.user, 'data.username'),
   name: _.get(state.user, 'data.name', ''),
-  photo: _.get(state.user, 'data.photo', 'assets/avatar-placeholder.png'),
+  photo: _.get(state.user, 'data.photo', 'assets/32-icon-avatar.svg'),
   locationName: extractLocationName(state),
   chatPartner: _.get(state.chatPartner, 'data'),
   showOnBoardingModal: state.modalStore.showOnBoardingModal,

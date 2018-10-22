@@ -177,6 +177,7 @@ class WaitList extends React.Component {
               min={100}
               max={10000}
               step={10}
+              thumb={<img src="assets/10-icon-bars.svg" alt="slider thumb icon" />}
               value={distance !== 'undefined' ? distance : 5000}
               onChange={this.changeDistance}
             />

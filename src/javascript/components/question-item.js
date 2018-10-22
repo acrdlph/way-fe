@@ -57,7 +57,7 @@ class QuestionItem extends React.Component {
             {this.state.isHovering
               && user === asked_by._id && (
                 <div className="xhover" onClick={() => deleteQuestion(_id)}>
-                  x
+                  <img src="assets/10-icon-remove.svg" alt="x to delete" />
                 </div>
             )}
           </div>
@@ -73,7 +73,6 @@ class QuestionItem extends React.Component {
               <Form className="answerBox">
                 <Input
                   className="answerInput"
-                  type="textarea"
                   onChange={this.handleChangeReply}
                   name="text"
                   placeholder={

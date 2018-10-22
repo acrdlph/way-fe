@@ -269,7 +269,7 @@ class Profile extends React.Component {
     const {
       username, name, interests, photo, waytcoins, endorsement,
     } = this.props;
-    const photoUrl = photo || 'assets/avatar-placeholder.png';
+    const photoUrl = photo || 'assets/32-icon-avatar.svg';
     const imageSelectionModal = this.props.showModal ? (
       <ImageSelection onUpload={this.refreshProfile} />
     ) : null;
@@ -323,7 +323,7 @@ Reputation
             </div>
             <span className="middleLine" />
             <div className="geek">
-              <img src="assets/48-icon-token.svg" />
+              <img src="assets/48-icon-token.png" />
               <div className="titleBox">
                 <h5>
                   {this.state.balance}
@@ -442,7 +442,7 @@ Please connect to the
                   </div>
                 ) : (
                   <div>
-                    <p>Sell your GEEK token and get money yo.</p>
+                    <p>Sell GEEK token back to the bonding curve to cash out and receive ETH.</p>
                     <Form className="swapBox">
                       <FormGroup>
                         <Label for="hangoutPlaces">Amount of Token</Label>
