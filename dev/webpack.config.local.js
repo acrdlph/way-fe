@@ -40,6 +40,13 @@ module.exports = {
           use: ['css-loader', 'less-loader'],
         }),
       },
+      {
+        test: /\.(png|jpeg|ttf|...)$/,
+        use: [
+          { loader: 'url-loader' },
+          // limit => file.size =< 8192 bytes ? DataURI : File
+        ],
+      },
     ],
   },
   devServer: {
