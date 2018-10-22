@@ -71,7 +71,7 @@ class Signup extends React.Component {
       <div className="signupContainer">
         <div>
           <div className="logoBox">
-            <img src="assets/logoSignup.png" />
+            <img src="assets/96-cg-logo@2x.png" alt="round logo for login" />
           </div>
           <div className="signupBox">
             <div className="textBox">

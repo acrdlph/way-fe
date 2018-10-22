@@ -38,7 +38,7 @@ export default function WaitListItem(props) {
   if (lastContact > 0 && nonDeliveredChatCount > 0) {
     hasUnreadMessagesClass = (
       <p>
-        <CommunicationChatBubble />
+        <img src="assets/24-icon-chat.svg" alt="unread messages indicator" />
         {nonDeliveredChatCount}
       </p>
     );

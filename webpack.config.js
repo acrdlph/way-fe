@@ -7,26 +7,33 @@ module.exports = {
   entry: ['babel-polyfill', './src/javascript/index'],
   output: {
     filename: 'bundle.js',
-    path: path.resolve(__dirname, 'temp')
+    path: path.resolve(__dirname, 'temp'),
   },
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
     new CopyWebpackPlugin([{ from: 'src/static/' }]),
-    new ExtractTextPlugin('style.css')
+    new ExtractTextPlugin('style.css'),
   ],
   module: {
     rules: [
       {
         test: /.jsx?$/,
         loader: 'babel-loader',
-        exclude: /node_modules/
+        exclude: /node_modules/,
       },
       {
         test: /\.less$/,
         loader: ExtractTextPlugin.extract({
-          use: ['css-loader', 'less-loader']
-        })
-      }
-    ]
-  }
+          use: ['css-loader', 'less-loader'],
+        }),
+      },
+      {
+        test: /\.(png|jpeg|ttf|...)$/,
+        use: [
+          { loader: 'url-loader' },
+          // limit => file.size =< 8192 bytes ? DataURI : File
+        ],
+      },
+    ],
+  },
 };

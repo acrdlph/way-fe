@@ -59,7 +59,6 @@
     "big-number": "^0.4.0",
     "bluebird": "^3.5.1",
     "chart.js": "^2.7.2",
-    "cypress": "^2.1.0",
     "dateformat": "3.0.2",
     "eslint-config-airbnb-base": "^13.1.0",
     "isomorphic-fetch": "2.2.1",
@@ -92,6 +91,7 @@
     "redux-thunk": "2.2.0",
     "shortid": "^2.2.13",
     "socket.io-client": "^2.0.4",
+    "url-loader": "^1.1.2",
     "uuid": "^3.1.0",
     "web3": "^0.20.2",
     "web3-provider-engine": "^13.6.5"
