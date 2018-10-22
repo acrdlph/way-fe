@@ -102,19 +102,18 @@ class Signup extends React.Component {
                 {' '}
                 <a onClick={this.goToSignup}>
                   Get started now
-                  {' '}
-                  <i className="arrow" />
+                  {'   '}
+                  <img src="assets/10-icon-bars_2.svg" alt="arrow forward" className="arrow" />
                 </a>
               </p>
               {/* <p>
                 <a onClick={this.resetPassword}>
                   I forgot my password
                   {' '}
-                  <i className="arrow" />
+                  <img src="assets/10-icon-bars_2.svg" alt="arrow forward" />
                 </a>
               </p> */}
             </div>
-            {console.log(this.props.history, 'th se')}
           </div>
           <TermBox goToFeedback={this.goToFeedback} history={this.props.history} />
         </div>

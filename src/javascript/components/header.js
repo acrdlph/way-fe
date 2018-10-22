@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { NavLink } from 'react-router-dom';
-import MaterialUiAvatar from 'material-ui/Avatar';
+import Avatar from '@material-ui/core/Avatar';
 import { PAGES_WITH_HEADER } from '../util/constants';
 import { extractLocationName } from './location-header';
 import ChatHeader from './chat-header';
@@ -69,7 +69,7 @@ class Header extends React.Component {
             activeStyle={{ borderBottom: 'solid 3px #0095b3', paddingBottom: '20px' }}
             onClick={this.handleNavClick}
           >
-            <MaterialUiAvatar size={35} src={photo} />
+            <Avatar size={35} src={photo} />
             <span className="header-profileicon-username">{username || name}</span>
           </NavLink>
         </div>
@@ -86,7 +86,6 @@ class Header extends React.Component {
           Geek List
         </NavLink>
         <NavLink
-          exact
           to="/qna"
           activeStyle={{ borderBottom: 'solid 3px #0095b3', paddingBottom: '1em' }}
           onClick={this.handleNavClick}
@@ -99,7 +98,7 @@ class Header extends React.Component {
     const questionMarkIcon = (
       <div className="questionmark-icon">
         <button className="questionmark-button" onClick={this.openTheModal}>
-          <img src="assets/questionMark.svg" />
+          <img src="assets/24-icon-help.svg" />
         </button>
       </div>
     );
@@ -120,7 +119,7 @@ class Header extends React.Component {
               to="/waitlist"
               onClick={() => sessionStorage.setItem('scrollPosition', 'toTop')}
             >
-              <img src="assets/bglogo.png" />
+              <img src="assets/cg-logo.svg" />
             </NavLink>
           </div>
         </div>
@@ -143,7 +142,7 @@ class Header extends React.Component {
 const mapStateToProps = state => ({
   username: _.get(state.user, 'data.username'),
   name: _.get(state.user, 'data.name', ''),
-  photo: _.get(state.user, 'data.photo', 'assets/avatar-placeholder.png'),
+  photo: _.get(state.user, 'data.photo', 'assets/32-icon-avatar.svg'),
   locationName: extractLocationName(state),
   chatPartner: _.get(state.chatPartner, 'data'),
   showOnBoardingModal: state.modalStore.showOnBoardingModal,

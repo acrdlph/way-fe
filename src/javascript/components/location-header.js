@@ -28,7 +28,7 @@ export const extractLocationName = (state) => {
 
 const mapStateToProps = (state) => ({
   username: _.get(state.user, 'data.username'),
-  photo: _.get(state.user, 'data.photo', 'assets/avatar-placeholder.png'),
+  photo: _.get(state.user, 'data.photo', 'assets/32-icon-avatar.svg'),
   locationName: extractLocationName(state)
 });
 
