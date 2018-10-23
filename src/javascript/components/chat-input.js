@@ -1,6 +1,5 @@
 import React from 'react';
-import RaisedButton from 'material-ui/RaisedButton';
-import TextField from 'material-ui/TextField';
+import { Button, TextField } from '@material-ui/core';
 import './chat-input.less';
 
 export default class ChatInput extends React.Component {
@@ -49,7 +48,7 @@ export default class ChatInput extends React.Component {
           />
         </div>
         <div className="chat-input-button">
-          <RaisedButton
+          <Button
             disabled={this.props.disabled}
             label="Send"
             backgroundColor="#43D676"

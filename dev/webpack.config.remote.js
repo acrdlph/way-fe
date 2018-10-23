@@ -5,7 +5,7 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 const backend = {
   host: 'api.waitlist.cc',
-  port: 80
+  port: 80,
 };
 
 module.exports = {
@@ -13,7 +13,7 @@ module.exports = {
   entry: './src/javascript/index',
   output: {
     filename: 'bundle.js',
-    path: path.resolve(__dirname, 'build')
+    path: path.resolve(__dirname, 'build'),
   },
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
@@ -21,10 +21,10 @@ module.exports = {
     new ExtractTextPlugin('style.css'),
     new webpack.DefinePlugin({
       DEVELOPMENT_MODE: true,
-      WEBSOCKET_BASE_URL: JSON.stringify('https://'+backend.host+ '/'),
+      WEBSOCKET_BASE_URL: JSON.stringify(`https://${backend.host}/`),
       FEATURE_NOTIFICATIONS: true,
       FEATURE_WAITCOIN_CHALLENGE: true,
-      GOOGLE_ANALYTICS_ID: JSON.stringify('')
+      GOOGLE_ANALYTICS_ID: JSON.stringify(''),
     }),
   ],
   module: {
@@ -32,15 +32,22 @@ module.exports = {
       {
         test: /.jsx?$/,
         loader: 'babel-loader',
-        exclude: /node_modules/
+        exclude: /node_modules/,
       },
       {
         test: /\.less$/,
         loader: ExtractTextPlugin.extract({
-          use: ['css-loader', 'less-loader']
-        })
-      }
-    ]
+          use: ['css-loader', 'less-loader'],
+        }),
+      },
+      {
+        test: /\.(png|jpeg|ttf|...)$/,
+        use: [
+          { loader: 'url-loader' },
+          // limit => file.size =< 8192 bytes ? DataURI : File
+        ],
+      },
+    ],
   },
   devServer: {
     port: 3000,
@@ -50,10 +57,9 @@ module.exports = {
     proxy: {
       '/api': {
         target: backend,
-        pathRewrite: {'^/api' : ''},
-        secure: false
-      }
-    }
-
+        pathRewrite: { '^/api': '' },
+        secure: false,
+      },
+    },
   },
 };

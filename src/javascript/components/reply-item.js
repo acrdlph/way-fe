@@ -1,5 +1,5 @@
 import React from 'react';
-import Avatar from 'material-ui/Avatar';
+import Avatar from '@material-ui/core/Avatar';
 
 import returnDate from '../util/date';
 import './reply-item.less';
@@ -21,7 +21,7 @@ class ReplyItem extends React.Component {
     const { replied_by, replied_at, repl_content } = reply;
     const user = sessionStorage.getItem('userId');
     if (!replied_by[0].photo) {
-      replied_by[0].photo = 'assets/avatar-placeholder.png';
+      replied_by[0].photo = 'assets/32-icon-avatar.svg';
     }
     return (
       <div
@@ -39,7 +39,7 @@ class ReplyItem extends React.Component {
               {this.state.isHovering
                 && user === replied_by[0]._id && (
                   <div className="xhover" onClick={() => deleteReply({ qId, rId: reply._id })}>
-                    x
+                    <img src="assets/10-icon-remove.svg" alt="x to delete" />
                   </div>
               )}
             </div>

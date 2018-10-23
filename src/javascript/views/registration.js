@@ -1,18 +1,15 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import TextField from 'material-ui/TextField';
-import RaisedButton from 'material-ui/RaisedButton';
 import {
   Form, FormGroup, Input, Button,
 } from 'reactstrap';
-import Arrow from 'material-ui/svg-icons/hardware/keyboard-backspace';
 import { checkUsernameAvailability, registerAccount } from '../stores/accountStore';
 import interactionConfirmationStore from '../stores/interactionConfirmationStore';
 import { trackPageView, trackEvent, events } from '../util/google-analytics';
-import TermsAndPolicy from '../components/terms-and-policy';
 import InfoBox from '../components/infobox';
 import CircularProgress from '../components/circularProgress';
 import { renderLocationInput, saveAndContinue } from '../util/location';
+import TermBox from '../components/termBox';
 import './registration.less';
 
 const validateUsername = (username) => {
@@ -192,7 +189,7 @@ class Onboarding extends React.Component {
       <div className="registrationContainer">
         <div className="registrationBox">
           <div className="arrowBox">
-            <Arrow onClick={this.goToLogin} />
+            <img src="assets/40-icon-back.svg" alt="arrow backward" onClick={this.goToLogin} />
           </div>
           <div className="textBox">
             <h3>Get started</h3>
@@ -276,26 +273,16 @@ class Onboarding extends React.Component {
                 <a onClick={this.goToLogin}>
                   Sign in to CryptoGeeks
                   {' '}
-                  <i className="arrow" />
+                  <img src="assets/10-icon-bars_2.svg" alt="arrow forward" className="arrow" />
                 </a>
               </p>
             </div>
           </div>
         </div>
-        <div className="termsBox">
-          <p>
-            By continuing, you agree to our
-            {' '}
-            <a href="">Terms of Service, Privacy Policy</a>
-            {' '}
-&
-            {' '}
-            <a href="">Cookie use.</a>
-          </p>
-          <p>
-            <a href="">Powered by Way Network · Legal Notice · Feedback</a>
-          </p>
-        </div>
+        <TermBox
+          goToFeedback={() => this.props.history.push('/feedback')}
+          history={this.props.history}
+        />
       </div>
     );
   }

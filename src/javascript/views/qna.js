@@ -52,7 +52,6 @@ class QnA extends React.Component {
           <Form className="formGroup" onSubmit={this.handleQuestionSubmit}>
             <FormGroup>
               <Input
-                type="textarea"
                 onChange={this.handleChangeQuestion}
                 name="text"
                 placeholder="Share your ideas, questions and upcoming events…"

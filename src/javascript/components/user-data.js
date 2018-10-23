@@ -75,7 +75,7 @@ class UserData extends React.Component {
     const name = _.get(user, 'data.name', '');
     const interests = _.get(user, 'data.interests', '');
     const endorsement = _.get(user, 'data.endorsement', '');
-    const photo = _.get(user, 'data.photo', 'assets/avatar-placeholder.png');
+    const photo = _.get(user, 'data.photo', 'assets/32-icon-avatar.svg');
     const registerText = (
       <span>
         Register
