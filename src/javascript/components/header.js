@@ -69,12 +69,13 @@ class Header extends React.Component {
     const profileIcon = iconHide => (
       <div className={iconHide ? 'borderLine-hidden' : 'borderLine'}>
         <div className="header-profileicon">
+          <Avatar className="header-profileicon-avatar" src={photo} />
           <NavLink
             to="/profile"
-            activeStyle={{ borderBottom: 'solid 3px #0095b3', paddingBottom: '20px' }}
+            activeStyle={{ borderBottom: 'solid 3px #0095b3' }}
+            className="header-profileicon-username"
           >
-            <Avatar size={35} src={photo} />
-            <span className="header-profileicon-username">{username || name}</span>
+            {username || name}
           </NavLink>
         </div>
       </div>
