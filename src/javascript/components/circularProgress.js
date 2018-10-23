@@ -9,6 +9,7 @@ export default function RefreshIndicator() {
     refresh: {
       display: 'inline-block',
       position: 'relative',
+      color: '#0095b3',
     },
     center: {
       display: 'flex',
