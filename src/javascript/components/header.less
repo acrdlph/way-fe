@@ -24,8 +24,11 @@
   border: none;
   background: rgba(255, 255, 255, 0);
   padding-right: 0;
+  margin-left: .7em;
   img {
     cursor: pointer;
+    border-left: 1px solid #96a7bb;
+    padding-left: 1em;
   }
 }
 
@@ -104,14 +107,18 @@
   width: calc(40%);
 }
 
+.header-profileicon {
+  display: flex;
+  align-content: center;
+}
+
 .header-profileicon-username {
-  margin-left: 5px;
+  display: flex;
+  align-items: center;
   font-size: 14px;
   font-weight: 500;
   color: #6b8299;
   line-height: 1.14;
-  width: 63px;
-  height: 16px;
   font-family: 'Roboto', sans-serif;
   text-decoration: none;
   @media (max-width: 600px) {
@@ -120,15 +127,15 @@
 }
 
 .header-profileicon a {
-  margin-right: 0.5em;
   text-decoration: none;
 }
 
 .header-profileicon-avatar {
   width: 35px;
   height: 35px;
+  margin-right: .7em;
 }
-
+ /*
 .borderLine {
   border-right: 1px solid #96a7bb;
 }
@@ -136,3 +143,4 @@
   border-right: 1px solid #96a7bb;
   visibility: hidden;
 }
+*/

@@ -323,7 +323,7 @@ Reputation
             </div>
             <span className="middleLine" />
             <div className="geek">
-              <img src="assets/48-icon-token.png" />
+              <img src="assets/48-icon-token.png" className="bookmark" />
               <div className="titleBox">
                 <h5>
                   {this.state.balance}
@@ -335,9 +335,11 @@ GEEK
             </div>
           </div>
           <div className="profileBox">
-            <h4>Profile</h4>
-            <Avatar src={photoUrl} onClick={this.onImageClick} />
-            {imageSelectionModal}
+              <h4>Profile</h4>
+              <div className="titleAvatar">
+                <Avatar className="avatar" src={photoUrl} onClick={this.onImageClick} />
+                {imageSelectionModal}
+              </div>
             <Form id="profile">
               <FormGroup>
                 <Label for="name">Name</Label>
