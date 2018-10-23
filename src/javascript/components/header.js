@@ -5,7 +5,7 @@ import Avatar from '@material-ui/core/Avatar';
 import { PAGES_WITH_HEADER } from '../util/constants';
 import { extractLocationName } from './location-header';
 import ChatHeader from './chat-header';
-import { showOnBoardingModal, showIncompleteModal } from '../stores/modalStore';
+import { showOnboardingList } from '../stores/modalStore';
 import GenericModal from './Modal';
 import onBoardingContent from './onBoardingModalContent';
 import './header.less';
@@ -20,15 +20,12 @@ class Header extends React.Component {
   constructor(props) {
     super(props);
     this.openTheModal = this.openTheModal.bind(this);
-    this.handleNavClick = this.handleNavClick.bind(this);
+
+    this.state = { step: 1 };
   }
 
   openTheModal() {
-    this.props.showModal();
-  }
-
-  handleNavClick() {
-    this.props.showIncModal();
+    this.props.showListModal();
   }
 
   render() {
@@ -58,16 +55,23 @@ class Header extends React.Component {
       backButton = createBackButton('/');
     }
     const isInSignup = this.props.location.pathname.includes('register');
+    let Modal;
 
-    const Modal = this.props.showOnBoardingModal && <GenericModal content={onBoardingContent} />;
-
+    if (this.props.showOnboardingList) {
+      switch (true) {
+        case /\b(waitlist).*/.test(this.props.location.pathname):
+          switch (this.state.step) {
+            case 1:
+              Modal = <GenericModal content={onBoardingContent} />;
+          }
+      }
+    }
     const profileIcon = iconHide => (
       <div className={iconHide ? 'borderLine-hidden' : 'borderLine'}>
         <div className="header-profileicon">
           <NavLink
             to="/profile"
             activeStyle={{ borderBottom: 'solid 3px #0095b3', paddingBottom: '20px' }}
-            onClick={this.handleNavClick}
           >
             <Avatar size={35} src={photo} />
             <span className="header-profileicon-username">{username || name}</span>
@@ -88,7 +92,6 @@ class Header extends React.Component {
         <NavLink
           to="/qna"
           activeStyle={{ borderBottom: 'solid 3px #0095b3', paddingBottom: '1em' }}
-          onClick={this.handleNavClick}
         >
           Local Discussions
         </NavLink>
@@ -145,12 +148,11 @@ const mapStateToProps = state => ({
   photo: _.get(state.user, 'data.photo', 'assets/32-icon-avatar.svg'),
   locationName: extractLocationName(state),
   chatPartner: _.get(state.chatPartner, 'data'),
-  showOnBoardingModal: state.modalStore.showOnBoardingModal,
+  showOnboardingList: state.modalStore.showOnboardingList,
   waitlist: state.waitlist,
 });
 const mapDispatchToProps = dispatch => ({
-  showModal: () => dispatch(showOnBoardingModal(true)),
-  showIncModal: () => dispatch(showIncompleteModal(false)),
+  showListModal: () => dispatch(showOnboardingList(true)),
 });
 export default connect(
   mapStateToProps,

@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import Modal from 'react-modal';
 import RaisedButton from 'material-ui/RaisedButton';
 import { connect } from 'react-redux';
-import { showOnBoardingModal, showIncompleteModal } from '../stores/modalStore';
+import { showOnboardingList, showIncompleteModal } from '../stores/modalStore';
 
 const customStyles = {
   content: {
@@ -59,7 +59,7 @@ class GenericModal extends React.Component {
 
 const mapDispatchToProps = dispatch => ({
   close: () => {
-    dispatch(showOnBoardingModal(false));
+    dispatch(showOnboardingList(false));
     dispatch(showIncompleteModal(false));
   },
 });
