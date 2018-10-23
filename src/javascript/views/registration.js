@@ -257,7 +257,6 @@ class Onboarding extends React.Component {
                     this.state.showLocationRequiredHint,
                   )}
                   {this.state.show && CircularProgress()}
-                  {CircularProgress()}
                 </div>
               </FormGroup>
             </Form>

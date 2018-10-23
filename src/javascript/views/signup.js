@@ -97,7 +97,6 @@ class Signup extends React.Component {
                   this.state.showLocationRequiredHint,
                 )}
                 {this.state.show && CircularProgress()}
-                {CircularProgress()}
               </div>
             </div>
             <div className="newAccountBox">
