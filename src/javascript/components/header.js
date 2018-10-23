@@ -69,7 +69,7 @@ class Header extends React.Component {
             activeStyle={{ borderBottom: 'solid 3px #0095b3', paddingBottom: '20px' }}
             onClick={this.handleNavClick}
           >
-            <Avatar size={35} src={photo} />
+            <Avatar className="header-profileicon-avatar" src={photo} />
             <span className="header-profileicon-username">{username || name}</span>
           </NavLink>
         </div>
