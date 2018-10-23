@@ -48,7 +48,7 @@ export default function WaitListItem(props) {
     <div className="waitlist-item-parent">
       <div className="waitlist-item">
         <div className={`waitlist-item-avatar ${alreadyContactedClass}`}>
-          <Avatar size={80} src={photo} />
+          <Avatar className="waitlist-item-avatar-img" src={photo} />
         </div>
         <div className="waitlist-item-data">
           <p className="waitlist-item-data-name">{name}</p>
