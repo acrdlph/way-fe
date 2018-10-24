@@ -3,15 +3,8 @@
 .signupContainer {
   display: flex;
   justify-content: center;
-}
-
-.logoBox {
-  position: relative;
-  width: 200px;
-}
-
-.loginBoxLogin {
-  position: relative;
+  align-items: center;
+  margin-top: 5em;
 }
 
 .circularTop {
@@ -19,12 +12,15 @@
   top: -11.3em;
 }
 
-.logoBox img {
-  position: absolute;
-  margin: -3em;
-  left: 46%;
-  width: 96px;
-  height: 96px;
+.logoBox {
+  position: relative;
+  img {
+    position: absolute;
+    margin: -3em;
+    left: 5.8em;
+    width: 96px;
+    height: 96px;
+  }
 }
 
 .signupBox {
@@ -33,60 +29,43 @@
   padding: 3em;
   padding-top: 5em;
   margin-bottom: 1.5em;
-  border-radius: 4px;
-  background-color: #ffffff;
-  box-shadow: 0 1px 3px 0 rgba(33, 44, 48, 0.15);
-}
-
-.textBox {
-  font-family: 'Roboto', sans-serif;
-  font-size: 16px;
-  line-height: 1.5;
-  color: #6b8299;
-}
-
-.textBox h3 {
-  font-family: 'Roboto', sans-serif;
-  font-size: 24px;
-  font-weight: 600;
-  line-height: 1.33;
-  color: #212c30;
+  border-radius: @borderRadius;
+  background-color: @boxColor;
+  box-shadow: @boxShadow;
 }
 
 .newAccountBox {
-  border-top: 1px solid rgba(150, 167, 187, 0.2);
+  border-top: @borderTop;
   padding-top: 1.5em;
-}
-
-.newAccountBox p {
-  font-family: 'Roboto', sans-serif;
-  font-size: 14px;
-  line-height: 2;
-  margin-bottom: 0;
-  color: #6b8299;
-}
-
-.newAccountBox a {
+  p {
+    font-size: 14px;
+  }
+  a {
   font-weight: 600;
   color: #0095b3 !important;
   text-decoration: none;
   cursor: pointer;
+  }
 }
 
-.termsBox p {
-  font-family: 'Roboto', sans-serif;
+.arrow {
+  padding: 3px;
+  margin-bottom: 2px;
+}
+
+.termsBox { 
+  margin-bottom: 2em;
+  p {
   font-size: 10px;
   text-align: center;
-  color: #6b8299;
   margin-bottom: 0;
-}
-
-.termsBox a {
-  font-family: 'Roboto', sans-serif;
+  }
+  a {
   font-size: 12px;
   line-height: 1.67;
-  color: #6b8299;
   text-decoration: none;
+  color: @grey;
+  }
 }
 
 .feedback-handler:hover,
@@ -94,7 +73,36 @@
   cursor: pointer;
 }
 
-.arrow {
-  padding: 3px;
-  margin-bottom: 2px;
+@media only screen and (max-width: 600px) {
+  .signupContainer {
+    margin-top: 0;
+  }
+  .signupBox {
+  width: auto;
+  height: 480px;
+  padding: 2em;
+  padding-top: 3em;
+  }
+  .logoBox {
+    img {
+      margin: -2em;
+      left: 4em;
+      width: 66px;
+      height: 66px;
+    }
+  }
+  .newAccountBox {
+    p {
+      font-size: 11px;
+    }
+  }
+  .textBox {
+    margin-bottom: 1em;
+    h3{
+      font-size: 22px!important;
+    }
+    p {
+      font-size: 14px;
+    }
+  }
 }
