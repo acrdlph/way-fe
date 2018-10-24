@@ -31,7 +31,7 @@ class ReplyItem extends React.Component {
       >
         <div className="imgNickname">
           <div className="imgBox">
-            <Avatar size={50} src={replied_by[0].photo} />
+            <Avatar className="replyAvatar" src={replied_by[0].photo} />
           </div>
           <div className="nameUpdate">
             <div className="titleWithX">

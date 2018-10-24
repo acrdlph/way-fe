@@ -76,12 +76,8 @@ class Signup extends React.Component {
               </p>
             </div>
             <div className="loginBox">
-              {renderLocationInput(
-                this.state.isSearchBoxVisible,
-                this.state.showLocationRequiredHint,
-              )}
-              {this.state.show && CircularProgress()}
               <Login
+                className="loginBoxLogin"
                 pathname={this.props.location.pathname}
                 onClick={saveAndContinue}
                 locationId={this.locationId}
@@ -90,6 +86,13 @@ class Signup extends React.Component {
                 history={this.props.history}
                 toggleDiv={this.toggleDiv}
               />
+              <div className="circularTop">
+                {renderLocationInput(
+                  this.state.isSearchBoxVisible,
+                  this.state.showLocationRequiredHint,
+                )}
+                {this.state.show && CircularProgress()}
+              </div>
             </div>
             <div className="newAccountBox">
               <p>
