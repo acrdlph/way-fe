@@ -7,7 +7,10 @@ import { extractLocationName } from './location-header';
 import ChatHeader from './chat-header';
 import { showOnboardingList } from '../stores/modalStore';
 import GenericModal from './Modal';
-import onBoardingContent from './onBoardingModalContent';
+import onBoardingListStep1 from './onBoardingListStep1';
+import onBoardingListStep2 from './onBoardingListStep2';
+import onBoardingListStep3 from './onBoardingListStep3';
+import onBoardingListStep4 from './onBoardingListStep4';
 import './header.less';
 
 const createBackButton = to => (
@@ -55,17 +58,10 @@ class Header extends React.Component {
       backButton = createBackButton('/');
     }
     const isInSignup = this.props.location.pathname.includes('register');
-    let Modal;
+    const Modal = this.props.showOnboardingList && (
+      <GenericModal pathname={this.props.location.pathname} />
+    );
 
-    if (this.props.showOnboardingList) {
-      switch (true) {
-        case /\b(waitlist).*/.test(this.props.location.pathname):
-          switch (this.state.step) {
-            case 1:
-              Modal = <GenericModal content={onBoardingContent} />;
-          }
-      }
-    }
     const profileIcon = iconHide => (
       <div className={iconHide ? 'borderLine-hidden' : 'borderLine'}>
         <div className="header-profileicon">
@@ -134,6 +130,7 @@ class Header extends React.Component {
             : profileIcon(false)}
 
           <div>
+            {console.log(this.state.step, 'hahahaha bitch')}
             {Modal}
             {questionMarkIcon}
           </div>
