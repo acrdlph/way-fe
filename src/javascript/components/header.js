@@ -130,7 +130,6 @@ class Header extends React.Component {
             : profileIcon(false)}
 
           <div>
-            {console.log(this.state.step, 'hahahaha bitch')}
             {Modal}
             {questionMarkIcon}
           </div>
