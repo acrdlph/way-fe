@@ -75,9 +75,9 @@ class Signup extends React.Component {
           </div>
           <div className="signupBox">
             <div className="textBox">
-              <h3>Welcome to CryptoGeeks</h3>
+              <h3>CryptoGeeks</h3>
               <p>
-                A token-curated community of trusted blockchain experts & entrepreneurs from Berlin.
+                Connect with your local blockchain community or watch our 🎬 introduction video.
               </p>
             </div>
             <div className="loginBox">
