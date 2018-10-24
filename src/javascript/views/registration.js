@@ -251,11 +251,13 @@ class Onboarding extends React.Component {
                   onChange={this.handleInputChange}
                   fullWidth
                 />
-                {renderLocationInput(
-                  this.state.isSearchBoxVisible,
-                  this.state.showLocationRequiredHint,
-                )}
-                {this.state.show && CircularProgress()}
+                <div className="topCircular">
+                  {renderLocationInput(
+                    this.state.isSearchBoxVisible,
+                    this.state.showLocationRequiredHint,
+                  )}
+                  {this.state.show && CircularProgress()}
+                </div>
               </FormGroup>
             </Form>
             <Button
