@@ -16,7 +16,7 @@ const onBoardingContent = (
     <div className="linkBox">
       <p>🎬 Watch the video</p>
       <ul>
-        <li>●</li>
+        <li className="blackPoint">●</li>
         <li>●</li>
         <li>●</li>
         <li>●</li>
