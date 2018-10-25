@@ -13,6 +13,7 @@ import onBoardingProfileStep1 from './onBoardingProfileStep1';
 import onBoardingProfileStep2 from './onBoardingProfileStep2';
 import onBoardingProfileStep3 from './onBoardingProfileStep3';
 import onBoardingProfileStep4 from './onBoardingProfileStep4';
+import './Modal.less'
 
 const customStyles = {
   content: {
@@ -22,6 +23,10 @@ const customStyles = {
     bottom: 'auto',
     marginRight: '-50%',
     transform: 'translate(-50%, -50%)',
+    padding: '0',
+    borderRadius: '8px',
+    border: 'none',
+    background: 'transparent',
   },
   overlay: { zIndex: 10 },
 };
@@ -129,13 +134,13 @@ class GenericModal extends React.Component {
                 || triggeredBy === 'local'
                 || triggeredBy === 'profile')
               && step === 1
-            ) && <button onClick={this.prevStep}>previous</button>}
+            ) && <button onClick={this.prevStep} className="arrowPreview"><img src="assets/40-icon-back.svg " alt="arrow to next" /></button>}
+            <button onClick={this.closeModal} className="buttonRemove"><img src="assets/10-icon-remove.svg " alt="arrow to next" /></button>
             {!(
               ((triggeredBy === 'waitlist' || triggeredBy === 'profile') && step === 4)
               || (triggeredBy === 'local' && step === 3)
-            ) && <button onClick={this.nextStep}>next</button>}
-            <button onClick={this.closeModal}>Continue</button>
-          </form>
+            ) && <button onClick={this.nextStep} className="arrowNext"><img src="assets/40-icon-back.svg" alt="arrow to back"/></button>}
+            </form>
         </Modal>
       </div>
     );
