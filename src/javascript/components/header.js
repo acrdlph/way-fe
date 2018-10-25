@@ -69,7 +69,6 @@ class Header extends React.Component {
             className=""
             onClick={this.handleNavClick}
           ><Avatar className="header-profileicon-avatar" src={photo} /></NavLink>
-          
           <NavLink
             to="/profile"
             activeStyle={{ borderBottom: 'solid 3px #0095b3' }}
