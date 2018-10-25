@@ -60,9 +60,9 @@ class CurveChart extends React.Component {
           </YAxis>
           <Tooltip/>
 
-          <Area isAnimationActive={false} dots={false} stackOffset={'none'} dataKey="value" name={'price'} key={'price'} stroke='blue' fill='none'/>
+          <Area isAnimationActive={false} dots={false} stackOffset={'none'} dataKey="value" name={'price'} key={'price'} stroke='#0095b3' fill='none'/>
 
-          <Area isAnimationActive={false} stackOffset={'none'} dataKey="sell" stroke="blue" fill='blue' />
+          <Area isAnimationActive={false} stackOffset={'none'} dataKey="sell" stroke="#0095b3" fill='#0095b3' />
 
           <ReferenceDot
             isFront={true}
@@ -71,8 +71,8 @@ class CurveChart extends React.Component {
             y={currentPoint.value}
             r={16}
             // fill="blue"
-            stroke="blue"
-            label={currentPoint.value}
+            stroke="#0095b3"
+            label={currentPoint.value.toFixed(2)}
           />
 
         </ComposedChart>

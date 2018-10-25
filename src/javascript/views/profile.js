@@ -52,7 +52,7 @@ class Profile extends React.Component {
       username: this.props.user.username,
       interests: this.props.user.interests,
       hangoutPlaces: [],
-      balance: 0,
+      balance: null,
       endorsement: this.props.endorsement,
       address: window.web3 ? window.web3.eth.accounts[0] : null,
       tokenContract: initContract(Blockgeeks),
@@ -61,13 +61,15 @@ class Profile extends React.Component {
       metamaskConnected: null,
       token_amount: 100,
       showBuy: true,
-      balanceToEth: 0,
+      balanceToEth: null,
+      poolBalance: null
     };
   }
 
   componentDidMount() {
     document.title = 'Profile | CryptoGeeks';
     this.getEtherPrice();
+    this.getPoolBalance();
     web3.currentProvider.publicConfigStore.on('update', () => this.setState({
       metamaskConnected: web3.currentProvider.publicConfigStore._state.selectedAddress,
     }));
@@ -213,6 +215,22 @@ class Profile extends React.Component {
     this._getSellReward(this.state.token_amount ? this.state.token_amount : 0, 'getEtherPrice');
   }
 
+  getPoolBalance() {
+    const getPoolbalance = this.state.tokenContract ? this.state.tokenContract.poolBalance : null;
+    window.web3
+      && getPoolbalance(
+        {
+          from: window.web3.eth.accounts ? window.web3.eth.accounts[0] : null,
+          gas: 300000,
+          value: 0,
+        },
+        (error, data) => {
+          this.setState({ poolBalance: data.toNumber() });
+          this.state, 'poolBalance';
+        },
+      );
+  }
+
   handleInputChange(event) {
     const { target } = event;
     const { value, name } = target;
@@ -279,10 +297,11 @@ class Profile extends React.Component {
         Logout
       </a>
     ) : null;
-
+    
+    //invSlope is 10000 in the current (linear) bonding curve => price = 0.0001 * tokenSupply
     const xAxis = this.state.totalSupply / multiplier;
     const yAxis = 0.0001 * xAxis;
-    const curveData = [[{ x: 0, y: 0 }, { x: xAxis, y: yAxis }, { x: 10000, y: 1 }]];
+    const poolBalance = this.state.poolBalance / multiplier;
 
     return (
       <div className="accountContainer">
@@ -473,8 +492,8 @@ class Profile extends React.Component {
 
                   <CurveChart curveData={{
                     totalSupply: xAxis,
-                    poolBalance: 120,
-                    invSlope: 1,
+                    poolBalance: poolBalance,
+                    invSlope: 10000,
                     exponent: 1,
                     currentPrice: yAxis
                   }} 
