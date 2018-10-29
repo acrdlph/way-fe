@@ -1,20 +1,26 @@
-html, body {
-  height: 100%;
-  margin: 0px;
-  padding: 0px;
-  background-color: #ffffff;
-  min-height: 100%;
-  position: relative;
-}
-
-.divider {
-  background-color: #dddddd;
-  height: 2px;
-  margin: 5px;
-};
+@import './variables';
 
 #root {
-  height: 100%;
-  min-height: 100%;
-  position: relative;
+  background-color: @background;
+  height: 100vh;
+}
+
+html {
+  background-color: @background;
+  height: 100vh;
+}
+
+h3,
+p {
+  font-family: @font;
+}
+
+h3 {
+  font-size: @h3;
+  color: @black;
+}
+
+p {
+  font-size: @p;
+  color: @grey;
 }
