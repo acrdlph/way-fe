@@ -1,8 +1,19 @@
 @import '../variables';
 
 .infobox {
+  border-radius: @borderRadius;
+  background-color: @red;
+  box-shadow: @boxShadow;
+  font-family: @font;
+  color: @boxColor;
+  position: absolute;
   padding: 5px;
-  margin-top: 10px;
-  border-radius: 5px;
-  background-color:#ee2c0a;
+  top: 12em;
+}
+
+@media only screen and (max-width: 600px) {
+  .infobox {
+    top: 15.3em;
+    font-size: 13px;
+  }
 }

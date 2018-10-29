@@ -82,7 +82,6 @@ class Signup extends React.Component {
             </div>
             <div className="loginBox">
               <Login
-                className="loginBoxLogin"
                 pathname={this.props.location.pathname}
                 onClick={saveAndContinue}
                 locationId={this.locationId}

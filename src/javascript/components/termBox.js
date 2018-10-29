@@ -1,4 +1,5 @@
 import React from 'react';
+import '../views/signup.less';
 
 function TermBox(props) {
   const { goToFeedback, history } = props;
