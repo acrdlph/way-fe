@@ -1,14 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import RaisedButton from 'material-ui/RaisedButton';
-import _ from 'lodash';
-import TermsAndPolicy from '../components/terms-and-policy';
 import { trackPageView } from '../util/google-analytics';
 import CircularProgress from '../components/circularProgress';
 import TermBox from '../components/termBox';
-import { PARTNER_LOCATIONS } from '../util/constants';
 import { loadPartnerData } from '../stores/partnerStore';
-import Footer from '../components/footer';
 import Login from './login';
 import { renderLocationInput, saveAndContinue } from '../util/location';
 import './signup.less';

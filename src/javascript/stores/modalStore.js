@@ -3,7 +3,7 @@ const types = {
   INCOMPLETE: 'OPEN_INCOMPLETE',
 };
 
-export const showOnBoardingModal = showModal => ({
+export const showOnboardingList = showModal => ({
   type: types.ONBOARD,
   showModal,
 });
@@ -14,7 +14,7 @@ export const showIncompleteModal = showModal => ({
 });
 
 const initialState = {
-  showOnBoardingModal: false,
+  showOnboardingList: false,
   showIncompleteModal: false,
 };
 
@@ -23,7 +23,7 @@ const reducer = (state = initialState, action) => {
     case types.ONBOARD:
       return {
         ...state,
-        showOnBoardingModal: action.showModal,
+        showOnboardingList: action.showModal,
       };
     case types.INCOMPLETE:
       return {
