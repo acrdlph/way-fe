@@ -4,6 +4,14 @@
   margin-top: 6em;
   padding-right: 238px;
   padding-left: 52px;
+  @media (max-width: 900px) {
+    padding-right: 3em;
+    padding-left: 3em;
+  }
+  @media (max-width: 500px) {
+    padding-right: 1.5em;
+    padding-left: 1.5em;
+  }
 }
 
 .menuBox {
@@ -11,6 +19,9 @@
   flex-direction: column;
   padding-right: 3em;
   position: fixed;
+  @media (max-width: 900px) {
+    display: none;
+  }
 }
 
 .menuBox a {
@@ -43,6 +54,9 @@
 .profileContainer {
   width: 100%;
   padding-left: 9em;
+  @media (max-width: 900px) {
+    padding-left: 0;
+  }
 }
 
 .repGeekBox {
@@ -139,6 +153,9 @@
 .accountBox form,
 .swapBox {
   padding: 0 5em;
+  @media (max-width: 600px) {
+    padding: 0 1em;
+  }
 }
 
 .profileBox label,
@@ -242,6 +259,9 @@ h4 {
   margin-top: 1.5em;
   border-radius: 4px;
   box-shadow: 0 1px 3px 0 rgba(33, 44, 48, 0.15);
+  @media (max-width: 600px) {
+    display: none;
+  }
 }
 
 .tokenLive {
