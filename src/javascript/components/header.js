@@ -15,7 +15,7 @@ import './header.less';
 
 const createBackButton = to => (
   <NavLink to={to}>
-    <span className="glyphicon glyphicon glyphicon-chevron-left" />
+    <span className="" />
   </NavLink>
 );
 
@@ -65,14 +65,9 @@ class Header extends React.Component {
     const profileIcon = iconHide => (
       <div className={iconHide ? 'borderLine-hidden' : 'borderLine'}>
         <div className="header-profileicon">
+          <Avatar className="header-profileicon-avatar" onClick={()=> this.props.history.push('/profile')} src={photo} />
           <NavLink
             to="/profile"
-            className=""
-            onClick={this.handleNavClick}
-          ><Avatar className="header-profileicon-avatar" src={photo} /></NavLink>
-          <NavLink
-            to="/profile"
-            activeStyle={{ borderBottom: 'solid 3px #0095b3' }}
             className="header-profileicon-username"
           >
             {username || name}
@@ -86,13 +81,11 @@ class Header extends React.Component {
         <NavLink
           to="/waitlist"
           onClick={() => sessionStorage.setItem('scrollPosition', 0)}
-          activeStyle={{ borderBottom: 'solid 3px #0095b3', paddingBottom: '1em' }}
         >
           Geek List
         </NavLink>
         <NavLink
           to="/qna"
-          activeStyle={{ borderBottom: 'solid 3px #0095b3', paddingBottom: '1em' }}
         >
           Local Discussions
         </NavLink>
