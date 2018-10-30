@@ -71,7 +71,6 @@ class WaitList extends React.Component {
     document.title = 'People | CryptoGeeks';
 
     const contract = initContract(Blockgeeks);
-    this.setState({ contract, distance: this.props.user.distance });
   }
 
   componentWillUnmount() {
@@ -114,6 +113,7 @@ class WaitList extends React.Component {
     const list = [];
     const { isUserOnboarded, chat } = this.props;
     const { distance, reputation, showNotification } = this.state;
+    const sliderValue = distance !== 'undefined' ? Number(distance) : 5000;
     const Modal = this.props.showIncompleteModal && (
       <GenericModal content={incompleteProfileModal} />
     );
@@ -178,7 +178,7 @@ class WaitList extends React.Component {
               max={10000}
               step={10}
               thumb={<img src="assets/10-icon-bars.svg" alt="slider thumb icon" />}
-              value={distance !== 'undefined' ? distance : 5000}
+              value={sliderValue}
               onChange={this.changeDistance}
             />
           </div>

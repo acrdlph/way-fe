@@ -2,7 +2,6 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import { NavHashLink } from 'react-router-hash-link';
-import { LineChart } from 'react-easy-chart';
 import {
   Form, FormGroup, Input, Label, Button,
 } from 'reactstrap';
@@ -62,7 +61,7 @@ class Profile extends React.Component {
       token_amount: 100,
       showBuy: true,
       balanceToEth: null,
-      poolBalance: null
+      poolBalance: null,
     };
   }
 
@@ -292,13 +291,13 @@ class Profile extends React.Component {
     const imageSelectionModal = this.props.showModal ? (
       <ImageSelection onUpload={this.refreshProfile} />
     ) : null;
-    const logoutButton = this.props.isRegisteredUser ? (
+    const logoutButton = (
       <a onClick={this.onLogout} className="logoutButton">
         Logout
       </a>
-    ) : null;
-    
-    //invSlope is 10000 in the current (linear) bonding curve => price = 0.0001 * tokenSupply
+    );
+
+    // invSlope is 10000 in the current (linear) bonding curve => price = 0.0001 * tokenSupply
     const xAxis = this.state.totalSupply / multiplier;
     const yAxis = 0.0001 * xAxis;
     const poolBalance = this.state.poolBalance / multiplier;
@@ -336,7 +335,7 @@ class Profile extends React.Component {
                 <h5>
                   {this.state.endorsement}
                   {' '}
-                  Reputation
+Reputation
                 </h5>
                 {/* <p>earned from 32 people</p> */}
               </div>
@@ -348,7 +347,7 @@ class Profile extends React.Component {
                 <h5>
                   {this.state.balance}
                   {' '}
-                  GEEK
+GEEK
                 </h5>
                 <p>{`worth ${Number(this.state.balanceToEth).toFixed(2)} ETH`}</p>
               </div>
@@ -416,17 +415,17 @@ class Profile extends React.Component {
                     <p>
                       <span className="greendot" />
                       {' '}
-                      Live on the
+Live on the
                       <b> Rinkeby Testnet</b>
                     </p>
                   ) : (
-                      <p>
-                        <span className="reddot" />
-                        {' '}
-                        Please connect to the
+                    <p>
+                      <span className="reddot" />
+                      {' '}
+Please connect to the
                       <b> Rinkeby Testnet</b>
-                      </p>
-                    ))}
+                    </p>
+                  ))}
               </div>
             </div>
             {this.state.metamaskConnected ? (
@@ -463,50 +462,49 @@ class Profile extends React.Component {
                     </div>
                   </div>
                 ) : (
-                    <div>
-                      <p>Sell GEEK token back to the bonding curve to cash out and receive ETH.</p>
-                      <Form className="swapBox">
-                        <FormGroup>
-                          <Label for="hangoutPlaces">Amount of Token</Label>
-                          <Input
-                            name="token_amount"
-                            type="number"
-                            value={this.state.token_amount}
-                            onChange={this.handleInputChange}
-                          />
-                        </FormGroup>
-                        <img src="assets/20-icon-lock.svg" color="#c3cfd9" className="swap" />
-                        <FormGroup>
-                          <Label for="hangoutPlaces">Price in ETH</Label>
-                          <Input type="number" value={this.state.priceToEtherSell} />
-                        </FormGroup>
-                      </Form>
-                      <div className="buyBtnBox">
-                        <Button className="buyBtn">
-                          {`Sell ${this.state.token_amount} GEEK on Testnet`}
-                        </Button>
-                      </div>
+                  <div>
+                    <p>Sell GEEK token back to the bonding curve to cash out and receive ETH.</p>
+                    <Form className="swapBox">
+                      <FormGroup>
+                        <Label for="hangoutPlaces">Amount of Token</Label>
+                        <Input
+                          name="token_amount"
+                          type="number"
+                          value={this.state.token_amount}
+                          onChange={this.handleInputChange}
+                        />
+                      </FormGroup>
+                      <img src="assets/20-icon-lock.svg" color="#c3cfd9" className="swap" />
+                      <FormGroup>
+                        <Label for="hangoutPlaces">Price in ETH</Label>
+                        <Input type="number" value={this.state.priceToEtherSell} />
+                      </FormGroup>
+                    </Form>
+                    <div className="buyBtnBox">
+                      <Button className="buyBtn">
+                        {`Sell ${this.state.token_amount} GEEK on Testnet`}
+                      </Button>
                     </div>
-                  )}
+                  </div>
+                )}
                 <div className="bondingCurve">
-
-                  <CurveChart curveData={{
-                    totalSupply: xAxis,
-                    poolBalance: poolBalance,
-                    invSlope: 10000,
-                    exponent: 1,
-                    currentPrice: yAxis
-                  }} 
-                  margin={{
-                    top: 30,
-                    right: 30,
-                    bottom: 50,
-                    left: 70,
-                  }}
-                  width={500}
-                  height={400}
+                  <CurveChart
+                    curveData={{
+                      totalSupply: xAxis,
+                      poolBalance,
+                      invSlope: 10000,
+                      exponent: 1,
+                      currentPrice: yAxis,
+                    }}
+                    margin={{
+                      top: 30,
+                      right: 30,
+                      bottom: 50,
+                      left: 70,
+                    }}
+                    width={500}
+                    height={400}
                   />
-
                 </div>
                 <div className="contractDetails">
                   <p>See contract details:</p>
@@ -520,14 +518,14 @@ class Profile extends React.Component {
                 </div>
               </div>
             ) : (
-                <div className="alertRedBox">
-                  <img src="assets/48-icon-reputation.svg" color="#6b8299" className="bookmark" />
-                  <div>
-                    <h5>No ETH address connected</h5>
-                    <p>Please make sure your Ethereum client is connected.</p>
-                  </div>
+              <div className="alertRedBox">
+                <img src="assets/48-icon-reputation.svg" color="#6b8299" className="bookmark" />
+                <div>
+                  <h5>No ETH address connected</h5>
+                  <p>Please make sure your Ethereum client is connected.</p>
                 </div>
-              )}
+              </div>
+            )}
           </div>
           <div className="accountBox" id="account">
             <h4>Account</h4>

@@ -2,8 +2,11 @@ import React from 'react';
 import './incompleteProfileModalContent.less';
 
 const incompleteProfileModal = (
-  <div>
-    <h2>Enter your name and interests to start communicating with other geeks </h2>
+  <div className="box">
+    <h2>
+      Before connecting with other community members, you have to tell them a bit more about
+      yourself.
+    </h2>
   </div>
 );
 export default incompleteProfileModal;

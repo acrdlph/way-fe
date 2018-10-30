@@ -23,6 +23,7 @@ const awaitFetch = async function awaitFetch(dispatch) {
         upvotes: entry.upvotes,
         content: entry.content,
         replies: entry.replies,
+        geolocation: entry.geolocation,
       });
     });
     dispatch({
