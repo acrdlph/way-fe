@@ -7,10 +7,6 @@ import { extractLocationName } from './location-header';
 import ChatHeader from './chat-header';
 import { showOnboardingList } from '../stores/modalStore';
 import GenericModal from './Modal';
-import onBoardingListStep1 from './onBoardingListStep1';
-import onBoardingListStep2 from './onBoardingListStep2';
-import onBoardingListStep3 from './onBoardingListStep3';
-import onBoardingListStep4 from './onBoardingListStep4';
 import './header.less';
 
 const createBackButton = to => (
@@ -65,17 +61,15 @@ class Header extends React.Component {
     const profileIcon = iconHide => (
       <div className={iconHide ? 'borderLine-hidden' : 'borderLine'}>
         <div className="header-profileicon">
-          <NavLink
-            to="/profile"
-            className=""
-            onClick={this.handleNavClick}
-          ><Avatar className="header-profileicon-avatar" src={photo} /></NavLink>
+          <NavLink to="/profile" className="" onClick={this.handleNavClick}>
+            <Avatar className="header-profileicon-avatar" src={photo} />
+          </NavLink>
           <NavLink
             to="/profile"
             activeStyle={{ borderBottom: 'solid 3px #0095b3' }}
             className="header-profileicon-username"
           >
-            {username || name}
+            {sessionStorage.getItem('username')}
           </NavLink>
         </div>
       </div>

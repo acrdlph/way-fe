@@ -111,11 +111,12 @@ export default function WaitListItem(props) {
         <div className="locationBox">
           {hangoutPlaces
             && hangoutPlaces.length !== 0 && <img src="assets/24-icon-spots.svg" className="icons" />}
-          {hangoutPlaces.map(place => (
-            <p key={place.id} className="locationText">
-              {place.place}
-            </p>
-          ))}
+          {hangoutPlaces
+            && hangoutPlaces.map(place => (
+              <p key={place.id} className="locationText">
+                {place.place}
+              </p>
+            ))}
         </div>
       </div>
     </div>

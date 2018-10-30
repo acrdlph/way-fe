@@ -13,14 +13,12 @@ import TermBox from '../components/termBox';
 import './registration.less';
 
 const validateUsername = (username) => {
-  console.log(username, 'skaeo');
   if (username && username.trim().length > 2) {
     // TODO: implement real validation
     return true;
   }
   return false;
 };
-const calledFrom = 'signup';
 
 const validateEmailAddress = (email) => {
   if (email && email.trim().length > 4) {
@@ -84,7 +82,6 @@ class Onboarding extends React.Component {
         this.showSearchBox,
         this.props.history,
         this.toggleDiv,
-        calledFrom,
       );
     }
   }
@@ -171,7 +168,6 @@ class Onboarding extends React.Component {
             this.showSearchBox,
             this.props.history,
             this.toggleDiv,
-            calledFrom,
           )
           : this.props.registerAccount(data);
       }

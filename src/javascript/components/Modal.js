@@ -13,7 +13,7 @@ import onBoardingProfileStep1 from './onBoardingProfileStep1';
 import onBoardingProfileStep2 from './onBoardingProfileStep2';
 import onBoardingProfileStep3 from './onBoardingProfileStep3';
 import onBoardingProfileStep4 from './onBoardingProfileStep4';
-import './Modal.less'
+import './Modal.less';
 
 const customStyles = {
   content: {
@@ -54,11 +54,13 @@ class GenericModal extends React.Component {
     this.props.close();
   }
 
-  prevStep() {
+  prevStep(e) {
+    e.preventDefault();
     this.setState({ step: this.state.step - 1 });
   }
 
-  nextStep() {
+  nextStep(e) {
+    e.preventDefault();
     this.setState({ step: this.state.step + 1 });
   }
 
@@ -128,19 +130,35 @@ class GenericModal extends React.Component {
           contentLabel="Example Modal"
         >
           {this.props.content || onBoardingSelectedContent}
-          <form>
-            {!(
-              (triggeredBy === 'waitlist'
-                || triggeredBy === 'local'
-                || triggeredBy === 'profile')
-              && step === 1
-            ) && <button onClick={this.prevStep} className="arrowPreview"><img src="assets/40-icon-back.svg " alt="arrow to next" /></button>}
-            <button onClick={this.closeModal} className="buttonRemove"><img src="assets/10-icon-remove.svg " alt="arrow to next" /></button>
-            {!(
-              ((triggeredBy === 'waitlist' || triggeredBy === 'profile') && step === 4)
-              || (triggeredBy === 'local' && step === 3)
-            ) && <button onClick={this.nextStep} className="arrowNext"><img src="assets/40-icon-back.svg" alt="arrow to back"/></button>}
+          {triggeredBy ? (
+            <form>
+              {!(
+                (triggeredBy === 'waitlist'
+                  || triggeredBy === 'local'
+                  || triggeredBy === 'profile')
+                && step === 1
+              ) && (
+                <button onClick={e => this.prevStep(e)} className="arrowPreview">
+                  <img src="assets/40-icon-back.svg " alt="arrow to next" />
+                </button>
+              )}
+              <button onClick={this.closeModal} className="buttonRemove">
+                <img src="assets/10-icon-remove.svg " alt="arrow to next" />
+              </button>
+              {!(
+                ((triggeredBy === 'waitlist' || triggeredBy === 'profile') && step === 4)
+                || (triggeredBy === 'local' && step === 3)
+              ) && (
+                <button onClick={e => this.nextStep(e)} className="arrowNext">
+                  <img src="assets/40-icon-back.svg" alt="arrow to back" />
+                </button>
+              )}
             </form>
+          ) : (
+            <button onClick={this.closeModal} className="buttonRemove">
+              <img src="assets/10-icon-remove.svg " alt="arrow to next" />
+            </button>
+          )}
         </Modal>
       </div>
     );

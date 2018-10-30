@@ -112,7 +112,6 @@ export const login = (loginname, password) => (dispatch) => {
       sessionStorage.setItem('token', data.token);
       sessionStorage.setItem('username', data.username);
       sessionStorage.setItem('distance', data.distance);
-      console.log(data);
       dispatch({
         type: types.ACCOUNT_LOGIN_PASSED,
         userId: data.id,
@@ -168,6 +167,7 @@ const reducer = (state = initialState, action) => {
         wasRegistrationSuccessful: null,
       };
     case types.ACCOUNT_REGISTER_PASSED:
+      sessionStorage.setItem('onBoarded', false);
       return {
         ...state,
         userId: action.data.id,

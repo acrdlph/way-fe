@@ -5,7 +5,6 @@ function TermBox(props) {
   const { goToFeedback, history } = props;
   return (
     <div className="termsBoxcontainer">
-      {console.log(history, 'ise parelthon')}
       <div className="termsBox">
         <p>
           By continuing, you agree to our
