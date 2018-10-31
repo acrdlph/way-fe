@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import Avatar from '@material-ui/core/Avatar';
 import { PAGES_WITH_HEADER } from '../util/constants';
-import { extractLocationName } from './location-header';
 import ChatHeader from './chat-header';
 import { showOnboardingList } from '../stores/modalStore';
 import GenericModal from './Modal';
@@ -20,7 +19,31 @@ class Header extends React.Component {
     super(props);
     this.openTheModal = this.openTheModal.bind(this);
 
-    this.state = { step: 1 };
+    this.state = { shouldShowModal: false };
+  }
+
+  componentWillReceiveProps(props) {
+    const { pathname } = this.props.location;
+
+    if (this.props.location !== props.location) {
+      this.forceUpdate();
+    }
+    const isInLoc = pathname.includes('qna');
+    const isInList = pathname.includes('waitlist');
+    const isInProfile = pathname.includes('profile');
+    const { seenModals } = props;
+    if (seenModals) {
+      if (
+        (isInProfile && !seenModals.seenProfModal)
+        || (isInList && !seenModals.seenListModal)
+        || (isInLoc && !seenModals.seenLocModal)
+      ) {
+        console.log(seenModals);
+        this.setState({ shouldShowModal: true });
+      } else {
+        this.setState({ shouldShowModal: false });
+      }
+    }
   }
 
   openTheModal() {
@@ -29,11 +52,16 @@ class Header extends React.Component {
 
   render() {
     const {
-      username, photo, locationName, chatPartner, name, waitlist,
+      username, photo, chatPartner, name, waitlist, seenModals,
     } = this.props;
     const { pathname } = this.props.location;
     const isHeaderVisible = _.filter(PAGES_WITH_HEADER, page => pathname.includes(page)).length > 0;
     const isInChat = pathname.includes('chat');
+    const isInFeedback = pathname.includes('feedback');
+    const isInLegalNotice = pathname.includes('legalnotice');
+    const isInSignup = pathname.includes('register');
+    const isInProfile = pathname.includes('profile');
+
     if (!isHeaderVisible) {
       return null;
     }
@@ -43,19 +71,19 @@ class Header extends React.Component {
     }
 
     let backButton = null;
+    console.log(seenModals, 'skata');
+    // const shouldShowModal = (isInProfile && !seenModals.seenProfModal)
+    //   || (isInLoc && !seenModals.seenLocModal)
+    //   || (isInList && !seenModals.seenListModal);
 
-    const isInProfile = pathname.includes('profile');
     if (isInChat || isInProfile) {
       backButton = createBackButton('/waitlist');
     }
-    const isInFeedback = this.props.location.pathname.includes('feedback');
-    const isInLegalNotice = this.props.location.pathname.includes('legalnotice');
     if (isInFeedback || isInLegalNotice) {
       backButton = createBackButton('/');
     }
-    const isInSignup = this.props.location.pathname.includes('register');
-    const Modal = this.props.showOnboardingList && (
-      <GenericModal pathname={this.props.location.pathname} />
+    const Modal = (this.props.showOnboardingList || this.state.shouldShowModal) && (
+      <GenericModal pathname={pathname} />
     );
 
     const profileIcon = iconHide => (
@@ -101,13 +129,6 @@ class Header extends React.Component {
       </div>
     );
 
-    const location = locationName ? (
-      <div className="header-location">
-        <NavLink to="/signup">{locationName}</NavLink>
-        <img src="assets/waitlist-location-icon.png" />
-      </div>
-    ) : null;
-
     return (
       <div className="header">
         <div className="logo">
@@ -126,7 +147,8 @@ class Header extends React.Component {
           {pathname === '/register' || pathname === '/feedback'
             ? profileIcon(true)
             : profileIcon(false)}
-
+          {seenModals && !seenModals.seenProfModal && <div>Edit your profile here</div>}
+          {seenModals && !seenModals.seenLocModal && <div>Share your thoughts here</div>}
           <div>
             {Modal}
             {questionMarkIcon}
@@ -139,9 +161,9 @@ class Header extends React.Component {
 
 const mapStateToProps = state => ({
   username: _.get(state.user, 'data.username'),
+  seenModals: _.get(state.user, 'data.seenModals'),
   name: _.get(state.user, 'data.name', ''),
   photo: _.get(state.user, 'data.photo', 'assets/32-icon-avatar.svg'),
-  locationName: extractLocationName(state),
   chatPartner: _.get(state.chatPartner, 'data'),
   showOnboardingList: state.modalStore.showOnboardingList,
   waitlist: state.waitlist,

@@ -167,7 +167,6 @@ const reducer = (state = initialState, action) => {
         wasRegistrationSuccessful: null,
       };
     case types.ACCOUNT_REGISTER_PASSED:
-      sessionStorage.setItem('onBoarded', false);
       return {
         ...state,
         userId: action.data.id,
