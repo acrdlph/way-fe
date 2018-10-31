@@ -410,7 +410,7 @@ class Profile extends React.Component {
           <div className="tokenBox" id="token">
             <div className="tokenLive">
               <h4>Token</h4>
-              <div className="metaMast">
+              <div className="metaMask">
                 {this.state.metamaskConnected
                   && (web3.version.network === '4' ? (
                     <p>
