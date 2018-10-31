@@ -1,6 +1,7 @@
 import React from 'react';
 import Modal from 'react-modal';
 import { connect } from 'react-redux';
+import { updateUserData } from '../stores/userStore';
 import { showOnboardingList, showIncompleteModal } from '../stores/modalStore';
 import onBoardingListStep1 from './onBoardingListStep1';
 import onBoardingListStep2 from './onBoardingListStep2';
@@ -50,7 +51,38 @@ class GenericModal extends React.Component {
     this.setState({ modalIsOpen: true });
   }
 
-  closeModal() {
+  closeModal(e) {
+    e.preventDefault();
+    const userId = sessionStorage.getItem('userId');
+    const { pathname } = this.props;
+    const seenModals = this.props.user.seenModals;
+    let data;
+    if (pathname.includes('waitlist')) {
+      data = {
+        seenModals: {
+          seenProfModal: seenModals.seenProfModal,
+          seenLocModal: seenModals.seenLocModal,
+          seenListModal: true,
+        },
+      };
+    } else if (pathname.includes('qna')) {
+      data = {
+        seenModals: {
+          seenProfModal: seenModals.seenProfModal,
+          seenLocModal: true,
+          seenListModal: seenModals.seenListModal,
+        },
+      };
+    } else if (pathname.includes('profile')) {
+      data = {
+        seenModals: {
+          seenProfModal: true,
+          seenLocModal: seenModals.seenLocModal,
+          seenListModal: seenModals.seenListModal,
+        },
+      };
+    }
+    this.props.updateUserData(userId, data);
     this.props.close();
   }
 
@@ -69,6 +101,7 @@ class GenericModal extends React.Component {
     let triggeredBy;
 
     const { pathname } = this.props;
+
     const { step } = this.state;
     switch (true) {
       case /\b(waitlist).*/.test(pathname):
@@ -155,7 +188,7 @@ class GenericModal extends React.Component {
               )}
             </form>
           ) : (
-            <button onClick={this.closeModal} className="buttonRemove">
+            <button onClick={e => this.closeModal(e)} className="buttonRemove">
               <img src="assets/10-icon-remove.svg " alt="arrow to next" />
             </button>
           )}
@@ -165,14 +198,18 @@ class GenericModal extends React.Component {
   }
 }
 
+const mapStateToProps = state => ({
+  user: state.user.data,
+});
 const mapDispatchToProps = dispatch => ({
   close: () => {
     dispatch(showOnboardingList(false));
     dispatch(showIncompleteModal(false));
   },
+  updateUserData: (userId, data) => dispatch(updateUserData(userId, data)),
 });
 
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps,
 )(GenericModal);

@@ -11,9 +11,7 @@ import Avatar from '@material-ui/core/Avatar';
 import { trackPageView } from '../util/google-analytics';
 import ImageSelection from '../components/image-selection-modal';
 import { showModal } from '../stores/profileImageStore';
-import {
-  loadUserData, updateUserData, editUserData, isOnboarded,
-} from '../stores/userStore';
+import { updateUserData } from '../stores/userStore';
 import './profile.less';
 import Web3Component, { initContract, getWeb3, contractAddress } from '../components/Web3Component';
 import Blockgeeks from '../../abi/Blockgeeks.json';
@@ -34,7 +32,6 @@ class Profile extends React.Component {
     if (!usernameFromPath && (props.username || userId)) {
       this.props.history.push(`/profile/${props.username || userId}`);
     }
-    this.props.loadUserData(usernameFromPath);
     this.onSave = this.onSave.bind(this);
     this.onBuyHandler = this.onBuyHandler.bind(this);
     this.onSellHandler = this.onSellHandler.bind(this);
@@ -69,9 +66,11 @@ class Profile extends React.Component {
     document.title = 'Profile | CryptoGeeks';
     this.getEtherPrice();
     this.getPoolBalance();
-    web3.currentProvider.publicConfigStore.on('update', () => this.setState({
-      metamaskConnected: web3.currentProvider.publicConfigStore._state.selectedAddress,
-    }));
+    let web3;
+    web3
+      && web3.currentProvider.publicConfigStore.on('update', () => this.setState({
+        metamaskConnected: web3.currentProvider.publicConfigStore._state.selectedAddress,
+      }));
   }
 
   componentWillReceiveProps(props) {
@@ -565,7 +564,6 @@ const mapStateToProps = state => ({
   showModal: state.profileImage.showModal,
 });
 const mapDispatchToProps = dispatch => ({
-  loadUserData: userId => dispatch(loadUserData(userId)),
   updateUserData: (userId, data) => dispatch(updateUserData(userId, data)),
   openModal: () => dispatch(showModal(true)),
 });
