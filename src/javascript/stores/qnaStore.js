@@ -12,7 +12,9 @@ const types = {
 const awaitFetch = async function awaitFetch(dispatch) {
   const endpoint = 'api/question';
   try {
-    const result = await fetch(endpoint);
+    const result = await fetch(endpoint, {
+      headers: getAuthHeaders(),
+    });
     const resJson = await result.json();
     const questions = [];
     _.each(resJson, (entry) => {
