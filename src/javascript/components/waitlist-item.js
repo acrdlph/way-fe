@@ -93,13 +93,6 @@ export default function WaitListItem(props) {
                 <img src="assets/32-icon-chat.svg" className="icons" />
               </button>
             </li>
-            {/*
-            <li className="endorseBox">
-              <button type="button" onClick={props.onClick} className="waitlist-item-button">
-              <img src="assets/32-icon-meet.svg" className="icons" />
-              </button>
-            </li>
-            */}
           </ul>
         )}
       </div>

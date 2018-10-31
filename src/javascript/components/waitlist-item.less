@@ -32,6 +32,10 @@
 .waitlist-item-avatar-img {
   width: 80px;
   height: 80px;
+  @media (max-width: 600px) {
+    width: 40px;
+    height: 40px;
+  }
 }
 
 .endorseBox {
@@ -40,6 +44,12 @@
 
 ul.waitlist-item-actions {
   display: flex;
+  @media (max-width: 600px) {
+    position: relative;
+    top: 4em;
+    padding-left: 0;
+    right: 11.8em;
+  }
 }
 
 ul.waitlist-item-actions li {
@@ -52,13 +62,15 @@ ul.waitlist-item-actions li {
 }
 
 .waitlist-item-data-interests {
-  font-size: 14px;
+  font-size: 16px;
   margin-left: 0.3em;
   font-family: 'Roboto', sans-serif;
-  font-size: 16px;
   line-height: 1.5;
   letter-spacing: normal;
   color: #6b8299;
+  @media (max-width: 600px) {
+    font-size: 12px;
+  }
 }
 
 .waitlist-item-data-address {
@@ -69,6 +81,9 @@ ul.waitlist-item-actions li {
   max-width: 116px;
   margin-bottom: 0px;
   color: #a3b3bf;
+  @media (max-width: 600px) {
+    font-size: 12px;
+  }
 }
 .waitlist-item-data-backing {
   font-size: 10px;
@@ -79,6 +94,10 @@ ul.waitlist-item-actions li {
   font-size: 20px;
   color: #212c30;
   margin: 0px;
+  @media (max-width: 600px) {
+    font-size: 16px;
+  }
+  
 }
 
 .waitlist-item-button {
@@ -125,6 +144,10 @@ ul.waitlist-item-actions li {
 .text-location {
   margin-left: 6.5em;
   border-top: 1px solid rgba(150, 167, 187, 0.2);
+  @media (max-width: 600px) {
+    margin-left: 0;
+    margin-top: 3em;
+  }
 }
 
 .quoteText {
@@ -149,15 +172,16 @@ ul.waitlist-item-actions li {
 }
 
 .locationText {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  font-size: 14px;
+  color: #6b8299;
   border-radius: 16px;
   border: solid 1px #c3cfd9;
-  padding: 0 0.5em;
-  margin: 0 0.3em;
-  font-size: 14px;
-  font-weight: normal;
-  font-style: normal;
-  font-stretch: normal;
-  line-height: 1.71;
-  letter-spacing: normal;
-  color: #6b8299;
+  padding: .5em .5em;
+  margin: 0 .3em;
+  @media (max-width: 600px) {
+    font-size: 10px;
+  }
 }
