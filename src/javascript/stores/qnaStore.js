@@ -1,4 +1,5 @@
 import _ from 'lodash';
+import { getAuthHeaders } from '../util/headers';
 
 const types = {
   LOADING: 'QUESTION_LOADING',
