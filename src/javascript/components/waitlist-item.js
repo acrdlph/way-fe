@@ -47,54 +47,58 @@ export default function WaitListItem(props) {
   return (
     <div className="waitlist-item-parent">
       <div className="waitlist-item">
-        <div className={`waitlist-item-avatar ${alreadyContactedClass}`}>
-          <Avatar className="waitlist-item-avatar-img" src={photo} />
+        <div className="waitlistFirst">
+          <div className={`waitlist-item-avatar ${alreadyContactedClass}`}>
+            <Avatar className="waitlist-item-avatar-img" src={photo} />
+          </div>
+          <div className="waitlist-item-data">
+            <p className="waitlist-item-data-name">{name}</p>
+            <p className="waitlist-item-data-address">{address}</p>
+            <p className="waitlist-item-data-backing">
+              Reputation
+              <strong>{` ${endorsement} GEEK`}</strong>
+            </p>
+          </div>
         </div>
-        <div className="waitlist-item-data">
-          <p className="waitlist-item-data-name">{name}</p>
-          <p className="waitlist-item-data-address">{address}</p>
-          <p className="waitlist-item-data-backing">
-            Reputation
-            <strong>{` ${endorsement} GEEK`}</strong>
-          </p>
+        <div className="waitlistSecond">
+          <div className="waitlist-item-unread">{hasUnreadMessagesClass}</div>
+          {id !== sessionStorage.getItem('userId') && (
+            <div className="waitlist-item-actions">
+              <div className="endorseBox">
+                <button
+                  type="button"
+                  className="waitlist-item-button"
+                  onClick={() => {
+                    try {
+                      onEndorse(
+                        address,
+                        {
+                          from: window.web3.eth.accounts ? window.web3.eth.accounts[0] : ndivl,
+                          gas: 300000,
+                          value: web3.toWei(0, 'ether'),
+                        },
+                        (error, result) => {
+                          console.log(result);
+                          console.log(error);
+                        },
+                      );
+                    } catch (error) {
+                      alert('Metamask is not connected');
+                    }
+                  }}
+                >
+                  <img src="assets/32-icon-endorse.svg" className="icons" />
+                  {' Endorse '}
+                </button>
+              </div>
+              <div className="endorseBox">
+                <button type="button" onClick={props.onClick} className="waitlist-item-button">
+                  <img src="assets/32-icon-chat.svg" className="icons" />
+                </button>
+              </div>
+            </div>
+          )}
         </div>
-        <div className="waitlist-item-unread">{hasUnreadMessagesClass}</div>
-        {id !== sessionStorage.getItem('userId') && (
-          <ul className="waitlist-item-actions">
-            <li className="endorseBox">
-              <button
-                type="button"
-                className="waitlist-item-button"
-                onClick={() => {
-                  try {
-                    onEndorse(
-                      address,
-                      {
-                        from: window.web3.eth.accounts ? window.web3.eth.accounts[0] : null,
-                        gas: 300000,
-                        value: web3.toWei(0, 'ether'),
-                      },
-                      (error, result) => {
-                        console.log(result);
-                        console.log(error);
-                      },
-                    );
-                  } catch (error) {
-                    alert('Metamask is not connected');
-                  }
-                }}
-              >
-                <img src="assets/32-icon-endorse.svg" className="icons" />
-                {' Endorse '}
-              </button>
-            </li>
-            <li className="endorseBox">
-              <button type="button" onClick={props.onClick} className="waitlist-item-button">
-                <img src="assets/32-icon-chat.svg" className="icons" />
-              </button>
-            </li>
-          </ul>
-        )}
       </div>
       <div className="text-location">
         <div className="quoteText">
