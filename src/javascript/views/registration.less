@@ -1,7 +1,10 @@
+@import '../variables';
+
 .registrationContainer {
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin-top: 5em;
 }
 
 .textBox {
@@ -22,16 +25,17 @@
 
 .registrationBox {
   width: 496px;
-  height: 560px;
+  height: 570px;
   padding: 3em;
   padding-top: 1em;
-  border-radius: 4px;
-  background-color: #ffffff;
-  box-shadow: 0 1px 3px 0 rgba(33, 44, 48, 0.15);
+  margin-bottom: 1.5em;
+  border-radius: @borderRadius;
+  background-color: @boxColor;
+  box-shadow: @boxShadow;
 }
 
 .registrationBox input {
-  width: 400px;
+  width: 100%;
   height: 48px;
   border-radius: 4px;
   border: solid 2px #c3cfd9;
@@ -47,7 +51,7 @@
 }
 
 .registrationBox button {
-  width: 400px;
+  width: 100%;
   height: 48px;
   margin-top: 0.6em;
   margin-bottom: 2em;
@@ -58,6 +62,10 @@
 
 .registrationBox button:hover {
   background-color: #0095b3;
+}
+
+.recoverBox {
+
 }
 
 .arrowBox {
@@ -80,7 +88,7 @@
 }
 
 .signinBox {
-  border-top: 1px solid rgba(150, 167, 187, 0.2);
+  border-top: @borderTop;
   padding-top: 1.5em;
 }
 
@@ -102,4 +110,23 @@
 .topCircular {
   position: relative;
   top: -9em;
+}
+
+@media only screen and (max-width: 600px) {
+  .registrationContainer {
+    margin-top: 40px;
+  }
+  .registrationBox {
+    width: 100%;
+    height: 600px;
+    padding: 2em;
+    padding-top: 1em;
+    margin-bottom: 1.5em;
+  }
+  .textBox h3 {
+    font-size: 22px;
+  }
+  .signinBox p {
+    font-size: 11px;
+}
 }
