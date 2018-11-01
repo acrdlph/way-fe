@@ -105,6 +105,37 @@
   }
 }
 
+.modalsBoxes {
+  color: @boxColor;
+  font-size: 10px;
+  background-color: @blue;
+  position: absolute;
+  top: 6em;
+  padding: .4em;
+  border-radius: @borderRadius;
+}
+
+.modalsBoxes:before {
+  content: "";
+  position: absolute;
+  margin-left: 16px;
+  bottom: 13px;
+  left: 50%;
+  border-top: 10px solid transparent;
+  border-right: 10px solid @blue;
+  border-bottom: 10px solid transparent;
+  transform-origin: 0 0;
+  transform: rotate(90deg);
+}
+
+.shareBox {
+  left: 5em;
+  }
+
+.editBox {
+  right: 2.4em;
+}
+
 @media only screen and (min-width: 422px) {
   .listOrQuestion {
     a {
@@ -126,7 +157,20 @@
     text-decoration: none;
     color: #0095b3!important;
     border-bottom: 3px solid #0095b3;
-    }
+  }
+
+  .modalsBoxes {
+    font-size: 12px;
+    top: 4.5em;
+  }
+
+  .shareBox {
+    left: 10.4em;
+  }
+
+  .editBox {
+    right: 1.3em;
+  }
 }
 
 @media only screen and (min-width: 600px) {
@@ -155,6 +199,22 @@
     display: flex;
     margin-left: .5em;
   }
-  
+
+  .modalsBoxes {
+    font-size: 14px;
+    top: 3.7em;
+  }
+
+  .shareBox {
+    left: 12.5em;
+  }
+
+  .editBox {
+    right: 4em;
+  }
+
+  .modalsBoxes:before {
+    bottom: 19px;
+  }
 }
 
