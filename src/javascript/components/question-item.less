@@ -1,36 +1,76 @@
+.headPost {
+  box-shadow: 0 1px 0 0 rgba(36, 43, 51, 0.1);
+}
+
+.headPost p {
+  font-family: 'Roboto', sans-serif;
+  font-size: 12px;
+  padding-bottom: 2em;
+  padding-top: 0.3em;
+  color: #8899a6;
+  @media(max-width: 600px) {
+  font-size: 10px;
+  }
+}
+
 .titleWithX {
-    display: flex;
-    justify-content: space-between;
+  display: flex;
+  justify-content: space-between;
+}
+
+.titleWithX h4 {
+  @media(max-width: 600px) {
+  font-size: 16px;
+  }
 }
 
 .xhover {
-    color: #6b8299;
-    cursor: pointer;
+  color: #6b8299;
+  cursor: pointer;
 }
 
 .replyContainer {
-    background-color: #f2f9fa;
-    height: 2.5em;
-    border-radius: 20px;
+  display: flex;
+  background-color: #f2f9fa;
+  height: 2.5em;
+  border-radius: 20px;
+}
+
+.answerBtn p {
+  font-size: 16px;
+  font-weight: 500;
+  letter-spacing: normal;
+  color: #6b8299;
 }
 
 .replyBtn {
-    color: #0095b3;
-    background: transparent;
-    border: none;
+  color: #0095b3;
+  background: transparent;
+  border: none;
+  @media (max-width: 600px) {
+    font-size: 14px;
+  }
 }
 
 .replyBtn:hover {
-    background: transparent;
-    border: none;
-    color: #0095b3;
+  background: transparent;
+  border: none;
+  color: #0095b3;
+}
+
+.answerBox {
+  width: 100%;
 }
 
 .answerInput {
-    height: 2.5em;
-    background: #f2f9fa;
+  height: 2.5em;
+  background: #f2f9fa;
+  @media (max-width: 600px) {
+    height: 4em;
+    font-size: 10px;
+  }
 }
 
 .answerInput:focus {
-    background-color: #f2f9fa;
+  background-color: #f2f9fa;
 }

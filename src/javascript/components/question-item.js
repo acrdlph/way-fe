@@ -68,26 +68,20 @@ class QuestionItem extends React.Component {
         ))}
         <div className="answerBtn" />
         <div className="replyContainer">
-          <Row>
-            <Col xs="9" sm="0" md="0" lg="0">
-              <Form className="answerBox">
-                <Input
-                  className="answerInput"
-                  onChange={this.handleChangeReply}
-                  name="text"
-                  placeholder={
-                    replies.length === 0 ? 'Be the first to reply...' : 'Any thoughts on that?'
-                  }
-                  value={this.state.replyValue}
-                />
-              </Form>
-            </Col>
-            <Col xs="3" sm="1" md="1" lg="1">
-              <Button onClick={e => this.handleReplySubmit(e, _id)} className="replyBtn">
-                Reply
-              </Button>
-            </Col>
-          </Row>
+          <Form className="answerBox">
+            <Input
+              className="answerInput"
+              onChange={this.handleChangeReply}
+              name="text"
+              placeholder={
+                replies.length === 0 ? 'Be the first to reply...' : 'Any thoughts on that?'
+              }
+              value={this.state.replyValue}
+            />
+          </Form>
+          <Button onClick={e => this.handleReplySubmit(e, _id)} className="replyBtn">
+            Reply
+          </Button>
         </div>
       </div>
     );
