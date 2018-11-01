@@ -8,11 +8,12 @@
   background-color: #ffffff;
   box-shadow: 0 2px 4px 0 rgba(39, 64, 89, 0.1);
   z-index: 10 !important;
-  padding: 0.5em 3em;
+  padding: 0.5em 0.5em;
   align-items: center;
-  @media (max-width: 400px) {
-    padding: 0.5em 0.5em;
-  }
+}
+
+.header-logo a {
+  border-bottom: none;
 }
 
 .header-back-button {
@@ -20,86 +21,47 @@
   overflow: hidden;
 }
 
-.questionmark-button {
-  border: none;
-  background: rgba(255, 255, 255, 0);
-  padding-right: 0;
-  margin-left: .7em;
-  img {
-    cursor: pointer;
-    border-left: 1px solid #96a7bb;
-    padding-left: 1em;
-  }
-}
-
 .listQuestion {
-  margin-left: 6em;
+  margin-left: 1.5em;
   width: 60%;
   color: #6b8299;
-  @media (max-width: 500px) {
-    margin-left: 1.5em;
-  }
 }
 
 .listOrQuestion {
   display: flex;
   flex-wrap: wrap;
+  align-items: center;
+    a {
+    padding-bottom: 0;
+    margin-right: 1em;
+    color: #6b8299;
+    font-size: 14px;
+    margin-top: 0;
+    }
+    a:hover {
+    margin-top: 0;
+    text-decoration: none;
+    border-bottom: 3px solid #0095b3;
+    color: #0095b3;
+    }
 }
+
+.active {
+  margin-top: 0em;
+  padding-bottom: 0em;
+  text-decoration: none;
+  color: #0095b3!important;
+  border-bottom: 3px solid #0095b3;
+}
+
 .listOrQuestion-hidden {
   display: flex;
   flex-wrap: wrap;
   visibility: hidden;
 }
 
-.listOrQuestion a,
-.listOrQuestion div {
-  padding-bottom: 1.1em;
-  padding-top: 1em;
-  margin-right: 3em;
-  color: #6b8299;
-  @media (max-width: 715px) {
-    margin-right: 1em;
-    padding: 0 0;
-  }
-}
-
-.listOrQuestion a:hover,
-.listOrQuestion div:hover {
-  text-decoration: none;
-  border-bottom: 3px solid #0095b3;
-  color: #0095b3;
-  padding-bottom: 0.9em;
-  padding-top: 1em;
-  @media (max-width: 715px) {
-    padding-top: 0;
-    padding-bottom: 0;
-  }
-}
-
-/*
-.active {
-  text-decoration: none;
-  color: #0095b3!important;
-  border-bottom: 3px solid #0095b3;
-  padding-bottom: 1.1em;
-  @media (max-width: 635px) {
-    padding-bottom: 0;
-  }
-}*/
-
-.header-logo a {
-  border-bottom: none;
-}
-
-.header-logo img {
-  max-height: 50px;
-  margin-top: 0;
-  fill: #96a7bb;
-}
-
 .markProfile {
   height: 20px;
-  width: 20px;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -110,6 +72,9 @@
 .header-profileicon {
   display: flex;
   align-content: center;
+  a {
+  text-decoration: none;
+  }
 }
 
 .header-profileicon-username {
@@ -121,26 +86,135 @@
   line-height: 1.14;
   font-family: 'Roboto', sans-serif;
   text-decoration: none;
-  @media (max-width: 600px) {
-    display: none;
-  }
-}
-
-.header-profileicon a {
-  text-decoration: none;
+  display: none;
 }
 
 .header-profileicon-avatar {
   width: 35px;
   height: 35px;
-  margin-right: .7em;
 }
- /*
-.borderLine {
-  border-right: 1px solid #96a7bb;
+
+.questionmark-button {
+  border: none;
+  background: rgba(255, 255, 255, 0);
+  padding-right: 0;
+  img {
+    cursor: pointer;
+    border-left: 1px solid #96a7bb;
+    padding-left: 1em;
+  }
 }
-.borderLine-hidden {
-  border-right: 1px solid #96a7bb;
-  visibility: hidden;
+
+.modalsBoxes {
+  color: @boxColor;
+  font-size: 10px;
+  background-color: @blue;
+  position: absolute;
+  top: 6em;
+  padding: .4em;
+  border-radius: @borderRadius;
 }
-*/
+
+.modalsBoxes:before {
+  content: "";
+  position: absolute;
+  margin-left: 16px;
+  bottom: 13px;
+  left: 50%;
+  border-top: 10px solid transparent;
+  border-right: 10px solid @blue;
+  border-bottom: 10px solid transparent;
+  transform-origin: 0 0;
+  transform: rotate(90deg);
+}
+
+.shareBox {
+  left: 5em;
+  }
+
+.editBox {
+  right: 2.4em;
+}
+
+@media only screen and (min-width: 422px) {
+  .listOrQuestion {
+    a {
+      margin-top: 1.5em;
+      padding-bottom: 1em;
+      margin-right: 1em;
+      }
+
+    a:hover {
+      margin-top: 1.5em;
+      padding-bottom: .8em;
+      text-decoration: none;
+      border-bottom: 3px solid #0095b3;
+      color: #0095b3;
+      }
+  }
+
+  .active {
+    text-decoration: none;
+    color: #0095b3!important;
+    border-bottom: 3px solid #0095b3;
+  }
+
+  .modalsBoxes {
+    font-size: 12px;
+    top: 4.5em;
+  }
+
+  .shareBox {
+    left: 10.4em;
+  }
+
+  .editBox {
+    right: 1.3em;
+  }
+}
+
+@media only screen and (min-width: 600px) {
+  .header {
+    padding: 0.5em 3em;
+  }
+
+  .listOrQuestion {
+    a {
+      margin-top: 1em;
+      padding-bottom: 1em;
+      margin-right: 1em;
+      font-size: 16px;
+      }
+
+    a:hover {
+      margin-top: 1em;
+      padding-bottom: .8em;
+      text-decoration: none;
+      border-bottom: 3px solid #0095b3;
+      color: #0095b3;
+      }
+  }
+
+  .header-profileicon-username {
+    display: flex;
+    margin-left: .5em;
+  }
+
+  .modalsBoxes {
+    font-size: 14px;
+    top: 3.7em;
+  }
+
+  .shareBox {
+    left: 12.5em;
+  }
+
+  .editBox {
+    right: 4em;
+  }
+
+  .modalsBoxes:before {
+    bottom: 19px;
+  }
+}
+

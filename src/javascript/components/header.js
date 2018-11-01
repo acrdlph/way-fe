@@ -10,7 +10,7 @@ import './header.less';
 
 const createBackButton = to => (
   <NavLink to={to}>
-    <span className="glyphicon glyphicon glyphicon-chevron-left" />
+    <span className="" />
   </NavLink>
 );
 
@@ -85,14 +85,12 @@ class Header extends React.Component {
     const profileIcon = iconHide => (
       <div className={iconHide ? 'borderLine-hidden' : 'borderLine'}>
         <div className="header-profileicon">
-          <NavLink to="/profile" className="" onClick={this.handleNavClick}>
-            <Avatar className="header-profileicon-avatar" src={photo} />
-          </NavLink>
-          <NavLink
-            to="/profile"
-            activeStyle={{ borderBottom: 'solid 3px #0095b3' }}
-            className="header-profileicon-username"
-          >
+          <Avatar
+            className="header-profileicon-avatar"
+            onClick={() => this.props.history.push('/profile')}
+            src={photo}
+          />
+          <NavLink to="/profile" className="header-profileicon-username">
             {sessionStorage.getItem('username')}
           </NavLink>
         </div>
@@ -101,19 +99,10 @@ class Header extends React.Component {
 
     const listOrQuestion = (
       <div className={isInSignup || isInFeedback ? 'listOrQuestion-hidden' : 'listOrQuestion'}>
-        <NavLink
-          to="/waitlist"
-          onClick={() => sessionStorage.setItem('scrollPosition', 0)}
-          activeStyle={{ borderBottom: 'solid 3px #0095b3', paddingBottom: '1em' }}
-        >
+        <NavLink to="/waitlist" onClick={() => sessionStorage.setItem('scrollPosition', 0)}>
           Geek List
         </NavLink>
-        <NavLink
-          to="/qna"
-          activeStyle={{ borderBottom: 'solid 3px #0095b3', paddingBottom: '1em' }}
-        >
-          Local Discussions
-        </NavLink>
+        <NavLink to="/qna">Local Discussions</NavLink>
       </div>
     );
 
@@ -143,8 +132,8 @@ class Header extends React.Component {
           {pathname === '/register' || pathname === '/feedback'
             ? profileIcon(true)
             : profileIcon(false)}
-          {seenModals && !seenModals.seenProfModal && <div>Edit your profile here</div>}
-          {seenModals && !seenModals.seenLocModal && <div>Share your thoughts here</div>}
+          {seenModals && !seenModals.seenProfModal && <div className="modalsBoxes editBox">Edit your profile here</div>}
+          {seenModals && !seenModals.seenLocModal && <div className="modalsBoxes shareBox">Share your thoughts here</div>}
           <div>
             {Modal}
             {questionMarkIcon}
