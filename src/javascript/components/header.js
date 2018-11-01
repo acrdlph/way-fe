@@ -154,6 +154,7 @@ class Header extends React.Component {
             {questionMarkIcon}
           </div>
         </div>
+        <div onClick={() => this.props.history.push('/chat')}> chat yaowysoaw </div>
       </div>
     );
   }

@@ -6,7 +6,7 @@ export default class ChatInput extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      message: ''
+      message: '',
     };
     this.changeMessage = this.changeMessage.bind(this);
     this.onKeyPressInTextField = this.onKeyPressInTextField.bind(this);
@@ -20,8 +20,8 @@ export default class ChatInput extends React.Component {
     }
   }
 
-  changeMessage(event, message) {
-    this.setState({ message });
+  changeMessage(e) {
+    this.setState({ message: e.target.value });
   }
 
   sendMessage() {
@@ -40,7 +40,7 @@ export default class ChatInput extends React.Component {
             hintText="Message"
             fullWidth
             value={this.state.message}
-            onChange={this.changeMessage}
+            onChange={e => this.changeMessage(e)}
             onKeyPress={this.onKeyPressInTextField}
             multiLine
             rowsMax={3}
