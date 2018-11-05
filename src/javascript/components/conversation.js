@@ -30,41 +30,43 @@ export default class Conversation extends React.Component {
 
   render() {
     const { user, partner, messages } = this.props;
-    const bubbles = messages.map((msg) => {
-      const date = dateFormat(msg.createdAt, 'dS mmm yy , H:MM ');
-      const otherPhoto = partner.photo;
-      const style = {
-        backgroundColor: msg.sender === user.id ? CHAT_BUBBLE_COLOR_LEFT : CHAT_BUBBLE_COLOR_RIGHT,
-      };
-      let photo = 'assets/32-icon-avatar.svg';
-      let cssClass = 'left';
-      if (msg.sender === user.id) {
-        cssClass = 'right';
-        if (user.photo) {
-          photo = user.photo;
+    const bubbles = messages
+      && messages.map((msg) => {
+        const date = dateFormat(msg.createdAt, 'dS mmm yy , H:MM ');
+        const otherPhoto = partner.photo;
+        const style = {
+          backgroundColor:
+            msg.sender === user.id ? CHAT_BUBBLE_COLOR_LEFT : CHAT_BUBBLE_COLOR_RIGHT,
+        };
+        let photo = 'assets/32-icon-avatar.svg';
+        let cssClass = 'left';
+        if (msg.sender === user.id) {
+          cssClass = 'right';
+          if (user.photo) {
+            photo = user.photo;
+          }
+          name = user.name;
+        } else if (otherPhoto) {
+          photo = otherPhoto;
         }
-        name = user.name;
-      } else if (otherPhoto) {
-        photo = otherPhoto;
-      }
-      const undeliveredMsgClass = msg.id ? '' : 'undelivered-msg-style';
+        const undeliveredMsgClass = msg.id ? '' : 'undelivered-msg-style';
 
-      return (
-        <div key={msg.local_id} className="chat-item-wrapper">
-          <div className={`chat-item chat-item-${cssClass}`}>
-            <div className={`avatar avatar-${cssClass}`}>
-              <Avatar size={50} src={photo} />
-            </div>
-            <div className={`content content-${cssClass}`}>
-              <div className={`bubble ${undeliveredMsgClass}`} style={style}>
-                {msg.message}
+        return (
+          <div key={msg.local_id} className="chat-item-wrapper">
+            <div className={`chat-item chat-item-${cssClass}`}>
+              <div className={`avatar avatar-${cssClass}`}>
+                <Avatar size={50} src={photo} />
               </div>
-              <div className="meta-info">{`${date}`}</div>
+              <div className={`content content-${cssClass}`}>
+                <div className={`bubble ${undeliveredMsgClass}`} style={style}>
+                  {msg.message}
+                </div>
+                <div className="meta-info">{`${date}`}</div>
+              </div>
             </div>
           </div>
-        </div>
-      );
-    });
+        );
+      });
 
     return (
       <div className="chat">

@@ -1,44 +1,61 @@
 import _ from 'lodash';
-import {getAuthHeaders} from '../util/headers';
+import { getAuthHeaders } from '../util/headers';
 
 const types = {
   LOADING: 'CHAT_PARTNER_LOADING',
-  LOADED: 'CHAT_PARTNER_LOADED'
+  LOADED: 'CHAT_PARTNER_LOADED',
+  LOADLAST: 'LOAD_LAST_MESSAGE',
 };
 
-const awaitFetch = async function awaitFetch(chatPartnerId, dispatch) {
-  const endpoint = 'api/users/' + chatPartnerId + '/details';
+const awaitFetch = async function awaitFetch(chatPartnerId, created) {
+  const endpoint = `api/users/${chatPartnerId}/details`;
   try {
     const result = await fetch(endpoint, {
-      headers: getAuthHeaders()
+      headers: getAuthHeaders(),
     });
     const data = await result.json();
-    const chatPartner = {
+    const partnerInfo = {
       id: data.id,
-      photo:  data.photo,
+      photo: data.photo,
       name: data.name,
       interests: data.interests,
-      username: data.username
+      username: data.username,
+      created,
     };
-    dispatch({
-      type: types.LOADED,
-      data: chatPartner
-    });
-  } catch(e) {
+    return partnerInfo;
+  } catch (e) {
     console.log(e);
   }
 };
 
-export const loadChatPartnerData = (chatPartnerId) => (dispatch) => {
-  dispatch({type: types.LOADING});
-  awaitFetch(chatPartnerId, dispatch);
+export const loadChatPartnerData = () => (dispatch) => {
+  const userId = sessionStorage.getItem('userId');
+  const partners = [];
+  dispatch({ type: types.LOADING });
+  const endpoint = 'api/messages';
+  fetch(endpoint, {
+    headers: getAuthHeaders(),
+  })
+    .then(res => res.json())
+    .then((res) => {
+      for (let i = 0; i < res.length; i++) {
+        if (res[i].sender_id === userId) {
+          partners.push(awaitFetch(res[i].receiver_id, res[i].created_at));
+        } else {
+          partners.push(awaitFetch(res[i].sender_id, res[i].created_at));
+        }
+      }
+      Promise.all(partners).then(partn => dispatch({
+        type: types.LOADED,
+        data: _.orderBy(partn, 'created').reverse(),
+      }));
+    });
 };
-
 
 const initialState = {
   loading: false,
   loaded: false,
-  data: []
+  data: [],
 };
 
 const reducer = (state = initialState, action) => {
@@ -50,6 +67,7 @@ const reducer = (state = initialState, action) => {
       };
     case types.LOADED:
       return {
+        ...state,
         loading: false,
         loaded: true,
         data: action.data,
@@ -60,5 +78,5 @@ const reducer = (state = initialState, action) => {
 };
 
 export default {
-  reducer
+  reducer,
 };

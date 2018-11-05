@@ -72,7 +72,10 @@ class Signup extends React.Component {
             <div className="textBox">
               <h3>CryptoGeeks</h3>
               <p>
-                Connect with your local blockchain community or watch our 🎬 introduction video.
+                Connect with your local blockchain community.
+                {
+                  // or watch our 🎬 introduction video.
+                }
               </p>
             </div>
             <div className="loginBox">

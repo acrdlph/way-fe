@@ -37,23 +37,18 @@ export default class ChatInput extends React.Component {
         <div className="chat-input-text">
           <TextField
             disabled={this.props.disabled}
-            hintText="Message"
             fullWidth
             value={this.state.message}
             onChange={e => this.changeMessage(e)}
             onKeyPress={this.onKeyPressInTextField}
-            multiLine
             rowsMax={3}
             autoFocus
           />
         </div>
         <div className="chat-input-button">
-          <Button
-            disabled={this.props.disabled}
-            label="Send"
-            backgroundColor="#43D676"
-            onClick={this.sendMessage}
-          />
+          <Button disabled={this.props.disabled} onClick={this.sendMessage}>
+            Send
+          </Button>
         </div>
       </div>
     );

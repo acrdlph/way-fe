@@ -1,9 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import TextField from 'material-ui/TextField';
-import RaisedButton from 'material-ui/RaisedButton';
 import {
-  Form, FormGroup, Input, Button,
+  Form, FormGroup, FormFeedback, Input, Button,
 } from 'reactstrap';
 import { trackPageView, trackEvent, events } from '../util/google-analytics';
 import InfoBox from '../components/infobox';
@@ -82,6 +80,7 @@ class Login extends React.Component {
         <Form>
           <FormGroup>
             <Input
+              invalid={this.props.account.hasLoginFailed}
               className="username"
               placeholder="Username"
               ref={(input) => {
@@ -92,6 +91,7 @@ class Login extends React.Component {
             />
 
             <Input
+              invalid={this.props.account.hasLoginFailed}
               className="password"
               placeholder="Password"
               type="Password"
@@ -101,6 +101,7 @@ class Login extends React.Component {
               onKeyPress={this.handleKeyPress.bind(this, 'inputPassword')}
               onChange={this.changePassword}
             />
+            <FormFeedback>Invalid username or password!</FormFeedback>
           </FormGroup>
         </Form>
 
@@ -109,12 +110,10 @@ class Login extends React.Component {
             this.inputSubmit = input;
           }}
           onKeyPress={this.handleKeyPress.bind(this, 'inputSubmit')}
-          onClick={this.login}
+          onClick={() => this.login()}
         >
           Sign in
         </Button>
-
-        <InfoBox text="Invalid username or password!" visible={this.props.account.hasLoginFailed} />
 
         {/* <div className='login-reset-password'>
           Forgot password? <NavLink to='/reset-password'>Reset it!</NavLink>

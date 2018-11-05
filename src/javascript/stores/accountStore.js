@@ -45,6 +45,7 @@ export const registerAccount = data => (dispatch) => {
     .then((data) => {
       sessionStorage.setItem('token', data.token);
       sessionStorage.setItem('username', data.username);
+      sessionStorage.setItem('userId', data.id);
       dispatch({
         type: types.ACCOUNT_REGISTER_PASSED,
         data,
@@ -112,6 +113,7 @@ export const login = (loginname, password) => (dispatch) => {
       sessionStorage.setItem('token', data.token);
       sessionStorage.setItem('username', data.username);
       sessionStorage.setItem('distance', data.distance);
+      sessionStorage.setItem('userId', data.id);
       dispatch({
         type: types.ACCOUNT_LOGIN_PASSED,
         userId: data.id,
