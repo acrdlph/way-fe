@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import {
-  Form, FormGroup, Input, Button,
+  Form, FormGroup, FormFeedback, Input, Button,
 } from 'reactstrap';
 import { checkUsernameAvailability, registerAccount } from '../stores/accountStore';
 import interactionConfirmationStore from '../stores/interactionConfirmationStore';
@@ -203,11 +203,15 @@ class Onboarding extends React.Component {
                   ref={(input) => {
                     this.inputUsername = input;
                   }}
+                  invalid={errorText === 'Username too short!' || isUsernameTaken}
                   onKeyUp={this.handleKeyPress.bind(this, 'inputUsername')}
                   onChange={this.handleInputChange}
-                  fullWidth
                 />
-                <InfoBox visible={isUsernameTaken} text="The selected username is already taken!" />
+                {isUsernameTaken ? (
+                  <FormFeedback>The selected username is already taken!</FormFeedback>
+                ) : (
+                  <FormFeedback>Username too short!</FormFeedback>
+                )}
 
                 <Input
                   name="email"
@@ -215,14 +219,18 @@ class Onboarding extends React.Component {
                   ref={(input) => {
                     this.inputEmail = input;
                   }}
+                  invalid={
+                    errorText === 'Please enter a valid email address!'
+                    || this.props.account.hasRegisteringFailed
+                  }
                   onKeyUp={this.handleKeyPress.bind(this, 'inputEmail')}
                   onChange={this.handleInputChange}
-                  fullWidth
                 />
-                <InfoBox
-                  text="This email is already in use"
-                  visible={this.props.account.hasRegisteringFailed}
-                />
+                {this.props.account.hasRegisteringFailed ? (
+                  <FormFeedback>This email is already in use</FormFeedback>
+                ) : (
+                  <FormFeedback>Please enter a valid email address!</FormFeedback>
+                )}
 
                 <Input
                   name="password"
@@ -231,9 +239,9 @@ class Onboarding extends React.Component {
                   ref={(input) => {
                     this.inputPassword = input;
                   }}
+                  invalid={errorText === 'Password has to be at least 4 characters long!'}
                   onKeyUp={this.handleKeyPress.bind(this, 'inputPassword')}
                   onChange={this.handleInputChange}
-                  fullWidth
                 />
 
                 <Input
@@ -243,10 +251,11 @@ class Onboarding extends React.Component {
                   ref={(input) => {
                     this.inputPasswordConfirm = input;
                   }}
+                  invalid={errorText === 'Password has to be at least 4 characters long!'}
                   onKeyUp={this.handleKeyPress.bind(this, 'inputPasswordConfirm')}
                   onChange={this.handleInputChange}
-                  fullWidth
                 />
+                <FormFeedback>Password has to be at least 4 characters long!</FormFeedback>
                 <div className="topCircular">
                   {renderLocationInput(
                     this.state.isSearchBoxVisible,
@@ -256,12 +265,7 @@ class Onboarding extends React.Component {
                 </div>
               </FormGroup>
             </Form>
-            <Button
-              backgroundColor="#43d676"
-              onClick={this.register}
-              fullWidth
-              disabled={isRegistrationButtonDisabled}
-            >
+            <Button onClick={this.register} disabled={isRegistrationButtonDisabled}>
               Get Started
             </Button>
             <div className="signinBox">

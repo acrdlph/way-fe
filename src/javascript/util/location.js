@@ -155,10 +155,10 @@ export async function saveAndContinue(showLocationRequired, showSearchBox, histo
   if (accUserId) {
     toggleDiv();
     json = await update(body, accUserId);
+    const locationId = json.location.toLowerCase();
+    sessionStorage.setItem('locationId', locationId);
+    history.push(`/waitlist/${locationId}`);
   }
-  const locationId = json.location.toLowerCase();
-  sessionStorage.setItem('locationId', locationId);
-  history.push(`/waitlist/${locationId}`);
 }
 
 export function renderLocationInput(isSearchBoxVisible, showLocationRequiredHint) {

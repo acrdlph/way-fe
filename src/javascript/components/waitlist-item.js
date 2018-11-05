@@ -1,5 +1,4 @@
 import React from 'react';
-import CommunicationChatBubble from 'material-ui/svg-icons/communication/chat-bubble';
 import Avatar from '@material-ui/core/Avatar';
 import './waitlist-item.less';
 
@@ -73,7 +72,7 @@ export default function WaitListItem(props) {
                       onEndorse(
                         address,
                         {
-                          from: window.web3.eth.accounts ? window.web3.eth.accounts[0] : ndivl,
+                          from: window.web3.eth.accounts ? window.web3.eth.accounts[0] : null,
                           gas: 300000,
                           value: web3.toWei(0, 'ether'),
                         },

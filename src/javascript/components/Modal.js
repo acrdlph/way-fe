@@ -57,32 +57,34 @@ class GenericModal extends React.Component {
     const { pathname } = this.props;
     const seenModals = this.props.user.seenModals;
     let data;
-    if (pathname.includes('waitlist')) {
-      data = {
-        seenModals: {
-          seenProfModal: seenModals.seenProfModal,
-          seenLocModal: seenModals.seenLocModal,
-          seenListModal: true,
-        },
-      };
-    } else if (pathname.includes('qna')) {
-      data = {
-        seenModals: {
-          seenProfModal: seenModals.seenProfModal,
-          seenLocModal: true,
-          seenListModal: seenModals.seenListModal,
-        },
-      };
-    } else if (pathname.includes('profile')) {
-      data = {
-        seenModals: {
-          seenProfModal: true,
-          seenLocModal: seenModals.seenLocModal,
-          seenListModal: seenModals.seenListModal,
-        },
-      };
+    if (pathname) {
+      if (pathname.includes('waitlist')) {
+        data = {
+          seenModals: {
+            seenProfModal: seenModals.seenProfModal,
+            seenLocModal: seenModals.seenLocModal,
+            seenListModal: true,
+          },
+        };
+      } else if (pathname.includes('qna')) {
+        data = {
+          seenModals: {
+            seenProfModal: seenModals.seenProfModal,
+            seenLocModal: true,
+            seenListModal: seenModals.seenListModal,
+          },
+        };
+      } else if (pathname.includes('profile')) {
+        data = {
+          seenModals: {
+            seenProfModal: true,
+            seenLocModal: seenModals.seenLocModal,
+            seenListModal: seenModals.seenListModal,
+          },
+        };
+      }
+      this.props.updateUserData(userId, data);
     }
-    this.props.updateUserData(userId, data);
     this.props.close();
   }
 

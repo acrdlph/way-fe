@@ -27,11 +27,42 @@ class App extends React.Component {
     }
   }
 
-  componentWillReceiveProps(props) {
-    if (props.account.wasLoginSuccessful) {
-      this.props.loadUserData(props.account.userId);
-    }
-  }
+  // componentWillReceiveProps(props) {
+  //   if (props.account.wasLoginSuccessful) {
+  //     this.props.loadUserData(props.account.userId);
+  //   }
+  //   if (props.user) {
+  //     if (props.user.data.id !== this.props.user.data.id) {
+  //       const userId = props.user.data.id;
+  //       const logUserEndpoint = `api/accounts/addLoggedInUser/${userId}`;
+  //       const logoutEndpoint = `api/accounts/logout/${userId}`;
+  //       window.onbeforeunload = (e) => {
+  //         //  e.preventDefault();
+  //         console.log(logoutEndpoint);
+  //         fetch(logoutEndpoint, {
+  //           method: 'post',
+  //         });
+  //       };
+  //       fetch(logUserEndpoint, {
+  //         method: 'post',
+  //       });
+  //     }
+  //   } else {
+  //     const userId = sessionStorage.getItem('userId');
+  //     const logUserEndpoint = `api/accounts/addLoggedInUser/${userId}`;
+  //     const logoutEndpoint = `api/accounts/logout/${userId}`;
+  //     window.onbeforeunload = (e) => {
+  //       //  e.preventDefault();
+  //       console.log(logoutEndpoint);
+  //       fetch(logoutEndpoint, {
+  //         method: 'post',
+  //       });
+  //     };
+  //     fetch(logUserEndpoint, {
+  //       method: 'post',
+  //     });
+  //   }
+  // }
 
   render() {
     sessionStorage.setItem('path', this.props.location.pathname);
@@ -52,7 +83,7 @@ class App extends React.Component {
           <Route exact path="/reset-password" component={ResetPassword} />
           <Route exact path="/waitlist/" component={WaitList} />
           <Route exact path="/waitlist/:locationId" component={WaitList} />
-          <Route exact path="/waitlist/:locationId/chat/:chatPartnerId" component={Chat} />
+          <Route exact path="/chat/:chatPartnerId" component={Chat} />
           <Route
             exact
             path="/confirm-interaction/:interactionCode"

@@ -1,86 +1,124 @@
 import React from 'react';
-import {connect} from 'react-redux';
-import {NavLink} from 'react-router-dom';
+import { connect } from 'react-redux';
 import _ from 'lodash';
 import uuidv4 from 'uuid/v4';
 import LinearProgress from 'material-ui/LinearProgress';
-import {trackPageView, trackEvent, events} from '../util/google-analytics';
+import { trackPageView, trackEvent, events } from '../util/google-analytics';
 import ChatInput from '../components/chat-input';
 import Conversation from '../components/conversation';
-import {loadMessages, addMessagesToChat, notifyNewMessage, notificationSent} from '../stores/chatStore';
-import {loadUserData} from '../stores/userStore';
+import {
+  loadMessages,
+  addMessagesToChat,
+  notifyNewMessage,
+  notificationSent,
+} from '../stores/chatStore';
+import { loadUserData } from '../stores/userStore';
 import { loadChatPartnerData } from '../stores/chatPartnerStore';
-import {initWebSocketStore, send, markDelivered} from '../stores/webSocketStore';
+import { initWebSocketStore, send, markDelivered } from '../stores/webSocketStore';
 import './chat.less';
 
 class Chat extends React.Component {
-
   constructor(props) {
     super(props);
 
     const path = this.props.location.pathname;
-    const chatPathWithoutPartnerId = path.substring(0, path.indexOf("/chat")+5);
+    const chatPathWithoutPartnerId = path.substring(0, path.indexOf('/chat') + 5);
     trackPageView(chatPathWithoutPartnerId);
 
     const userId = sessionStorage.getItem('userId');
     const chatPartnerId = _.get(this.props.match, 'params.chatPartnerId');
-    if(userId && chatPartnerId) {
+    if (userId && chatPartnerId) {
       this.props.loadUserData(userId);
-      this.props.loadChatParnerData(chatPartnerId);
+      this.props.loadChatParnerData();
       this.props.loadMessages(userId, chatPartnerId);
     } else {
-      this.props.history.push("/signup");
+      this.props.history.push('/signup');
     }
     this.sendMessage = this.sendMessage.bind(this);
     this.onMessageUpdate = this.onMessageUpdate.bind(this);
+    this.updateContacts = this.updateContacts.bind(this);
+    this.goToChat = this.goToChat.bind(this);
     this.enableChat = this.enableChat.bind(this);
     this.disableChat = this.disableChat.bind(this);
     this.state = {
-      disableChat: false
+      disableChat: false,
+      partners: this.props.chatPartner.data,
     };
   }
 
   componentDidMount() {
     const userId = sessionStorage.getItem('userId');
-    initWebSocketStore(userId, /* new message */ this.onMessageUpdate, () => {
-      // connected
-      this.enableChat();
-    }, () => {
-      // connection closed
-      this.disableChat();
-    });
+    initWebSocketStore(
+      userId,
+      /* new message */ this.onMessageUpdate,
+      () => {
+        // connected
+        this.enableChat();
+      },
+      () => {
+        // connection closed
+        this.disableChat();
+      },
+    );
+  }
+
+  componentWillReceiveProps(props) {
+    if (props.chatPartner.data !== this.props.chatPartner.data) this.setState({ partners: props.chatPartner.data });
+    this.setState({ messages: props.chat.data });
   }
 
   onMessageUpdate(message) {
     const chatPartnerId = _.get(this.props.match, 'params.chatPartnerId');
     const userId = sessionStorage.getItem('userId');
     this.props.addMessagesToChat([message], chatPartnerId);
-    const path = sessionStorage.getItem('path');
-    if(message.sender_id !== userId) {
+    if (message.sender_id !== userId) {
       markDelivered(message);
       trackEvent(events.USER_RECEIVED_MESSAGE);
-      notifyNewMessage(message, "Someone");
+      notifyNewMessage(message, 'Someone');
     }
-   // const partner = this.props.chatPartner.data.name;
-   // notifyNewMessage(event, partner);
+    // const partner = this.props.chatPartner.data.name;
+    // notifyNewMessage(event, partner);
     this.props.notificationSent();
+    this.updateContacts();
+  }
+
+  updateContacts() {
+    const chatPartnerId = _.get(this.props.match, 'params.chatPartnerId');
+    let partners = this.state.partners.slice();
+    if (partners.filter(partn => partn.id === chatPartnerId).length > 0) {
+      const partnerIndex = partners.findIndex(partn => partn.id === chatPartnerId);
+      const currentPartner = partners.slice(partnerIndex, partnerIndex + 1);
+      partners.splice(partnerIndex, 1);
+      currentPartner.push(...partners);
+      partners = currentPartner;
+      this.setState({ partners });
+    } else {
+      this.props.loadChatParnerData();
+    }
+  }
+
+  goToChat(userId, chatPartnerId) {
+    this.props.history.push({
+      pathname: `/chat/${chatPartnerId}`,
+    });
+    this.props.loadMessages(userId, chatPartnerId);
   }
 
   enableChat() {
     this.setState({
-      disableChat: false
+      disableChat: false,
     });
   }
 
   disableChat() {
     this.setState({
-      disableChat: true
+      disableChat: true,
     });
   }
 
   /**
    * Problem: user should get some feedback on non delivered messages
-   * @param {*} message 
+   * @param {*} message
    */
   async sendMessage(message) {
     const chatPartnerId = _.get(this.props.match, 'params.chatPartnerId');
@@ -89,7 +127,7 @@ class Chat extends React.Component {
       local_id: uuidv4(),
       message,
       sender_id: userId,
-      receiver_id: chatPartnerId
+      receiver_id: chatPartnerId,
     };
     const success = await send(payload);
     if (!success) {
@@ -111,32 +149,44 @@ class Chat extends React.Component {
     const userDetails = {
       id: userId,
       name: user.name,
-      photo: user.photo
+      photo: user.photo,
     };
     const partnerDetails = {
       id: chatPartnerId,
       name: partner.name,
-      photo: partner.photo
+      photo: partner.photo,
     };
-    const messages = this.props.chat.data;
-    const networkErrorIndicator = this.state.disableChat ? 
-    <LinearProgress style={{position: 'fixed', width: '96%'}} color="#337ab7" mode="indeterminate"/> : null;
+    const messages = this.state.messages && this.state.messages;
+    const networkErrorIndicator = this.state.disableChat ? (
+      <LinearProgress
+        style={{ position: 'fixed', width: '96%' }}
+        color="#337ab7"
+        mode="indeterminate"
+      />
+    ) : null;
 
     return (
-      <div className='chat'>
+      <div className="chat">
         {networkErrorIndicator}
-        <div className='chat-content'>
-          <Conversation user={userDetails} partner={partnerDetails} messages={messages}/>
+        <div className="contacts">
+          {this.state.partners.map(partner => (
+            <div onClick={() => this.goToChat(userId, partner.id)}>
+              <div>{partner.name}</div>
+            </div>
+          ))}
         </div>
-        <div className='chat-chat-input'>
-          <ChatInput onSend={this.sendMessage} disabled={false}/>
+        <div className="chat-content">
+          <Conversation user={userDetails} partner={partnerDetails} messages={messages} />
+        </div>
+        <div className="chat-chat-input">
+          <ChatInput onSend={this.sendMessage} disabled={false} />
         </div>
       </div>
     );
   }
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
   chat: state.chat,
   user: state.user,
   chatPartner: state.chatPartner,
@@ -146,8 +196,11 @@ const mapDispatchToProps = dispatch => ({
   loadMessages: (userId, chatPartnerId) => dispatch(loadMessages(userId, chatPartnerId)),
   addMessagesToChat: (messages, chatPartnerId) => dispatch(addMessagesToChat(messages, chatPartnerId)),
   notificationSent: () => dispatch(notificationSent()),
-  loadUserData: (userId) => dispatch(loadUserData(userId)),
-  loadChatParnerData: (chatPartnerId) => dispatch(loadChatPartnerData(chatPartnerId))
+  loadUserData: userId => dispatch(loadUserData(userId)),
+  loadChatParnerData: chatPartnerId => dispatch(loadChatPartnerData(chatPartnerId)),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Chat);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(Chat);

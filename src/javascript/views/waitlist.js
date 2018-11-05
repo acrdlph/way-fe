@@ -52,16 +52,14 @@ class WaitList extends React.Component {
       contractAddress: '0xbaa593e9c1f11bbcfa4725085211d764eec26592',
       showNotification: false,
       distance: sessionStorage.getItem('distance'),
+      reputation: 100,
+      contract: null,
     };
     this.openChat = this.openChat.bind(this);
 
     if (FEATURE_NOTIFICATIONS) {
       requestPermissionForNotifications();
     }
-    this.setState({
-      reputation: 100,
-      contract: null,
-    });
   }
 
   componentDidMount() {
@@ -81,7 +79,7 @@ class WaitList extends React.Component {
   openChat(chatPartnerId) {
     const locationId = sessionStorage.getItem('locationId');
     this.props.history.push({
-      pathname: `/waitlist/${locationId}/chat/${chatPartnerId}`,
+      pathname: `/chat/${chatPartnerId}`,
     });
   }
 
@@ -119,7 +117,7 @@ class WaitList extends React.Component {
     );
 
     _.each(this.props.waitlist.data, (entry, key) => {
-      const onClick = isUserOnboarded
+      const handleChatOpen = isUserOnboarded
         ? () => this.openChat(entry.id)
         : () => this.handleOpenModal();
 
@@ -134,7 +132,7 @@ class WaitList extends React.Component {
           hasChat={entry.hasChat}
           nonDeliveredChatCount={entry.nonDeliveredChatCount}
           lastContact={entry.lastContact}
-          onClick={onClick}
+          onClick={handleChatOpen}
           onEndorse={onEndorse}
           address={entry.address}
           hangoutPlaces={entry.hangoutPlaces}
