@@ -119,7 +119,7 @@ class GenericModal extends React.Component {
             onBoardingSelectedContent = onBoardingListStep3;
             break;
           case 4:
-            onBoardingSelectedContent = onBoardingListStep4;
+            onBoardingSelectedContent = onBoardingListStep4(this.closeModal);
             break;
         }
         break;
@@ -133,7 +133,7 @@ class GenericModal extends React.Component {
             onBoardingSelectedContent = onBoardingLocalStep2;
             break;
           case 3:
-            onBoardingSelectedContent = onBoardingLocalStep3;
+            onBoardingSelectedContent = onBoardingLocalStep3(this.closeModal);
             break;
         }
         break;
@@ -150,7 +150,7 @@ class GenericModal extends React.Component {
             onBoardingSelectedContent = onBoardingProfileStep3;
             break;
           case 4:
-            onBoardingSelectedContent = onBoardingProfileStep4;
+            onBoardingSelectedContent = onBoardingProfileStep4(this.closeModal);
             break;
         }
         break;

@@ -23,7 +23,7 @@ class Header extends React.Component {
   }
 
   componentWillReceiveProps(props) {
-    const { pathname } = this.props.location;
+    const { pathname } = props.location;
 
     if (this.props.location !== props.location) {
       this.forceUpdate();
@@ -132,8 +132,14 @@ class Header extends React.Component {
           {pathname === '/register' || pathname === '/feedback'
             ? profileIcon(true)
             : profileIcon(false)}
-          {seenModals && !seenModals.seenProfModal && <div className="modalsBoxes editBox">Edit your profile here</div>}
-          {seenModals && !seenModals.seenLocModal && <div className="modalsBoxes shareBox">Share your thoughts here</div>}
+          {seenModals
+            && !seenModals.seenProfModal && (
+              <div className="modalsBoxes editBox">Edit your profile here</div>
+          )}
+          {seenModals
+            && !seenModals.seenLocModal && (
+              <div className="modalsBoxes shareBox">Share your thoughts here</div>
+          )}
           <div>
             {Modal}
             {questionMarkIcon}
