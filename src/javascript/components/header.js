@@ -66,10 +66,6 @@ class Header extends React.Component {
       return null;
     }
 
-    if (isInChat) {
-      return <ChatHeader chatPartner={chatPartner} />;
-    }
-
     let backButton = null;
 
     if (isInChat || isInProfile) {

@@ -144,6 +144,8 @@ class Chat extends React.Component {
     const chatItems = [];
     const userId = sessionStorage.getItem('userId');
     const chatPartnerId = _.get(this.props.match, 'params.chatPartnerId');
+    const { pathname } = this.props.location;
+    const isInSignup = pathname.includes('register');
     const user = _.get(this.props.user, 'data');
     const partner = _.get(this.props.chatPartner, 'data');
     const userDetails = {
@@ -166,21 +168,20 @@ class Chat extends React.Component {
     ) : null;
 
     return (
-      <div className="chat">
-        {networkErrorIndicator}
-        <div className="contacts">
-          {this.state.partners.map(partner => (
-            <div onClick={() => this.goToChat(userId, partner.id)}>
-              <div>{partner.name}</div>
-            </div>
-          ))}
-        </div>
-        <div className="chat-content">
-          <Conversation user={userDetails} partner={partnerDetails} messages={messages} />
-        </div>
-        <div className="chat-chat-input">
-          <ChatInput onSend={this.sendMessage} disabled={false} />
-        </div>
+      <div className="chatContainer">
+          {networkErrorIndicator}
+          <div className="usersBox">
+            {this.state.partners.map(partner => (
+            <div className={pathname.includes(`${partner.id}`) ? "chatActive" : "contactBox"} onClick={() => this.goToChat(userId, partner.id)}>
+                <img src={partner.photo || "assets/32-icon-avatar.svg"}></img>
+                <p>{partner.name}</p>
+              </div>
+            ))}
+          </div>
+          <div className="chatBox">
+            <Conversation className="conversationBox" user={userDetails} partner={partnerDetails} messages={messages} />
+            <ChatInput onSend={this.sendMessage} disabled={false} />
+          </div>
       </div>
     );
   }

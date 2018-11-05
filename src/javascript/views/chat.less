@@ -1,18 +1,55 @@
 @import '../variables';
 
-.chat {
-  margin-top: 50px;
-  padding: 0 5em;
-}
-
-.chat-content {
-  padding-bottom: 50px;
-  padding-right: 10px;
-}
-
-.chat-chat-input {
-  padding-bottom: 30px;
-  position: absolute;
-  bottom: 0;
+.chatContainer {
+  display: flex;
+  flex-direction: row;
   width: 100%;
+  margin: 6em 9em 0 3em;
+}
+
+.chatBox {
+  background-color: @boxColor;
+  width: 100%;
+  margin-top: 2em;
+}
+
+.conversationBox {
+  padding: 1.5em;
+}
+
+.usersBox {
+  width: 255px;
+  height: 56px;
+  margin-top: 2em;
+  border-radius: @borderRadius;
+}
+
+.contactBox,
+.chatActive {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  border-radius: @borderRadius;
+  margin-right: 1em;
+}
+
+.contactBox p,
+.chatActive p {
+  font-family: @font;
+  font-size: 14px;
+  margin-bottom: 0;
+  color: #6b8299;
+}
+
+.contactBox:hover,
+.chatActive {
+  background-color: rgba(0, 149, 179, .1);
+}
+
+.contactBox img,
+.chatActive img {
+  width: 32px;
+  border-radius: 50%;
+  padding: .5em 0;
+  margin: 0 .7em;
 }
