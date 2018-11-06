@@ -9,16 +9,14 @@ const onBoardingContent = (
       <h3>Spread the Word with Local Discussions</h3>
     </div>
     <div className="middleBox">
-      <img className="iconEndorse" src="assets/32-icon-endorse-active.svg" />
-      <p>Endorse a person to increase his reputation and ranking on the list</p>
+      <img className="iconEndorse" src="assets/32-icon-onboarding-signal.svg" />
+      <p>Signal hot events for the crypto community, ask questions, share ideas.</p>
     </div>
     <div className="linkBox">
       {
         // <p>🎬 Watch the video</p>
       }
       <ul>
-        <li>●</li>
-        <li>●</li>
         <li className="blackPoint">●</li>
         <li>●</li>
       </ul>

@@ -9,8 +9,7 @@ const onBoardingContent = close => (
       <h3>Spread the Word with Local Discussions</h3>
     </div>
     <div className="middleBox">
-      <img className="iconEndorse" src="assets/32-icon-endorse-active.svg" />
-      <p>Endorse a person to increase his reputation and ranking on the list</p>
+      <p>You’re all set. Let’s dig in and start sharing valuable content for your community.</p>
       <button onClick={e => close(e)} className="btnStart">
         Alright
       </button>
@@ -21,9 +20,7 @@ const onBoardingContent = close => (
       }
       <ul>
         <li>●</li>
-        <li>●</li>
         <li className="blackPoint">●</li>
-        <li>●</li>
       </ul>
     </div>
   </div>

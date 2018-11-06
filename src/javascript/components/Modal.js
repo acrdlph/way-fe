@@ -130,9 +130,10 @@ class GenericModal extends React.Component {
             onBoardingSelectedContent = onBoardingLocalStep1;
             break;
           case 2:
-            onBoardingSelectedContent = onBoardingLocalStep2;
-            break;
-          case 3:
+            // add these back and edit Steps once the local discaussions become local (once we add the distance filter to the feature)
+            //   onBoardingSelectedContent = onBoardingLocalStep2;
+            //   break;
+            // case 3:
             onBoardingSelectedContent = onBoardingLocalStep3(this.closeModal);
             break;
         }
@@ -182,7 +183,7 @@ class GenericModal extends React.Component {
               </button>
               {!(
                 ((triggeredBy === 'waitlist' || triggeredBy === 'profile') && step === 4)
-                || (triggeredBy === 'local' && step === 3)
+                || (triggeredBy === 'local' && step === 2)
               ) && (
                 <button onClick={e => this.nextStep(e)} className="arrowNext">
                   <img src="assets/40-icon-back.svg" alt="arrow to back" />
