@@ -69,6 +69,7 @@ class WaitList extends React.Component {
     document.title = 'People | CryptoGeeks';
 
     const contract = initContract(Blockgeeks);
+    this.setState({ contract });
   }
 
   componentWillUnmount() {

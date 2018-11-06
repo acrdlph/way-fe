@@ -1,31 +1,30 @@
 import React from 'react';
+import './onBoardingList.less';
 
-const onBoardingContent = (
-  <div>
-    <u>Cryptogeeks.Berlin: The first token-curated ranking of trusted blockchain experts.</u>
-    <br />
-
-    <h2 style={{ color: '#f00' }}>Instructions</h2>
-
-    <div>
-      <b>1. Register </b>
-      <br />
-      Activate
-      {' '}
-      <a
-        href="https://chrome.google.com/webstore/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn?hl=en"
-        target="_blank"
-      >
-        MetaMask
-      </a>
-      {' '}
-      <i> on the Rinkeby testnet </i>
-      , register your Cryptogeeks profile and get in touch with blockchain experts nearby.
-      <br />
-      <b>2. Get GEEK tokens </b>
-      <br />
-      Go to the profile page to buy GEEK token with
-      {' '}
+const onBoardingContent = close => (
+  <div className="modalContainer">
+    <div className="emojiBox">
+      <img src="assets/50-emoji-grandpa.png" />
+    </div>
+    <div className="welcomeBox">
+      <h3>Say hi to your personal profile</h3>
+    </div>
+    <div className="middleBox">
+      <p>Beautiful. That’s all there is about your profile. Set yourself up and get connected.</p>
+      <button onClick={e => close(e)} className="btnStart">
+        Alright
+      </button>
+    </div>
+    <div className="linkBox">
+      {
+        // <p>🎬 Watch the video</p>
+      }
+      <ul>
+        <li>●</li>
+        <li>●</li>
+        <li>●</li>
+        <li className="blackPoint">●</li>
+      </ul>
     </div>
   </div>
 );

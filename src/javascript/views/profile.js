@@ -66,10 +66,9 @@ class Profile extends React.Component {
     document.title = 'Profile | CryptoGeeks';
     this.getEtherPrice();
     this.getPoolBalance();
-    let web3;
     web3
       && web3.currentProvider.publicConfigStore.on('update', () => this.setState({
-        metamaskConnected: web3.currentProvider.publicConfigStore._state.selectedAddress,
+        metamaskConnected: web3.eth.accounts[0],
       }));
   }
 
@@ -285,7 +284,7 @@ class Profile extends React.Component {
     const backButton = createBackButton('/waitlist');
     const {
       username, name, interests, photo, waytcoins, endorsement,
-    } = this.props;
+    } = this.props.user;
     const photoUrl = photo || 'assets/32-icon-avatar.svg';
     const imageSelectionModal = this.props.showModal ? (
       <ImageSelection onUpload={this.refreshProfile} />
@@ -431,8 +430,18 @@ Please connect to the
               <div>
                 <div className="buySelContainer">
                   <div className="buySellBox">
-                    <span onClick={() => this.changeTokenView(true)}>Buy</span>
-                    <span onClick={() => this.changeTokenView(false)}>Sell</span>
+                    <span
+                      className={this.state.showBuy ? 'active' : ''}
+                      onClick={() => this.changeTokenView(true)}
+                    >
+                      Buy
+                    </span>
+                    <span
+                      className={!this.state.showBuy ? 'active' : ''}
+                      onClick={() => this.changeTokenView(false)}
+                    >
+                      Sell
+                    </span>
                   </div>
                 </div>
                 {this.state.showBuy ? (
@@ -455,7 +464,7 @@ Please connect to the
                       </FormGroup>
                     </Form>
                     <div className="buyBtnBox">
-                      <Button className="buyBtn">
+                      <Button className="buyBtn" onClick={e => this.onBuyHandler(e)}>
                         {`Buy ${this.state.token_amount} GEEK on Testnet`}
                       </Button>
                     </div>
@@ -473,14 +482,14 @@ Please connect to the
                           onChange={this.handleInputChange}
                         />
                       </FormGroup>
-                      <img src="assets/20-icon-lock.svg" color="#c3cfd9" className="swap" />
+                      <img src="assets/20-icon-lock_2.svg" color="#c3cfd9" className="swap" />
                       <FormGroup>
                         <Label for="hangoutPlaces">Price in ETH</Label>
                         <Input type="number" value={this.state.priceToEtherSell} />
                       </FormGroup>
                     </Form>
                     <div className="buyBtnBox">
-                      <Button className="buyBtn">
+                      <Button className="buyBtn" onClick={e => this.onSellHandler(e)}>
                         {`Sell ${this.state.token_amount} GEEK on Testnet`}
                       </Button>
                     </div>
@@ -542,7 +551,6 @@ Please connect to the
                     disabled
                     name="username"
                     value={this.state.username}
-                    onChange={this.handleInputChange}
                   />
                 </div>
               </FormGroup>
