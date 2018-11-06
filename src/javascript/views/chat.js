@@ -179,8 +179,19 @@ class Chat extends React.Component {
             ))}
           </div>
           <div className="chatBox">
+            <div className="infoUserBox"> {/* Disabled */}
+              <div className="infoTextBox">
+                <h6>Christopher Sandoval</h6>
+                <p>active 46min ago</p>
+              </div>
+              <div className="infoImgBox">
+                <img src="assets/40-icon-more.svg"/>
+              </div>
+            </div>
             <Conversation className="conversationBox" user={userDetails} partner={partnerDetails} messages={messages} />
-            <ChatInput onSend={this.sendMessage} disabled={false} />
+            <div className="chatInput">
+              <ChatInput onSend={this.sendMessage} disabled={false} />
+            </div>
           </div>
       </div>
     );

@@ -1,19 +1,36 @@
 @import '../variables';
 
 .chat-input {
-  background-color: #ffffff;
+  background-color: rgba(0, 149, 179, .05);
+  border-radius: 20px;
   display: flex;
-  bottom: 0;
-  padding-top: 10px;
   width: 100%;
 }
 
 .chat-input-text {
   flex: 1;
+  margin-left: 0.750em;
+  font-family: @font;
+  font-size: 14px;
+  line-height: 1.43;
+  color: @black;
+  align-items: center;
+  display: flex;
 }
 
 .chat-input-button {
-  flex: 0 0 100px;
-  margin-left: 10px;
-  margin-right: 10px;
+  display: flex;
+  align-self: flex-end;
+  justify-content: flex-end;
+  padding: .5em;
+}
+
+.chatButton {
+  border: none;
+  background-color: transparent;
+  font-family: @font;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.5;
+  color: @blue;
 }
