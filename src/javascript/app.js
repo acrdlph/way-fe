@@ -16,7 +16,6 @@ import Chat from './views/chat';
 import InteractionConfirmation from './views/interaction-confirmation';
 import Feedback from './views/feedback';
 import LegalNotice from './views/legal-notice';
-import NoChat from './components/noChat'
 import './app.less';
 
 class App extends React.Component {
@@ -86,7 +85,6 @@ class App extends React.Component {
           <Route exact path="/waitlist/:locationId" component={WaitList} />
           <Route exact path="/chat/" component={Chat} />
           <Route exact path="/chat/:chatPartnerId" component={Chat} />
-          <Route exact path="/chat" component={NoChat}/>
           <Route
             exact
             path="/confirm-interaction/:interactionCode"

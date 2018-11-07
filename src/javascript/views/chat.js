@@ -6,6 +6,7 @@ import LinearProgress from 'material-ui/LinearProgress';
 import { trackPageView, trackEvent, events } from '../util/google-analytics';
 import ChatInput from '../components/chat-input';
 import Conversation from '../components/conversation';
+import NoChat from '../components/NoChat';
 import {
   loadMessages,
   addMessagesToChat,
@@ -34,6 +35,7 @@ class Chat extends React.Component {
     this.state = {
       disableChat: false,
       partners: this.props.chatPartner.data,
+      noChats: false,
     };
   }
 
@@ -62,9 +64,11 @@ class Chat extends React.Component {
   componentWillReceiveProps(props) {
     if (props.chatPartner.data !== this.props.chatPartner.data) {
       this.setState({ partners: props.chatPartner.data });
-      console.log(this.props.location.pathname);
-      this.props.location.pathname === '/chat'
-        && this.goToChat(sessionStorage.getItem('userId'), props.chatPartner.data[0].id);
+      if (this.props.location.pathname === '/chat') {
+        props.chatPartner.data[0]
+          ? this.goToChat(sessionStorage.getItem('userId'), props.chatPartner.data[0].id)
+          : this.setState({ noChats: true });
+      }
     }
     this.setState({ messages: props.chat.data });
   }
@@ -171,40 +175,46 @@ class Chat extends React.Component {
 
     return (
       <div className="chatContainer">
-        {networkErrorIndicator}
-        <div className="usersBox">
-          {this.state.partners.map(partner => (
-            <div
-              className={pathname.includes(`${partner.id}`) ? 'chatActive' : 'contactBox'}
-              onClick={() => this.goToChat(userId, partner.id)}
-            >
-              <img src={partner.photo || 'assets/32-icon-avatar.svg'} />
-              <p>{partner.name}</p>
+        {!this.state.noChats ? (
+          <div>
+            {networkErrorIndicator}
+            <div className="usersBox">
+              {this.state.partners.map(partner => (
+                <div
+                  className={pathname.includes(`${partner.id}`) ? 'chatActive' : 'contactBox'}
+                  onClick={() => this.goToChat(userId, partner.id)}
+                >
+                  <img src={partner.photo || 'assets/32-icon-avatar.svg'} />
+                  <p>{partner.name}</p>
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
-        <div className="chatBox">
-          <div className="infoUserBox">
-            {' '}
-            {/* Disabled */}
-            <div className="infoTextBox">
-              <h6>Christopher Sandoval</h6>
-              <p>active 46min ago</p>
-            </div>
-            <div className="infoImgBox">
-              <img src="assets/40-icon-more.svg" />
+            <div className="chatBox">
+              <div className="infoUserBox">
+                {' '}
+                {/* Disabled */}
+                <div className="infoTextBox">
+                  <h6>Christopher Sandoval</h6>
+                  <p>active 46min ago</p>
+                </div>
+                <div className="infoImgBox">
+                  <img src="assets/40-icon-more.svg" />
+                </div>
+              </div>
+              <Conversation
+                className="conversationBox"
+                user={userDetails}
+                partner={partnerDetails}
+                messages={messages}
+              />
+              <div className="chatInput">
+                <ChatInput onSend={this.sendMessage} disabled={false} />
+              </div>
             </div>
           </div>
-          <Conversation
-            className="conversationBox"
-            user={userDetails}
-            partner={partnerDetails}
-            messages={messages}
-          />
-          <div className="chatInput">
-            <ChatInput onSend={this.sendMessage} disabled={false} />
-          </div>
-        </div>
+        ) : (
+          <NoChat history={this.props.history} />
+        )}
       </div>
     );
   }

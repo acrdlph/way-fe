@@ -1,6 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import {FormFeedback } from 'reactstrap';
+import {
+  Form, FormGroup, FormFeedback, Input, Button,
+} from 'reactstrap';
 import { checkUsernameAvailability, registerAccount } from '../stores/accountStore';
 import interactionConfirmationStore from '../stores/interactionConfirmationStore';
 import { trackPageView, trackEvent, events } from '../util/google-analytics';
@@ -193,8 +195,9 @@ class Onboarding extends React.Component {
             </p>
           </div>
           <div className="recoverBox">
-            <form>
-                <input
+            <Form>
+              <FormGroup>
+                <Input
                   placeholder="Username"
                   name="username"
                   ref={(input) => {
@@ -210,7 +213,7 @@ class Onboarding extends React.Component {
                   <FormFeedback>Username too short!</FormFeedback>
                 )}
 
-                <input
+                <Input
                   name="email"
                   placeholder="Email"
                   ref={(input) => {
@@ -229,7 +232,7 @@ class Onboarding extends React.Component {
                   <FormFeedback>Please enter a valid email address!</FormFeedback>
                 )}
 
-                <input
+                <Input
                   name="password"
                   placeholder="Password"
                   type="Password"
@@ -241,7 +244,7 @@ class Onboarding extends React.Component {
                   onChange={this.handleInputChange}
                 />
 
-                <input
+                <Input
                   name="passwordConfirm"
                   placeholder="Password confirmation"
                   type="Password"
@@ -260,10 +263,11 @@ class Onboarding extends React.Component {
                   )}
                   {this.state.show && CircularProgress()}
                 </div>
-            </form>
-            <button onClick={this.register} disabled={isRegistrationButtonDisabled}>
+              </FormGroup>
+            </Form>
+            <Button onClick={this.register} disabled={isRegistrationButtonDisabled}>
               Get Started
-            </button>
+            </Button>
             <div className="signinBox">
               <p>
                 Already have an account?

@@ -163,7 +163,9 @@ export async function saveAndContinue(showLocationRequired, showSearchBox, histo
 
 export function renderLocationInput(isSearchBoxVisible, showLocationRequiredHint) {
   return (
-    <div style={{ paddingBottom: '15px', display: isSearchBoxVisible ? 'block' : 'none' }}>
+    <div
+      style={{ zIndex: 0, paddingBottom: '15px', display: isSearchBoxVisible ? 'block' : 'none' }}
+    >
       <Infobox
         visible={showLocationRequiredHint}
         text="Please enter your location to join the list - we are starting in Berlin."

@@ -1,6 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { FormFeedback } from 'reactstrap';
+import {
+  Form, FormGroup, FormFeedback, Input, Button,
+} from 'reactstrap';
 import { trackPageView, trackEvent, events } from '../util/google-analytics';
 import InfoBox from '../components/infobox';
 import { login } from '../stores/accountStore';
@@ -65,6 +67,7 @@ class Login extends React.Component {
 
   login() {
     const { loginName, password } = this.state;
+    console.log(loginName, password);
     this.props.login(loginName, password);
     const {
       showLocationRequired, showSearchBox, history, toggleDiv,
@@ -75,9 +78,10 @@ class Login extends React.Component {
   render() {
     return (
       <div className="login">
-        <form>
-            <input
-              invalid={this.props.account.hasLoginFailed}
+        <Form>
+          <FormGroup>
+            <Input
+              invalid={this.props.account.hasLoginFailed || !this.props.showSearchBox}
               className="username"
               placeholder="Username"
               ref={(input) => {
@@ -87,8 +91,8 @@ class Login extends React.Component {
               onChange={this.changeLoginName}
             />
 
-            <input
-              invalid={this.props.account.hasLoginFailed}
+            <Input
+              invalid={this.props.account.hasLoginFailed || !this.props.showSearchBox}
               className="password"
               placeholder="Password"
               type="Password"
@@ -99,9 +103,10 @@ class Login extends React.Component {
               onChange={this.changePassword}
             />
             <FormFeedback>Invalid username or password!</FormFeedback>
-        </form>
+          </FormGroup>
+        </Form>
 
-        <button
+        <Button
           ref={(input) => {
             this.inputSubmit = input;
           }}
@@ -109,7 +114,7 @@ class Login extends React.Component {
           onClick={() => this.login()}
         >
           Sign in
-        </button>
+        </Button>
 
         {/* <div className='login-reset-password'>
           Forgot password? <NavLink to='/reset-password'>Reset it!</NavLink>
