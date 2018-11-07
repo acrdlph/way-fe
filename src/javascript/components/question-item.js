@@ -1,7 +1,5 @@
 import React from 'react';
-import {
-  Button, Form, Input, Row, Col,
-} from 'reactstrap';
+import { TextField } from '@material-ui/core';
 
 import ReplyItem from './reply-item';
 import returnDate from '../util/date';
@@ -68,8 +66,8 @@ class QuestionItem extends React.Component {
         ))}
         <div className="answerBtn" />
         <div className="replyContainer">
-          <Form className="answerBox">
-            <Input
+          <form className="answerBox">
+            <TextField
               className="answerInput"
               onChange={this.handleChangeReply}
               name="text"
@@ -77,11 +75,13 @@ class QuestionItem extends React.Component {
                 replies.length === 0 ? 'Be the first to reply...' : 'Any thoughts on that?'
               }
               value={this.state.replyValue}
+              InputProps={{ disableUnderline: true }}
+              multiline={true}
             />
-          </Form>
-          <Button onClick={e => this.handleReplySubmit(e, _id)} className="replyBtn">
+          </form>
+          <button onClick={e => this.handleReplySubmit(e, _id)} className="replyBtn">
             Reply
-          </Button>
+          </button>
         </div>
       </div>
     );
