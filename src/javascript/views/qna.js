@@ -51,7 +51,7 @@ class QnA extends React.Component {
     return (
       <div className="qnaBody">
         <div className="formContainer">
-          <div className="formGroup" onSubmit={this.handleQuestionSubmit}>
+          <form className="formGroup" onSubmit={this.handleQuestionSubmit}>
               <TextField
                 className="textField"
                 onChange={this.handleChangeQuestion}
@@ -62,7 +62,7 @@ class QnA extends React.Component {
                 multiline={true}  
               />
             <button className="questionBtn">Post</button>
-          </div>
+          </form>
         </div>
         <div className="formLink">
           <div className="navLink">
