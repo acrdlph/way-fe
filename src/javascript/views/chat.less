@@ -1,18 +1,124 @@
 @import '../variables';
 
-.chat {
-  margin-top: 50px;
-  padding: 0 5em;
-}
-
-.chat-content {
-  padding-bottom: 50px;
-  padding-right: 10px;
-}
-
-.chat-chat-input {
-  padding-bottom: 30px;
-  position: absolute;
-  bottom: 0;
+.chatContainer {
+  display: flex;
+  flex-direction: row;
   width: 100%;
+  margin: 6em 9em 0 3em;
+}
+
+.chatBox {
+  background-color: @boxColor;
+  border-radius: @borderRadius; /* DELETE THIS BORDER RADIUS WHEN YOU ACTIVATE infoUserBox IN CHAT.JS AND ACTIVETE BORDER-TOP ON CONVERSATION.LESS*/
+  box-shadow: @boxShadow;
+  width: 100%;
+  height: fit-content;
+  margin-bottom: 1em;
+}
+
+.infoUserBox {
+  display: flex;
+  justify-content: space-between;
+  padding: 1.5em;
+  display: none;
+}
+
+.infoTextBox h6 {
+  font-family: @font;
+  font-size: 14px;
+  font-weight: 600;
+  color: @black;
+  margin-bottom: 0;
+}
+
+.infoTextBox p {
+  font-family: @font;
+  font-size: 14px;
+  color: #a3b3bf;
+  margin-bottom: 0;
+}
+
+.infoImgBox img:hover {
+  border-radius: 50%;
+  background-color: rgba(0, 149, 179, 0.05);
+}
+
+.usersBox {
+  position: fixed;
+  width: 255px;
+  height: 56px;
+  border-radius: @borderRadius;
+}
+
+.chatBox {
+  margin-left: 16em;
+}
+
+.contactBox,
+.chatActive {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  border-radius: @borderRadius;
+  margin-right: 1em;
+}
+
+.contactBox p,
+.chatActive p {
+  font-family: @font;
+  font-size: 14px;
+  margin-bottom: 0;
+  color: #6b8299;
+}
+
+.contactBox:hover,
+.chatActive {
+  background-color: rgba(0, 149, 179, .1);
+}
+
+.contactBox img,
+.chatActive img {
+  width: 32px;
+  border-radius: 50%;
+  padding: .5em 0;
+  margin: 0 .7em;
+}
+
+.chatInput {
+  border-top: @borderTop;
+  padding: 1.5em;
+}
+
+@media only screen and (max-width: 800px) {
+  .chatContainer {
+    margin: .5em;
+    margin-top: 6em;
+    width: 100%;
+  }
+
+  .contactBox p,
+  .chatActive p {
+    display: none;
+  }
+
+  .infoTextBox,
+  .infoUserBox {
+    font-size: 12px;
+  }
+
+  .infoImgBox img {
+    height: 32px;
+    width: 32px;
+    border-radius: 50%;
+    background-color: rgba(0, 149, 179, 0.05); 
+  }
+
+  .usersBox {
+    width: auto;
+    margin-right: .5em;
+  }
+
+  .chatBox {
+    margin-left: 4em;
+  }
 }

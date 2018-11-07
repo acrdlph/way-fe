@@ -4,8 +4,8 @@ import ReactDOM from 'react-dom';
 import { Avatar } from '@material-ui/core';
 import './conversation.less';
 
-const CHAT_BUBBLE_COLOR_LEFT = '#43D676';
-const CHAT_BUBBLE_COLOR_RIGHT = '#68A0CE';
+const CHAT_BUBBLE_COLOR_LEFT = '#0095b3';
+const CHAT_BUBBLE_COLOR_RIGHT = '#f1f3f4';
 
 export default class Conversation extends React.Component {
   constructor(props) {
@@ -32,7 +32,7 @@ export default class Conversation extends React.Component {
     const { user, partner, messages } = this.props;
     const bubbles = messages
       && messages.map((msg) => {
-        const date = dateFormat(msg.createdAt, 'dS mmm yy , H:MM ');
+        const date = dateFormat(msg.createdAt, 'dS mmm , H:MM ');
         const otherPhoto = partner.photo;
         const style = {
           backgroundColor:
@@ -55,7 +55,7 @@ export default class Conversation extends React.Component {
           <div key={msg.local_id} className="chat-item-wrapper">
             <div className={`chat-item chat-item-${cssClass}`}>
               <div className={`avatar avatar-${cssClass}`}>
-                <Avatar size={50} src={photo} />
+                <img size={50} src={photo} />
               </div>
               <div className={`content content-${cssClass}`}>
                 <div className={`bubble ${undeliveredMsgClass}`} style={style}>

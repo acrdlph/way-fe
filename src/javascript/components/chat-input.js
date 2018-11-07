@@ -33,7 +33,7 @@ export default class ChatInput extends React.Component {
 
   render() {
     return (
-      <div className="chat-input container">
+      <div className="chat-input">
         <div className="chat-input-text">
           <TextField
             disabled={this.props.disabled}
@@ -43,12 +43,14 @@ export default class ChatInput extends React.Component {
             onKeyPress={this.onKeyPressInTextField}
             rowsMax={3}
             autoFocus
+            InputProps={{ disableUnderline: true }}
+            multiline={true}
           />
         </div>
         <div className="chat-input-button">
-          <Button disabled={this.props.disabled} onClick={this.sendMessage}>
+          <button className="chatButton" disabled={this.props.disabled} onClick={this.sendMessage}>
             Send
-          </Button>
+          </button>
         </div>
       </div>
     );
