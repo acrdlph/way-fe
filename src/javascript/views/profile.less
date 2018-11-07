@@ -1,9 +1,15 @@
+@import '../variables';
+
 .accountContainer {
   display: flex;
   width: 100%;
   margin-top: 6em;
-  padding-right: 238px;
+  padding-right: 200px;
   padding-left: 52px;
+  @media (max-width: 1113px) {
+    padding-right: 1em;
+    padding-left: 3em;
+  }
   @media (max-width: 900px) {
     padding-right: 3em;
     padding-left: 3em;
@@ -182,9 +188,12 @@
   }
 }
 
+.buyGeekBox {
+  padding: 0 2.5em;
+}
+
 .profileBox form,
-.accountBox form,
-.swapBox {
+.accountBox form {
   padding: 0 5em;
   @media (max-width: 600px) {
     padding: 0 1em;
@@ -245,10 +254,19 @@ h4 {
   border-radius: 24px;
   background-color: #0095b3;
   border: none;
+  color: @boxColor;
+  font-family: @font;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
   @media (max-width: 600px) {
     font-size: 14px;
     width: 115px;
   }
+}
+
+.saveBtn:focus {
+  outline-color: unset;
 }
 
 .btnBox {
@@ -380,11 +398,15 @@ h4 {
 
 .swapBox {
   display: flex;
-  justify-content: space-evenly;
+  justify-content: space-between;
+  width: 100%;
 }
 
 .swapBox input {
   width: 18em;
+  @media (max-width: 800px) {
+    width: auto;
+  }
 }
 
 .swap {
@@ -393,15 +415,20 @@ h4 {
 }
 
 .buyBtnBox {
-  padding: 0 6em;
   margin-top: 0.5em;
 }
 
 .buyBtn {
   width: 100%;
   border-radius: 24px;
-  background-color: #0095b3;
+  background-color: @blue;
+  height: 40px;
   border: none;
+  color: @boxColor;
+  font-family: @font;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
 }
 
 .alertRedBox {

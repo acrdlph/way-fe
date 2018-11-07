@@ -399,9 +399,9 @@ GEEK
                 ))}
             </Form>
             <div className="btnBox">
-              <Button name="nameInterest" onClick={this.onSave} className="saveBtn">
+              <button name="nameInterest" onClick={this.onSave} className="saveBtn">
                 Save Changes
-              </Button>
+              </button>
             </div>
           </div>
           <div className="tokenBox" id="token">
@@ -445,7 +445,7 @@ Please connect to the
                   </div>
                 </div>
                 {this.state.showBuy ? (
-                  <div>
+                  <div className="buyGeekBox">
                     <p>Buy GEEK token from this bonding curve to start curating the community.</p>
                     <Form className="swapBox">
                       <FormGroup>
@@ -464,9 +464,9 @@ Please connect to the
                       </FormGroup>
                     </Form>
                     <div className="buyBtnBox">
-                      <Button className="buyBtn" onClick={e => this.onBuyHandler(e)}>
+                      <button className="buyBtn" onClick={e => this.onBuyHandler(e)}>
                         {`Buy ${this.state.token_amount} GEEK on Testnet`}
-                      </Button>
+                      </button>
                     </div>
                   </div>
                 ) : (
@@ -556,9 +556,9 @@ Please connect to the
               </FormGroup>
             </Form>
             <div className="btnBox">
-              <Button name="emailUsername" onClick={this.onSave} className="saveBtn">
+              <button name="emailUsername" onClick={this.onSave} className="saveBtn">
                 Save Changes
-              </Button>
+              </button>
             </div>
           </div>
         </div>
