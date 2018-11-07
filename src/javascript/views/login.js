@@ -1,8 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import {
-  Form, FormGroup, FormFeedback, Input, Button,
-} from 'reactstrap';
+import { FormFeedback } from 'reactstrap';
 import { trackPageView, trackEvent, events } from '../util/google-analytics';
 import InfoBox from '../components/infobox';
 import { login } from '../stores/accountStore';
@@ -77,9 +75,8 @@ class Login extends React.Component {
   render() {
     return (
       <div className="login">
-        <Form>
-          <FormGroup>
-            <Input
+        <form>
+            <input
               invalid={this.props.account.hasLoginFailed}
               className="username"
               placeholder="Username"
@@ -90,7 +87,7 @@ class Login extends React.Component {
               onChange={this.changeLoginName}
             />
 
-            <Input
+            <input
               invalid={this.props.account.hasLoginFailed}
               className="password"
               placeholder="Password"
@@ -102,10 +99,9 @@ class Login extends React.Component {
               onChange={this.changePassword}
             />
             <FormFeedback>Invalid username or password!</FormFeedback>
-          </FormGroup>
-        </Form>
+        </form>
 
-        <Button
+        <button
           ref={(input) => {
             this.inputSubmit = input;
           }}
@@ -113,7 +109,7 @@ class Login extends React.Component {
           onClick={() => this.login()}
         >
           Sign in
-        </Button>
+        </button>
 
         {/* <div className='login-reset-password'>
           Forgot password? <NavLink to='/reset-password'>Reset it!</NavLink>

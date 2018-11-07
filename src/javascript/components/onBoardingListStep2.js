@@ -9,7 +9,7 @@ const onBoardingContent = (
       <h3>Welcome to the Geek List</h3>
     </div>
     <div className="middleBox">
-      <img className="iconChat" src="assets/24-icon-chat.svg" />
+      <img className="iconChat" src="assets/32-icon-onboarding-chat.svg" />
       <p>Use the Chat to talk and meet with interesting people.</p>
     </div>
     <div className="linkBox">
