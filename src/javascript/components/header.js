@@ -108,6 +108,7 @@ class Header extends React.Component {
 
     const questionMarkIcon = (
       <div className="questionmark-icon">
+        <img onClick={() => this.props.history.push('/chat')} src="assets/24-icon-chat.svg" />
         <button className="questionmark-button" onClick={this.openTheModal}>
           <img src="assets/24-icon-help.svg" />
         </button>
@@ -140,12 +141,13 @@ class Header extends React.Component {
             && !seenModals.seenLocModal && (
               <div className="modalsBoxes shareBox">Share your thoughts here</div>
           )}
+
+          <span className="borderRight" />
           <div>
             {Modal}
             {questionMarkIcon}
           </div>
         </div>
-        <div onClick={() => this.props.history.push('/chat')}> chat yaowysoaw </div>
       </div>
     );
   }
