@@ -61,7 +61,7 @@ class QnA extends React.Component {
                 InputProps={{ disableUnderline: true }}
                 multiline={true}  
               />
-            <button className="questionBtn" postQuestion={this.props.postQuestion}>Post</button>
+            <button className="questionBtn">Post</button>
           </div>
         </div>
         <div className="formLink">
