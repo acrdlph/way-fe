@@ -4,6 +4,8 @@ import { NavLink } from 'react-router-dom';
 import {
   Button, Form, FormGroup, Input,
 } from 'reactstrap';
+import { TextField } from '@material-ui/core';
+
 
 import {
   postQuestion,
@@ -49,17 +51,18 @@ class QnA extends React.Component {
     return (
       <div className="qnaBody">
         <div className="formContainer">
-          <Form className="formGroup" onSubmit={this.handleQuestionSubmit}>
-            <FormGroup>
-              <Input
+          <div className="formGroup" onSubmit={this.handleQuestionSubmit}>
+              <TextField
+                className="textField"
                 onChange={this.handleChangeQuestion}
                 name="text"
                 placeholder="Share your ideas, questions and upcoming events…"
                 value={this.state.questionValue}
+                InputProps={{ disableUnderline: true }}
+                multiline={true}  
               />
-            </FormGroup>
-            <Button className="questionBtn">Post</Button>
-          </Form>
+            <button className="questionBtn" postQuestion={this.props.postQuestion}>Post</button>
+          </div>
         </div>
         <div className="formLink">
           <div className="navLink">
