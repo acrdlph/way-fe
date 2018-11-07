@@ -60,7 +60,12 @@ class Chat extends React.Component {
   }
 
   componentWillReceiveProps(props) {
-    if (props.chatPartner.data !== this.props.chatPartner.data) this.setState({ partners: props.chatPartner.data });
+    if (props.chatPartner.data !== this.props.chatPartner.data) {
+      this.setState({ partners: props.chatPartner.data });
+      console.log(this.props.location.pathname);
+      this.props.location.pathname === '/chat'
+        && this.goToChat(sessionStorage.getItem('userId'), props.chatPartner.data[0].id);
+    }
     this.setState({ messages: props.chat.data });
   }
 

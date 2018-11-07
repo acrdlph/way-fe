@@ -104,7 +104,11 @@ class Header extends React.Component {
 
     const questionMarkIcon = (
       <div className="questionmark-icon">
-        <img onClick={() => this.props.history.push('/chat')} src="assets/24-icon-chat.svg" />
+        <img
+          className="icon-chat"
+          onClick={() => this.props.history.push('/chat')}
+          src="assets/24-icon-chat.svg"
+        />
         <button className="questionmark-button" onClick={this.openTheModal}>
           <img src="assets/24-icon-help.svg" />
         </button>

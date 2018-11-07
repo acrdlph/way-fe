@@ -31,7 +31,7 @@ export default class Conversation extends React.Component {
   render() {
     const { user, partner, messages } = this.props;
     const bubbles = messages
-      && messages.map((msg) => {
+      && messages.map((msg, index) => {
         const date = dateFormat(msg.createdAt, 'dS mmm , H:MM ');
         const otherPhoto = partner.photo;
         const style = {
@@ -40,6 +40,12 @@ export default class Conversation extends React.Component {
         };
         let photo = 'assets/32-icon-avatar.svg';
         let cssClass = 'left';
+        const showImage = false;
+        // if (messages[index - 1]) {
+        //   if (messages[index].sender !== messages[index - 1].sender) {
+        //     showImage = true;
+        //   }
+        // }
         if (msg.sender === user.id) {
           cssClass = 'right';
           if (user.photo) {
