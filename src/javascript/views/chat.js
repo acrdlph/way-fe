@@ -25,15 +25,6 @@ class Chat extends React.Component {
     const chatPathWithoutPartnerId = path.substring(0, path.indexOf('/chat') + 5);
     trackPageView(chatPathWithoutPartnerId);
 
-    const userId = sessionStorage.getItem('userId');
-    const chatPartnerId = _.get(this.props.match, 'params.chatPartnerId');
-    if (userId && chatPartnerId) {
-      this.props.loadUserData(userId);
-      this.props.loadChatParnerData();
-      this.props.loadMessages(userId, chatPartnerId);
-    } else {
-      this.props.history.push('/signup');
-    }
     this.sendMessage = this.sendMessage.bind(this);
     this.onMessageUpdate = this.onMessageUpdate.bind(this);
     this.updateContacts = this.updateContacts.bind(this);
@@ -60,6 +51,12 @@ class Chat extends React.Component {
         this.disableChat();
       },
     );
+    const chatPartnerId = _.get(this.props.match, 'params.chatPartnerId');
+    this.props.loadChatParnerData();
+    this.props.loadUserData(userId);
+    if (userId && chatPartnerId) {
+      this.props.loadMessages(userId, chatPartnerId);
+    }
   }
 
   componentWillReceiveProps(props) {
@@ -169,30 +166,40 @@ class Chat extends React.Component {
 
     return (
       <div className="chatContainer">
-          {networkErrorIndicator}
-          <div className="usersBox">
-            {this.state.partners.map(partner => (
-            <div className={pathname.includes(`${partner.id}`) ? "chatActive" : "contactBox"} onClick={() => this.goToChat(userId, partner.id)}>
-                <img src={partner.photo || "assets/32-icon-avatar.svg"}></img>
-                <p>{partner.name}</p>
-              </div>
-            ))}
-          </div>
-          <div className="chatBox">
-            <div className="infoUserBox"> {/* Disabled */}
-              <div className="infoTextBox">
-                <h6>Christopher Sandoval</h6>
-                <p>active 46min ago</p>
-              </div>
-              <div className="infoImgBox">
-                <img src="assets/40-icon-more.svg"/>
-              </div>
+        {networkErrorIndicator}
+        <div className="usersBox">
+          {this.state.partners.map(partner => (
+            <div
+              className={pathname.includes(`${partner.id}`) ? 'chatActive' : 'contactBox'}
+              onClick={() => this.goToChat(userId, partner.id)}
+            >
+              <img src={partner.photo || 'assets/32-icon-avatar.svg'} />
+              <p>{partner.name}</p>
             </div>
-            <Conversation className="conversationBox" user={userDetails} partner={partnerDetails} messages={messages} />
-            <div className="chatInput">
-              <ChatInput onSend={this.sendMessage} disabled={false} />
+          ))}
+        </div>
+        <div className="chatBox">
+          <div className="infoUserBox">
+            {' '}
+            {/* Disabled */}
+            <div className="infoTextBox">
+              <h6>Christopher Sandoval</h6>
+              <p>active 46min ago</p>
+            </div>
+            <div className="infoImgBox">
+              <img src="assets/40-icon-more.svg" />
             </div>
           </div>
+          <Conversation
+            className="conversationBox"
+            user={userDetails}
+            partner={partnerDetails}
+            messages={messages}
+          />
+          <div className="chatInput">
+            <ChatInput onSend={this.sendMessage} disabled={false} />
+          </div>
+        </div>
       </div>
     );
   }

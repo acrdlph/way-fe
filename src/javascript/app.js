@@ -83,6 +83,7 @@ class App extends React.Component {
           <Route exact path="/reset-password" component={ResetPassword} />
           <Route exact path="/waitlist/" component={WaitList} />
           <Route exact path="/waitlist/:locationId" component={WaitList} />
+          <Route exact path="/chat/" component={Chat} />
           <Route exact path="/chat/:chatPartnerId" component={Chat} />
           <Route
             exact
