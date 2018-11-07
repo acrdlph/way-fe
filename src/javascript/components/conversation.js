@@ -55,7 +55,7 @@ export default class Conversation extends React.Component {
           <div key={msg.local_id} className="chat-item-wrapper">
             <div className={`chat-item chat-item-${cssClass}`}>
               <div className={`avatar avatar-${cssClass}`}>
-                <img size={50} src={photo} />
+                <Avatar className="avatar" src={photo} />
               </div>
               <div className={`content content-${cssClass}`}>
                 <div className={`bubble ${undeliveredMsgClass}`} style={style}>
