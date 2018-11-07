@@ -1,0 +1,79 @@
+@import '../variables';
+
+.noChatContainer {
+  width: 100%;
+  margin-top: 6em;
+  margin-bottom: 1em;
+  display: flex;
+  justify-content: center;
+}
+
+.noChatBox {
+  width: 19em;
+  height: 26.5em;
+  background: @boxColor;
+  box-shadow: @boxShadow;
+  border-radius: @borderRadius;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.messengerBox {
+  margin-top: 4.5em;
+}
+
+.messengerBox img {
+  width: 80px;
+  height: 80px;
+  margin-bottom: 1em;
+  opacity: .5;
+}
+
+.chatTitleBox h3 {
+  font-family: @font;
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 1.4;
+  color: @black;
+}
+
+.chatTextBox p {
+  font-family: @font;
+  font-size: 12px;
+  line-height: 1.57;
+  text-align: center;
+  color: #a3b3bf;
+  padding: 0em 3em;
+}
+
+.chatBtnBox {
+  font-family: @font;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.25;
+  text-align: center;
+
+}
+
+.chatBtnBox button {
+  border: none;
+  border-radius: 20px;
+  background-color: @blue;
+  color: @boxColor;
+  width: 143px;
+  height: 40px;
+  cursor: pointer;
+}
+
+.chatBtnBox button:focus {
+  outline-color: unset;
+}
+
+@media only screen and (min-width: 600px) {
+  .noChatBox {
+    width: 45em;
+    height: 31.5em;
+    padding: 3em 12em;
+  }
+}
