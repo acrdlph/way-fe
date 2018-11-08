@@ -6,7 +6,7 @@ import LinearProgress from 'material-ui/LinearProgress';
 import { trackPageView, trackEvent, events } from '../util/google-analytics';
 import ChatInput from '../components/chat-input';
 import Conversation from '../components/conversation';
-import NoChat from '../components/NoChat';
+{/*import NoChat from '../components/NoChat';*/}
 import {
   loadMessages,
   addMessagesToChat,

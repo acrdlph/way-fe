@@ -95,10 +95,10 @@ class Header extends React.Component {
 
     const listOrQuestion = (
       <div className={isInSignup || isInFeedback ? 'listOrQuestion-hidden' : 'listOrQuestion'}>
-        <NavLink to="/waitlist" onClick={() => sessionStorage.setItem('scrollPosition', 0)}>
+        <NavLink to="/waitlist" onClick={() => sessionStorage.setItem('scrollPosition', 0)} className="geekListLink">
           Geek List
         </NavLink>
-        <NavLink to="/qna">Local Discussions</NavLink>
+        <NavLink to="/qna" className="localDiscussionLink">Local Discussions</NavLink>
       </div>
     );
 
@@ -136,11 +136,11 @@ class Header extends React.Component {
           {seenModals
             && !seenModals.seenProfModal && (
               <div className="modalsBoxes editBox">Edit your profile here</div>
-          )}
+            )}
           {seenModals
             && !seenModals.seenLocModal && (
               <div className="modalsBoxes shareBox">Share your thoughts here</div>
-          )}
+            )}
 
           <span className="borderRight" />
           <div>
