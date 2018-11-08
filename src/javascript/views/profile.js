@@ -445,7 +445,7 @@ Please connect to the
                   </div>
                 </div>
                 {this.state.showBuy ? (
-                  <div>
+                  <div className="buyGeekBox">
                     <p>Buy GEEK token from this bonding curve to start curating the community.</p>
                     <Form className="swapBox">
                       <FormGroup>
